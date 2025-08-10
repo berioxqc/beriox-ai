@@ -2,8 +2,8 @@ import Stripe from 'stripe';
 
 // Configuration Stripe
 export const stripeConfig = {
-  publishableKey: 'pk_test_51Ru3QeQZZbJbkSDkwjIHdPZ5LRCCc2OpEst9oa2bMgSuCp3HGLGd2Q4SCsnWmsabmkzb1ZnDkIg7xKPyOEnqrMrY00QrQh9VUD',
-  secretKey: 'sk_test_51Ru3QeQZZbJbkSDkK5ULBqNKeIYuKbVX9KtP6XPL3Kunw3n2IyMVRYEfind0zPl6LUF7UyVI3KhIbCuo2gawCEOd00so1uQgk3',
+  publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
+  secretKey: process.env.STRIPE_SECRET_KEY || '',
   currency: 'cad', // Devise canadienne
   apiVersion: '2023-10-16' as const
 };
