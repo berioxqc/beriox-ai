@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-08-10T18:35:31.548Z",
+  "totalDeps": 39,
+  "productionDeps": 28,
+  "devDeps": 11,
+  "heavyDeps": [
+    "@fortawesome/fontawesome-svg-core",
+    "@fortawesome/free-solid-svg-icons",
+    "@fortawesome/free-regular-svg-icons",
+    "stripe",
+    "openai",
+    "next-auth",
+    "@prisma/client",
+    "bullmq",
+    "ioredis"
+  ],
+  "recommendations": [
+    "Utiliser les imports dynamiques pour FontAwesome",
+    "Charger Stripe côté client uniquement",
+    "Optimiser les requêtes Prisma avec select",
+    "Configurer NextAuth dynamiquement",
+    "Implémenter le code splitting pour les pages lourdes",
+    "Utiliser React.lazy pour les composants volumineux"
+  ]
+}

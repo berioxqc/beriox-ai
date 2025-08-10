@@ -1,0 +1,357 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// NextAuth.js tables
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  missions      Mission[] // Relation avec les missions créées par l'utilisateur
+  analyticsConnections   AnalyticsConnection[]
+  couponRedemptions      CouponRedemption[]
+  premiumAccess          PremiumAccess?
+  userCredits            UserCredits?
+  refundRequests         RefundRequest[]
+  payments              Payment[] // Relation avec les paiements
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Stripe fields
+  stripeCustomerId       String?   @unique
+  subscriptionId         String?   @unique // Renommé pour plus de clarté
+  subscriptionStatus     String?   // active, cancelled, past_due, etc.
+  subscriptionPlan       String?   // competitor_intelligence, competitor_intelligence_yearly
+  subscriptionEndDate    DateTime?
+  cancelAtPeriodEnd      Boolean   @default(false)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Modèle pour stocker les prompts des agents
+model AgentPrompt {
+  id          String   @id @default(cuid())
+  agentId     String   @unique // karine, hugo, jpbot, elodie, etc.
+  agentName   String   // Nom affiché
+  systemPrompt String  @db.Text // Prompt système principal
+  rolePrompt   String  @db.Text // Prompt de rôle spécifique
+  instructions String  @db.Text // Instructions détaillées
+  isActive    Boolean  @default(true)
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?  // ID de l'utilisateur qui a créé/modifié
+  
+  @@index([agentId])
+}
+
+model Mission {
+  id             String        @id @default(cuid())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  source         String
+  sourceEventId  String?
+  objective      String
+  deadline       DateTime?
+  priority       String?
+  context        String?
+  status         String        @default("received")
+  briefs         Brief[]
+  deliverables   Deliverable[]
+  report         Report?
+  notionPageId   String?
+  slackMessageTs String?
+  userId         String?       // Utilisateur qui a créé la mission
+  user           User?         @relation(fields: [userId], references: [id])
+}
+
+model Brief {
+  id          String      @id @default(cuid())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  missionId   String
+  agent       String
+  contentJson Json
+  status      String      @default("queued")
+  mission     Mission     @relation(fields: [missionId], references: [id])
+  deliverable Deliverable?
+}
+
+model Deliverable {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  missionId  String
+  briefId    String?  @unique
+  agent      String
+  output     Json
+  mission    Mission  @relation(fields: [missionId], references: [id])
+  brief      Brief?   @relation(fields: [briefId], references: [id])
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  missionId  String   @unique
+  summary    String
+  detailsMd  String
+  cautions   String?
+  nextSteps  String?
+  mission    Mission  @relation(fields: [missionId], references: [id])
+}
+
+model AnalyticsConnection {
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String
+  propertyId   String
+  propertyName String
+  websiteUrl   String?
+  accessToken  String   @db.Text
+  refreshToken String   @db.Text
+  lastSync     DateTime?
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, propertyId])
+}
+
+model ExecutionLog {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  missionId  String?
+  briefId    String?
+  stage      String
+  level      String
+  message    String
+  meta       Json?
+}
+
+model WebhookEvent {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  source        String
+  externalId    String   @unique
+  payload       Json
+  processedAt   DateTime?
+  missionId     String?
+  processingErr String?
+}
+
+// Système de coupons et accès premium temporaires
+enum CouponType {
+  PREMIUM_TRIAL    // Accès premium temporaire
+  PLAN_UPGRADE     // Mise à niveau de plan
+  DISCOUNT         // Réduction sur abonnement
+}
+
+enum CouponStatus {
+  ACTIVE
+  USED
+  EXPIRED
+  DISABLED
+}
+
+model Coupon {
+  id          String       @id @default(cuid())
+  code        String       @unique
+  type        CouponType
+  status      CouponStatus @default(ACTIVE)
+  
+  // Détails du coupon
+  description String?
+  planId      String?      // Plan à activer (starter, pro, enterprise)
+  duration    Int?         // Durée en jours (90 pour 3 mois, 365 pour 1 an)
+  discount    Int?         // Pourcentage de réduction (pour type DISCOUNT)
+  
+  // Limites d'utilisation
+  maxUses     Int?         // Nombre max d'utilisations (null = illimité)
+  currentUses Int          @default(0)
+  
+  // Validité
+  validFrom   DateTime     @default(now())
+  validUntil  DateTime?
+  
+  // Métadonnées
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  createdBy   String       // ID de l'admin qui a créé le coupon
+  notes       String?      // Notes internes
+  
+  // Relations
+  redemptions CouponRedemption[]
+}
+
+model CouponRedemption {
+  id         String   @id @default(cuid())
+  couponId   String
+  userId     String
+  redeemedAt DateTime @default(now())
+  
+  // Détails de l'activation
+  planActivated String? // Plan activé
+  expiresAt     DateTime? // Quand l'accès premium expire
+  
+  // Relations
+  coupon Coupon @relation(fields: [couponId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([couponId, userId]) // Un utilisateur ne peut utiliser qu'une fois le même coupon
+}
+
+// Extension du modèle User pour les accès premium temporaires
+model PremiumAccess {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  planId      String   // starter, pro, enterprise
+  startDate   DateTime @default(now())
+  endDate     DateTime
+  isActive    Boolean  @default(true)
+  
+  // Source de l'accès premium
+  source      String   // 'coupon', 'admin_grant', 'stripe'
+  sourceId    String?  // ID du coupon ou autre référence
+  
+  // Métadonnées
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?  // ID de l'admin qui a accordé l'accès
+  notes       String?
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Système de crédits et remboursements
+enum RefundStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum RefundReason {
+  QUALITY_ISSUE
+  TECHNICAL_PROBLEM
+  NOT_SATISFIED
+  DUPLICATE_CHARGE
+  OTHER
+}
+
+model UserCredits {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  planId      String   // free, pro, enterprise
+  creditsUsed Int      @default(0)
+  creditsLimit Int     // Limite mensuelle selon le plan
+  resetDate   DateTime // Date de reset des crédits (jour de l'abonnement)
+  
+  // Métadonnées
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refundRequests RefundRequest[]
+}
+
+model RefundRequest {
+  id          String        @id @default(cuid())
+  userId      String
+  missionId   String?       // Mission concernée (optionnel)
+  amount      Int           // Nombre de crédits à rembourser
+  reason      RefundReason
+  description String        @db.Text // Explication détaillée
+  status      RefundStatus  @default(PENDING)
+  
+  // Traitement
+  reviewedBy  String?       // ID de l'admin qui a traité
+  reviewedAt  DateTime?
+  adminNotes  String?       @db.Text // Notes internes
+  
+  // Métadonnées
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userCredits UserCredits @relation(fields: [userCreditsId], references: [id], onDelete: Cascade)
+  userCreditsId String
+}
+
+// Modèle pour les paiements Stripe
+model Payment {
+  id                    String   @id @default(cuid())
+  stripeInvoiceId       String   @unique
+  stripeCustomerId      String
+  stripeSubscriptionId  String?
+  amount                Int      // Montant en centimes
+  currency              String   @default("usd")
+  status                String   // succeeded, failed, pending
+  paymentDate           DateTime @default(now())
+  refunded              Boolean  @default(false)
+  refundAmount          Int?     // Montant remboursé en centimes
+  refundDate            DateTime?
+  metadata              Json?    // Données supplémentaires
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  user                  User?    @relation(fields: [stripeCustomerId], references: [stripeCustomerId])
+  
+  @@index([stripeCustomerId])
+  @@index([status])
+  @@index([paymentDate])
+}
+
+

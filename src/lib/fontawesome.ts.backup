@@ -1,0 +1,137 @@
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  // Navigation
+  faHome,
+  faTasks,
+  faUsers,
+  faCog,
+  faPlus,
+  faSignOutAlt,
+  
+  // Actions
+  faPlay,
+  faStop,
+  faPause,
+  faRefresh,
+  faEdit,
+  faTrash,
+  faSave,
+  faCheck,
+  faTimes,
+  faArrowLeft,
+  faArrowRight,
+  faChevronDown,
+  faChevronUp,
+  
+  // Status & UI
+  faSpinner,
+  faExclamationTriangle,
+  faInfoCircle,
+  faCheckCircle,
+  faTimesCircle,
+  faClock,
+  faCalendar,
+  faUser,
+  faEnvelope,
+  
+  // Business
+  faChartLine,
+
+  faBullseye,
+  faRocket,
+  faLightbulb,
+  faPalette,
+  faCalculator,
+  faPen,
+  faDollarSign,
+  faEye,
+  
+  // System
+  faSearch,
+  faFilter,
+  faBars,
+  faEllipsisV,
+  faDownload,
+  faUpload,
+  faMicrophone,
+  faMicrophoneSlash,
+  
+  // Priority
+  faFlag,
+  faExclamation,
+  faBolt,
+  
+  // Agents
+  faRobot,
+  faBrain, faCreditCard,
+  faHeart
+} from '@fortawesome/free-solid-svg-icons';
+
+// Add icons to the library
+library.add(
+  // Navigation
+  faHome,
+  faTasks,
+  faUsers,
+  faCog,
+  faPlus,
+  faSignOutAlt,
+  
+  // Actions
+  faPlay,
+  faStop,
+  faPause,
+  faRefresh,
+  faEdit,
+  faTrash,
+  faSave,
+  faCheck,
+  faTimes,
+  faArrowLeft,
+  faArrowRight,
+  faChevronDown,
+  faChevronUp,
+  
+  // Status & UI
+  faSpinner,
+  faExclamationTriangle,
+  faInfoCircle,
+  faCheckCircle,
+  faTimesCircle,
+  faClock,
+  faCalendar,
+  faUser,
+  faEnvelope,
+  
+  // Business
+  faChartLine,
+
+  faBullseye,
+  faRocket,
+  faLightbulb,
+  faPalette,
+  faCalculator,
+  faPen,
+  faDollarSign,
+  faEye,
+  
+  // System
+  faSearch,
+  faFilter,
+  faBars,
+  faEllipsisV,
+  faDownload,
+  faUpload,
+  faMicrophone,
+  faMicrophoneSlash,
+  
+  // Priority
+  faFlag,
+  faExclamation,
+  faBolt,
+  
+  // Agents
+  faRobot,
+  faBrain, faCreditCard,
+  faHeart
+);

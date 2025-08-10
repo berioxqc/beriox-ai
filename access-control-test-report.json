@@ -1,0 +1,63 @@
+{
+  "timestamp": "2025-08-10T21:08:42.014Z",
+  "totalTests": 9,
+  "passedTests": 9,
+  "failedTests": 0,
+  "successRate": 100,
+  "tests": [
+    {
+      "name": "Fichier de contrôle d'accès",
+      "file": "src/lib/access-control.ts",
+      "passed": true,
+      "exists": true
+    },
+    {
+      "name": "Composant AccessGuard",
+      "file": "src/components/AccessGuard.tsx",
+      "passed": true,
+      "exists": true
+    },
+    {
+      "name": "Navigation mise à jour",
+      "file": "src/components/Navigation.tsx",
+      "passed": true,
+      "exists": true
+    },
+    {
+      "name": "Menu mobile mis à jour",
+      "file": "src/components/MobileMenu.tsx",
+      "passed": true,
+      "exists": true
+    },
+    {
+      "name": "Page Time Tracking protégée",
+      "file": "src/app/time-tracking/page.tsx",
+      "passed": true,
+      "exists": true
+    },
+    {
+      "name": "Page Form Optimization protégée",
+      "file": "src/app/form-optimization/page.tsx",
+      "passed": true,
+      "exists": true
+    },
+    {
+      "name": "Page Competitors protégée",
+      "file": "src/app/competitors/page.tsx",
+      "passed": true,
+      "exists": true
+    },
+    {
+      "name": "API Super-Admin Users",
+      "file": "src/app/api/super-admin/users/route.ts",
+      "passed": true,
+      "exists": true
+    },
+    {
+      "name": "API Super-Admin Role Update",
+      "file": "src/app/api/super-admin/users/role/route.ts",
+      "passed": true,
+      "exists": true
+    }
+  ]
+}

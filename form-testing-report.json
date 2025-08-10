@@ -1,0 +1,215 @@
+{
+  "timestamp": "2025-08-10T18:42:45.434Z",
+  "summary": {
+    "totalForms": 5,
+    "totalTests": 12,
+    "passedTests": 12,
+    "failedTests": 0,
+    "successRate": 100
+  },
+  "forms": [
+    {
+      "form": "Création de Mission",
+      "endpoint": "/api/missions",
+      "method": "POST",
+      "tests": [
+        {
+          "name": "Mission valide",
+          "passed": true,
+          "duration": 565,
+          "expectedStatus": 200,
+          "actualStatus": 200
+        },
+        {
+          "name": "Mission sans objectif",
+          "passed": true,
+          "duration": 558,
+          "expectedStatus": 400,
+          "actualStatus": 400,
+          "error": "Objective is required"
+        },
+        {
+          "name": "Mission avec données invalides",
+          "passed": true,
+          "duration": 969,
+          "expectedStatus": 400,
+          "actualStatus": 400,
+          "error": "Objective is required"
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "total": 3
+    },
+    {
+      "form": "Authentification",
+      "endpoint": "/api/auth/signin",
+      "method": "POST",
+      "tests": [
+        {
+          "name": "Connexion valide",
+          "passed": true,
+          "duration": 442,
+          "expectedStatus": 200,
+          "actualStatus": 200
+        },
+        {
+          "name": "Email invalide",
+          "passed": true,
+          "duration": 629,
+          "expectedStatus": 400,
+          "actualStatus": 400,
+          "error": "Invalid email format"
+        },
+        {
+          "name": "Mot de passe manquant",
+          "passed": true,
+          "duration": 202,
+          "expectedStatus": 400,
+          "actualStatus": 400,
+          "error": "Email and password are required"
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "total": 3
+    },
+    {
+      "form": "Checkout Stripe",
+      "endpoint": "/api/stripe/checkout",
+      "method": "POST",
+      "tests": [
+        {
+          "name": "Checkout valide",
+          "passed": true,
+          "duration": 133,
+          "expectedStatus": 200,
+          "actualStatus": 200
+        },
+        {
+          "name": "Price ID invalide",
+          "passed": true,
+          "duration": 367,
+          "expectedStatus": 400,
+          "actualStatus": 400,
+          "error": "Invalid price ID"
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "total": 2
+    },
+    {
+      "form": "Profil Utilisateur",
+      "endpoint": "/api/user/profile",
+      "method": "PUT",
+      "tests": [
+        {
+          "name": "Mise à jour valide",
+          "passed": true,
+          "duration": 710,
+          "expectedStatus": 200,
+          "actualStatus": 200
+        },
+        {
+          "name": "Email invalide",
+          "passed": true,
+          "duration": 803,
+          "expectedStatus": 400,
+          "actualStatus": 400,
+          "error": "Invalid email format"
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "total": 2
+    },
+    {
+      "form": "Demande de Remboursement",
+      "endpoint": "/api/refunds/request",
+      "method": "POST",
+      "tests": [
+        {
+          "name": "Demande valide",
+          "passed": true,
+          "duration": 344,
+          "expectedStatus": 200,
+          "actualStatus": 200
+        },
+        {
+          "name": "Montant invalide",
+          "passed": true,
+          "duration": 640,
+          "expectedStatus": 400,
+          "actualStatus": 400,
+          "error": "Invalid amount"
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "total": 2
+    }
+  ],
+  "clientValidation": [
+    {
+      "name": "Validation Email",
+      "passed": true,
+      "details": {
+        "valid": [
+          true,
+          true
+        ],
+        "invalid": [
+          false,
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    {
+      "name": "Validation Champs Requis",
+      "passed": false,
+      "details": [
+        {
+          "field": "objective",
+          "hasValue": "",
+          "isValid": ""
+        },
+        {
+          "field": "email",
+          "hasValue": true,
+          "isValid": true
+        },
+        {
+          "field": "password",
+          "hasValue": true,
+          "isValid": true
+        }
+      ]
+    }
+  ],
+  "security": [
+    {
+      "name": "Protection CSRF",
+      "description": "Vérifier la présence de tokens CSRF",
+      "passed": true
+    },
+    {
+      "name": "Validation des Entrées",
+      "description": "Vérifier la sanitisation des données",
+      "passed": true
+    },
+    {
+      "name": "Rate Limiting",
+      "description": "Vérifier la protection contre les attaques par déni de service",
+      "passed": true
+    },
+    {
+      "name": "Authentification",
+      "description": "Vérifier la protection des routes sensibles",
+      "passed": true
+    }
+  ],
+  "recommendations": []
+}

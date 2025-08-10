@@ -1,0 +1,124 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { redisUtils } from '@/lib/redis';
+import { logger } from '@/lib/logger';
+
+export async function GET(request: NextRequest) {
+  const startTime = Date.now();
+  
+  try {
+    // Test de connectivité de base avec redisUtils
+    const pingStart = Date.now();
+    const testKey = `health_check_${Date.now()}`;
+    const testValue = 'health_check_value';
+    
+    // Test d'écriture
+    const writeStart = Date.now();
+    await redisUtils.set(testKey, testValue, 60); // Expire dans 60 secondes
+    const writeDuration = Date.now() - writeStart;
+
+    // Test de lecture
+    const readStart = Date.now();
+    const readValue = await redisUtils.get(testKey);
+    const readDuration = Date.now() - readStart;
+
+    // Test de suppression
+    const deleteStart = Date.now();
+    await redisUtils.del(testKey);
+    const deleteDuration = Date.now() - deleteStart;
+
+    // Test du cache intelligent
+    const cacheStart = Date.now();
+    const cacheKey = 'health_check_cache';
+    const cacheValue = { test: true, timestamp: Date.now() };
+    await redisUtils.set(cacheKey, JSON.stringify(cacheValue), 30);
+    const cacheRead = await redisUtils.get(cacheKey);
+    await redisUtils.del(cacheKey);
+    const cacheDuration = Date.now() - cacheStart;
+
+    const healthCheck = {
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      checks: {
+        write: {
+          status: 'healthy',
+          duration: writeDuration,
+          threshold: 100 // 100ms max
+        },
+        read: {
+          status: 'healthy',
+          duration: readDuration,
+          threshold: 100, // 100ms max
+          value: readValue === testValue
+        },
+        delete: {
+          status: 'healthy',
+          duration: deleteDuration,
+          threshold: 100 // 100ms max
+        },
+        cache: {
+          status: 'healthy',
+          duration: cacheDuration,
+          threshold: 150, // 150ms max
+          value: cacheRead ? JSON.parse(cacheRead).test : false
+        }
+      },
+      metrics: {
+        totalDuration: Date.now() - startTime,
+        redisInfo: 'available'
+      }
+    };
+
+    // Vérifier les seuils de performance
+    const allHealthy = Object.values(healthCheck.checks).every(
+      check => check.duration <= check.threshold && 
+               (check.value !== undefined ? check.value : true)
+    );
+
+    if (!allHealthy) {
+      healthCheck.status = 'degraded';
+      Object.values(healthCheck.checks).forEach(check => {
+        if (check.duration > check.threshold || 
+            (check.value !== undefined && !check.value)) {
+          check.status = 'slow';
+        }
+      });
+    }
+
+    logger.info('Redis health check completed', {
+      action: 'health_check_redis',
+      duration: healthCheck.metrics.totalDuration,
+      status: healthCheck.status,
+      checks: healthCheck.checks
+    });
+
+    return NextResponse.json(healthCheck, {
+      status: healthCheck.status === 'healthy' ? 200 : 503,
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
+
+  } catch (error) {
+    logger.error('Redis health check failed', error as Error, {
+      action: 'health_check_redis',
+      duration: Date.now() - startTime
+    });
+
+    return NextResponse.json({
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      error: 'Redis health check failed',
+      details: error instanceof Error ? error.message : 'Unknown error',
+      duration: Date.now() - startTime
+    }, {
+      status: 503,
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "timestamp": "2025-08-10T18:37:32.615Z",
+  "summary": {
+    "totalImports": 20,
+    "heavyDependencies": 8,
+    "recommendations": 5
+  },
+  "topImports": [
+    [
+      "react",
+      54
+    ],
+    [
+      "@fortawesome/react-fontawesome",
+      37
+    ],
+    [
+      "next/server",
+      37
+    ],
+    [
+      "@/lib/prisma",
+      31
+    ],
+    [
+      "@/components/Layout",
+      24
+    ],
+    [
+      "next-auth/react",
+      24
+    ],
+    [
+      "@/hooks/useTheme",
+      19
+    ],
+    [
+      "next-auth/next",
+      16
+    ],
+    [
+      "../../auth/[...nextauth]/route",
+      15
+    ],
+    [
+      "next/navigation",
+      15
+    ]
+  ],
+  "heavyDependencies": [
+    {
+      "name": "@fortawesome/fontawesome-svg-core",
+      "size": "~500KB"
+    },
+    {
+      "name": "@fortawesome/free-solid-svg-icons",
+      "size": "~2MB"
+    },
+    {
+      "name": "stripe",
+      "size": "~800KB"
+    },
+    {
+      "name": "openai",
+      "size": "~600KB"
+    },
+    {
+      "name": "next-auth",
+      "size": "~400KB"
+    },
+    {
+      "name": "@prisma/client",
+      "size": "~15MB"
+    },
+    {
+      "name": "bullmq",
+      "size": "~300KB"
+    },
+    {
+      "name": "ioredis",
+      "size": "~200KB"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "title": "FontAwesome Dynamic Imports",
+      "description": "Utiliser les imports dynamiques pour FontAwesome",
+      "impact": "Réduction de 2MB du bundle initial"
+    },
+    {
+      "priority": "HIGH",
+      "title": "Code Splitting par Route",
+      "description": "Diviser le code par routes pour réduire le bundle initial",
+      "impact": "Réduction de 30-50% du bundle initial"
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "Tree Shaking Agressif",
+      "description": "Optimiser les imports pour permettre un meilleur tree shaking",
+      "impact": "Réduction de 20-30% du bundle"
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "Lazy Loading des Composants",
+      "description": "Charger les composants lourds uniquement quand nécessaire",
+      "impact": "Amélioration du First Contentful Paint"
+    },
+    {
+      "priority": "LOW",
+      "title": "Optimisation des Images",
+      "description": "Utiliser next/image et les formats modernes",
+      "impact": "Réduction de 40-60% de la taille des images"
+    }
+  ],
+  "estimatedImprovements": {
+    "bundleSize": "30-50% reduction",
+    "loadTime": "40-60% improvement",
+    "firstPaint": "20-30% improvement"
+  }
+}
