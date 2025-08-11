@@ -4,7 +4,7 @@ import Stripe from 'stripe';
 export const stripeConfig = {
   publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
   secretKey: process.env.STRIPE_SECRET_KEY || '',
-  currency: 'cad', // Devise canadienne
+  currency: 'cad',
   apiVersion: '2023-10-16' as const
 };
 
