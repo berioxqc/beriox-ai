@@ -129,7 +129,7 @@ export default function AdminMissionsPage() {
               borderTop: '4px solid #635bff',
               borderRadius: '50%',
               animation: 'spin 1s linear infinite'
-            }}></div>
+            }} />
             <p style={{ color: '#6b7280' }}>Chargement des missions...</p>
           </div>
         </Layout>

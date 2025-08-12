@@ -87,7 +87,7 @@ export default function AccessGuard({
           borderTop: '4px solid #635bff',
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
-        }}></div>
+        }} />
         <div style={{ textAlign: 'center' }}>
           <h2 style={{
             fontSize: '18px',

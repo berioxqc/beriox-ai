@@ -36,51 +36,7 @@ export default function UsersAdminPage() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [filter, setFilter] = useState("all")
-  // Vérifier si l'utilisateur est admin
-  if (session?.user?.email !== 'info@beriox.ca') {
-    return (
-      <AuthGuard>
-        <Layout>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '60vh',
-            textAlign: 'center',
-            gap: '24px'
-          }}>
-            <div style={{ fontSize: '64px', color: '#ef4444' }}>🚫</div>
-            <div>
-              <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#ef4444', margin: '0 0 12px 0' }}>
-                Accès Refusé
-              </h2>
-              <p style={{ color: '#6b7280', fontSize: '16px', margin: '0 0 32px 0' }}>
-                Vous n'avez pas les permissions nécessaires pour accéder à cette page.
-              </p>
-              <Link
-                href="/"
-                style={{
-                  padding: '12px 24px',
-                  backgroundColor: '#635bff',
-                  color: 'white',
-                  textDecoration: 'none',
-                  borderRadius: '8px',
-                  fontWeight: '600'
-                }}
-              >
-                Retour à l'accueil
-              </Link>
-            </div>
-          </div>
-        </Layout>
-      </AuthGuard>
-    )
-  }
 
-  useEffect(() => {
-    fetchUsers()
-  }, [])
   const fetchUsers = async () => {
     try {
       // Simuler des données d'utilisateurs pour la démo
@@ -138,6 +94,52 @@ export default function UsersAdminPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
+  // Vérifier si l'utilisateur est admin
+  if (session?.user?.email !== 'info@beriox.ca') {
+    return (
+      <AuthGuard>
+        <Layout>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '60vh',
+            textAlign: 'center',
+            gap: '24px'
+          }}>
+            <div style={{ fontSize: '64px', color: '#ef4444' }}>🚫</div>
+            <div>
+              <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#ef4444', margin: '0 0 12px 0' }}>
+                Accès Refusé
+              </h2>
+              <p style={{ color: '#6b7280', fontSize: '16px', margin: '0 0 32px 0' }}>
+                Vous n'avez pas les permissions nécessaires pour accéder à cette page.
+              </p>
+              <Link
+                href="/"
+                style={{
+                  padding: '12px 24px',
+                  backgroundColor: '#635bff',
+                  color: 'white',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  fontWeight: '600'
+                }}
+              >
+                Retour à l'accueil
+              </Link>
+            </div>
+          </div>
+        </Layout>
+      </AuthGuard>
+    )
   }
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

@@ -219,7 +219,7 @@ export class AgentScoringEngine {
     const agentExpertise = this.AGENT_EXPERTISE[agent.id as keyof typeof this.AGENT_EXPERTISE]
     if (!agentExpertise) return 0.5
     let score = 0
-    let totalRequirements = context.requirements.length
+    const totalRequirements = context.requirements.length
     for (const requirement of context.requirements) {
       const requirementLower = requirement.toLowerCase()
       // Vérifier si l'exigence correspond aux forces de l'agent

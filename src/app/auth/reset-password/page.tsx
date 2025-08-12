@@ -66,7 +66,7 @@ function ResetPasswordForm() {
   if (!token && !error) {
     return (
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto" />
         <p className="mt-4 text-white">Chargement...</p>
       </div>
     )
@@ -148,7 +148,7 @@ export default function ResetPasswordPage() {
 
         <Suspense fallback={
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto" />
             <p className="mt-4 text-white">Chargement...</p>
           </div>
         }>

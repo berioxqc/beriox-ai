@@ -375,7 +375,7 @@ class NotificationManager {
       type,
       priority
     } = options
-    let notifications = Array.from(this.notifications.values())
+    const notifications = Array.from(this.notifications.values())
       .filter(n => n.userId === userId)
       .filter(n => !unreadOnly || !n.readAt)
       .filter(n => !type || n.type === type)

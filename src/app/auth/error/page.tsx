@@ -194,7 +194,7 @@ export default function AuthErrorPage() {
           borderTop: "4px solid #635bff",
           borderRadius: "50%",
           animation: "spin 1s linear infinite"
-        }}></div>
+        }} />
       </div>
     }>
       <AuthErrorContent />

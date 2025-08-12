@@ -463,7 +463,7 @@ export default function ConsentPage() {
                     borderTop: '2px solid white',
                     borderRadius: '50%',
                     animation: 'spin 1s linear infinite'
-                  }}></div>
+                  }} />
                   Validation...
                 </>
               ) : (

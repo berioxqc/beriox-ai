@@ -103,10 +103,12 @@
     "@types/nodemailer": "^6.4.17",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
+    "@typescript-eslint/parser": "^8.39.1",
     "autoprefixer": "^10.4.21",
     "babel-plugin-istanbul": "^7.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "15.4.6",
+    "eslint": "^9.33.0",
+    "eslint-config-next": "^15.4.6",
     "glob": "^11.0.3",
     "inflight": "^1.0.6",
     "jest": "^30.0.5",
@@ -116,7 +118,7 @@
     "tailwindcss": "^4.1.11",
     "test-exclude": "^7.0.1",
     "tsx": "^4.20.3",
-    "typescript": "^5"
+    "typescript": "^5.9.2"
   },
   "overrides": {
     "glob": "^11.0.3",

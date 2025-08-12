@@ -29,7 +29,7 @@ export default function ProtectedRoute({
     return fallback || (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
           <p className="mt-4 text-gray-600">Vérification de l'authentification...</p>
         </div>
       </div>
@@ -45,7 +45,7 @@ export default function ProtectedRoute({
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto" />
           <p className="mt-4 text-gray-600">Redirection vers la page de connexion...</p>
           <p className="mt-2 text-sm text-gray-500">Vous devez être connecté pour accéder à cette page</p>
         </div>

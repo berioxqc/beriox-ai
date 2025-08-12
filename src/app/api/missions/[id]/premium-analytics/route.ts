@@ -20,7 +20,7 @@ export async function GET(
       return NextResponse.json({ error: 'Mission introuvable' }, { status: 404 })
     }
 
-    let filteredData = { ...premiumData }
+    const filteredData = { ...premiumData }
     if (userPlan === 'free') {
       filteredData.opportunityRadar = []
       filteredData.predictiveMetrics = {

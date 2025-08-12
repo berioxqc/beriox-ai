@@ -182,7 +182,7 @@ export default function MobileMenu() {
           {/* Header avec gradient */}
           <div className="bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800 text-white p-6 relative overflow-hidden">
             {/* Effet de fond */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-transparent" />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">

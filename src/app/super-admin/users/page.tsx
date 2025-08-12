@@ -39,6 +39,54 @@ export default function UserManagementPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [showRoleModal, setShowRoleModal] = useState(false)
   const [updatingRole, setUpdatingRole] = useState(false)
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/super-admin/users')
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des utilisateurs')
+      }
+      
+      const data = await response.json()
+      setUsers(data.users)
+      setStats(data.stats)
+    } catch (error) {
+      console.error('Erreur:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const updateUserRole = async (userId: string, newRole: string) => {
+    try {
+      setUpdatingRole(true)
+      const response = await fetch('/api/super-admin/users/role', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, role: newRole }),
+      })
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du rôle')
+      }
+
+      // Mettre à jour la liste des utilisateurs
+      await fetchUsers()
+      setShowRoleModal(false)
+      setSelectedUser(null)
+    } catch (error) {
+      console.error('Erreur:', error)
+    } finally {
+      setUpdatingRole(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
   // Vérifier si l'utilisateur est super admin
   if (session?.user?.email !== 'info@beriox.ca') {
     return (
@@ -68,51 +116,6 @@ export default function UserManagementPage() {
         </AccessGuard>
       </AuthGuard>
     )
-  }
-
-  useEffect(() => {
-    fetchUsers()
-  }, [])
-  const fetchUsers = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch('/api/super-admin/users')
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des utilisateurs')
-      }
-      
-      const data = await response.json()
-      setUsers(data.users)
-      setStats(data.stats)
-    } catch (error) {
-      console.error('Erreur:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-  const updateUserRole = async (userId: string, newRole: string) => {
-    try {
-      setUpdatingRole(true)
-      const response = await fetch('/api/super-admin/users/role', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, role: newRole }),
-      })
-      if (!response.ok) {
-        throw new Error('Erreur lors de la mise à jour du rôle')
-      }
-
-      // Mettre à jour la liste des utilisateurs
-      await fetchUsers()
-      setShowRoleModal(false)
-      setSelectedUser(null)
-    } catch (error) {
-      console.error('Erreur:', error)
-    } finally {
-      setUpdatingRole(false)
-    }
   }
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||

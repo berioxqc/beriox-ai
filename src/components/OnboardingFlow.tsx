@@ -195,7 +195,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
       <div className={`onboarding-loading ${className}`}>
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
             <p className="text-gray-600">Chargement de l'onboarding...</p>
           </div>
         </div>
@@ -255,7 +255,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
             <div
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${state.progress?.completionRate || 0}%` }}
-            ></div>
+             />
           </div>
         </div>
       </div>
@@ -298,7 +298,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
                   <ul className="space-y-3">
                     {state.currentStep.config.hints.map((hint, index) => (
                       <li key={index} className="text-sm text-blue-800 flex items-start">
-                        <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                        <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mt-2 mr-2 flex-shrink-0" />
                         {hint}
                       </li>
                     ))}

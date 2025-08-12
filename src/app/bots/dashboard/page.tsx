@@ -89,7 +89,7 @@ export default function BotsDashboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500" />
       </div>
     )
   }
@@ -125,7 +125,7 @@ export default function BotsDashboardPage() {
             >
               {generating ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
                   Génération...
                 </>
               ) : (
@@ -158,7 +158,7 @@ export default function BotsDashboardPage() {
                       <p className="text-sm text-gray-500 capitalize">{bot.botType}</p>
                     </div>
                   </div>
-                  <div className={`w-3 h-3 rounded-full ${bot.autoRecommendations ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                  <div className={`w-3 h-3 rounded-full ${bot.autoRecommendations ? 'bg-green-500' : 'bg-gray-300'}`} />
                 </div>
 
                 {/* Capacités */}

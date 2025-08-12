@@ -460,7 +460,7 @@ export class EchoBrandAI {
    * Amélioration de la structure
    */
   private improveStructure(text: string): string {
-    let improved = text
+    const improved = text
     // Division des phrases trop longues
     const sentences = improved.split(/[.!?]+/)
     const improvedSentences = sentences.map(sentence => {

@@ -194,7 +194,7 @@ export default function CouponPage() {
                       borderTop: '2px solid white',
                       borderRadius: '50%',
                       animation: 'spin 1s linear infinite'
-                    }}></div>
+                    }} />
                     Vérification...
                   </>
                 ) : (

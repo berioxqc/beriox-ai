@@ -575,7 +575,7 @@ export const GET = withAuth(async (request: NextRequest) => {
     }
 
     // Construire la requête selon le rôle
-    let whereClause: any = {}
+    const whereClause: any = {}
     // Si ce n'est pas un super admin, filtrer par utilisateur
     if (user.role !== 'SUPER_ADMIN') {
       whereClause.userId = user.id

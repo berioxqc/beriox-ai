@@ -36,7 +36,7 @@ function VerifyForm() {
   if (isLoading) {
     return (
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto" />
         <p className="mt-4 text-white">Vérification en cours...</p>
       </div>
     )
@@ -79,7 +79,7 @@ export default function VerifyPage() {
 
         <Suspense fallback={
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto" />
             <p className="mt-4 text-white">Chargement...</p>
           </div>
         }>

@@ -138,7 +138,7 @@ export default function OnboardingPage() {
           borderTop: '4px solid #635bff',
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
-        }}></div>
+        }} />
       </div>
     )
   }
@@ -210,7 +210,7 @@ export default function OnboardingPage() {
               width: `${(currentStep / totalSteps) * 100}%`,
               borderRadius: '20px',
               transition: 'width 0.3s ease'
-            }}></div>
+            }} />
           </div>
           
           <div style={{
@@ -622,7 +622,7 @@ export default function OnboardingPage() {
                   borderTop: '2px solid white',
                   borderRadius: '50%',
                   animation: 'spin 1s linear infinite'
-                }}></div>
+                }} />
                 Finalisation...
               </>
             ) : currentStep === totalSteps ? (
