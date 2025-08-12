@@ -1,4 +1,4 @@
-import { ApiIntegration, ApiResponse } from 'apos;./types'apos;;
+import { ApiIntegration, ApiResponse } from './types';
 
 // Gestionnaire central pour toutes les intégrations API
 export class IntegrationManager {
@@ -39,7 +39,7 @@ export class IntegrationManager {
     return false;
   }
 
-  // Mettre à jour la configuration d'apos;une intégration
+  // Mettre à jour la configuration d'une intégration
   updateConfig(id: string, config: Record<string, any>): boolean {
     const integration = this.integrations.get(id);
     if (integration) {
@@ -49,7 +49,7 @@ export class IntegrationManager {
     return false;
   }
 
-  // Mettre à jour l'apos;utilisation des quotas
+  // Mettre à jour l'utilisation des quotas
   updateQuota(id: string, used: number): boolean {
     const integration = this.integrations.get(id);
     if (integration) {

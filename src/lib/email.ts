@@ -1,9 +1,9 @@
-import nodemailer from 'apos;nodemailer'apos;;
+import nodemailer from 'nodemailer';
 
 // Configuration du transporteur email
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_SERVER_HOST || 'apos;smtp.gmail.com'apos;,
-  port: parseInt(process.env.EMAIL_SERVER_PORT || 'apos;587'apos;),
+  host: process.env.EMAIL_SERVER_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.EMAIL_SERVER_PORT || '587'),
   secure: false, // true pour 465, false pour les autres ports
   auth: {
     user: process.env.EMAIL_SERVER_USER,
@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Vérifier si l'apos;email est configuré
+// Vérifier si l'email est configuré
 export function isEmailConfigured(): boolean {
   return !!(process.env.EMAIL_SERVER_USER && process.env.EMAIL_SERVER_PASSWORD);
 }
@@ -23,7 +23,7 @@ export async function sendVerificationEmail(
   name?: string
 ): Promise<boolean> {
   if (!isEmailConfigured()) {
-    console.warn('apos;Email not configured, skipping verification email'apos;);
+    console.warn('Email not configured, skipping verification email');
     return false;
   }
 
@@ -32,7 +32,7 @@ export async function sendVerificationEmail(
   const mailOptions = {
     from: `"Beriox AI" <${process.env.EMAIL_SERVER_USER}>`,
     to: email,
-    subject: 'apos;Confirmez votre compte Beriox AI'apos;,
+    subject: 'Confirmez votre compte Beriox AI',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; text-align: center;">
@@ -40,7 +40,7 @@ export async function sendVerificationEmail(
         </div>
         
         <div style="padding: 30px; background: #f9f9f9;">
-          <h2 style="color: #333; margin-bottom: 20px;">Bonjour ${name || 'apos;utilisateur'apos;} !</h2>
+          <h2 style="color: #333; margin-bottom: 20px;">Bonjour ${name || 'utilisateur'} !</h2>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
             Merci de vous être inscrit sur Beriox AI. Pour activer votre compte et commencer à utiliser nos agents IA, 
@@ -75,7 +75,7 @@ export async function sendVerificationEmail(
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           
           <p style="color: #999; font-size: 14px; text-align: center;">
-            Si vous n'apos;avez pas créé de compte sur Beriox AI, vous pouvez ignorer cet email.
+            Si vous n'avez pas créé de compte sur Beriox AI, vous pouvez ignorer cet email.
           </p>
         </div>
         
@@ -93,7 +93,7 @@ export async function sendVerificationEmail(
     console.log(`Verification email sent to ${email}`);
     return true;
   } catch (error) {
-    console.error('apos;Error sending verification email:'apos;, error);
+    console.error('Error sending verification email:', error);
     return false;
   }
 }
@@ -105,7 +105,7 @@ export async function sendPasswordResetEmail(
   name?: string
 ): Promise<boolean> {
   if (!isEmailConfigured()) {
-    console.warn('apos;Email not configured, skipping password reset email'apos;);
+    console.warn('Email not configured, skipping password reset email');
     return false;
   }
 
@@ -114,7 +114,7 @@ export async function sendPasswordResetEmail(
   const mailOptions = {
     from: `"Beriox AI" <${process.env.EMAIL_SERVER_USER}>`,
     to: email,
-    subject: 'apos;Réinitialisation de votre mot de passe Beriox AI'apos;,
+    subject: 'Réinitialisation de votre mot de passe Beriox AI',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; text-align: center;">
@@ -122,7 +122,7 @@ export async function sendPasswordResetEmail(
         </div>
         
         <div style="padding: 30px; background: #f9f9f9;">
-          <h2 style="color: #333; margin-bottom: 20px;">Bonjour ${name || 'apos;utilisateur'apos;} !</h2>
+          <h2 style="color: #333; margin-bottom: 20px;">Bonjour ${name || 'utilisateur'} !</h2>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
             Nous avons reçu une demande de réinitialisation de mot de passe pour votre compte Beriox AI. 
@@ -155,13 +155,13 @@ export async function sendPasswordResetEmail(
           </p>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
-            Si vous n'apos;avez pas demandé cette réinitialisation, vous pouvez ignorer cet email en toute sécurité.
+            Si vous n'avez pas demandé cette réinitialisation, vous pouvez ignorer cet email en toute sécurité.
           </p>
           
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           
           <p style="color: #999; font-size: 14px; text-align: center;">
-            Pour des raisons de sécurité, ce lien ne peut être utilisé qu'apos;une seule fois.
+            Pour des raisons de sécurité, ce lien ne peut être utilisé qu'une seule fois.
           </p>
         </div>
         
@@ -179,7 +179,7 @@ export async function sendPasswordResetEmail(
     console.log(`Password reset email sent to ${email}`);
     return true;
   } catch (error) {
-    console.error('apos;Error sending password reset email:'apos;, error);
+    console.error('Error sending password reset email:', error);
     return false;
   }
 }
@@ -190,14 +190,14 @@ export async function sendWelcomeEmail(
   name?: string
 ): Promise<boolean> {
   if (!isEmailConfigured()) {
-    console.warn('apos;Email not configured, skipping welcome email'apos;);
+    console.warn('Email not configured, skipping welcome email');
     return false;
   }
 
   const mailOptions = {
     from: `"Beriox AI" <${process.env.EMAIL_SERVER_USER}>`,
     to: email,
-    subject: 'apos;Bienvenue sur Beriox AI ! 🎉'apos;,
+    subject: 'Bienvenue sur Beriox AI ! 🎉',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; text-align: center;">
@@ -205,11 +205,11 @@ export async function sendWelcomeEmail(
         </div>
         
         <div style="padding: 30px; background: #f9f9f9;">
-          <h2 style="color: #333; margin-bottom: 20px;">Bienvenue ${name || 'apos;utilisateur'apos;} ! 🎉</h2>
+          <h2 style="color: #333; margin-bottom: 20px;">Bienvenue ${name || 'utilisateur'} ! 🎉</h2>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
             Félicitations ! Votre compte Beriox AI a été confirmé avec succès. 
-            Vous êtes maintenant prêt à découvrir le pouvoir de l'apos;intelligence artificielle.
+            Vous êtes maintenant prêt à découvrir le pouvoir de l'intelligence artificielle.
           </p>
           
           <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -235,7 +235,7 @@ export async function sendWelcomeEmail(
           </div>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
-            Si vous avez des questions ou besoin d'apos;aide, n'apos;hésitez pas à nous contacter.
+            Si vous avez des questions ou besoin d'aide, n'hésitez pas à nous contacter.
           </p>
           
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
@@ -259,7 +259,7 @@ export async function sendWelcomeEmail(
     console.log(`Welcome email sent to ${email}`);
     return true;
   } catch (error) {
-    console.error('apos;Error sending welcome email:'apos;, error);
+    console.error('Error sending welcome email:', error);
     return false;
   }
 }

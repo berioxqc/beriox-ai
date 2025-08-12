@@ -1,14 +1,14 @@
-import { runQA } from 'apos;../lib/qa-bot'apos;;
+import { runQA } from '../lib/qa-bot';
 
 async function main() {
-  console.log('apos;🤖 Démarrage du Bot de QA Beriox AI...'apos;);
-  console.log('apos;URL à tester: https://beriox-ai.vercel.app'apos;);
+  console.log('🤖 Démarrage du Bot de QA Beriox AI...');
+  console.log('URL à tester: https://beriox-ai.vercel.app');
   
   try {
-    const report = await runQA('apos;https://beriox-ai.vercel.app'apos;);
+    const report = await runQA('https://beriox-ai.vercel.app');
     
-    console.log('apos;\n📊 RAPPORT DE QA COMPLET'apos;);
-    console.log('apos;========================'apos;);
+    console.log('\n📊 RAPPORT DE QA COMPLET');
+    console.log('========================');
     console.log(`URL testée: ${report.url}`);
     console.log(`Timestamp: ${report.timestamp}`);
     console.log(`\n📈 RÉSUMÉ:`);
@@ -19,7 +19,7 @@ async function main() {
     
     console.log(`\n🔍 DÉTAILS DES TESTS:`);
     report.results.forEach((result, index) => {
-      const emoji = result.status === 'apos;PASS'apos; ? 'apos;✅'apos; : result.status === 'apos;FAIL'apos; ? 'apos;❌'apos; : 'apos;⚠️'apos;;
+      const emoji = result.status === 'PASS' ? '✅' : result.status === 'FAIL' ? '❌' : '⚠️';
       console.log(`${index + 1}. ${emoji} ${result.test}: ${result.message}`);
       
       if (result.details) {
@@ -28,13 +28,13 @@ async function main() {
     });
     
     // Sauvegarder le rapport dans un fichier
-    const fs = require('apos;fs'apos;);
-    const reportFile = `qa-report-${new Date().toISOString().split('apos;T'apos;)[0]}.json`;
+    const fs = require('fs');
+    const reportFile = `qa-report-${new Date().toISOString().split('T')[0]}.json`;
     fs.writeFileSync(reportFile, JSON.stringify(report, null, 2));
     console.log(`\n💾 Rapport sauvegardé dans: ${reportFile}`);
     
   } catch (error) {
-    console.error('apos;❌ Erreur lors du test QA:'apos;, error);
+    console.error('❌ Erreur lors du test QA:', error);
   }
 }
 

@@ -5,12 +5,12 @@ import { signIn } from "next-auth/react";
 export default function TrialBanner() {
   const { trialsLeft, isAuthenticated } = useFreeTrial();
 
-  // Ne pas afficher le banner si l'apos;utilisateur est connecté
+  // Ne pas afficher le banner si l'utilisateur est connecté
   if (isAuthenticated) {
     return null;
   }
 
-  // Ne pas afficher si plus d'apos;essais
+  // Ne pas afficher si plus d'essais
   if (trialsLeft <= 0) {
     return null;
   }
@@ -26,7 +26,7 @@ export default function TrialBanner() {
       justifyContent: "space-between",
       fontSize: "14px",
       fontWeight: "500",
-      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       boxShadow: "0 2px 8px rgba(99, 91, 255, 0.2)",
       position: "relative",
       zIndex: 50,
@@ -39,7 +39,7 @@ export default function TrialBanner() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: "url('apos;data:image/svg+xml,<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"2\" cy=\"2\" r=\"1\" fill=\"%23ffffff\" opacity=\"0.1\"/></svg>'apos;) repeat",
+        background: "url('data:image/svg+xml,<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"2\" cy=\"2\" r=\"1\" fill=\"%23ffffff\" opacity=\"0.1\"/></svg>') repeat",
         pointerEvents: "none"
       }} />
 
@@ -63,7 +63,7 @@ export default function TrialBanner() {
           🎁
         </div>
         <div>
-          <strong>Essai gratuit :</strong> {trialsLeft} utilisation{trialsLeft !== 1 ? 'apos;s'apos; : 'apos;'apos;} restante{trialsLeft !== 1 ? 'apos;s'apos; : 'apos;'apos;}
+          <strong>Essai gratuit :</strong> {trialsLeft} utilisation{trialsLeft !== 1 ? 's' : ''} restante{trialsLeft !== 1 ? 's' : ''}
           <span style={{ opacity: 0.9, marginLeft: 8 }}>
             • Découvrez Beriox AI sans engagement
           </span>
@@ -84,7 +84,7 @@ export default function TrialBanner() {
           transition: "all 0.2s",
           position: "relative",
           zIndex: 1,
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         }}
         onMouseOver={(e) => {
           e.currentTarget.style.background = "rgba(255, 255, 255, 0.3)";

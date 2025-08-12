@@ -1,51 +1,51 @@
-import { Metadata } from 'apos;next'apos;;
-import Link from 'apos;next/link'apos;;
-import Layout from 'apos;@/components/Layout'apos;;
-import SchemaMarkup from 'apos;@/components/seo/SchemaMarkup'apos;;
+import { Metadata } from 'next';
+import Link from 'next/link';
+import Layout from '@/components/Layout';
+import SchemaMarkup from '@/components/seo/SchemaMarkup';
 
 export const metadata: Metadata = {
-  title: 'apos;Guide Complet IA et Automatisation 2024 - Beriox AI'apos;,
-  description: 'apos;Téléchargez gratuitement notre guide complet sur l\'apos;IA et l\'apos;automatisation. Découvrez comment transformer votre productivité avec l\'apos;intelligence artificielle.'apos;,
-  keywords: 'apos;guide IA, automatisation, productivité, intelligence artificielle, ebook gratuit'apos;,
+  title: 'Guide Complet IA et Automatisation 2024 - Beriox AI',
+  description: 'Téléchargez gratuitement notre guide complet sur l\'IA et l\'automatisation. Découvrez comment transformer votre productivité avec l\'intelligence artificielle.',
+  keywords: 'guide IA, automatisation, productivité, intelligence artificielle, ebook gratuit',
   openGraph: {
-    title: 'apos;Guide Complet IA et Automatisation 2024 - Beriox AI'apos;,
-    description: 'apos;Téléchargez gratuitement notre guide complet sur l\'apos;IA et l\'apos;automatisation.'apos;,
-    type: 'apos;website'apos;,
-    url: 'apos;https://beriox-ai.vercel.app/ai-automation-guide'apos;,
+    title: 'Guide Complet IA et Automatisation 2024 - Beriox AI',
+    description: 'Téléchargez gratuitement notre guide complet sur l\'IA et l\'automatisation.',
+    type: 'website',
+    url: 'https://beriox-ai.vercel.app/ai-automation-guide',
   },
 };
 
 const benefits = [
   {
-    icon: 'apos;🚀'apos;,
-    title: 'apos;Augmentation de 300% de la productivité'apos;,
-    description: 'apos;Découvrez comment les entreprises utilisent l\'apos;IA pour automatiser leurs tâches répétitives.'apos;,
+    icon: '🚀',
+    title: 'Augmentation de 300% de la productivité',
+    description: 'Découvrez comment les entreprises utilisent l\'IA pour automatiser leurs tâches répétitives.',
   },
   {
-    icon: 'apos;💰'apos;,
-    title: 'apos;Économies de 40% sur les coûts opérationnels'apos;,
-    description: 'apos;Réduisez vos dépenses grâce à l\'apos;automatisation intelligente.'apos;,
+    icon: '💰',
+    title: 'Économies de 40% sur les coûts opérationnels',
+    description: 'Réduisez vos dépenses grâce à l\'automatisation intelligente.',
   },
   {
-    icon: 'apos;⏰'apos;,
-    title: 'apos;Gain de 15h par semaine en moyenne'apos;,
-    description: 'apos;Libérez du temps pour vous concentrer sur ce qui compte vraiment.'apos;,
+    icon: '⏰',
+    title: 'Gain de 15h par semaine en moyenne',
+    description: 'Libérez du temps pour vous concentrer sur ce qui compte vraiment.',
   },
   {
-    icon: 'apos;📈'apos;,
-    title: 'apos;Amélioration de 60% de la qualité'apos;,
-    description: 'apos;L\'apos;IA élimine les erreurs humaines et améliore la précision.'apos;,
+    icon: '📈',
+    title: 'Amélioration de 60% de la qualité',
+    description: 'L\'IA élimine les erreurs humaines et améliore la précision.',
   },
 ];
 
 const chapters = [
-  'apos;Introduction à l\'apos;IA d\'apos;automatisation'apos;,
-  'apos;Les agents IA : KarineAI, HugoAI, JPBot et plus'apos;,
-  'apos;Orchestration intelligente des workflows'apos;,
-  'apos;Cas d\'apos;usage concrets et ROI'apos;,
-  'apos;Mise en place étape par étape'apos;,
-  'apos;Outils et plateformes recommandés'apos;,
-  'apos;Tendances 2024 et au-delà'apos;,
+  'Introduction à l\'IA d\'automatisation',
+  'Les agents IA : KarineAI, HugoAI, JPBot et plus',
+  'Orchestration intelligente des workflows',
+  'Cas d\'usage concrets et ROI',
+  'Mise en place étape par étape',
+  'Outils et plateformes recommandés',
+  'Tendances 2024 et au-delà',
 ];
 
 export default function AIAutomationGuidePage() {
@@ -54,11 +54,11 @@ export default function AIAutomationGuidePage() {
       <SchemaMarkup
         type="article"
         data={{
-          title: 'apos;Guide Complet IA et Automatisation 2024'apos;,
-          excerpt: 'apos;Téléchargez gratuitement notre guide complet sur l\'apos;IA et l\'apos;automatisation.'apos;,
-          image: 'apos;/guide-ia-automation-2024.jpg'apos;,
-          publishedAt: 'apos;2024-01-20'apos;,
-          id: 'apos;ai-automation-guide'apos;,
+          title: 'Guide Complet IA et Automatisation 2024',
+          excerpt: 'Téléchargez gratuitement notre guide complet sur l\'IA et l\'automatisation.',
+          image: '/guide-ia-automation-2024.jpg',
+          publishedAt: '2024-01-20',
+          id: 'ai-automation-guide',
         }}
       />
       
@@ -78,7 +78,7 @@ export default function AIAutomationGuidePage() {
               Guide Complet IA et Automatisation 2024
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Découvrez comment l'apos;intelligence artificielle révolutionne l'apos;automatisation 
+              Découvrez comment l'intelligence artificielle révolutionne l'automatisation 
               et transforme la productivité des entreprises. Un guide pratique avec 
               des exemples concrets et des stratégies actionnables.
             </p>
@@ -90,7 +90,7 @@ export default function AIAutomationGuidePage() {
                     Guide Gratuit
                   </h3>
                   <p className="text-gray-600 text-sm">
-                    47 pages d'apos;experts • PDF + EPUB • Mise à jour 2024
+                    47 pages d'experts • PDF + EPUB • Mise à jour 2024
                   </p>
                 </div>
                 <form className="space-y-4">

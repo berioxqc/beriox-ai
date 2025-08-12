@@ -32,36 +32,65 @@ log_error() {
 fix_unescaped_entities() {
     log_info "Correction des apostrophes non échappées..."
     
-    # Trouver tous les fichiers TypeScript/TSX avec des apostrophes
+    # Créer un script Node.js temporaire pour une correction précise
+    cat > temp_fix_apostrophes.js << 'EOF'
+const fs = require('fs');
+const path = require('path');
+
+function fixApostrophesInFile(filePath) {
+    try {
+        let content = fs.readFileSync(filePath, 'utf8');
+        let modified = false;
+        
+        // Remplacer les apostrophes dans les chaînes JSX uniquement
+        // Pattern: texte entre balises JSX contenant des apostrophes
+        const jsxTextPattern = /(<[^>]*>)([^<]*'[^<]*)(<\/[^>]*>)/g;
+        content = content.replace(jsxTextPattern, (match, openTag, text, closeTag) => {
+            const fixedText = text.replace(/'/g, '&apos;');
+            if (fixedText !== text) {
+                modified = true;
+            }
+            return openTag + fixedText + closeTag;
+        });
+        
+        // Remplacer les apostrophes dans les attributs JSX
+        const jsxAttrPattern = /(\s[a-zA-Z-]+=)['"]([^'"]*'[^'"]*)['"]/g;
+        content = content.replace(jsxAttrPattern, (match, attr, value) => {
+            const fixedValue = value.replace(/'/g, '&apos;');
+            if (fixedValue !== value) {
+                modified = true;
+            }
+            return attr + '"' + fixedValue + '"';
+        });
+        
+        if (modified) {
+            fs.writeFileSync(filePath, content);
+            console.log(`✅ Corrigé: ${filePath}`);
+        } else {
+            console.log(`ℹ️  Aucun changement: ${filePath}`);
+        }
+        
+    } catch (error) {
+        console.error(`❌ Erreur avec ${filePath}:`, error.message);
+    }
+}
+
+// Traiter les fichiers passés en argument
+process.argv.slice(2).forEach(fixApostrophesInFile);
+EOF
+
+    # Trouver et traiter les fichiers TypeScript/TSX
     find src -name "*.tsx" -o -name "*.ts" | while read -r file; do
         if grep -q "'" "$file"; then
             log_info "Traitement de $file"
-            
-            # Sauvegarder le fichier original
-            cp "$file" "$file.backup"
-            
-            # Utiliser Node.js pour une correction plus précise
-            node -e "
-            const fs = require('fs');
-            const path = '$file';
-            let content = fs.readFileSync(path, 'utf8');
-            
-            // Remplacer les apostrophes dans les chaînes JSX uniquement
-            content = content.replace(/(<[^>]*>)([^<]*'[^<]*)(<\/[^>]*>)/g, (match, openTag, text, closeTag) => {
-                return openTag + text.replace(/'/g, '&apos;') + closeTag;
-            });
-            
-            // Remplacer les apostrophes dans les attributs JSX
-            content = content.replace(/(\s[a-zA-Z-]+=)['\"]([^'\"]*'[^'\"]*)['\"]/g, (match, attr, value) => {
-                return attr + '\"' + value.replace(/'/g, '&apos;') + '\"';
-            });
-            
-            fs.writeFileSync(path, content);
-            "
-            
-            log_success "Apostrophes corrigées dans $file"
+            node temp_fix_apostrophes.js "$file"
         fi
     done
+    
+    # Nettoyer le script temporaire
+    rm -f temp_fix_apostrophes.js
+    
+    log_success "Correction des apostrophes terminée"
 }
 
 # Fonction pour supprimer les variables non utilisées

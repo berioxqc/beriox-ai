@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { getServerSession } from 'apos;next-auth'apos;;
-import { authOptions } from 'apos;@/lib/auth'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import {
   timeTrackingManager,
   startTimer,
@@ -26,36 +26,36 @@ import {
   getTimeTrackingStats,
   getUserSettings,
   updateUserSettings
-} from 'apos;@/lib/time-tracking'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
-import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
+} from '@/lib/time-tracking';
+import { logger } from '@/lib/logger';
+import { withRateLimit } from '@/lib/rate-limit-advanced';
 
 // GET - Obtenir les entrées de temps
 async function getTimeEntriesHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const projectId = searchParams.get('apos;projectId'apos;);
-    const startDate = searchParams.get('apos;startDate'apos;);
-    const endDate = searchParams.get('apos;endDate'apos;);
-    const status = searchParams.get('apos;status'apos;);
-    const billable = searchParams.get('apos;billable'apos;);
+    const projectId = searchParams.get('projectId');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+    const status = searchParams.get('status');
+    const billable = searchParams.get('billable');
 
     const filters: any = {};
     if (projectId) filters.projectId = projectId;
     if (startDate) filters.startDate = new Date(startDate);
     if (endDate) filters.endDate = new Date(endDate);
     if (status) filters.status = status;
-    if (billable !== null) filters.billable = billable === 'apos;true'apos;;
+    if (billable !== null) filters.billable = billable === 'true';
 
     const entries = getTimeEntries(session.user.id, filters);
 
-    logger.info('apos;Time entries requested'apos;, {
-      action: 'apos;time_entries_requested'apos;,
+    logger.info('Time entries requested', {
+      action: 'time_entries_requested',
       metadata: {
         userId: session.user.id,
         filters,
@@ -70,13 +70,13 @@ async function getTimeEntriesHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get time entries'apos;, error as Error, {
-      action: 'apos;time_entries_error'apos;,
+    logger.error('Failed to get time entries', error as Error, {
+      action: 'time_entries_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get time entries'apos; },
+      { error: 'Failed to get time entries' },
       { status: 500 }
     );
   }
@@ -86,7 +86,7 @@ async function getTimeEntriesHandler(request: NextRequest) {
 async function getActiveTimerHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -98,13 +98,13 @@ async function getActiveTimerHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get active timer'apos;, error as Error, {
-      action: 'apos;active_timer_error'apos;,
+    logger.error('Failed to get active timer', error as Error, {
+      action: 'active_timer_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get active timer'apos; },
+      { error: 'Failed to get active timer' },
       { status: 500 }
     );
   }
@@ -114,7 +114,7 @@ async function getActiveTimerHandler(request: NextRequest) {
 async function startTimerHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -123,15 +123,15 @@ async function startTimerHandler(request: NextRequest) {
 
     if (!projectId || !description) {
       return NextResponse.json(
-        { error: 'apos;Project ID and description are required'apos; },
+        { error: 'Project ID and description are required' },
         { status: 400 }
       );
     }
 
     const entry = startTimer(session.user.id, projectId, description, taskId);
 
-    logger.info('apos;Timer started'apos;, {
-      action: 'apos;timer_started'apos;,
+    logger.info('Timer started', {
+      action: 'timer_started',
       metadata: {
         userId: session.user.id,
         projectId,
@@ -146,13 +146,13 @@ async function startTimerHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to start timer'apos;, error as Error, {
-      action: 'apos;timer_start_error'apos;,
+    logger.error('Failed to start timer', error as Error, {
+      action: 'timer_start_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to start timer'apos; },
+      { error: 'Failed to start timer' },
       { status: 500 }
     );
   }
@@ -162,7 +162,7 @@ async function startTimerHandler(request: NextRequest) {
 async function stopTimerHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -170,13 +170,13 @@ async function stopTimerHandler(request: NextRequest) {
 
     if (!entry) {
       return NextResponse.json(
-        { error: 'apos;No active timer found'apos; },
+        { error: 'No active timer found' },
         { status: 404 }
       );
     }
 
-    logger.info('apos;Timer stopped'apos;, {
-      action: 'apos;timer_stopped'apos;,
+    logger.info('Timer stopped', {
+      action: 'timer_stopped',
       metadata: {
         userId: session.user.id,
         entryId: entry.id,
@@ -190,13 +190,13 @@ async function stopTimerHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to stop timer'apos;, error as Error, {
-      action: 'apos;timer_stop_error'apos;,
+    logger.error('Failed to stop timer', error as Error, {
+      action: 'timer_stop_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to stop timer'apos; },
+      { error: 'Failed to stop timer' },
       { status: 500 }
     );
   }
@@ -206,7 +206,7 @@ async function stopTimerHandler(request: NextRequest) {
 async function pauseTimerHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -214,7 +214,7 @@ async function pauseTimerHandler(request: NextRequest) {
 
     if (!entry) {
       return NextResponse.json(
-        { error: 'apos;No active timer found'apos; },
+        { error: 'No active timer found' },
         { status: 404 }
       );
     }
@@ -225,13 +225,13 @@ async function pauseTimerHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to pause timer'apos;, error as Error, {
-      action: 'apos;timer_pause_error'apos;,
+    logger.error('Failed to pause timer', error as Error, {
+      action: 'timer_pause_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to pause timer'apos; },
+      { error: 'Failed to pause timer' },
       { status: 500 }
     );
   }
@@ -241,7 +241,7 @@ async function pauseTimerHandler(request: NextRequest) {
 async function resumeTimerHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -249,7 +249,7 @@ async function resumeTimerHandler(request: NextRequest) {
 
     if (!entry) {
       return NextResponse.json(
-        { error: 'apos;No paused timer found'apos; },
+        { error: 'No paused timer found' },
         { status: 404 }
       );
     }
@@ -260,13 +260,13 @@ async function resumeTimerHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to resume timer'apos;, error as Error, {
-      action: 'apos;timer_resume_error'apos;,
+    logger.error('Failed to resume timer', error as Error, {
+      action: 'timer_resume_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to resume timer'apos; },
+      { error: 'Failed to resume timer' },
       { status: 500 }
     );
   }
@@ -276,7 +276,7 @@ async function resumeTimerHandler(request: NextRequest) {
 async function addManualEntryHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -285,7 +285,7 @@ async function addManualEntryHandler(request: NextRequest) {
 
     if (!projectId || !description || !startTime || !endTime) {
       return NextResponse.json(
-        { error: 'apos;Project ID, description, start time, and end time are required'apos; },
+        { error: 'Project ID, description, start time, and end time are required' },
         { status: 400 }
       );
     }
@@ -301,8 +301,8 @@ async function addManualEntryHandler(request: NextRequest) {
       tags
     );
 
-    logger.info('apos;Manual entry added'apos;, {
-      action: 'apos;manual_entry_added'apos;,
+    logger.info('Manual entry added', {
+      action: 'manual_entry_added',
       metadata: {
         userId: session.user.id,
         projectId,
@@ -317,13 +317,13 @@ async function addManualEntryHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to add manual entry'apos;, error as Error, {
-      action: 'apos;manual_entry_error'apos;,
+    logger.error('Failed to add manual entry', error as Error, {
+      action: 'manual_entry_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to add manual entry'apos; },
+      { error: 'Failed to add manual entry' },
       { status: 500 }
     );
   }
@@ -333,7 +333,7 @@ async function addManualEntryHandler(request: NextRequest) {
 async function getProjectsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -346,13 +346,13 @@ async function getProjectsHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get projects'apos;, error as Error, {
-      action: 'apos;projects_error'apos;,
+    logger.error('Failed to get projects', error as Error, {
+      action: 'projects_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get projects'apos; },
+      { error: 'Failed to get projects' },
       { status: 500 }
     );
   }
@@ -362,15 +362,15 @@ async function getProjectsHandler(request: NextRequest) {
 async function createProjectHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const project = createProject(body);
 
-    logger.info('apos;Project created'apos;, {
-      action: 'apos;project_created'apos;,
+    logger.info('Project created', {
+      action: 'project_created',
       metadata: {
         userId: session.user.id,
         projectId: project.id,
@@ -384,13 +384,13 @@ async function createProjectHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to create project'apos;, error as Error, {
-      action: 'apos;project_creation_error'apos;,
+    logger.error('Failed to create project', error as Error, {
+      action: 'project_creation_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to create project'apos; },
+      { error: 'Failed to create project' },
       { status: 500 }
     );
   }
@@ -400,7 +400,7 @@ async function createProjectHandler(request: NextRequest) {
 async function getClientsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -413,13 +413,13 @@ async function getClientsHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get clients'apos;, error as Error, {
-      action: 'apos;clients_error'apos;,
+    logger.error('Failed to get clients', error as Error, {
+      action: 'clients_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get clients'apos; },
+      { error: 'Failed to get clients' },
       { status: 500 }
     );
   }
@@ -429,15 +429,15 @@ async function getClientsHandler(request: NextRequest) {
 async function createClientHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const client = createClient(body);
 
-    logger.info('apos;Client created'apos;, {
-      action: 'apos;client_created'apos;,
+    logger.info('Client created', {
+      action: 'client_created',
       metadata: {
         userId: session.user.id,
         clientId: client.id,
@@ -451,13 +451,13 @@ async function createClientHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to create client'apos;, error as Error, {
-      action: 'apos;client_creation_error'apos;,
+    logger.error('Failed to create client', error as Error, {
+      action: 'client_creation_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to create client'apos; },
+      { error: 'Failed to create client' },
       { status: 500 }
     );
   }
@@ -467,12 +467,12 @@ async function createClientHandler(request: NextRequest) {
 async function getTasksHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const projectId = searchParams.get('apos;projectId'apos;);
+    const projectId = searchParams.get('projectId');
 
     const tasks = getTasks(projectId || undefined);
 
@@ -483,13 +483,13 @@ async function getTasksHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get tasks'apos;, error as Error, {
-      action: 'apos;tasks_error'apos;,
+    logger.error('Failed to get tasks', error as Error, {
+      action: 'tasks_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get tasks'apos; },
+      { error: 'Failed to get tasks' },
       { status: 500 }
     );
   }
@@ -499,15 +499,15 @@ async function getTasksHandler(request: NextRequest) {
 async function createTaskHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const task = createTask(body);
 
-    logger.info('apos;Task created'apos;, {
-      action: 'apos;task_created'apos;,
+    logger.info('Task created', {
+      action: 'task_created',
       metadata: {
         userId: session.user.id,
         taskId: task.id,
@@ -522,13 +522,13 @@ async function createTaskHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to create task'apos;, error as Error, {
-      action: 'apos;task_creation_error'apos;,
+    logger.error('Failed to create task', error as Error, {
+      action: 'task_creation_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to create task'apos; },
+      { error: 'Failed to create task' },
       { status: 500 }
     );
   }
@@ -538,7 +538,7 @@ async function createTaskHandler(request: NextRequest) {
 async function createTimesheetHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -547,15 +547,15 @@ async function createTimesheetHandler(request: NextRequest) {
 
     if (!weekStart) {
       return NextResponse.json(
-        { error: 'apos;Week start date is required'apos; },
+        { error: 'Week start date is required' },
         { status: 400 }
       );
     }
 
     const timesheet = createTimesheet(session.user.id, new Date(weekStart));
 
-    logger.info('apos;Timesheet created'apos;, {
-      action: 'apos;timesheet_created'apos;,
+    logger.info('Timesheet created', {
+      action: 'timesheet_created',
       metadata: {
         userId: session.user.id,
         timesheetId: timesheet.id,
@@ -569,13 +569,13 @@ async function createTimesheetHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to create timesheet'apos;, error as Error, {
-      action: 'apos;timesheet_creation_error'apos;,
+    logger.error('Failed to create timesheet', error as Error, {
+      action: 'timesheet_creation_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to create timesheet'apos; },
+      { error: 'Failed to create timesheet' },
       { status: 500 }
     );
   }
@@ -585,7 +585,7 @@ async function createTimesheetHandler(request: NextRequest) {
 async function submitTimesheetHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -594,7 +594,7 @@ async function submitTimesheetHandler(request: NextRequest) {
 
     if (!timesheetId) {
       return NextResponse.json(
-        { error: 'apos;Timesheet ID is required'apos; },
+        { error: 'Timesheet ID is required' },
         { status: 400 }
       );
     }
@@ -603,13 +603,13 @@ async function submitTimesheetHandler(request: NextRequest) {
 
     if (!timesheet) {
       return NextResponse.json(
-        { error: 'apos;Timesheet not found'apos; },
+        { error: 'Timesheet not found' },
         { status: 404 }
       );
     }
 
-    logger.info('apos;Timesheet submitted'apos;, {
-      action: 'apos;timesheet_submitted'apos;,
+    logger.info('Timesheet submitted', {
+      action: 'timesheet_submitted',
       metadata: {
         userId: session.user.id,
         timesheetId
@@ -622,13 +622,13 @@ async function submitTimesheetHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to submit timesheet'apos;, error as Error, {
-      action: 'apos;timesheet_submit_error'apos;,
+    logger.error('Failed to submit timesheet', error as Error, {
+      action: 'timesheet_submit_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to submit timesheet'apos; },
+      { error: 'Failed to submit timesheet' },
       { status: 500 }
     );
   }
@@ -638,12 +638,12 @@ async function submitTimesheetHandler(request: NextRequest) {
 async function approveTimesheetHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Vérifier si l'apos;utilisateur est admin
-  if (session.user.email !== 'apos;info@beriox.ca'apos;) {
-    return NextResponse.json({ error: 'apos;Forbidden'apos; }, { status: 403 });
+  // Vérifier si l'utilisateur est admin
+  if (session.user.email !== 'info@beriox.ca') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   try {
@@ -652,7 +652,7 @@ async function approveTimesheetHandler(request: NextRequest) {
 
     if (!timesheetId) {
       return NextResponse.json(
-        { error: 'apos;Timesheet ID is required'apos; },
+        { error: 'Timesheet ID is required' },
         { status: 400 }
       );
     }
@@ -661,13 +661,13 @@ async function approveTimesheetHandler(request: NextRequest) {
 
     if (!timesheet) {
       return NextResponse.json(
-        { error: 'apos;Timesheet not found'apos; },
+        { error: 'Timesheet not found' },
         { status: 404 }
       );
     }
 
-    logger.info('apos;Timesheet approved'apos;, {
-      action: 'apos;timesheet_approved'apos;,
+    logger.info('Timesheet approved', {
+      action: 'timesheet_approved',
       metadata: {
         approvedBy: session.user.id,
         timesheetId
@@ -680,13 +680,13 @@ async function approveTimesheetHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to approve timesheet'apos;, error as Error, {
-      action: 'apos;timesheet_approval_error'apos;,
+    logger.error('Failed to approve timesheet', error as Error, {
+      action: 'timesheet_approval_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to approve timesheet'apos; },
+      { error: 'Failed to approve timesheet' },
       { status: 500 }
     );
   }
@@ -696,15 +696,15 @@ async function approveTimesheetHandler(request: NextRequest) {
 async function addExpenseHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const expense = addExpense(body);
 
-    logger.info('apos;Expense added'apos;, {
-      action: 'apos;expense_added'apos;,
+    logger.info('Expense added', {
+      action: 'expense_added',
       metadata: {
         userId: session.user.id,
         expenseId: expense.id,
@@ -718,13 +718,13 @@ async function addExpenseHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to add expense'apos;, error as Error, {
-      action: 'apos;expense_error'apos;,
+    logger.error('Failed to add expense', error as Error, {
+      action: 'expense_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to add expense'apos; },
+      { error: 'Failed to add expense' },
       { status: 500 }
     );
   }
@@ -734,12 +734,12 @@ async function addExpenseHandler(request: NextRequest) {
 async function getExpensesHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const projectId = searchParams.get('apos;projectId'apos;);
+    const projectId = searchParams.get('projectId');
 
     const expenses = getExpenses(session.user.id, projectId || undefined);
 
@@ -750,13 +750,13 @@ async function getExpensesHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get expenses'apos;, error as Error, {
-      action: 'apos;expenses_error'apos;,
+    logger.error('Failed to get expenses', error as Error, {
+      action: 'expenses_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get expenses'apos; },
+      { error: 'Failed to get expenses' },
       { status: 500 }
     );
   }
@@ -766,15 +766,15 @@ async function getExpensesHandler(request: NextRequest) {
 async function createInvoiceHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const invoice = createInvoice(body);
 
-    logger.info('apos;Invoice created'apos;, {
-      action: 'apos;invoice_created'apos;,
+    logger.info('Invoice created', {
+      action: 'invoice_created',
       metadata: {
         userId: session.user.id,
         invoiceId: invoice.id,
@@ -789,13 +789,13 @@ async function createInvoiceHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to create invoice'apos;, error as Error, {
-      action: 'apos;invoice_creation_error'apos;,
+    logger.error('Failed to create invoice', error as Error, {
+      action: 'invoice_creation_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to create invoice'apos; },
+      { error: 'Failed to create invoice' },
       { status: 500 }
     );
   }
@@ -805,12 +805,12 @@ async function createInvoiceHandler(request: NextRequest) {
 async function getInvoicesHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const clientId = searchParams.get('apos;clientId'apos;);
+    const clientId = searchParams.get('clientId');
 
     const invoices = getInvoices(clientId || undefined);
 
@@ -821,13 +821,13 @@ async function getInvoicesHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get invoices'apos;, error as Error, {
-      action: 'apos;invoices_error'apos;,
+    logger.error('Failed to get invoices', error as Error, {
+      action: 'invoices_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get invoices'apos; },
+      { error: 'Failed to get invoices' },
       { status: 500 }
     );
   }
@@ -837,12 +837,12 @@ async function getInvoicesHandler(request: NextRequest) {
 async function getStatsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const period = searchParams.get('apos;period'apos;) as 'apos;day'apos; | 'apos;week'apos; | 'apos;month'apos; | 'apos;year'apos; || 'apos;week'apos;;
+    const period = searchParams.get('period') as 'day' | 'week' | 'month' | 'year' || 'week';
 
     const stats = getTimeTrackingStats(session.user.id, period);
 
@@ -852,13 +852,13 @@ async function getStatsHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get stats'apos;, error as Error, {
-      action: 'apos;stats_error'apos;,
+    logger.error('Failed to get stats', error as Error, {
+      action: 'stats_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get stats'apos; },
+      { error: 'Failed to get stats' },
       { status: 500 }
     );
   }
@@ -868,7 +868,7 @@ async function getStatsHandler(request: NextRequest) {
 async function getUserSettingsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -880,13 +880,13 @@ async function getUserSettingsHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get user settings'apos;, error as Error, {
-      action: 'apos;user_settings_error'apos;,
+    logger.error('Failed to get user settings', error as Error, {
+      action: 'user_settings_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get user settings'apos; },
+      { error: 'Failed to get user settings' },
       { status: 500 }
     );
   }
@@ -896,15 +896,15 @@ async function getUserSettingsHandler(request: NextRequest) {
 async function updateUserSettingsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     const settings = updateUserSettings(session.user.id, body);
 
-    logger.info('apos;User settings updated'apos;, {
-      action: 'apos;user_settings_updated'apos;,
+    logger.info('User settings updated', {
+      action: 'user_settings_updated',
       metadata: { userId: session.user.id }
     });
 
@@ -914,13 +914,13 @@ async function updateUserSettingsHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to update user settings'apos;, error as Error, {
-      action: 'apos;user_settings_update_error'apos;,
+    logger.error('Failed to update user settings', error as Error, {
+      action: 'user_settings_update_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to update user settings'apos; },
+      { error: 'Failed to update user settings' },
       { status: 500 }
     );
   }
@@ -929,85 +929,85 @@ async function updateUserSettingsHandler(request: NextRequest) {
 // Handlers avec rate limiting
 export const GET = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('apos;action'apos;);
+  const action = searchParams.get('action');
 
   switch (action) {
-    case 'apos;entries'apos;:
+    case 'entries':
       return getTimeEntriesHandler(request);
-    case 'apos;active-timer'apos;:
+    case 'active-timer':
       return getActiveTimerHandler(request);
-    case 'apos;projects'apos;:
+    case 'projects':
       return getProjectsHandler(request);
-    case 'apos;clients'apos;:
+    case 'clients':
       return getClientsHandler(request);
-    case 'apos;tasks'apos;:
+    case 'tasks':
       return getTasksHandler(request);
-    case 'apos;expenses'apos;:
+    case 'expenses':
       return getExpensesHandler(request);
-    case 'apos;invoices'apos;:
+    case 'invoices':
       return getInvoicesHandler(request);
-    case 'apos;stats'apos;:
+    case 'stats':
       return getStatsHandler(request);
-    case 'apos;settings'apos;:
+    case 'settings':
       return getUserSettingsHandler(request);
     default:
       return NextResponse.json(
-        { error: 'apos;Invalid action. Use: entries, active-timer, projects, clients, tasks, expenses, invoices, stats, or settings'apos; },
+        { error: 'Invalid action. Use: entries, active-timer, projects, clients, tasks, expenses, invoices, stats, or settings' },
         { status: 400 }
       );
   }
-}, 'apos;time-tracking'apos;);
+}, 'time-tracking');
 
 export const POST = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('apos;action'apos;);
+  const action = searchParams.get('action');
 
   switch (action) {
-    case 'apos;start-timer'apos;:
+    case 'start-timer':
       return startTimerHandler(request);
-    case 'apos;manual-entry'apos;:
+    case 'manual-entry':
       return addManualEntryHandler(request);
-    case 'apos;create-project'apos;:
+    case 'create-project':
       return createProjectHandler(request);
-    case 'apos;create-client'apos;:
+    case 'create-client':
       return createClientHandler(request);
-    case 'apos;create-task'apos;:
+    case 'create-task':
       return createTaskHandler(request);
-    case 'apos;create-timesheet'apos;:
+    case 'create-timesheet':
       return createTimesheetHandler(request);
-    case 'apos;add-expense'apos;:
+    case 'add-expense':
       return addExpenseHandler(request);
-    case 'apos;create-invoice'apos;:
+    case 'create-invoice':
       return createInvoiceHandler(request);
     default:
       return NextResponse.json(
-        { error: 'apos;Invalid action. Use: start-timer, manual-entry, create-project, create-client, create-task, create-timesheet, add-expense, or create-invoice'apos; },
+        { error: 'Invalid action. Use: start-timer, manual-entry, create-project, create-client, create-task, create-timesheet, add-expense, or create-invoice' },
         { status: 400 }
       );
   }
-}, 'apos;time-tracking'apos;);
+}, 'time-tracking');
 
 export const PUT = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('apos;action'apos;);
+  const action = searchParams.get('action');
 
   switch (action) {
-    case 'apos;stop-timer'apos;:
+    case 'stop-timer':
       return stopTimerHandler(request);
-    case 'apos;pause-timer'apos;:
+    case 'pause-timer':
       return pauseTimerHandler(request);
-    case 'apos;resume-timer'apos;:
+    case 'resume-timer':
       return resumeTimerHandler(request);
-    case 'apos;submit-timesheet'apos;:
+    case 'submit-timesheet':
       return submitTimesheetHandler(request);
-    case 'apos;approve-timesheet'apos;:
+    case 'approve-timesheet':
       return approveTimesheetHandler(request);
-    case 'apos;update-settings'apos;:
+    case 'update-settings':
       return updateUserSettingsHandler(request);
     default:
       return NextResponse.json(
-        { error: 'apos;Invalid action. Use: stop-timer, pause-timer, resume-timer, submit-timesheet, approve-timesheet, or update-settings'apos; },
+        { error: 'Invalid action. Use: stop-timer, pause-timer, resume-timer, submit-timesheet, approve-timesheet, or update-settings' },
         { status: 400 }
       );
   }
-}, 'apos;time-tracking'apos;);
+}, 'time-tracking');

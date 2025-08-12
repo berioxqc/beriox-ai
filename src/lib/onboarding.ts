@@ -1,22 +1,22 @@
-import { logger } from 'apos;./logger'apos;;
-import { metrics } from 'apos;./metrics'apos;;
+import { logger } from './logger';
+import { metrics } from './metrics';
 
 export enum OnboardingStepType {
-  WELCOME = 'apos;welcome'apos;,
-  PROFILE_SETUP = 'apos;profile_setup'apos;,
-  PREFERENCES = 'apos;preferences'apos;,
-  FIRST_MISSION = 'apos;first_mission'apos;,
-  FEATURES_TOUR = 'apos;features_tour'apos;,
-  INTEGRATIONS = 'apos;integrations'apos;,
-  BILLING = 'apos;billing'apos;,
-  COMPLETION = 'apos;completion'apos;
+  WELCOME = 'welcome',
+  PROFILE_SETUP = 'profile_setup',
+  PREFERENCES = 'preferences',
+  FIRST_MISSION = 'first_mission',
+  FEATURES_TOUR = 'features_tour',
+  INTEGRATIONS = 'integrations',
+  BILLING = 'billing',
+  COMPLETION = 'completion'
 }
 
 export enum OnboardingStatus {
-  NOT_STARTED = 'apos;not_started'apos;,
-  IN_PROGRESS = 'apos;in_progress'apos;,
-  COMPLETED = 'apos;completed'apos;,
-  SKIPPED = 'apos;skipped'apos;
+  NOT_STARTED = 'not_started',
+  IN_PROGRESS = 'in_progress',
+  COMPLETED = 'completed',
+  SKIPPED = 'skipped'
 }
 
 export interface OnboardingStep {
@@ -44,7 +44,7 @@ export interface OnboardingStepConfig {
 export interface OnboardingAction {
   id: string;
   label: string;
-  type: 'apos;primary'apos; | 'apos;secondary'apos; | 'apos;skip'apos;;
+  type: 'primary' | 'secondary' | 'skip';
   action: string;
   url?: string;
   data?: Record<string, any>;
@@ -87,70 +87,70 @@ class OnboardingManager {
   private initializeDefaultSteps() {
     // Étape 1: Bienvenue
     this.addStep({
-      id: 'apos;welcome'apos;,
+      id: 'welcome',
       type: OnboardingStepType.WELCOME,
-      title: 'apos;Bienvenue sur Beriox AI !'apos;,
-      description: 'apos;Découvrez comment notre plateforme peut transformer votre business avec l\'apos;IA.'apos;,
+      title: 'Bienvenue sur Beriox AI !',
+      description: 'Découvrez comment notre plateforme peut transformer votre business avec l\'IA.',
       isRequired: true,
       isSkippable: false,
       estimatedTime: 30,
       config: {
-        component: 'apos;WelcomeStep'apos;,
+        component: 'WelcomeStep',
         props: {
           showVideo: true,
           showDemo: true
         },
         actions: [
           {
-            id: 'apos;start-onboarding'apos;,
-            label: 'apos;Commencer l\'apos;onboarding'apos;,
-            type: 'apos;primary'apos;,
-            action: 'apos;next'apos;
+            id: 'start-onboarding',
+            label: 'Commencer l\'onboarding',
+            type: 'primary',
+            action: 'next'
           }
         ],
         hints: [
-          'apos;Prenez le temps de regarder la vidéo de présentation'apos;,
-          'apos;Explorez la démo interactive pour comprendre les fonctionnalités'apos;
+          'Prenez le temps de regarder la vidéo de présentation',
+          'Explorez la démo interactive pour comprendre les fonctionnalités'
         ],
-        successMessage: 'apos;Parfait ! Vous êtes prêt à commencer votre voyage avec Beriox AI.'apos;
+        successMessage: 'Parfait ! Vous êtes prêt à commencer votre voyage avec Beriox AI.'
       }
     });
 
     // Étape 2: Configuration du profil
     this.addStep({
-      id: 'apos;profile-setup'apos;,
+      id: 'profile-setup',
       type: OnboardingStepType.PROFILE_SETUP,
-      title: 'apos;Configurez votre profil'apos;,
-      description: 'apos;Personnalisez votre profil pour une expérience optimale.'apos;,
+      title: 'Configurez votre profil',
+      description: 'Personnalisez votre profil pour une expérience optimale.',
       isRequired: true,
       isSkippable: false,
       estimatedTime: 60,
-      dependencies: ['apos;welcome'apos;],
+      dependencies: ['welcome'],
       config: {
-        component: 'apos;ProfileSetupStep'apos;,
+        component: 'ProfileSetupStep',
         props: {
-          fields: ['apos;name'apos;, 'apos;company'apos;, 'apos;role'apos;, 'apos;industry'apos;, 'apos;goals'apos;],
+          fields: ['name', 'company', 'role', 'industry', 'goals'],
           showAvatar: true
         },
         actions: [
           {
-            id: 'apos;save-profile'apos;,
-            label: 'apos;Sauvegarder et continuer'apos;,
-            type: 'apos;primary'apos;,
-            action: 'apos;save_profile'apos;
+            id: 'save-profile',
+            label: 'Sauvegarder et continuer',
+            type: 'primary',
+            action: 'save_profile'
           },
           {
-            id: 'apos;skip-profile'apos;,
-            label: 'apos;Compléter plus tard'apos;,
-            type: 'apos;secondary'apos;,
-            action: 'apos;skip'apos;
+            id: 'skip-profile',
+            label: 'Compléter plus tard',
+            type: 'secondary',
+            action: 'skip'
           }
         ],
         hints: [
-          'apos;Ajoutez une photo de profil pour personnaliser votre expérience'apos;,
-          'apos;Sélectionnez votre industrie pour des recommandations pertinentes'apos;
+          'Ajoutez une photo de profil pour personnaliser votre expérience',
+          'Sélectionnez votre industrie pour des recommandations pertinentes'
         ],
-        successMessage: 'apos;Profil configuré avec succès !'apos;
+        successMessage: 'Profil configuré avec succès !'
       },
       validation: async (data) => {
         return data.name && data.company && data.role;
@@ -159,171 +159,171 @@ class OnboardingManager {
 
     // Étape 3: Préférences
     this.addStep({
-      id: 'apos;preferences'apos;,
+      id: 'preferences',
       type: OnboardingStepType.PREFERENCES,
-      title: 'apos;Définissez vos préférences'apos;,
-      description: 'apos;Configurez vos préférences pour des recommandations personnalisées.'apos;,
+      title: 'Définissez vos préférences',
+      description: 'Configurez vos préférences pour des recommandations personnalisées.',
       isRequired: false,
       isSkippable: true,
       estimatedTime: 45,
-      dependencies: ['apos;profile-setup'apos;],
+      dependencies: ['profile-setup'],
       config: {
-        component: 'apos;PreferencesStep'apos;,
+        component: 'PreferencesStep',
         props: {
-          categories: ['apos;seo'apos;, 'apos;content'apos;, 'apos;analytics'apos;, 'apos;competitors'apos;, 'apos;social'apos;],
+          categories: ['seo', 'content', 'analytics', 'competitors', 'social'],
           showExamples: true
         },
         actions: [
           {
-            id: 'apos;save-preferences'apos;,
-            label: 'apos;Sauvegarder les préférences'apos;,
-            type: 'apos;primary'apos;,
-            action: 'apos;save_preferences'apos;
+            id: 'save-preferences',
+            label: 'Sauvegarder les préférences',
+            type: 'primary',
+            action: 'save_preferences'
           },
           {
-            id: 'apos;skip-preferences'apos;,
-            label: 'apos;Passer cette étape'apos;,
-            type: 'apos;secondary'apos;,
-            action: 'apos;skip'apos;
+            id: 'skip-preferences',
+            label: 'Passer cette étape',
+            type: 'secondary',
+            action: 'skip'
           }
         ],
         hints: [
-          'apos;Sélectionnez au moins 2 catégories d\'apos;intérêt'apos;,
-          'apos;Vous pourrez modifier ces préférences plus tard'apos;
+          'Sélectionnez au moins 2 catégories d\'intérêt',
+          'Vous pourrez modifier ces préférences plus tard'
         ],
-        successMessage: 'apos;Préférences enregistrées !'apos;
+        successMessage: 'Préférences enregistrées !'
       }
     });
 
     // Étape 4: Première mission
     this.addStep({
-      id: 'apos;first-mission'apos;,
+      id: 'first-mission',
       type: OnboardingStepType.FIRST_MISSION,
-      title: 'apos;Créez votre première mission'apos;,
-      description: 'apos;Lancez votre première mission IA pour voir Beriox en action.'apos;,
+      title: 'Créez votre première mission',
+      description: 'Lancez votre première mission IA pour voir Beriox en action.',
       isRequired: true,
       isSkippable: false,
       estimatedTime: 120,
-      dependencies: ['apos;preferences'apos;],
+      dependencies: ['preferences'],
       config: {
-        component: 'apos;FirstMissionStep'apos;,
+        component: 'FirstMissionStep',
         props: {
-          templates: ['apos;seo_audit'apos;, 'apos;content_analysis'apos;, 'apos;competitor_research'apos;],
+          templates: ['seo_audit', 'content_analysis', 'competitor_research'],
           showTutorial: true,
           guidedMode: true
         },
         actions: [
           {
-            id: 'apos;create-mission'apos;,
-            label: 'apos;Créer ma première mission'apos;,
-            type: 'apos;primary'apos;,
-            action: 'apos;create_mission'apos;
+            id: 'create-mission',
+            label: 'Créer ma première mission',
+            type: 'primary',
+            action: 'create_mission'
           },
           {
-            id: 'apos;view-templates'apos;,
-            label: 'apos;Voir les templates'apos;,
-            type: 'apos;secondary'apos;,
-            action: 'apos;view_templates'apos;
+            id: 'view-templates',
+            label: 'Voir les templates',
+            type: 'secondary',
+            action: 'view_templates'
           }
         ],
         hints: [
-          'apos;Choisissez un template simple pour commencer'apos;,
-          'apos;Suivez le guide étape par étape'apos;,
-          'apos;Vous pourrez créer des missions personnalisées plus tard'apos;
+          'Choisissez un template simple pour commencer',
+          'Suivez le guide étape par étape',
+          'Vous pourrez créer des missions personnalisées plus tard'
         ],
-        successMessage: 'apos;Félicitations ! Votre première mission est en cours.'apos;
+        successMessage: 'Félicitations ! Votre première mission est en cours.'
       }
     });
 
     // Étape 5: Tour des fonctionnalités
     this.addStep({
-      id: 'apos;features-tour'apos;,
+      id: 'features-tour',
       type: OnboardingStepType.FEATURES_TOUR,
-      title: 'apos;Découvrez les fonctionnalités'apos;,
-      description: 'apos;Explorez les principales fonctionnalités de Beriox AI.'apos;,
+      title: 'Découvrez les fonctionnalités',
+      description: 'Explorez les principales fonctionnalités de Beriox AI.',
       isRequired: false,
       isSkippable: true,
       estimatedTime: 90,
-      dependencies: ['apos;first-mission'apos;],
+      dependencies: ['first-mission'],
       config: {
-        component: 'apos;FeaturesTourStep'apos;,
+        component: 'FeaturesTourStep',
         props: {
-          features: ['apos;dashboard'apos;, 'apos;missions'apos;, 'apos;analytics'apos;, 'apos;integrations'apos;],
+          features: ['dashboard', 'missions', 'analytics', 'integrations'],
           interactive: true,
           showProgress: true
         },
         actions: [
           {
-            id: 'apos;complete-tour'apos;,
-            label: 'apos;Terminer le tour'apos;,
-            type: 'apos;primary'apos;,
-            action: 'apos;complete_tour'apos;
+            id: 'complete-tour',
+            label: 'Terminer le tour',
+            type: 'primary',
+            action: 'complete_tour'
           },
           {
-            id: 'apos;skip-tour'apos;,
-            label: 'apos;Passer le tour'apos;,
-            type: 'apos;secondary'apos;,
-            action: 'apos;skip'apos;
+            id: 'skip-tour',
+            label: 'Passer le tour',
+            type: 'secondary',
+            action: 'skip'
           }
         ],
         hints: [
-          'apos;Cliquez sur chaque fonctionnalité pour en savoir plus'apos;,
-          'apos;Prenez votre temps pour explorer chaque section'apos;
+          'Cliquez sur chaque fonctionnalité pour en savoir plus',
+          'Prenez votre temps pour explorer chaque section'
         ],
-        successMessage: 'apos;Excellent ! Vous connaissez maintenant les principales fonctionnalités.'apos;
+        successMessage: 'Excellent ! Vous connaissez maintenant les principales fonctionnalités.'
       }
     });
 
     // Étape 6: Intégrations
     this.addStep({
-      id: 'apos;integrations'apos;,
+      id: 'integrations',
       type: OnboardingStepType.INTEGRATIONS,
-      title: 'apos;Connectez vos outils'apos;,
-      description: 'apos;Intégrez vos outils existants pour une expérience optimale.'apos;,
+      title: 'Connectez vos outils',
+      description: 'Intégrez vos outils existants pour une expérience optimale.',
       isRequired: false,
       isSkippable: true,
       estimatedTime: 60,
-      dependencies: ['apos;features-tour'apos;],
+      dependencies: ['features-tour'],
       config: {
-        component: 'apos;IntegrationsStep'apos;,
+        component: 'IntegrationsStep',
         props: {
-          integrations: ['apos;google_analytics'apos;, 'apos;google_search_console'apos;, 'apos;semrush'apos;, 'apos;slack'apos;],
+          integrations: ['google_analytics', 'google_search_console', 'semrush', 'slack'],
           showBenefits: true
         },
         actions: [
           {
-            id: 'apos;connect-integrations'apos;,
-            label: 'apos;Connecter mes outils'apos;,
-            type: 'apos;primary'apos;,
-            action: 'apos;connect_integrations'apos;
+            id: 'connect-integrations',
+            label: 'Connecter mes outils',
+            type: 'primary',
+            action: 'connect_integrations'
           },
           {
-            id: 'apos;skip-integrations'apos;,
-            label: 'apos;Plus tard'apos;,
-            type: 'apos;secondary'apos;,
-            action: 'apos;skip'apos;
+            id: 'skip-integrations',
+            label: 'Plus tard',
+            type: 'secondary',
+            action: 'skip'
           }
         ],
         hints: [
-          'apos;Connectez au moins Google Analytics pour commencer'apos;,
-          'apos;Vous pourrez ajouter d\'apos;autres intégrations plus tard'apos;
+          'Connectez au moins Google Analytics pour commencer',
+          'Vous pourrez ajouter d\'autres intégrations plus tard'
         ],
-        successMessage: 'apos;Intégrations configurées avec succès !'apos;
+        successMessage: 'Intégrations configurées avec succès !'
       }
     });
 
     // Étape 7: Facturation
     this.addStep({
-      id: 'apos;billing'apos;,
+      id: 'billing',
       type: OnboardingStepType.BILLING,
-      title: 'apos;Configurez votre facturation'apos;,
-      description: 'apos;Choisissez le plan qui correspond à vos besoins.'apos;,
+      title: 'Configurez votre facturation',
+      description: 'Choisissez le plan qui correspond à vos besoins.',
       isRequired: false,
       isSkippable: true,
       estimatedTime: 45,
-      dependencies: ['apos;integrations'apos;],
+      dependencies: ['integrations'],
       config: {
-        component: 'apos;BillingStep'apos;,
+        component: 'BillingStep',
         props: {
           showPlans: true,
           showComparison: true,
@@ -331,39 +331,39 @@ class OnboardingManager {
         },
         actions: [
           {
-            id: 'apos;select-plan'apos;,
-            label: 'apos;Choisir un plan'apos;,
-            type: 'apos;primary'apos;,
-            action: 'apos;select_plan'apos;
+            id: 'select-plan',
+            label: 'Choisir un plan',
+            type: 'primary',
+            action: 'select_plan'
           },
           {
-            id: 'apos;continue-trial'apos;,
-            label: 'apos;Continuer l\'apos;essai gratuit'apos;,
-            type: 'apos;secondary'apos;,
-            action: 'apos;continue_trial'apos;
+            id: 'continue-trial',
+            label: 'Continuer l\'essai gratuit',
+            type: 'secondary',
+            action: 'continue_trial'
           }
         ],
         hints: [
-          'apos;Vous avez 14 jours d\'apos;essai gratuit'apos;,
-          'apos;Comparez les plans pour choisir le meilleur'apos;,
-          'apos;Vous pouvez changer de plan à tout moment'apos;
+          'Vous avez 14 jours d\'essai gratuit',
+          'Comparez les plans pour choisir le meilleur',
+          'Vous pouvez changer de plan à tout moment'
         ],
-        successMessage: 'apos;Plan configuré ! Profitez de votre essai gratuit.'apos;
+        successMessage: 'Plan configuré ! Profitez de votre essai gratuit.'
       }
     });
 
     // Étape 8: Finalisation
     this.addStep({
-      id: 'apos;completion'apos;,
+      id: 'completion',
       type: OnboardingStepType.COMPLETION,
-      title: 'apos;Félicitations !'apos;,
-      description: 'apos;Vous êtes prêt à utiliser Beriox AI au maximum de son potentiel.'apos;,
+      title: 'Félicitations !',
+      description: 'Vous êtes prêt à utiliser Beriox AI au maximum de son potentiel.',
       isRequired: true,
       isSkippable: false,
       estimatedTime: 30,
-      dependencies: ['apos;billing'apos;],
+      dependencies: ['billing'],
       config: {
-        component: 'apos;CompletionStep'apos;,
+        component: 'CompletionStep',
         props: {
           showSummary: true,
           showNextSteps: true,
@@ -371,25 +371,25 @@ class OnboardingManager {
         },
         actions: [
           {
-            id: 'apos;go-to-dashboard'apos;,
-            label: 'apos;Aller au dashboard'apos;,
-            type: 'apos;primary'apos;,
-            action: 'apos;navigate'apos;,
-            url: 'apos;/dashboard'apos;
+            id: 'go-to-dashboard',
+            label: 'Aller au dashboard',
+            type: 'primary',
+            action: 'navigate',
+            url: '/dashboard'
           },
           {
-            id: 'apos;view-resources'apos;,
-            label: 'apos;Voir les ressources'apos;,
-            type: 'apos;secondary'apos;,
-            action: 'apos;navigate'apos;,
-            url: 'apos;/resources'apos;
+            id: 'view-resources',
+            label: 'Voir les ressources',
+            type: 'secondary',
+            action: 'navigate',
+            url: '/resources'
           }
         ],
         hints: [
-          'apos;Consultez les ressources pour en savoir plus'apos;,
-          'apos;N\'apos;hésitez pas à contacter le support si vous avez des questions'apos;
+          'Consultez les ressources pour en savoir plus',
+          'N\'hésitez pas à contacter le support si vous avez des questions'
         ],
-        successMessage: 'apos;Onboarding terminé avec succès !'apos;
+        successMessage: 'Onboarding terminé avec succès !'
       }
     });
   }
@@ -399,7 +399,7 @@ class OnboardingManager {
     this.steps.set(step.id, step);
 
     logger.info(`Onboarding step added: ${step.title}`, {
-      action: 'apos;onboarding_step_added'apos;,
+      action: 'onboarding_step_added',
       metadata: {
         stepId: step.id,
         type: step.type,
@@ -407,18 +407,18 @@ class OnboardingManager {
       }
     });
 
-    metrics.increment('apos;onboarding_step_added'apos;, 1, {
+    metrics.increment('onboarding_step_added', 1, {
       type: step.type,
       required: step.isRequired.toString()
     });
   }
 
-  // Démarrer l'apos;onboarding pour un utilisateur
+  // Démarrer l'onboarding pour un utilisateur
   startOnboarding(userId: string): OnboardingProgress {
     const firstStep = Array.from(this.steps.values()).find(step => !step.dependencies || step.dependencies.length === 0);
     
     if (!firstStep) {
-      throw new Error('apos;No initial step found'apos;);
+      throw new Error('No initial step found');
     }
 
     const progress: OnboardingProgress = {
@@ -437,21 +437,21 @@ class OnboardingManager {
     this.progress.set(userId, progress);
 
     logger.info(`Onboarding started for user: ${userId}`, {
-      action: 'apos;onboarding_started'apos;,
+      action: 'onboarding_started',
       metadata: { userId, firstStep: firstStep.id }
     });
 
-    metrics.increment('apos;onboarding_started'apos;, 1);
+    metrics.increment('onboarding_started', 1);
 
     return progress;
   }
 
-  // Obtenir le progrès d'apos;un utilisateur
+  // Obtenir le progrès d'un utilisateur
   getProgress(userId: string): OnboardingProgress | null {
     return this.progress.get(userId) || null;
   }
 
-  // Obtenir l'apos;étape actuelle
+  // Obtenir l'étape actuelle
   getCurrentStep(userId: string): OnboardingStep | null {
     const progress = this.getProgress(userId);
     if (!progress) return null;
@@ -459,24 +459,24 @@ class OnboardingManager {
     return this.steps.get(progress.currentStep) || null;
   }
 
-  // Passer à l'apos;étape suivante
+  // Passer à l'étape suivante
   async nextStep(userId: string, stepData?: Record<string, any>): Promise<OnboardingStep | null> {
     const progress = this.getProgress(userId);
     if (!progress) {
-      throw new Error('apos;No onboarding progress found'apos;);
+      throw new Error('No onboarding progress found');
     }
 
     const currentStep = this.steps.get(progress.currentStep);
     if (!currentStep) {
-      throw new Error('apos;Current step not found'apos;);
+      throw new Error('Current step not found');
     }
 
-    // Sauvegarder les données de l'apos;étape
+    // Sauvegarder les données de l'étape
     if (stepData) {
       progress.data[progress.currentStep] = stepData;
     }
 
-    // Marquer l'apos;étape comme complétée
+    // Marquer l'étape comme complétée
     if (!progress.completedSteps.includes(progress.currentStep)) {
       progress.completedSteps.push(progress.currentStep);
     }
@@ -499,7 +499,7 @@ class OnboardingManager {
     this.progress.set(userId, progress);
 
     logger.info(`Onboarding step completed: ${currentStep.title}`, {
-      action: 'apos;onboarding_step_completed'apos;,
+      action: 'onboarding_step_completed',
       metadata: {
         userId,
         stepId: currentStep.id,
@@ -507,7 +507,7 @@ class OnboardingManager {
       }
     });
 
-    metrics.increment('apos;onboarding_step_completed'apos;, 1, {
+    metrics.increment('onboarding_step_completed', 1, {
       stepId: currentStep.id,
       type: currentStep.type
     });
@@ -519,19 +519,19 @@ class OnboardingManager {
   skipStep(userId: string): OnboardingStep | null {
     const progress = this.getProgress(userId);
     if (!progress) {
-      throw new Error('apos;No onboarding progress found'apos;);
+      throw new Error('No onboarding progress found');
     }
 
     const currentStep = this.steps.get(progress.currentStep);
     if (!currentStep) {
-      throw new Error('apos;Current step not found'apos;);
+      throw new Error('Current step not found');
     }
 
     if (!currentStep.isSkippable) {
-      throw new Error('apos;Step cannot be skipped'apos;);
+      throw new Error('Step cannot be skipped');
     }
 
-    // Marquer l'apos;étape comme passée
+    // Marquer l'étape comme passée
     if (!progress.skippedSteps.includes(progress.currentStep)) {
       progress.skippedSteps.push(progress.currentStep);
     }
@@ -551,14 +551,14 @@ class OnboardingManager {
     this.progress.set(userId, progress);
 
     logger.info(`Onboarding step skipped: ${currentStep.title}`, {
-      action: 'apos;onboarding_step_skipped'apos;,
+      action: 'onboarding_step_skipped',
       metadata: {
         userId,
         stepId: currentStep.id
       }
     });
 
-    metrics.increment('apos;onboarding_step_skipped'apos;, 1, {
+    metrics.increment('onboarding_step_skipped', 1, {
       stepId: currentStep.id,
       type: currentStep.type
     });
@@ -579,7 +579,7 @@ class OnboardingManager {
       return step.dependencies.every(dep => completedSteps.includes(dep));
     });
 
-    // Trouver l'apos;étape avec le moins de dépendances non satisfaites
+    // Trouver l'étape avec le moins de dépendances non satisfaites
     const nextStep = possibleNextSteps
       .filter(step => step.id !== currentStepId)
       .sort((a, b) => {
@@ -603,15 +603,15 @@ class OnboardingManager {
       const isValid = await currentStep.validation(stepData);
       return isValid;
     } catch (error) {
-      logger.error('apos;Step validation failed'apos;, error as Error, {
-        action: 'apos;onboarding_step_validation_error'apos;,
+      logger.error('Step validation failed', error as Error, {
+        action: 'onboarding_step_validation_error',
         metadata: { userId, stepId: progress.currentStep }
       });
       return false;
     }
   }
 
-  // Enregistrer une session d'apos;étape
+  // Enregistrer une session d'étape
   startStepSession(userId: string, stepId: string): string {
     const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
@@ -632,7 +632,7 @@ class OnboardingManager {
     return sessionId;
   }
 
-  // Terminer une session d'apos;étape
+  // Terminer une session d'étape
   endStepSession(userId: string, sessionId: string, data?: Record<string, any>): void {
     const userSessions = this.sessions.get(userId) || [];
     const session = userSessions.find(s => s.id === sessionId);
@@ -658,7 +658,7 @@ class OnboardingManager {
     return Array.from(this.steps.values());
   }
 
-  // Obtenir les statistiques d'apos;onboarding
+  // Obtenir les statistiques d'onboarding
   getOnboardingStats(): Record<string, any> {
     const allProgress = Array.from(this.progress.values());
     
@@ -677,17 +677,17 @@ class OnboardingManager {
     };
   }
 
-  // Réinitialiser l'apos;onboarding pour un utilisateur
+  // Réinitialiser l'onboarding pour un utilisateur
   resetOnboarding(userId: string): void {
     this.progress.delete(userId);
     this.sessions.delete(userId);
 
     logger.info(`Onboarding reset for user: ${userId}`, {
-      action: 'apos;onboarding_reset'apos;,
+      action: 'onboarding_reset',
       metadata: { userId }
     });
 
-    metrics.increment('apos;onboarding_reset'apos;, 1);
+    metrics.increment('onboarding_reset', 1);
   }
 }
 

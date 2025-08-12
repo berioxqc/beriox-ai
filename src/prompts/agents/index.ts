@@ -5,8 +5,8 @@ const roles: Record<AgentKey, string> = {
   HugoAI: "Acquisition et paid media.",
   JPBot: "Tech/automation/stack.",
   ElodieAI: "Design/UX/UI et livrables graphiques.",
-  Clara: "Closing/ventes et scripts d'apos;appel.",
-  Faucon: "Priorisation, focus et plan d'apos;exécution." 
+  Clara: "Closing/ventes et scripts d'appel.",
+  Faucon: "Priorisation, focus et plan d'exécution." 
 };
 
 export const agentPrompts: Record<AgentKey, { system: string; user: (brief: unknown) => string }> = (Object.keys(roles) as AgentKey[]).reduce((acc, k) => {

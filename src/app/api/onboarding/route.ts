@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { getServerSession } from 'apos;next-auth'apos;;
-import { authOptions } from 'apos;@/lib/auth'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { 
   onboardingManager, 
   startOnboarding, 
@@ -10,23 +10,23 @@ import {
   skipOnboardingStep,
   validateOnboardingStep,
   getOnboardingStats
-} from 'apos;@/lib/onboarding'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
-import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
+} from '@/lib/onboarding';
+import { logger } from '@/lib/logger';
+import { withRateLimit } from '@/lib/rate-limit-advanced';
 
-// GET - Obtenir le progrès d'apos;onboarding
+// GET - Obtenir le progrès d'onboarding
 async function getOnboardingProgressHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const progress = getOnboardingProgress(session.user.id);
     const currentStep = getCurrentOnboardingStep(session.user.id);
 
-    logger.info('apos;Onboarding progress requested'apos;, {
-      action: 'apos;onboarding_progress_requested'apos;,
+    logger.info('Onboarding progress requested', {
+      action: 'onboarding_progress_requested',
       metadata: {
         userId: session.user.id,
         hasProgress: !!progress,
@@ -41,31 +41,31 @@ async function getOnboardingProgressHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get onboarding progress'apos;, error as Error, {
-      action: 'apos;onboarding_progress_error'apos;,
+    logger.error('Failed to get onboarding progress', error as Error, {
+      action: 'onboarding_progress_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get onboarding progress'apos; },
+      { error: 'Failed to get onboarding progress' },
       { status: 500 }
     );
   }
 }
 
-// POST - Démarrer l'apos;onboarding
+// POST - Démarrer l'onboarding
 async function startOnboardingHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const progress = startOnboarding(session.user.id);
     const currentStep = getCurrentOnboardingStep(session.user.id);
 
-    logger.info('apos;Onboarding started'apos;, {
-      action: 'apos;onboarding_started'apos;,
+    logger.info('Onboarding started', {
+      action: 'onboarding_started',
       metadata: {
         userId: session.user.id,
         firstStep: currentStep?.id
@@ -79,23 +79,23 @@ async function startOnboardingHandler(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('apos;Failed to start onboarding'apos;, error as Error, {
-      action: 'apos;onboarding_start_error'apos;,
+    logger.error('Failed to start onboarding', error as Error, {
+      action: 'onboarding_start_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to start onboarding'apos; },
+      { error: 'Failed to start onboarding' },
       { status: 500 }
     );
   }
 }
 
-// PUT - Passer à l'apos;étape suivante
+// PUT - Passer à l'étape suivante
 async function nextStepHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -105,8 +105,8 @@ async function nextStepHandler(request: NextRequest) {
     const nextStep = await nextOnboardingStep(session.user.id, stepData);
     const progress = getOnboardingProgress(session.user.id);
 
-    logger.info('apos;Onboarding step completed'apos;, {
-      action: 'apos;onboarding_step_completed'apos;,
+    logger.info('Onboarding step completed', {
+      action: 'onboarding_step_completed',
       metadata: {
         userId: session.user.id,
         nextStep: nextStep?.id,
@@ -121,13 +121,13 @@ async function nextStepHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to complete onboarding step'apos;, error as Error, {
-      action: 'apos;onboarding_step_error'apos;,
+    logger.error('Failed to complete onboarding step', error as Error, {
+      action: 'onboarding_step_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to complete onboarding step'apos; },
+      { error: 'Failed to complete onboarding step' },
       { status: 500 }
     );
   }
@@ -137,15 +137,15 @@ async function nextStepHandler(request: NextRequest) {
 async function skipStepHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const nextStep = skipOnboardingStep(session.user.id);
     const progress = getOnboardingProgress(session.user.id);
 
-    logger.info('apos;Onboarding step skipped'apos;, {
-      action: 'apos;onboarding_step_skipped'apos;,
+    logger.info('Onboarding step skipped', {
+      action: 'onboarding_step_skipped',
       metadata: {
         userId: session.user.id,
         nextStep: nextStep?.id
@@ -159,13 +159,13 @@ async function skipStepHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to skip onboarding step'apos;, error as Error, {
-      action: 'apos;onboarding_skip_error'apos;,
+    logger.error('Failed to skip onboarding step', error as Error, {
+      action: 'onboarding_skip_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'apos;Failed to skip onboarding step'apos; },
+      { error: error instanceof Error ? error.message : 'Failed to skip onboarding step' },
       { status: 500 }
     );
   }
@@ -175,7 +175,7 @@ async function skipStepHandler(request: NextRequest) {
 async function validateStepHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -184,8 +184,8 @@ async function validateStepHandler(request: NextRequest) {
 
     const isValid = await validateOnboardingStep(session.user.id, stepData);
 
-    logger.info('apos;Onboarding step validated'apos;, {
-      action: 'apos;onboarding_step_validated'apos;,
+    logger.info('Onboarding step validated', {
+      action: 'onboarding_step_validated',
       metadata: {
         userId: session.user.id,
         isValid
@@ -198,35 +198,35 @@ async function validateStepHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to validate onboarding step'apos;, error as Error, {
-      action: 'apos;onboarding_validation_error'apos;,
+    logger.error('Failed to validate onboarding step', error as Error, {
+      action: 'onboarding_validation_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to validate onboarding step'apos; },
+      { error: 'Failed to validate onboarding step' },
       { status: 500 }
     );
   }
 }
 
-// GET - Obtenir les statistiques d'apos;onboarding (admin uniquement)
+// GET - Obtenir les statistiques d'onboarding (admin uniquement)
 async function getOnboardingStatsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  // Vérifier si l'apos;utilisateur est admin
-  if (session.user.email !== 'apos;info@beriox.ca'apos;) {
-    return NextResponse.json({ error: 'apos;Forbidden'apos; }, { status: 403 });
+  // Vérifier si l'utilisateur est admin
+  if (session.user.email !== 'info@beriox.ca') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   try {
     const stats = getOnboardingStats();
 
-    logger.info('apos;Onboarding stats requested'apos;, {
-      action: 'apos;onboarding_stats_requested'apos;,
+    logger.info('Onboarding stats requested', {
+      action: 'onboarding_stats_requested',
       metadata: {
         userId: session.user.id,
         totalUsers: stats.totalUsers
@@ -239,30 +239,30 @@ async function getOnboardingStatsHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get onboarding stats'apos;, error as Error, {
-      action: 'apos;onboarding_stats_error'apos;,
+    logger.error('Failed to get onboarding stats', error as Error, {
+      action: 'onboarding_stats_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get onboarding stats'apos; },
+      { error: 'Failed to get onboarding stats' },
       { status: 500 }
     );
   }
 }
 
-// GET - Obtenir toutes les étapes d'apos;onboarding
+// GET - Obtenir toutes les étapes d'onboarding
 async function getAllStepsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const steps = onboardingManager.getAllSteps();
 
-    logger.info('apos;Onboarding steps requested'apos;, {
-      action: 'apos;onboarding_steps_requested'apos;,
+    logger.info('Onboarding steps requested', {
+      action: 'onboarding_steps_requested',
       metadata: {
         userId: session.user.id,
         stepsCount: steps.length
@@ -276,30 +276,30 @@ async function getAllStepsHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to get onboarding steps'apos;, error as Error, {
-      action: 'apos;onboarding_steps_error'apos;,
+    logger.error('Failed to get onboarding steps', error as Error, {
+      action: 'onboarding_steps_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to get onboarding steps'apos; },
+      { error: 'Failed to get onboarding steps' },
       { status: 500 }
     );
   }
 }
 
-// DELETE - Réinitialiser l'apos;onboarding
+// DELETE - Réinitialiser l'onboarding
 async function resetOnboardingHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     onboardingManager.resetOnboarding(session.user.id);
 
-    logger.info('apos;Onboarding reset'apos;, {
-      action: 'apos;onboarding_reset'apos;,
+    logger.info('Onboarding reset', {
+      action: 'onboarding_reset',
       metadata: { userId: session.user.id }
     });
 
@@ -309,13 +309,13 @@ async function resetOnboardingHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('apos;Failed to reset onboarding'apos;, error as Error, {
-      action: 'apos;onboarding_reset_error'apos;,
+    logger.error('Failed to reset onboarding', error as Error, {
+      action: 'onboarding_reset_error',
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'apos;Failed to reset onboarding'apos; },
+      { error: 'Failed to reset onboarding' },
       { status: 500 }
     );
   }
@@ -324,55 +324,55 @@ async function resetOnboardingHandler(request: NextRequest) {
 // Handlers avec rate limiting
 export const GET = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('apos;action'apos;);
+  const action = searchParams.get('action');
 
   switch (action) {
-    case 'apos;progress'apos;:
+    case 'progress':
       return getOnboardingProgressHandler(request);
-    case 'apos;stats'apos;:
+    case 'stats':
       return getOnboardingStatsHandler(request);
-    case 'apos;steps'apos;:
+    case 'steps':
       return getAllStepsHandler(request);
     default:
       return NextResponse.json(
-        { error: 'apos;Invalid action. Use: progress, stats, or steps'apos; },
+        { error: 'Invalid action. Use: progress, stats, or steps' },
         { status: 400 }
       );
   }
-}, 'apos;onboarding'apos;);
+}, 'onboarding');
 
 export const POST = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('apos;action'apos;);
+  const action = searchParams.get('action');
 
   switch (action) {
-    case 'apos;start'apos;:
+    case 'start':
       return startOnboardingHandler(request);
-    case 'apos;validate'apos;:
+    case 'validate':
       return validateStepHandler(request);
     default:
       return NextResponse.json(
-        { error: 'apos;Invalid action. Use: start or validate'apos; },
+        { error: 'Invalid action. Use: start or validate' },
         { status: 400 }
       );
   }
-}, 'apos;onboarding'apos;);
+}, 'onboarding');
 
 export const PUT = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('apos;action'apos;);
+  const action = searchParams.get('action');
 
   switch (action) {
-    case 'apos;next'apos;:
+    case 'next':
       return nextStepHandler(request);
-    case 'apos;skip'apos;:
+    case 'skip':
       return skipStepHandler(request);
     default:
       return NextResponse.json(
-        { error: 'apos;Invalid action. Use: next or skip'apos; },
+        { error: 'Invalid action. Use: next or skip' },
         { status: 400 }
       );
   }
-}, 'apos;onboarding'apos;);
+}, 'onboarding');
 
-export const DELETE = withRateLimit(resetOnboardingHandler, 'apos;onboarding'apos;);
+export const DELETE = withRateLimit(resetOnboardingHandler, 'onboarding');

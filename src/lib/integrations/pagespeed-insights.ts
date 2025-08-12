@@ -1,20 +1,20 @@
-import { ApiResponse, PerformanceData } from 'apos;./types'apos;;
+import { ApiResponse, PerformanceData } from './types';
 
 export class PageSpeedInsightsAPI {
   private apiKey: string;
-  private baseUrl = 'apos;https://www.googleapis.com/pagespeedonline/v5/runPagespeed'apos;;
+  private baseUrl = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
   }
 
-  async analyzeUrl(url: string, strategy: 'apos;mobile'apos; | 'apos;desktop'apos; = 'apos;mobile'apos;): Promise<ApiResponse<PerformanceData>> {
+  async analyzeUrl(url: string, strategy: 'mobile' | 'desktop' = 'mobile'): Promise<ApiResponse<PerformanceData>> {
     try {
       const params = new URLSearchParams({
         url: url,
         key: this.apiKey,
         strategy: strategy,
-        category: 'apos;performance,accessibility,best-practices,seo'apos;,
+        category: 'performance,accessibility,best-practices,seo',
       });
 
       const response = await fetch(`${this.baseUrl}?${params}`);
@@ -30,14 +30,14 @@ export class PageSpeedInsightsAPI {
 
       // Core Web Vitals
       const coreWebVitals = {
-        lcp: audits['apos;largest-contentful-paint'apos;]?.numericValue || 0,
-        fid: audits['apos;max-potential-fid'apos;]?.numericValue || 0,
-        cls: audits['apos;cumulative-layout-shift'apos;]?.numericValue || 0,
+        lcp: audits['largest-contentful-paint']?.numericValue || 0,
+        fid: audits['max-potential-fid']?.numericValue || 0,
+        cls: audits['cumulative-layout-shift']?.numericValue || 0,
       };
 
-      // Opportunités d'apos;amélioration
+      // Opportunités d'amélioration
       const opportunities = Object.values(audits)
-        .filter((audit: any) => audit.details?.type === 'apos;opportunity'apos; && audit.numericValue > 0)
+        .filter((audit: any) => audit.details?.type === 'opportunity' && audit.numericValue > 0)
         .map((audit: any) => ({
           title: audit.title,
           description: audit.description,
@@ -51,7 +51,7 @@ export class PageSpeedInsightsAPI {
           url,
           performanceScore: Math.round(categories.performance.score * 100),
           accessibilityScore: Math.round(categories.accessibility.score * 100),
-          bestPracticesScore: Math.round(categories['apos;best-practices'apos;].score * 100),
+          bestPracticesScore: Math.round(categories['best-practices'].score * 100),
           seoScore: Math.round(categories.seo.score * 100),
           coreWebVitals,
           opportunities,
@@ -65,7 +65,7 @@ export class PageSpeedInsightsAPI {
     }
   }
 
-  async batchAnalyze(urls: string[], strategy: 'apos;mobile'apos; | 'apos;desktop'apos; = 'apos;mobile'apos;): Promise<ApiResponse<PerformanceData[]>> {
+  async batchAnalyze(urls: string[], strategy: 'mobile' | 'desktop' = 'mobile'): Promise<ApiResponse<PerformanceData[]>> {
     try {
       const results = await Promise.allSettled(
         urls.map(url => this.analyzeUrl(url, strategy))
@@ -73,7 +73,7 @@ export class PageSpeedInsightsAPI {
 
       const successfulResults = results
         .filter((result): result is PromiseFulfilledResult<ApiResponse<PerformanceData>> => 
-          result.status === 'apos;fulfilled'apos; && result.value.success
+          result.status === 'fulfilled' && result.value.success
         )
         .map(result => result.value.data!);
 

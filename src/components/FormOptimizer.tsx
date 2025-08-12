@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from 'apos;react'apos;;
-import { useSession } from 'apos;next-auth/react'apos;;
-import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCheck, faTimes, faExclamationTriangle, faInfoCircle,
   faSave, faPlay, faPause, faStop, faChartLine, faLightbulb,
   faUser, faEnvelope, faBuilding, faFileAlt, faLock,
   faEye, faEyeSlash, faSpinner, faCheckCircle, faTimesCircle
-} from 'apos;@fortawesome/free-solid-svg-icons'apos;;
+} from '@fortawesome/free-solid-svg-icons';
 import {
   FormConfig,
   FormField,
@@ -16,7 +16,7 @@ import {
   FormData,
   FormAnalytics,
   FormOptimization
-} from 'apos;@/lib/form-optimization'apos;;
+} from '@/lib/form-optimization';
 
 interface FormOptimizerProps {
   formId?: string;
@@ -35,7 +35,7 @@ interface FormState {
   showOptimization: boolean;
 }
 
-export default function FormOptimizer({ formId = 'apos;contact-form'apos;, className = 'apos;'apos; }: FormOptimizerProps) {
+export default function FormOptimizer({ formId = 'contact-form', className = '' }: FormOptimizerProps) {
   const { data: session } = useSession();
   const [state, setState] = useState<FormState>({
     form: null,
@@ -61,12 +61,12 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
         const data = await response.json();
         setState(prev => ({ ...prev, form: data.form, loading: false }));
       } else {
-        throw new Error('apos;Failed to load form'apos;);
+        throw new Error('Failed to load form');
       }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
-        error: 'apos;Erreur lors du chargement du formulaire'apos;, 
+        error: 'Erreur lors du chargement du formulaire', 
         loading: false 
       }));
     }
@@ -79,9 +79,9 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
     setState(prev => ({ ...prev, loading: true, error: null }));
 
     try {
-      const response = await fetch('apos;/api/form-optimization?action=start'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const response = await fetch('/api/form-optimization?action=start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ formId: state.form.id })
       });
 
@@ -94,12 +94,12 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
           currentStep: 0
         }));
       } else {
-        throw new Error('apos;Failed to start form'apos;);
+        throw new Error('Failed to start form');
       }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
-        error: 'apos;Erreur lors du démarrage du formulaire'apos;, 
+        error: 'Erreur lors du démarrage du formulaire', 
         loading: false 
       }));
     }
@@ -110,9 +110,9 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
     if (!state.formData) return;
 
     try {
-      const response = await fetch('apos;/api/form-optimization?action=update'apos;, {
-        method: 'apos;PUT'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const response = await fetch('/api/form-optimization?action=update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sessionId: state.formData.sessionId,
           fieldId,
@@ -125,7 +125,7 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
         setState(prev => ({ ...prev, formData: data.formData }));
       }
     } catch (error) {
-      console.error('apos;Failed to update field:'apos;, error);
+      console.error('Failed to update field:', error);
     }
   };
 
@@ -134,9 +134,9 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
     if (!state.formData) return;
 
     try {
-      const response = await fetch('apos;/api/form-optimization?action=validate'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const response = await fetch('/api/form-optimization?action=validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId: state.formData.sessionId })
       });
 
@@ -149,7 +149,7 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
         return data.isValid;
       }
     } catch (error) {
-      console.error('apos;Failed to validate form:'apos;, error);
+      console.error('Failed to validate form:', error);
     }
     return false;
   };
@@ -164,9 +164,9 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
     setState(prev => ({ ...prev, loading: true, error: null }));
 
     try {
-      const response = await fetch('apos;/api/form-optimization?action=submit'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const response = await fetch('/api/form-optimization?action=submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId: state.formData.sessionId })
       });
 
@@ -189,12 +189,12 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
           }));
         }
       } else {
-        throw new Error('apos;Failed to submit form'apos;);
+        throw new Error('Failed to submit form');
       }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
-        error: 'apos;Erreur lors de la soumission'apos;, 
+        error: 'Erreur lors de la soumission', 
         loading: false 
       }));
     }
@@ -205,18 +205,18 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
     if (!state.formData) return;
 
     try {
-      const response = await fetch('apos;/api/form-optimization?action=save-draft'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const response = await fetch('/api/form-optimization?action=save-draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId: state.formData.sessionId })
       });
 
       if (response.ok) {
         // Afficher une notification de succès
-        console.log('apos;Brouillon sauvegardé'apos;);
+        console.log('Brouillon sauvegardé');
       }
     } catch (error) {
-      console.error('apos;Failed to save draft:'apos;, error);
+      console.error('Failed to save draft:', error);
     }
   };
 
@@ -231,7 +231,7 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
         setState(prev => ({ ...prev, analytics: data.analytics }));
       }
     } catch (error) {
-      console.error('apos;Failed to load analytics:'apos;, error);
+      console.error('Failed to load analytics:', error);
     }
   };
 
@@ -242,9 +242,9 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
     setState(prev => ({ ...prev, loading: true, error: null }));
 
     try {
-      const response = await fetch('apos;/api/form-optimization?action=optimizations'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const response = await fetch('/api/form-optimization?action=optimizations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ formId })
       });
 
@@ -257,20 +257,20 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
           showOptimization: true
         }));
       } else {
-        throw new Error('apos;Failed to generate optimizations'apos;);
+        throw new Error('Failed to generate optimizations');
       }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
-        error: 'apos;Erreur lors de la génération des optimisations'apos;, 
+        error: 'Erreur lors de la génération des optimisations', 
         loading: false 
       }));
     }
   };
 
-  // Rendu d'apos;un champ
+  // Rendu d'un champ
   const renderField = (field: FormField) => {
-    const value = state.formData?.data[field.id] || 'apos;'apos;;
+    const value = state.formData?.data[field.id] || '';
     const errors = state.formData?.errors[field.id] || [];
     const isActive = state.currentStep === field.order - 1;
 
@@ -279,7 +279,7 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
     };
 
     const handleBlur = () => {
-      if (state.form?.validationMode === 'apos;onBlur'apos;) {
+      if (state.form?.validationMode === 'onBlur') {
         validateForm();
       }
     };
@@ -296,35 +296,35 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
     return (
       <div 
         key={field.id}
-        className={`form-field ${isActive ? 'apos;active'apos; : 'apos;'apos;} ${errors.length > 0 ? 'apos;error'apos; : 'apos;'apos;}`}
+        className={`form-field ${isActive ? 'active' : ''} ${errors.length > 0 ? 'error' : ''}`}
         style={{
-          marginBottom: 'apos;24px'apos;,
+          marginBottom: '24px',
           opacity: isActive ? 1 : 0.6,
-          transition: 'apos;all 0.3s ease'apos;
+          transition: 'all 0.3s ease'
         }}
       >
         <label 
           htmlFor={field.id}
           style={{
-            display: 'apos;block'apos;,
-            marginBottom: 'apos;8px'apos;,
-            fontWeight: 'apos;600'apos;,
-            color: 'apos;#374151'apos;,
-            fontSize: 'apos;14px'apos;
+            display: 'block',
+            marginBottom: '8px',
+            fontWeight: '600',
+            color: '#374151',
+            fontSize: '14px'
           }}
         >
-          {field.required && <span style={{ color: 'apos;#ef4444'apos; }}>*</span>} {field.label}
+          {field.required && <span style={{ color: '#ef4444' }}>*</span>} {field.label}
         </label>
 
-        <div style={{ position: 'apos;relative'apos; }}>
+        <div style={{ position: 'relative' }}>
           <FontAwesomeIcon 
             icon={getFieldIcon()} 
             style={{
-              position: 'apos;absolute'apos;,
-              left: 'apos;12px'apos;,
-              top: 'apos;50%'apos;,
-              transform: 'apos;translateY(-50%)'apos;,
-              color: 'apos;#9ca3af'apos;,
+              position: 'absolute',
+              left: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: '#9ca3af',
               zIndex: 1
             }}
           />
@@ -338,15 +338,15 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
               placeholder={field.placeholder}
               disabled={field.disabled}
               style={{
-                width: 'apos;100%'apos;,
-                minHeight: 'apos;100px'apos;,
-                padding: 'apos;12px 12px 12px 40px'apos;,
-                border: errors.length > 0 ? 'apos;2px solid #ef4444'apos; : 'apos;2px solid #e5e7eb'apos;,
-                borderRadius: 'apos;8px'apos;,
-                fontSize: 'apos;14px'apos;,
-                resize: 'apos;vertical'apos;,
-                transition: 'apos;border-color 0.2s ease'apos;,
-                backgroundColor: field.disabled ? 'apos;#f9fafb'apos; : 'apos;#ffffff'apos;
+                width: '100%',
+                minHeight: '100px',
+                padding: '12px 12px 12px 40px',
+                border: errors.length > 0 ? '2px solid #ef4444' : '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '14px',
+                resize: 'vertical',
+                transition: 'border-color 0.2s ease',
+                backgroundColor: field.disabled ? '#f9fafb' : '#ffffff'
               }}
             />
           ) : field.type === FormFieldType.SELECT ? (
@@ -357,12 +357,12 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
               onBlur={handleBlur}
               disabled={field.disabled}
               style={{
-                width: 'apos;100%'apos;,
-                padding: 'apos;12px 12px 12px 40px'apos;,
-                border: errors.length > 0 ? 'apos;2px solid #ef4444'apos; : 'apos;2px solid #e5e7eb'apos;,
-                borderRadius: 'apos;8px'apos;,
-                fontSize: 'apos;14px'apos;,
-                backgroundColor: field.disabled ? 'apos;#f9fafb'apos; : 'apos;#ffffff'apos;
+                width: '100%',
+                padding: '12px 12px 12px 40px',
+                border: errors.length > 0 ? '2px solid #ef4444' : '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '14px',
+                backgroundColor: field.disabled ? '#f9fafb' : '#ffffff'
               }}
             >
               <option value="">{field.placeholder}</option>
@@ -373,7 +373,7 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
               ))}
             </select>
           ) : field.type === FormFieldType.CHECKBOX ? (
-            <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos; }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <input
                 type="checkbox"
                 id={field.id}
@@ -382,12 +382,12 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
                 onBlur={handleBlur}
                 disabled={field.disabled}
                 style={{
-                  width: 'apos;18px'apos;,
-                  height: 'apos;18px'apos;,
-                  accentColor: 'apos;#3b82f6'apos;
+                  width: '18px',
+                  height: '18px',
+                  accentColor: '#3b82f6'
                 }}
               />
-              <span style={{ fontSize: 'apos;14px'apos;, color: 'apos;#374151'apos; }}>
+              <span style={{ fontSize: '14px', color: '#374151' }}>
                 {field.label}
               </span>
             </div>
@@ -401,13 +401,13 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
               placeholder={field.placeholder}
               disabled={field.disabled}
               style={{
-                width: 'apos;100%'apos;,
-                padding: 'apos;12px 12px 12px 40px'apos;,
-                border: errors.length > 0 ? 'apos;2px solid #ef4444'apos; : 'apos;2px solid #e5e7eb'apos;,
-                borderRadius: 'apos;8px'apos;,
-                fontSize: 'apos;14px'apos;,
-                transition: 'apos;border-color 0.2s ease'apos;,
-                backgroundColor: field.disabled ? 'apos;#f9fafb'apos; : 'apos;#ffffff'apos;
+                width: '100%',
+                padding: '12px 12px 12px 40px',
+                border: errors.length > 0 ? '2px solid #ef4444' : '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '14px',
+                transition: 'border-color 0.2s ease',
+                backgroundColor: field.disabled ? '#f9fafb' : '#ffffff'
               }}
             />
           )}
@@ -415,10 +415,10 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
 
         {field.helpText && (
           <p style={{
-            marginTop: 'apos;4px'apos;,
-            fontSize: 'apos;12px'apos;,
-            color: 'apos;#6b7280'apos;,
-            fontStyle: 'apos;italic'apos;
+            marginTop: '4px',
+            fontSize: '12px',
+            color: '#6b7280',
+            fontStyle: 'italic'
           }}>
             {field.helpText}
           </p>
@@ -426,13 +426,13 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
 
         {errors.length > 0 && (
           <div style={{
-            marginTop: 'apos;4px'apos;,
-            display: 'apos;flex'apos;,
-            alignItems: 'apos;center'apos;,
-            gap: 'apos;4px'apos;
+            marginTop: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px'
           }}>
-            <FontAwesomeIcon icon={faExclamationTriangle} style={{ color: 'apos;#ef4444'apos;, fontSize: 'apos;12px'apos; }} />
-            <span style={{ fontSize: 'apos;12px'apos;, color: 'apos;#ef4444'apos; }}>
+            <FontAwesomeIcon icon={faExclamationTriangle} style={{ color: '#ef4444', fontSize: '12px' }} />
+            <span style={{ fontSize: '12px', color: '#ef4444' }}>
               {errors[0]}
             </span>
           </div>
@@ -447,102 +447,102 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
 
     return (
       <div style={{
-        background: 'apos;#ffffff'apos;,
-        borderRadius: 'apos;12px'apos;,
-        padding: 'apos;24px'apos;,
-        boxShadow: 'apos;0 4px 6px -1px rgba(0, 0, 0, 0.1)'apos;,
-        marginTop: 'apos;24px'apos;
+        background: '#ffffff',
+        borderRadius: '12px',
+        padding: '24px',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        marginTop: '24px'
       }}>
         <h3 style={{
-          fontSize: 'apos;18px'apos;,
-          fontWeight: 'apos;600'apos;,
-          marginBottom: 'apos;16px'apos;,
-          color: 'apos;#111827'apos;
+          fontSize: '18px',
+          fontWeight: '600',
+          marginBottom: '16px',
+          color: '#111827'
         }}>
-          <FontAwesomeIcon icon={faChartLine} style={{ marginRight: 'apos;8px'apos;, color: 'apos;#3b82f6'apos; }} />
+          <FontAwesomeIcon icon={faChartLine} style={{ marginRight: '8px', color: '#3b82f6' }} />
           Analytics du Formulaire
         </h3>
 
         <div style={{
-          display: 'apos;grid'apos;,
-          gridTemplateColumns: 'apos;repeat(auto-fit, minmax(200px, 1fr))'apos;,
-          gap: 'apos;16px'apos;,
-          marginBottom: 'apos;24px'apos;
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '16px',
+          marginBottom: '24px'
         }}>
           <div style={{
-            background: 'apos;#f0f9ff'apos;,
-            padding: 'apos;16px'apos;,
-            borderRadius: 'apos;8px'apos;,
-            border: 'apos;1px solid #bae6fd'apos;
+            background: '#f0f9ff',
+            padding: '16px',
+            borderRadius: '8px',
+            border: '1px solid #bae6fd'
           }}>
-            <div style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;700'apos;, color: 'apos;#0369a1'apos; }}>
+            <div style={{ fontSize: '24px', fontWeight: '700', color: '#0369a1' }}>
               {state.analytics.totalStarts}
             </div>
-            <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#0369a1'apos; }}>Démarrages</div>
+            <div style={{ fontSize: '12px', color: '#0369a1' }}>Démarrages</div>
           </div>
 
           <div style={{
-            background: 'apos;#f0fdf4'apos;,
-            padding: 'apos;16px'apos;,
-            borderRadius: 'apos;8px'apos;,
-            border: 'apos;1px solid #bbf7d0'apos;
+            background: '#f0fdf4',
+            padding: '16px',
+            borderRadius: '8px',
+            border: '1px solid #bbf7d0'
           }}>
-            <div style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;700'apos;, color: 'apos;#15803d'apos; }}>
+            <div style={{ fontSize: '24px', fontWeight: '700', color: '#15803d' }}>
               {state.analytics.totalCompletions}
             </div>
-            <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#15803d'apos; }}>Complétions</div>
+            <div style={{ fontSize: '12px', color: '#15803d' }}>Complétions</div>
           </div>
 
           <div style={{
-            background: 'apos;#fef3c7'apos;,
-            padding: 'apos;16px'apos;,
-            borderRadius: 'apos;8px'apos;,
-            border: 'apos;1px solid #fde68a'apos;
+            background: '#fef3c7',
+            padding: '16px',
+            borderRadius: '8px',
+            border: '1px solid #fde68a'
           }}>
-            <div style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;700'apos;, color: 'apos;#d97706'apos; }}>
+            <div style={{ fontSize: '24px', fontWeight: '700', color: '#d97706' }}>
               {state.analytics.totalAbandonments}
             </div>
-            <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#d97706'apos; }}>Abandons</div>
+            <div style={{ fontSize: '12px', color: '#d97706' }}>Abandons</div>
           </div>
 
           <div style={{
-            background: 'apos;#f3e8ff'apos;,
-            padding: 'apos;16px'apos;,
-            borderRadius: 'apos;8px'apos;,
-            border: 'apos;1px solid #d8b4fe'apos;
+            background: '#f3e8ff',
+            padding: '16px',
+            borderRadius: '8px',
+            border: '1px solid #d8b4fe'
           }}>
-            <div style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;700'apos;, color: 'apos;#7c3aed'apos; }}>
+            <div style={{ fontSize: '24px', fontWeight: '700', color: '#7c3aed' }}>
               {state.analytics.completionRate.toFixed(1)}%
             </div>
-            <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#7c3aed'apos; }}>Taux de complétion</div>
+            <div style={{ fontSize: '12px', color: '#7c3aed' }}>Taux de complétion</div>
           </div>
         </div>
 
         <div style={{
-          background: 'apos;#f9fafb'apos;,
-          padding: 'apos;16px'apos;,
-          borderRadius: 'apos;8px'apos;,
-          marginBottom: 'apos;16px'apos;
+          background: '#f9fafb',
+          padding: '16px',
+          borderRadius: '8px',
+          marginBottom: '16px'
         }}>
           <h4 style={{
-            fontSize: 'apos;14px'apos;,
-            fontWeight: 'apos;600'apos;,
-            marginBottom: 'apos;8px'apos;,
-            color: 'apos;#374151'apos;
+            fontSize: '14px',
+            fontWeight: '600',
+            marginBottom: '8px',
+            color: '#374151'
           }}>
-            Points d'apos;abandon principaux
+            Points d'abandon principaux
           </h4>
           {state.analytics.topAbandonmentPoints.length > 0 ? (
-            <ul style={{ margin: 0, paddingLeft: 'apos;20px'apos; }}>
+            <ul style={{ margin: 0, paddingLeft: '20px' }}>
               {state.analytics.topAbandonmentPoints.slice(0, 3).map((point, index) => (
-                <li key={index} style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                <li key={index} style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                   {point.field}: {point.count} abandons
                 </li>
               ))}
             </ul>
           ) : (
-            <p style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, margin: 0 }}>
-              Aucun point d'apos;abandon identifié
+            <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>
+              Aucun point d'abandon identifié
             </p>
           )}
         </div>
@@ -551,18 +551,18 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
           onClick={generateOptimizations}
           disabled={state.loading}
           style={{
-            background: 'apos;#3b82f6'apos;,
-            color: 'apos;#ffffff'apos;,
-            border: 'apos;none'apos;,
-            padding: 'apos;12px 24px'apos;,
-            borderRadius: 'apos;8px'apos;,
-            fontSize: 'apos;14px'apos;,
-            fontWeight: 'apos;600'apos;,
-            cursor: state.loading ? 'apos;not-allowed'apos; : 'apos;pointer'apos;,
+            background: '#3b82f6',
+            color: '#ffffff',
+            border: 'none',
+            padding: '12px 24px',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: state.loading ? 'not-allowed' : 'pointer',
             opacity: state.loading ? 0.6 : 1,
-            display: 'apos;flex'apos;,
-            alignItems: 'apos;center'apos;,
-            gap: 'apos;8px'apos;
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
           }}
         >
           {state.loading ? (
@@ -582,78 +582,78 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
 
     return (
       <div style={{
-        background: 'apos;#ffffff'apos;,
-        borderRadius: 'apos;12px'apos;,
-        padding: 'apos;24px'apos;,
-        boxShadow: 'apos;0 4px 6px -1px rgba(0, 0, 0, 0.1)'apos;,
-        marginTop: 'apos;24px'apos;
+        background: '#ffffff',
+        borderRadius: '12px',
+        padding: '24px',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        marginTop: '24px'
       }}>
         <h3 style={{
-          fontSize: 'apos;18px'apos;,
-          fontWeight: 'apos;600'apos;,
-          marginBottom: 'apos;16px'apos;,
-          color: 'apos;#111827'apos;
+          fontSize: '18px',
+          fontWeight: '600',
+          marginBottom: '16px',
+          color: '#111827'
         }}>
-          <FontAwesomeIcon icon={faLightbulb} style={{ marginRight: 'apos;8px'apos;, color: 'apos;#f59e0b'apos; }} />
-          Suggestions d'apos;Optimisation
+          <FontAwesomeIcon icon={faLightbulb} style={{ marginRight: '8px', color: '#f59e0b' }} />
+          Suggestions d'Optimisation
         </h3>
 
         {state.optimization.suggestions.length > 0 ? (
-          <div style={{ marginBottom: 'apos;24px'apos; }}>
+          <div style={{ marginBottom: '24px' }}>
             {state.optimization.suggestions.map((suggestion, index) => (
               <div 
                 key={index}
                 style={{
-                  background: suggestion.priority === 'apos;high'apos; ? 'apos;#fef2f2'apos; : 
-                             suggestion.priority === 'apos;medium'apos; ? 'apos;#fffbeb'apos; : 'apos;#f0f9ff'apos;,
-                  border: suggestion.priority === 'apos;high'apos; ? 'apos;1px solid #fecaca'apos; :
-                          suggestion.priority === 'apos;medium'apos; ? 'apos;1px solid #fed7aa'apos; : 'apos;1px solid #bae6fd'apos;,
-                  borderRadius: 'apos;8px'apos;,
-                  padding: 'apos;16px'apos;,
-                  marginBottom: 'apos;12px'apos;
+                  background: suggestion.priority === 'high' ? '#fef2f2' : 
+                             suggestion.priority === 'medium' ? '#fffbeb' : '#f0f9ff',
+                  border: suggestion.priority === 'high' ? '1px solid #fecaca' :
+                          suggestion.priority === 'medium' ? '1px solid #fed7aa' : '1px solid #bae6fd',
+                  borderRadius: '8px',
+                  padding: '16px',
+                  marginBottom: '12px'
                 }}
               >
                 <div style={{
-                  display: 'apos;flex'apos;,
-                  alignItems: 'apos;center'apos;,
-                  gap: 'apos;8px'apos;,
-                  marginBottom: 'apos;8px'apos;
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: '8px'
                 }}>
                   <FontAwesomeIcon 
-                    icon={suggestion.priority === 'apos;high'apos; ? faExclamationTriangle : faInfoCircle}
+                    icon={suggestion.priority === 'high' ? faExclamationTriangle : faInfoCircle}
                     style={{ 
-                      color: suggestion.priority === 'apos;high'apos; ? 'apos;#dc2626'apos; : 
-                             suggestion.priority === 'apos;medium'apos; ? 'apos;#d97706'apos; : 'apos;#0369a1'apos;
+                      color: suggestion.priority === 'high' ? '#dc2626' : 
+                             suggestion.priority === 'medium' ? '#d97706' : '#0369a1'
                     }}
                   />
                   <span style={{
-                    fontSize: 'apos;12px'apos;,
-                    fontWeight: 'apos;600'apos;,
-                    textTransform: 'apos;uppercase'apos;,
-                    color: suggestion.priority === 'apos;high'apos; ? 'apos;#dc2626'apos; : 
-                           suggestion.priority === 'apos;medium'apos; ? 'apos;#d97706'apos; : 'apos;#0369a1'apos;
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                    color: suggestion.priority === 'high' ? '#dc2626' : 
+                           suggestion.priority === 'medium' ? '#d97706' : '#0369a1'
                   }}>
                     {suggestion.priority}
                   </span>
                   <span style={{
-                    fontSize: 'apos;12px'apos;,
-                    color: 'apos;#6b7280'apos;
+                    fontSize: '12px',
+                    color: '#6b7280'
                   }}>
                     Impact: {suggestion.impact}%
                   </span>
                 </div>
                 <p style={{
-                  fontSize: 'apos;14px'apos;,
-                  color: 'apos;#374151'apos;,
-                  margin: 'apos;0 0 8px 0'apos;
+                  fontSize: '14px',
+                  color: '#374151',
+                  margin: '0 0 8px 0'
                 }}>
                   {suggestion.description}
                 </p>
                 <p style={{
-                  fontSize: 'apos;12px'apos;,
-                  color: 'apos;#6b7280'apos;,
+                  fontSize: '12px',
+                  color: '#6b7280',
                   margin: 0,
-                  fontStyle: 'apos;italic'apos;
+                  fontStyle: 'italic'
                 }}>
                   {suggestion.implementation}
                 </p>
@@ -661,51 +661,51 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
             ))}
           </div>
         ) : (
-          <p style={{ fontSize: 'apos;14px'apos;, color: 'apos;#6b7280'apos;, fontStyle: 'apos;italic'apos; }}>
-            Aucune suggestion d'apos;optimisation pour le moment
+          <p style={{ fontSize: '14px', color: '#6b7280', fontStyle: 'italic' }}>
+            Aucune suggestion d'optimisation pour le moment
           </p>
         )}
 
         <h4 style={{
-          fontSize: 'apos;16px'apos;,
-          fontWeight: 'apos;600'apos;,
-          marginBottom: 'apos;12px'apos;,
-          color: 'apos;#374151'apos;
+          fontSize: '16px',
+          fontWeight: '600',
+          marginBottom: '12px',
+          color: '#374151'
         }}>
           Variantes A/B suggérées
         </h4>
         <div style={{
-          display: 'apos;grid'apos;,
-          gridTemplateColumns: 'apos;repeat(auto-fit, minmax(250px, 1fr))'apos;,
-          gap: 'apos;16px'apos;
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '16px'
         }}>
           {state.optimization.aBTestVariants.map((variant, index) => (
             <div 
               key={index}
               style={{
-                background: 'apos;#f9fafb'apos;,
-                border: 'apos;1px solid #e5e7eb'apos;,
-                borderRadius: 'apos;8px'apos;,
-                padding: 'apos;16px'apos;
+                background: '#f9fafb',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                padding: '16px'
               }}
             >
               <h5 style={{
-                fontSize: 'apos;14px'apos;,
-                fontWeight: 'apos;600'apos;,
-                marginBottom: 'apos;8px'apos;,
-                color: 'apos;#374151'apos;
+                fontSize: '14px',
+                fontWeight: '600',
+                marginBottom: '8px',
+                color: '#374151'
               }}>
                 {variant.name}
               </h5>
               <ul style={{
-                fontSize: 'apos;12px'apos;,
-                color: 'apos;#6b7280'apos;,
+                fontSize: '12px',
+                color: '#6b7280',
                 margin: 0,
-                paddingLeft: 'apos;16px'apos;
+                paddingLeft: '16px'
               }}>
                 {Object.entries(variant.changes).map(([key, value]) => (
                   <li key={key}>
-                    {key}: {typeof value === 'apos;boolean'apos; ? (value ? 'apos;Oui'apos; : 'apos;Non'apos;) : value}
+                    {key}: {typeof value === 'boolean' ? (value ? 'Oui' : 'Non') : value}
                   </li>
                 ))}
               </ul>
@@ -725,14 +725,14 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
   if (state.loading && !state.form) {
     return (
       <div style={{
-        display: 'apos;flex'apos;,
-        justifyContent: 'apos;center'apos;,
-        alignItems: 'apos;center'apos;,
-        padding: 'apos;40px'apos;,
-        fontSize: 'apos;16px'apos;,
-        color: 'apos;#6b7280'apos;
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '40px',
+        fontSize: '16px',
+        color: '#6b7280'
       }}>
-        <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: 'apos;8px'apos; }} />
+        <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
         Chargement du formulaire...
       </div>
     );
@@ -741,14 +741,14 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
   if (state.error) {
     return (
       <div style={{
-        background: 'apos;#fef2f2'apos;,
-        border: 'apos;1px solid #fecaca'apos;,
-        borderRadius: 'apos;8px'apos;,
-        padding: 'apos;16px'apos;,
-        color: 'apos;#dc2626'apos;,
-        textAlign: 'apos;center'apos;
+        background: '#fef2f2',
+        border: '1px solid #fecaca',
+        borderRadius: '8px',
+        padding: '16px',
+        color: '#dc2626',
+        textAlign: 'center'
       }}>
-        <FontAwesomeIcon icon={faTimesCircle} style={{ marginRight: 'apos;8px'apos; }} />
+        <FontAwesomeIcon icon={faTimesCircle} style={{ marginRight: '8px' }} />
         {state.error}
       </div>
     );
@@ -757,9 +757,9 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
   if (!state.form) {
     return (
       <div style={{
-        textAlign: 'apos;center'apos;,
-        padding: 'apos;40px'apos;,
-        color: 'apos;#6b7280'apos;
+        textAlign: 'center',
+        padding: '40px',
+        color: '#6b7280'
       }}>
         Formulaire non trouvé
       </div>
@@ -767,27 +767,27 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
   }
 
   return (
-    <div className={`form-optimizer ${className}`} style={{ maxWidth: 'apos;800px'apos;, margin: 'apos;0 auto'apos; }}>
+    <div className={`form-optimizer ${className}`} style={{ maxWidth: '800px', margin: '0 auto' }}>
       {/* En-tête du formulaire */}
       <div style={{
-        background: 'apos;#ffffff'apos;,
-        borderRadius: 'apos;12px'apos;,
-        padding: 'apos;24px'apos;,
-        boxShadow: 'apos;0 4px 6px -1px rgba(0, 0, 0, 0.1)'apos;,
-        marginBottom: 'apos;24px'apos;
+        background: '#ffffff',
+        borderRadius: '12px',
+        padding: '24px',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        marginBottom: '24px'
       }}>
         <h2 style={{
-          fontSize: 'apos;24px'apos;,
-          fontWeight: 'apos;700'apos;,
-          marginBottom: 'apos;8px'apos;,
-          color: 'apos;#111827'apos;
+          fontSize: '24px',
+          fontWeight: '700',
+          marginBottom: '8px',
+          color: '#111827'
         }}>
           {state.form.name}
         </h2>
         {state.form.description && (
           <p style={{
-            fontSize: 'apos;14px'apos;,
-            color: 'apos;#6b7280'apos;,
+            fontSize: '14px',
+            color: '#6b7280',
             margin: 0
           }}>
             {state.form.description}
@@ -796,32 +796,32 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
 
         {/* Barre de progression */}
         {state.form.showProgress && state.formData && (
-          <div style={{ marginTop: 'apos;16px'apos; }}>
+          <div style={{ marginTop: '16px' }}>
             <div style={{
-              display: 'apos;flex'apos;,
-              justifyContent: 'apos;space-between'apos;,
-              alignItems: 'apos;center'apos;,
-              marginBottom: 'apos;8px'apos;
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '8px'
             }}>
-              <span style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos; }}>
+              <span style={{ fontSize: '12px', color: '#6b7280' }}>
                 Progression
               </span>
-              <span style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos; }}>
+              <span style={{ fontSize: '12px', color: '#6b7280' }}>
                 {state.formData.progress}%
               </span>
             </div>
             <div style={{
-              width: 'apos;100%'apos;,
-              height: 'apos;8px'apos;,
-              background: 'apos;#e5e7eb'apos;,
-              borderRadius: 'apos;4px'apos;,
-              overflow: 'apos;hidden'apos;
+              width: '100%',
+              height: '8px',
+              background: '#e5e7eb',
+              borderRadius: '4px',
+              overflow: 'hidden'
             }}>
               <div style={{
                 width: `${state.formData.progress}%`,
-                height: 'apos;100%'apos;,
-                background: 'apos;linear-gradient(90deg, #3b82f6, #8b5cf6)'apos;,
-                transition: 'apos;width 0.3s ease'apos;
+                height: '100%',
+                background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)',
+                transition: 'width 0.3s ease'
               }} />
             </div>
           </div>
@@ -831,16 +831,16 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
       {/* Formulaire */}
       {!state.formData ? (
         <div style={{
-          background: 'apos;#ffffff'apos;,
-          borderRadius: 'apos;12px'apos;,
-          padding: 'apos;24px'apos;,
-          boxShadow: 'apos;0 4px 6px -1px rgba(0, 0, 0, 0.1)'apos;,
-          textAlign: 'apos;center'apos;
+          background: '#ffffff',
+          borderRadius: '12px',
+          padding: '24px',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          textAlign: 'center'
         }}>
           <p style={{
-            fontSize: 'apos;16px'apos;,
-            color: 'apos;#374151'apos;,
-            marginBottom: 'apos;24px'apos;
+            fontSize: '16px',
+            color: '#374151',
+            marginBottom: '24px'
           }}>
             Prêt à commencer le formulaire ?
           </p>
@@ -848,14 +848,14 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
             onClick={startForm}
             disabled={state.loading}
             style={{
-              background: 'apos;#3b82f6'apos;,
-              color: 'apos;#ffffff'apos;,
-              border: 'apos;none'apos;,
-              padding: 'apos;12px 24px'apos;,
-              borderRadius: 'apos;8px'apos;,
-              fontSize: 'apos;16px'apos;,
-              fontWeight: 'apos;600'apos;,
-              cursor: state.loading ? 'apos;not-allowed'apos; : 'apos;pointer'apos;,
+              background: '#3b82f6',
+              color: '#ffffff',
+              border: 'none',
+              padding: '12px 24px',
+              borderRadius: '8px',
+              fontSize: '16px',
+              fontWeight: '600',
+              cursor: state.loading ? 'not-allowed' : 'pointer',
               opacity: state.loading ? 0.6 : 1
             }}
           >
@@ -869,10 +869,10 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
         </div>
       ) : (
         <div style={{
-          background: 'apos;#ffffff'apos;,
-          borderRadius: 'apos;12px'apos;,
-          padding: 'apos;24px'apos;,
-          boxShadow: 'apos;0 4px 6px -1px rgba(0, 0, 0, 0.1)'apos;
+          background: '#ffffff',
+          borderRadius: '12px',
+          padding: '24px',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
         }}>
           <form onSubmit={(e) => { e.preventDefault(); submitForm(); }}>
             {state.form.fields
@@ -881,27 +881,27 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
             }
 
             <div style={{
-              display: 'apos;flex'apos;,
-              gap: 'apos;12px'apos;,
-              marginTop: 'apos;32px'apos;,
-              flexWrap: 'apos;wrap'apos;
+              display: 'flex',
+              gap: '12px',
+              marginTop: '32px',
+              flexWrap: 'wrap'
             }}>
               {state.form.allowDraft && (
                 <button
                   type="button"
                   onClick={saveDraft}
                   style={{
-                    background: 'apos;#f3f4f6'apos;,
-                    color: 'apos;#374151'apos;,
-                    border: 'apos;1px solid #d1d5db'apos;,
-                    padding: 'apos;12px 24px'apos;,
-                    borderRadius: 'apos;8px'apos;,
-                    fontSize: 'apos;14px'apos;,
-                    fontWeight: 'apos;600'apos;,
-                    cursor: 'apos;pointer'apos;,
-                    display: 'apos;flex'apos;,
-                    alignItems: 'apos;center'apos;,
-                    gap: 'apos;8px'apos;
+                    background: '#f3f4f6',
+                    color: '#374151',
+                    border: '1px solid #d1d5db',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
                   }}
                 >
                   <FontAwesomeIcon icon={faSave} />
@@ -913,18 +913,18 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
                 type="submit"
                 disabled={state.loading || state.formData.submitted}
                 style={{
-                  background: state.formData.submitted ? 'apos;#10b981'apos; : 'apos;#3b82f6'apos;,
-                  color: 'apos;#ffffff'apos;,
-                  border: 'apos;none'apos;,
-                  padding: 'apos;12px 24px'apos;,
-                  borderRadius: 'apos;8px'apos;,
-                  fontSize: 'apos;14px'apos;,
-                  fontWeight: 'apos;600'apos;,
-                  cursor: state.loading || state.formData.submitted ? 'apos;not-allowed'apos; : 'apos;pointer'apos;,
+                  background: state.formData.submitted ? '#10b981' : '#3b82f6',
+                  color: '#ffffff',
+                  border: 'none',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: state.loading || state.formData.submitted ? 'not-allowed' : 'pointer',
                   opacity: state.loading ? 0.6 : 1,
-                  display: 'apos;flex'apos;,
-                  alignItems: 'apos;center'apos;,
-                  gap: 'apos;8px'apos;
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
                 }}
               >
                 {state.loading ? (
@@ -934,7 +934,7 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
                 ) : (
                   <FontAwesomeIcon icon={faCheck} />
                 )}
-                {state.formData.submitted ? 'apos;Soumis'apos; : state.form.submitButtonText || 'apos;Soumettre'apos;}
+                {state.formData.submitted ? 'Soumis' : state.form.submitButtonText || 'Soumettre'}
               </button>
             </div>
           </form>
@@ -942,17 +942,17 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
           {/* Message de succès */}
           {state.formData.submitted && state.form.successMessage && (
             <div style={{
-              background: 'apos;#f0fdf4'apos;,
-              border: 'apos;1px solid #bbf7d0'apos;,
-              borderRadius: 'apos;8px'apos;,
-              padding: 'apos;16px'apos;,
-              marginTop: 'apos;16px'apos;,
-              display: 'apos;flex'apos;,
-              alignItems: 'apos;center'apos;,
-              gap: 'apos;8px'apos;
+              background: '#f0fdf4',
+              border: '1px solid #bbf7d0',
+              borderRadius: '8px',
+              padding: '16px',
+              marginTop: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
             }}>
-              <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'apos;#15803d'apos; }} />
-              <span style={{ color: 'apos;#15803d'apos;, fontWeight: 'apos;600'apos; }}>
+              <FontAwesomeIcon icon={faCheckCircle} style={{ color: '#15803d' }} />
+              <span style={{ color: '#15803d', fontWeight: '600' }}>
                 {state.form.successMessage}
               </span>
             </div>
@@ -960,51 +960,51 @@ export default function FormOptimizer({ formId = 'apos;contact-form'apos;, class
         </div>
       )}
 
-      {/* Boutons d'apos;action */}
+      {/* Boutons d'action */}
       <div style={{
-        display: 'apos;flex'apos;,
-        gap: 'apos;12px'apos;,
-        marginTop: 'apos;24px'apos;,
-        justifyContent: 'apos;center'apos;
+        display: 'flex',
+        gap: '12px',
+        marginTop: '24px',
+        justifyContent: 'center'
       }}>
         <button
           onClick={() => setState(prev => ({ ...prev, showAnalytics: !prev.showAnalytics }))}
           style={{
-            background: 'apos;#f3f4f6'apos;,
-            color: 'apos;#374151'apos;,
-            border: 'apos;1px solid #d1d5db'apos;,
-            padding: 'apos;8px 16px'apos;,
-            borderRadius: 'apos;6px'apos;,
-            fontSize: 'apos;12px'apos;,
-            fontWeight: 'apos;600'apos;,
-            cursor: 'apos;pointer'apos;,
-            display: 'apos;flex'apos;,
-            alignItems: 'apos;center'apos;,
-            gap: 'apos;6px'apos;
+            background: '#f3f4f6',
+            color: '#374151',
+            border: '1px solid #d1d5db',
+            padding: '8px 16px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
           }}
         >
           <FontAwesomeIcon icon={faChartLine} />
-          {state.showAnalytics ? 'apos;Masquer'apos; : 'apos;Afficher'apos;} Analytics
+          {state.showAnalytics ? 'Masquer' : 'Afficher'} Analytics
         </button>
 
         <button
           onClick={() => setState(prev => ({ ...prev, showOptimization: !prev.showOptimization }))}
           style={{
-            background: 'apos;#f3f4f6'apos;,
-            color: 'apos;#374151'apos;,
-            border: 'apos;1px solid #d1d5db'apos;,
-            padding: 'apos;8px 16px'apos;,
-            borderRadius: 'apos;6px'apos;,
-            fontSize: 'apos;12px'apos;,
-            fontWeight: 'apos;600'apos;,
-            cursor: 'apos;pointer'apos;,
-            display: 'apos;flex'apos;,
-            alignItems: 'apos;center'apos;,
-            gap: 'apos;6px'apos;
+            background: '#f3f4f6',
+            color: '#374151',
+            border: '1px solid #d1d5db',
+            padding: '8px 16px',
+            borderRadius: '6px',
+            fontSize: '12px',
+            fontWeight: '600',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
           }}
         >
           <FontAwesomeIcon icon={faLightbulb} />
-          {state.showOptimization ? 'apos;Masquer'apos; : 'apos;Afficher'apos;} Optimisations
+          {state.showOptimization ? 'Masquer' : 'Afficher'} Optimisations
         </button>
       </div>
 

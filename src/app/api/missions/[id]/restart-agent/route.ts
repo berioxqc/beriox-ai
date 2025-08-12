@@ -33,12 +33,12 @@ export async function POST(
     const agentBriefs: Record<string, string> = {
       "KarineAI": `**Mission:** ${objective}
 
-Salut mon petit méthodique ! 😊 Voici ce que j'apos;ai préparé pour toi avec mon sourire habituel.
+Salut mon petit méthodique ! 😊 Voici ce que j'ai préparé pour toi avec mon sourire habituel.
 
 **Tes objectifs:**
 - Découpe ce projet en tâches simples et faisables
 - Structure la stratégie marketing globale avec ta rigueur habituelle
-- Assure-toi que les délais sont réalistes (tu sais comme j'apos;aime quand tout roule!)
+- Assure-toi que les délais sont réalistes (tu sais comme j'aime quand tout roule!)
 - Coordonne avec Hugo pour la partie tech et Élodie pour le contenu
 
 **Charge estimée:** Moyenne - tu gères ça les doigts dans le nez!
@@ -58,8 +58,8 @@ Salut mec! 🎮 Sors ton hoodie préféré, on a du boulot!
 - Outils et frameworks optimaux
 - Timeline de développement réaliste
 
-**Ton style:** Efficace mais détendu - comme d'apos;hab!
-**Collab:** Karine pour le cadrage, Élodie pour l'apos;UX/UI
+**Ton style:** Efficace mais détendu - comme d'hab!
+**Collab:** Karine pour le cadrage, Élodie pour l'UX/UI
 
 **Setup:** Café ✓ Playlist ✓ Mode focus ✓`,
 
@@ -69,7 +69,7 @@ Mission: ${objective}
 
 Analyse requise. Données à traiter. Optimisation en cours.
 
-**Périmètre d'apos;analyse:**
+**Périmètre d'analyse:**
 - KPIs pertinents à définir
 - Métriques de performance
 - Outils de tracking recommandés
@@ -80,7 +80,7 @@ Analyse requise. Données à traiter. Optimisation en cours.
 
 *"Les données ne mentent jamais. Les interprétations parfois."*`,
 
-      "ElodieAI": `✍️ **Brief d'apos;ElodieAI (31 ans)** - Rédactrice & Content Manager
+      "ElodieAI": `✍️ **Brief d'ElodieAI (31 ans)** - Rédactrice & Content Manager
     
 Mission: ${objective}
 
@@ -95,7 +95,7 @@ Coucou Élodie! 🎵 Mets ta playlist lo-fi, on va créer quelque chose de beau!
 **Style:** Calme, précise, créative - comme tu aimes!
 **Collaboration:** Hugo pour les projets web, Clara pour les révisions croisées
 
-**Bonus:** N'apos;hésite pas avec tes jeux de mots discrets, ça fait toujours la différence! ✨`,
+**Bonus:** N'hésite pas avec tes jeux de mots discrets, ça fait toujours la différence! ✨`,
 
       "ClaraLaCloseuse": `🎯 **Brief de Clara La Closeuse (35 ans)** - Copywriter Commercial
     
@@ -122,9 +122,9 @@ Focus. Essentiel. Livrable.
 
 **Épure cette mission:**
 - Élimine le superflu
-- Garde uniquement l'apos;essentiel
-- Assure-toi que c'apos;est réalisable rapidement
-- Ramène tout à l'apos;objectif principal
+- Garde uniquement l'essentiel
+- Assure-toi que c'est réalisable rapidement
+- Ramène tout à l'objectif principal
 
 **Méthode:** Minimaliste. Direct. Efficace.
 **Délai:** Le plus court possible sans sacrifier la qualité.
@@ -139,7 +139,7 @@ Focus. Essentiel. Livrable.
 ## Positionnement
 - **Proposition de valeur unique**: Innovation technologique accessible
 - **Cible principale**: Professionnels 25-45 ans, early adopters
-- **Différenciation**: Simplicité d'apos;usage + performance premium
+- **Différenciation**: Simplicité d'usage + performance premium
 
 ## Messages clés
 1. "La solution qui simplifie votre quotidien"
@@ -149,7 +149,7 @@ Focus. Essentiel. Livrable.
 ## Plan de contenu
 - **Blog**: 3 articles/semaine sur les use cases
 - **Social Media**: Stories quotidiennes, posts 2x/jour
-- **Email**: Newsletter hebdomadaire + séquences d'apos;onboarding
+- **Email**: Newsletter hebdomadaire + séquences d'onboarding
 - **Webinaires**: Sessions démo bi-mensuelles
 
 ## KPIs
@@ -217,7 +217,7 @@ Focus. Essentiel. Livrable.
 
 ## Ligne éditoriale
 **Ton**: Professionnel mais accessible, expert sans être intimidant
-**Angle**: "Comment faire mieux avec moins d'apos;effort"
+**Angle**: "Comment faire mieux avec moins d'effort"
 **Valeurs**: Efficacité, simplicité, résultats concrets
 
 ## Planning éditorial (4 semaines)
@@ -251,7 +251,7 @@ Focus. Essentiel. Livrable.
 
 ## Landing page
 **Headline**: "Transformez votre [problème] en opportunité en 30 jours"
-**Sous-titre**: "Rejoignez 2 847 professionnels qui ont déjà fait le choix de l'apos;efficacité"
+**Sous-titre**: "Rejoignez 2 847 professionnels qui ont déjà fait le choix de l'efficacité"
 
 ### Structure page
 1. **Hero**: Promesse + vidéo 90s
@@ -349,7 +349,7 @@ Focus. Essentiel. Livrable.
   } catch (error) {
     console.error("Restart Agent Error:", error);
     return NextResponse.json({ 
-      error: "Erreur lors du redémarrage de l'apos;agent" 
+      error: "Erreur lors du redémarrage de l'agent" 
     }, { status: 500 });
   }
 }

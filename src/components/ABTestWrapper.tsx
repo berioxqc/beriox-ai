@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, ReactNode } from 'apos;react'apos;;
-import { useSession } from 'apos;next-auth/react'apos;;
+import { useEffect, useState, ReactNode } from 'react';
+import { useSession } from 'next-auth/react';
 
 interface ABTestWrapperProps {
   experimentId: string;
@@ -37,7 +37,7 @@ export default function ABTestWrapper({
         setLoading(true);
         setError(null);
 
-        // Générer un sessionId si pas d'apos;utilisateur connecté
+        // Générer un sessionId si pas d'utilisateur connecté
         const sessionId = session?.user?.id || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
         const response = await fetch(`/api/ab-testing?action=variant&experimentId=${experimentId}&sessionId=${sessionId}`);
@@ -59,14 +59,14 @@ export default function ABTestWrapper({
         }
 
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('apos;Unknown error'apos;);
+        const error = err instanceof Error ? err : new Error('Unknown error');
         setError(error);
         
         if (onError) {
           onError(error);
         }
         
-        console.error('apos;AB Test Error:'apos;, error);
+        console.error('AB Test Error:', error);
       } finally {
         setLoading(false);
       }
@@ -80,10 +80,10 @@ export default function ABTestWrapper({
     if (!variant) return;
 
     try {
-      await fetch('apos;/api/ab-testing?action=conversion'apos;, {
-        method: 'apos;POST'apos;,
+      await fetch('/api/ab-testing?action=conversion', {
+        method: 'POST',
         headers: {
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           experimentId,
@@ -94,7 +94,7 @@ export default function ABTestWrapper({
         })
       });
     } catch (error) {
-      console.error('apos;Failed to record conversion:'apos;, error);
+      console.error('Failed to record conversion:', error);
     }
   };
 
@@ -119,8 +119,8 @@ export default function ABTestWrapper({
     return fallback;
   }
 
-  // Si children est une fonction, l'apos;appeler avec la variante
-  if (typeof children === 'apos;function'apos;) {
+  // Si children est une fonction, l'appeler avec la variante
+  if (typeof children === 'function') {
     return children(variant);
   }
 
@@ -128,7 +128,7 @@ export default function ABTestWrapper({
   return <>{children}</>;
 }
 
-// Hook pour utiliser l'apos;A/B testing
+// Hook pour utiliser l'A/B testing
 export function useABTest(experimentId: string) {
   const { data: session } = useSession();
   const [variant, setVariant] = useState<any>(null);
@@ -148,7 +148,7 @@ export function useABTest(experimentId: string) {
           setVariant(null);
         }
       } catch (error) {
-        console.error('apos;AB Test Error:'apos;, error);
+        console.error('AB Test Error:', error);
         setVariant(null);
       } finally {
         setLoading(false);
@@ -162,10 +162,10 @@ export function useABTest(experimentId: string) {
     if (!variant) return;
 
     try {
-      await fetch('apos;/api/ab-testing?action=conversion'apos;, {
-        method: 'apos;POST'apos;,
+      await fetch('/api/ab-testing?action=conversion', {
+        method: 'POST',
         headers: {
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           experimentId,
@@ -176,7 +176,7 @@ export function useABTest(experimentId: string) {
         })
       });
     } catch (error) {
-      console.error('apos;Failed to record conversion:'apos;, error);
+      console.error('Failed to record conversion:', error);
     }
   };
 
@@ -193,7 +193,7 @@ export function ABTestButton({
   experimentId,
   defaultText,
   onClick,
-  className = 'apos;'apos;,
+  className = '',
   ...props
 }: {
   experimentId: string;
@@ -206,7 +206,7 @@ export function ABTestButton({
 
   const handleClick = () => {
     // Enregistrer la conversion
-    recordConversion('apos;button_click'apos;, undefined, {
+    recordConversion('button_click', undefined, {
       buttonText: variant?.config?.buttonText || defaultText
     });
 
@@ -247,7 +247,7 @@ export function ABTestLayout({
     return <>{controlLayout}</>;
   }
 
-  if (variant.type === 'apos;control'apos;) {
+  if (variant.type === 'control') {
     return <>{controlLayout}</>;
   } else {
     return <>{variantLayout}</>;
@@ -276,7 +276,7 @@ export function ABTestContent({
     return <>{controlContent}</>;
   }
 
-  if (variant.type === 'apos;control'apos;) {
+  if (variant.type === 'control') {
     return <>{controlContent}</>;
   } else {
     return <>{variantContent}</>;

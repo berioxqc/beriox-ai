@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { healthMonitor } from 'apos;@/lib/health-monitor'apos;;
-import { globalErrorHandler } from 'apos;@/lib/error-handler'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { healthMonitor } from '@/lib/health-monitor';
+import { globalErrorHandler } from '@/lib/error-handler';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const detailed = searchParams.get('apos;detailed'apos;) === 'apos;true'apos;;
-    const runChecks = searchParams.get('apos;run'apos;) === 'apos;true'apos;;
+    const detailed = searchParams.get('detailed') === 'true';
+    const runChecks = searchParams.get('run') === 'true';
 
-    // Si on demande d'apos;exécuter les vérifications
+    // Si on demande d'exécuter les vérifications
     if (runChecks) {
       await healthMonitor.runAllChecks();
     }
@@ -36,8 +36,8 @@ export async function GET(request: NextRequest) {
     };
 
     // Log de la requête de santé
-    logger.info('apos;Health check requested'apos;, {
-      action: 'apos;health_check_request'apos;,
+    logger.info('Health check requested', {
+      action: 'health_check_request',
       metadata: {
         detailed,
         runChecks,
@@ -50,13 +50,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response);
 
   } catch (error) {
-    logger.error('apos;Health check failed'apos;, error as Error, {
-      action: 'apos;health_check_error'apos;
+    logger.error('Health check failed', error as Error, {
+      action: 'health_check_error'
     });
 
     return NextResponse.json({
-      status: 'apos;critical'apos;,
-      error: 'apos;Health check system unavailable'apos;,
+      status: 'critical',
+      error: 'Health check system unavailable',
       timestamp: new Date().toISOString()
     }, { status: 503 });
   }
@@ -65,46 +65,46 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const action = searchParams.get('apos;action'apos;);
+    const action = searchParams.get('action');
 
     switch (action) {
-      case 'apos;start'apos;:
+      case 'start':
         healthMonitor.start();
         return NextResponse.json({
           success: true,
-          message: 'apos;Health monitor started'apos;,
+          message: 'Health monitor started',
           timestamp: new Date().toISOString()
         });
 
-      case 'apos;stop'apos;:
+      case 'stop':
         healthMonitor.stop();
         return NextResponse.json({
           success: true,
-          message: 'apos;Health monitor stopped'apos;,
+          message: 'Health monitor stopped',
           timestamp: new Date().toISOString()
         });
 
-      case 'apos;reset'apos;:
+      case 'reset':
         globalErrorHandler.resetErrorCounts();
         return NextResponse.json({
           success: true,
-          message: 'apos;Error counts reset'apos;,
+          message: 'Error counts reset',
           timestamp: new Date().toISOString()
         });
 
       default:
         return NextResponse.json({
-          error: 'apos;Invalid action. Use: start, stop, or reset'apos;
+          error: 'Invalid action. Use: start, stop, or reset'
         }, { status: 400 });
     }
 
   } catch (error) {
-    logger.error('apos;Health monitor action failed'apos;, error as Error, {
-      action: 'apos;health_monitor_action_error'apos;
+    logger.error('Health monitor action failed', error as Error, {
+      action: 'health_monitor_action_error'
     });
 
     return NextResponse.json({
-      error: 'apos;Health monitor action failed'apos;
+      error: 'Health monitor action failed'
     }, { status: 500 });
   }
 }

@@ -1,29 +1,29 @@
-'apos;use client'apos;;
+'use client';
 
-import { useState } from 'apos;react'apos;;
-import { useSession } from 'apos;next-auth/react'apos;;
-import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
-import { useTheme } from 'apos;@/hooks/useTheme'apos;;
-import Layout from 'apos;@/components/Layout'apos;;
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useTheme } from '@/hooks/useTheme';
+import Layout from '@/components/Layout';
 
 export default function PremiumPricingPage() {
   const { data: session } = useSession();
   const theme = useTheme();
   const [loading, setLoading] = useState<string | null>(null);
-  const [billingPeriod, setBillingPeriod] = useState<'apos;monthly'apos; | 'apos;yearly'apos;>('apos;monthly'apos;);
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
 
   const handleSubscribe = async (planId: string) => {
     if (!session) {
-      alert('apos;Veuillez vous connecter pour souscrire'apos;);
+      alert('Veuillez vous connecter pour souscrire');
       return;
     }
 
     setLoading(planId);
 
     try {
-      const res = await fetch('apos;/api/stripe/checkout'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ planId }),
       });
 
@@ -32,11 +32,11 @@ export default function PremiumPricingPage() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        throw new Error(data.error || 'apos;Erreur lors de la redirection'apos;);
+        throw new Error(data.error || 'Erreur lors de la redirection');
       }
     } catch (error: any) {
-      console.error('apos;Erreur souscription:'apos;, error);
-      alert('apos;Erreur lors de la souscription: 'apos; + error.message);
+      console.error('Erreur souscription:', error);
+      alert('Erreur lors de la souscription: ' + error.message);
     } finally {
       setLoading(null);
     }
@@ -44,103 +44,103 @@ export default function PremiumPricingPage() {
 
   const plans = [
     {
-      id: 'apos;free'apos;,
-      name: 'apos;Gratuit'apos;,
-      description: 'apos;Parfait pour découvrir Beriox'apos;,
-      price: billingPeriod === 'apos;monthly'apos; ? 0 : 0,
+      id: 'free',
+      name: 'Gratuit',
+      description: 'Parfait pour découvrir Beriox',
+      price: billingPeriod === 'monthly' ? 0 : 0,
       originalPrice: null,
-      period: billingPeriod === 'apos;monthly'apos; ? 'apos;/mois'apos; : 'apos;/an'apos;,
+      period: billingPeriod === 'monthly' ? '/mois' : '/an',
       isPopular: false,
       features: [
-        'apos;10 missions par mois'apos;,
-        'apos;Rapports basiques (3 APIs)'apos;,
-        'apos;Beriox Performance Index (BPI)'apos;,
-        'apos;Beriox Trust Score'apos;,
-        'apos;Support communautaire'apos;,
-        'apos;Analyses de sécurité de base'apos;
+        '10 missions par mois',
+        'Rapports basiques (3 APIs)',
+        'Beriox Performance Index (BPI)',
+        'Beriox Trust Score',
+        'Support communautaire',
+        'Analyses de sécurité de base'
       ],
       limitations: [
-        'apos;Pas de prédictions IA'apos;,
-        'apos;Pas d\'apos;Opportunity Radar'apos;,
-        'apos;Pas d\'apos;alertes proactives'apos;,
-        'apos;Pas de vue 360° multi-sources'apos;
+        'Pas de prédictions IA',
+        'Pas d\'Opportunity Radar',
+        'Pas d\'alertes proactives',
+        'Pas de vue 360° multi-sources'
       ],
-      buttonText: 'apos;Commencer gratuitement'apos;,
+      buttonText: 'Commencer gratuitement',
       buttonColor: theme.colors.neutral[600]
     },
     {
-      id: 'apos;pro'apos;,
-      name: 'apos;Pro'apos;,
-      description: 'apos;Pour les professionnels du marketing'apos;,
-      price: billingPeriod === 'apos;monthly'apos; ? 25 : 20,
-      originalPrice: billingPeriod === 'apos;monthly'apos; ? 45 : 36,
-      period: billingPeriod === 'apos;monthly'apos; ? 'apos;/mois'apos; : 'apos;/mois (facturé annuellement)'apos;,
+      id: 'pro',
+      name: 'Pro',
+      description: 'Pour les professionnels du marketing',
+      price: billingPeriod === 'monthly' ? 25 : 20,
+      originalPrice: billingPeriod === 'monthly' ? 45 : 36,
+      period: billingPeriod === 'monthly' ? '/mois' : '/mois (facturé annuellement)',
       isPopular: true,
       features: [
-        'apos;50 missions par mois'apos;,
-        'apos;Rapports détaillés (8 APIs)'apos;,
-        'apos;Vue 360° multi-sources'apos;,
-        'apos;KPIs prévisionnels avec IA'apos;,
-        'apos;Opportunity Radar (Top 5 actions)'apos;,
-        'apos;Prédictions trafic 30 jours'apos;,
-        'apos;Score risque SEO'apos;,
-        'apos;Corrélations SEO + Performance'apos;,
-        'apos;Support prioritaire'apos;
+        '50 missions par mois',
+        'Rapports détaillés (8 APIs)',
+        'Vue 360° multi-sources',
+        'KPIs prévisionnels avec IA',
+        'Opportunity Radar (Top 5 actions)',
+        'Prédictions trafic 30 jours',
+        'Score risque SEO',
+        'Corrélations SEO + Performance',
+        'Support prioritaire'
       ],
       limitations: [
-        'apos;Pas d\'apos;alertes proactives temps réel'apos;,
-        'apos;Pas de heatmaps intégrées'apos;,
-        'apos;Pas de flux navigation avancé'apos;
+        'Pas d\'alertes proactives temps réel',
+        'Pas de heatmaps intégrées',
+        'Pas de flux navigation avancé'
       ],
-      buttonText: 'apos;Essayer Pro'apos;,
+      buttonText: 'Essayer Pro',
       buttonColor: theme.colors.primary.main
     },
     {
-      id: 'apos;enterprise'apos;,
-      name: 'apos;Enterprise'apos;,
-      description: 'apos;Solution complète pour les experts'apos;,
-      price: billingPeriod === 'apos;monthly'apos; ? 65 : 52,
-      originalPrice: billingPeriod === 'apos;monthly'apos; ? 125 : 100,
-      period: billingPeriod === 'apos;monthly'apos; ? 'apos;/mois'apos; : 'apos;/mois (facturé annuellement)'apos;,
+      id: 'enterprise',
+      name: 'Enterprise',
+      description: 'Solution complète pour les experts',
+      price: billingPeriod === 'monthly' ? 65 : 52,
+      originalPrice: billingPeriod === 'monthly' ? 125 : 100,
+      period: billingPeriod === 'monthly' ? '/mois' : '/mois (facturé annuellement)',
       isPopular: false,
       features: [
-        'apos;Missions illimitées'apos;,
-        'apos;Rapports ultra-complets (toutes APIs)'apos;,
-        'apos;Alertes proactives intelligentes'apos;,
-        'apos;Détection chutes de trafic temps réel'apos;,
-        'apos;Heatmaps intégrées (Hotjar/Clarity)'apos;,
-        'apos;Flux navigation utilisateur'apos;,
-        'apos;Données invisibles concurrents'apos;,
-        'apos;Beriox Opportunity Radar avancé'apos;,
-        'apos;Prédictions IA multi-métriques'apos;,
-        'apos;Support dédié + consulting'apos;,
-        'apos;Accès API complet'apos;,
-        'apos;Rapports personnalisés'apos;
+        'Missions illimitées',
+        'Rapports ultra-complets (toutes APIs)',
+        'Alertes proactives intelligentes',
+        'Détection chutes de trafic temps réel',
+        'Heatmaps intégrées (Hotjar/Clarity)',
+        'Flux navigation utilisateur',
+        'Données invisibles concurrents',
+        'Beriox Opportunity Radar avancé',
+        'Prédictions IA multi-métriques',
+        'Support dédié + consulting',
+        'Accès API complet',
+        'Rapports personnalisés'
       ],
       limitations: [],
-      buttonText: 'apos;Passer à Enterprise'apos;,
+      buttonText: 'Passer à Enterprise',
       buttonColor: theme.colors.secondary
     }
   ];
 
   return (
     <Layout>
-      <div style={{ maxWidth: 'apos;1200px'apos;, margin: 'apos;0 auto'apos;, padding: theme.spacing.xl }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: theme.spacing.xl }}>
         {/* Header */}
-        <div style={{ textAlign: 'apos;center'apos;, marginBottom: theme.spacing.xl }}>
+        <div style={{ textAlign: 'center', marginBottom: theme.spacing.xl }}>
           <h1 style={{
-            fontSize: 'apos;3rem'apos;,
-            fontWeight: 'apos;bold'apos;,
+            fontSize: '3rem',
+            fontWeight: 'bold',
             color: theme.colors.neutral[900],
             marginBottom: theme.spacing.md
           }}>
             Tarifs Beriox AI
           </h1>
           <p style={{
-            fontSize: 'apos;1.25rem'apos;,
+            fontSize: '1.25rem',
             color: theme.colors.neutral[600],
             marginBottom: theme.spacing.lg,
-            maxWidth: 'apos;600px'apos;,
+            maxWidth: '600px',
             margin: `0 auto ${theme.spacing.lg} auto`
           }}>
             Choisissez le plan qui correspond à vos besoins. 
@@ -149,13 +149,13 @@ export default function PremiumPricingPage() {
 
           {/* Badge Promo */}
           <div style={{
-            display: 'apos;inline-block'apos;,
+            display: 'inline-block',
             padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-            backgroundColor: theme.colors.success + 'apos;20'apos;,
+            backgroundColor: theme.colors.success + '20',
             color: theme.colors.success,
-            borderRadius: 'apos;25px'apos;,
-            fontSize: 'apos;14px'apos;,
-            fontWeight: 'apos;600'apos;,
+            borderRadius: '25px',
+            fontSize: '14px',
+            fontWeight: '600',
             marginBottom: theme.spacing.lg
           }}>
             🎉 Offre de lancement : -50% sur tous les plans pendant 3 mois !
@@ -163,56 +163,56 @@ export default function PremiumPricingPage() {
 
           {/* Toggle Billing */}
           <div style={{
-            display: 'apos;flex'apos;,
-            alignItems: 'apos;center'apos;,
-            justifyContent: 'apos;center'apos;,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             gap: theme.spacing.md,
             marginBottom: theme.spacing.xl
           }}>
             <span style={{ 
-              color: billingPeriod === 'apos;monthly'apos; ? theme.colors.neutral[900] : theme.colors.neutral[500],
-              fontWeight: 'apos;500'apos;
+              color: billingPeriod === 'monthly' ? theme.colors.neutral[900] : theme.colors.neutral[500],
+              fontWeight: '500'
             }}>
               Mensuel
             </span>
             <button
-              onClick={() => setBillingPeriod(billingPeriod === 'apos;monthly'apos; ? 'apos;yearly'apos; : 'apos;monthly'apos;)}
+              onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly')}
               style={{
-                width: 'apos;50px'apos;,
-                height: 'apos;28px'apos;,
-                borderRadius: 'apos;14px'apos;,
-                border: 'apos;none'apos;,
-                backgroundColor: billingPeriod === 'apos;yearly'apos; ? theme.colors.primary.main : theme.colors.neutral[300],
-                position: 'apos;relative'apos;,
-                cursor: 'apos;pointer'apos;,
-                transition: 'apos;all 0.3s'apos;
+                width: '50px',
+                height: '28px',
+                borderRadius: '14px',
+                border: 'none',
+                backgroundColor: billingPeriod === 'yearly' ? theme.colors.primary.main : theme.colors.neutral[300],
+                position: 'relative',
+                cursor: 'pointer',
+                transition: 'all 0.3s'
               }}
             >
               <div style={{
-                width: 'apos;20px'apos;,
-                height: 'apos;20px'apos;,
-                borderRadius: 'apos;50%'apos;,
-                backgroundColor: 'apos;white'apos;,
-                position: 'apos;absolute'apos;,
-                top: 'apos;4px'apos;,
-                left: billingPeriod === 'apos;yearly'apos; ? 'apos;26px'apos; : 'apos;4px'apos;,
-                transition: 'apos;all 0.3s'apos;
+                width: '20px',
+                height: '20px',
+                borderRadius: '50%',
+                backgroundColor: 'white',
+                position: 'absolute',
+                top: '4px',
+                left: billingPeriod === 'yearly' ? '26px' : '4px',
+                transition: 'all 0.3s'
               }} />
             </button>
             <span style={{ 
-              color: billingPeriod === 'apos;yearly'apos; ? theme.colors.neutral[900] : theme.colors.neutral[500],
-              fontWeight: 'apos;500'apos;
+              color: billingPeriod === 'yearly' ? theme.colors.neutral[900] : theme.colors.neutral[500],
+              fontWeight: '500'
             }}>
               Annuel
             </span>
-            {billingPeriod === 'apos;yearly'apos; && (
+            {billingPeriod === 'yearly' && (
               <span style={{
-                fontSize: 'apos;12px'apos;,
+                fontSize: '12px',
                 backgroundColor: theme.colors.primary.light,
                 color: theme.colors.primary.dark,
                 padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-                borderRadius: 'apos;12px'apos;,
-                fontWeight: 'apos;500'apos;
+                borderRadius: '12px',
+                fontWeight: '500'
               }}>
                 -20%
               </span>
@@ -222,8 +222,8 @@ export default function PremiumPricingPage() {
 
         {/* Plans Grid */}
         <div style={{
-          display: 'apos;grid'apos;,
-          gridTemplateColumns: 'apos;repeat(auto-fit, minmax(350px, 1fr))'apos;,
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
           gap: theme.spacing.xl,
           marginBottom: theme.spacing.xl
         }}>
@@ -231,46 +231,46 @@ export default function PremiumPricingPage() {
             <div
               key={plan.id}
               style={{
-                backgroundColor: 'apos;white'apos;,
-                borderRadius: 'apos;20px'apos;,
+                backgroundColor: 'white',
+                borderRadius: '20px',
                 padding: theme.spacing.xl,
-                boxShadow: plan.isPopular ? 'apos;0 20px 40px rgba(90, 95, 202, 0.15)'apos; : 'apos;0 10px 30px rgba(0, 0, 0, 0.1)'apos;,
+                boxShadow: plan.isPopular ? '0 20px 40px rgba(90, 95, 202, 0.15)' : '0 10px 30px rgba(0, 0, 0, 0.1)',
                 border: plan.isPopular ? `2px solid ${theme.colors.primary.main}` : `1px solid ${theme.colors.neutral[200]}`,
-                position: 'apos;relative'apos;,
-                transform: plan.isPopular ? 'apos;scale(1.05)'apos; : 'apos;scale(1)'apos;,
-                transition: 'apos;all 0.3s'apos;
+                position: 'relative',
+                transform: plan.isPopular ? 'scale(1.05)' : 'scale(1)',
+                transition: 'all 0.3s'
               }}
             >
               {/* Popular Badge */}
               {plan.isPopular && (
                 <div style={{
-                  position: 'apos;absolute'apos;,
-                  top: 'apos;-12px'apos;,
-                  left: 'apos;50%'apos;,
-                  transform: 'apos;translateX(-50%)'apos;,
+                  position: 'absolute',
+                  top: '-12px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
                   backgroundColor: theme.colors.primary.main,
-                  color: 'apos;white'apos;,
+                  color: 'white',
                   padding: `${theme.spacing.xs} ${theme.spacing.lg}`,
-                  borderRadius: 'apos;20px'apos;,
-                  fontSize: 'apos;12px'apos;,
-                  fontWeight: 'apos;600'apos;
+                  borderRadius: '20px',
+                  fontSize: '12px',
+                  fontWeight: '600'
                 }}>
                   ⭐ PLUS POPULAIRE
                 </div>
               )}
 
               {/* Plan Header */}
-              <div style={{ textAlign: 'apos;center'apos;, marginBottom: theme.spacing.lg }}>
+              <div style={{ textAlign: 'center', marginBottom: theme.spacing.lg }}>
                 <h3 style={{
-                  fontSize: 'apos;1.5rem'apos;,
-                  fontWeight: 'apos;bold'apos;,
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
                   color: theme.colors.neutral[900],
                   marginBottom: theme.spacing.sm
                 }}>
                   {plan.name}
                 </h3>
                 <p style={{
-                  fontSize: 'apos;14px'apos;,
+                  fontSize: '14px',
                   color: theme.colors.neutral[600],
                   marginBottom: theme.spacing.lg
                 }}>
@@ -279,27 +279,27 @@ export default function PremiumPricingPage() {
 
                 {/* Price */}
                 <div style={{ marginBottom: theme.spacing.lg }}>
-                  <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;baseline'apos;, justifyContent: 'apos;center'apos;, gap: theme.spacing.sm }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: theme.spacing.sm }}>
                     {plan.originalPrice && (
                       <span style={{
-                        fontSize: 'apos;1.5rem'apos;,
+                        fontSize: '1.5rem',
                         color: theme.colors.neutral[400],
-                        textDecoration: 'apos;line-through'apos;
+                        textDecoration: 'line-through'
                       }}>
                         {plan.originalPrice} CAD
                       </span>
                     )}
                     <span style={{
-                      fontSize: plan.price === 0 ? 'apos;2.5rem'apos; : 'apos;3rem'apos;,
-                      fontWeight: 'apos;bold'apos;,
+                      fontSize: plan.price === 0 ? '2.5rem' : '3rem',
+                      fontWeight: 'bold',
                       color: plan.price === 0 ? theme.colors.neutral[600] : theme.colors.primary.main
                     }}>
-                      {plan.price === 0 ? 'apos;Gratuit'apos; : `${plan.price} CAD`}
+                      {plan.price === 0 ? 'Gratuit' : `${plan.price} CAD`}
                     </span>
                   </div>
                   {plan.price > 0 && (
                     <span style={{
-                      fontSize: 'apos;14px'apos;,
+                      fontSize: '14px',
                       color: theme.colors.neutral[500]
                     }}>
                       {plan.period}
@@ -311,24 +311,24 @@ export default function PremiumPricingPage() {
               {/* Features */}
               <div style={{ marginBottom: theme.spacing.lg }}>
                 <h4 style={{
-                  fontSize: 'apos;14px'apos;,
-                  fontWeight: 'apos;600'apos;,
+                  fontSize: '14px',
+                  fontWeight: '600',
                   color: theme.colors.neutral[900],
                   marginBottom: theme.spacing.md
                 }}>
                   ✅ Inclus :
                 </h4>
-                <ul style={{ listStyle: 'apos;none'apos;, padding: 0, margin: 0 }}>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                   {plan.features.map((feature, index) => (
                     <li key={index} style={{
-                      display: 'apos;flex'apos;,
-                      alignItems: 'apos;flex-start'apos;,
+                      display: 'flex',
+                      alignItems: 'flex-start',
                       gap: theme.spacing.sm,
                       marginBottom: theme.spacing.sm,
-                      fontSize: 'apos;14px'apos;,
+                      fontSize: '14px',
                       color: theme.colors.neutral[700]
                     }}>
-                      <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, marginTop: 'apos;2px'apos;, fontSize: 'apos;12px'apos; }} />
+                      <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, marginTop: '2px', fontSize: '12px' }} />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -339,24 +339,24 @@ export default function PremiumPricingPage() {
               {plan.limitations.length > 0 && (
                 <div style={{ marginBottom: theme.spacing.lg }}>
                   <h4 style={{
-                    fontSize: 'apos;14px'apos;,
-                    fontWeight: 'apos;600'apos;,
+                    fontSize: '14px',
+                    fontWeight: '600',
                     color: theme.colors.neutral[600],
                     marginBottom: theme.spacing.md
                   }}>
                     ⚠️ Limitations :
                   </h4>
-                  <ul style={{ listStyle: 'apos;none'apos;, padding: 0, margin: 0 }}>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                     {plan.limitations.map((limitation, index) => (
                       <li key={index} style={{
-                        display: 'apos;flex'apos;,
-                        alignItems: 'apos;flex-start'apos;,
+                        display: 'flex',
+                        alignItems: 'flex-start',
                         gap: theme.spacing.sm,
                         marginBottom: theme.spacing.sm,
-                        fontSize: 'apos;14px'apos;,
+                        fontSize: '14px',
                         color: theme.colors.neutral[500]
                       }}>
-                        <FontAwesomeIcon icon="times" style={{ color: theme.colors.neutral[400], marginTop: 'apos;2px'apos;, fontSize: 'apos;12px'apos; }} />
+                        <FontAwesomeIcon icon="times" style={{ color: theme.colors.neutral[400], marginTop: '2px', fontSize: '12px' }} />
                         <span>{limitation}</span>
                       </li>
                     ))}
@@ -366,19 +366,19 @@ export default function PremiumPricingPage() {
 
               {/* CTA Button */}
               <button
-                onClick={() => plan.id !== 'apos;free'apos; && handleSubscribe(plan.id)}
+                onClick={() => plan.id !== 'free' && handleSubscribe(plan.id)}
                 disabled={loading === plan.id}
                 style={{
-                  width: 'apos;100%'apos;,
+                  width: '100%',
                   padding: theme.spacing.md,
-                  borderRadius: 'apos;12px'apos;,
-                  border: 'apos;none'apos;,
-                  backgroundColor: plan.id === 'apos;free'apos; ? theme.colors.neutral[200] : plan.buttonColor,
-                  color: plan.id === 'apos;free'apos; ? theme.colors.neutral[600] : 'apos;white'apos;,
-                  fontSize: 'apos;16px'apos;,
-                  fontWeight: 'apos;600'apos;,
-                  cursor: plan.id === 'apos;free'apos; ? 'apos;default'apos; : 'apos;pointer'apos;,
-                  transition: 'apos;all 0.3s'apos;,
+                  borderRadius: '12px',
+                  border: 'none',
+                  backgroundColor: plan.id === 'free' ? theme.colors.neutral[200] : plan.buttonColor,
+                  color: plan.id === 'free' ? theme.colors.neutral[600] : 'white',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: plan.id === 'free' ? 'default' : 'pointer',
+                  transition: 'all 0.3s',
                   opacity: loading === plan.id ? 0.7 : 1
                 }}
               >
@@ -389,10 +389,10 @@ export default function PremiumPricingPage() {
                 )}
               </button>
 
-              {plan.id === 'apos;free'apos; && (
+              {plan.id === 'free' && (
                 <p style={{
-                  textAlign: 'apos;center'apos;,
-                  fontSize: 'apos;12px'apos;,
+                  textAlign: 'center',
+                  fontSize: '12px',
                   color: theme.colors.neutral[500],
                   marginTop: theme.spacing.sm
                 }}>
@@ -405,15 +405,15 @@ export default function PremiumPricingPage() {
 
         {/* FAQ */}
         <div style={{
-          backgroundColor: 'apos;white'apos;,
-          borderRadius: 'apos;16px'apos;,
+          backgroundColor: 'white',
+          borderRadius: '16px',
           padding: theme.spacing.xl,
-          boxShadow: 'apos;0 4px 12px rgba(0, 0, 0, 0.05)'apos;
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)'
         }}>
           <h2 style={{
-            fontSize: 'apos;2rem'apos;,
-            fontWeight: 'apos;bold'apos;,
-            textAlign: 'apos;center'apos;,
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            textAlign: 'center',
             marginBottom: theme.spacing.xl,
             color: theme.colors.neutral[900]
           }}>
@@ -421,45 +421,45 @@ export default function PremiumPricingPage() {
           </h2>
 
           <div style={{
-            display: 'apos;grid'apos;,
-            gridTemplateColumns: 'apos;repeat(auto-fit, minmax(400px, 1fr))'apos;,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
             gap: theme.spacing.lg
           }}>
             <div>
-              <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Qu'apos;est-ce que le Beriox Performance Index (BPI) ?
+              <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
+                Qu'est-ce que le Beriox Performance Index (BPI) ?
               </h3>
-              <p style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], lineHeight: 'apos;1.6'apos; }}>
+              <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Le BPI est notre score propriétaire qui combine SEO (30%), Performance (25%), Conversion (25%) et Sécurité (20%) 
                 pour donner une vision globale de la santé de votre site web.
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Comment fonctionne l'apos;Opportunity Radar ?
+              <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
+                Comment fonctionne l'Opportunity Radar ?
               </h3>
-              <p style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], lineHeight: 'apos;1.6'apos; }}>
+              <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Notre IA analyse vos données et identifie automatiquement les 5 actions prioritaires avec le meilleur ROI 
                 pour améliorer vos performances.
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
                 Puis-je changer de plan à tout moment ?
               </h3>
-              <p style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], lineHeight: 'apos;1.6'apos; }}>
+              <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Oui, vous pouvez upgrader ou downgrader votre plan à tout moment. Les changements prennent effet immédiatement.
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
                 Les APIs sont-elles incluses dans le prix ?
               </h3>
-              <p style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], lineHeight: 'apos;1.6'apos; }}>
-                Oui, tous les coûts d'apos;APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
+              <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
+                Oui, tous les coûts d'APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
                 pour vous offrir le meilleur service au meilleur prix.
               </p>
             </div>
@@ -468,39 +468,39 @@ export default function PremiumPricingPage() {
 
         {/* CTA Final */}
         <div style={{
-          textAlign: 'apos;center'apos;,
+          textAlign: 'center',
           marginTop: theme.spacing.xl,
           padding: theme.spacing.xl,
           backgroundColor: theme.colors.primary.light,
-          borderRadius: 'apos;16px'apos;
+          borderRadius: '16px'
         }}>
           <h2 style={{
-            fontSize: 'apos;2rem'apos;,
-            fontWeight: 'apos;bold'apos;,
+            fontSize: '2rem',
+            fontWeight: 'bold',
             color: theme.colors.primary.dark,
             marginBottom: theme.spacing.md
           }}>
             Prêt à optimiser votre présence digitale ?
           </h2>
           <p style={{
-            fontSize: 'apos;1.1rem'apos;,
+            fontSize: '1.1rem',
             color: theme.colors.primary.dark,
             marginBottom: theme.spacing.lg
           }}>
             Rejoignez les professionnels qui font confiance à Beriox AI pour leurs analyses.
           </p>
           <button
-            onClick={() => handleSubscribe('apos;pro'apos;)}
+            onClick={() => handleSubscribe('pro')}
             style={{
               padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-              borderRadius: 'apos;12px'apos;,
-              border: 'apos;none'apos;,
+              borderRadius: '12px',
+              border: 'none',
               backgroundColor: theme.colors.primary.main,
-              color: 'apos;white'apos;,
-              fontSize: 'apos;18px'apos;,
-              fontWeight: 'apos;600'apos;,
-              cursor: 'apos;pointer'apos;,
-              boxShadow: 'apos;0 4px 12px rgba(90, 95, 202, 0.3)'apos;
+              color: 'white',
+              fontSize: '18px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(90, 95, 202, 0.3)'
             }}
           >
             Commencer avec Pro - 25 CAD/mois

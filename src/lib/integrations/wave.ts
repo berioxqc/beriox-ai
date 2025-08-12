@@ -1,8 +1,8 @@
-import { ApiResponse, AccessibilityData } from 'apos;./types'apos;;
+import { ApiResponse, AccessibilityData } from './types';
 
 export class WaveAPI {
   private apiKey: string;
-  private baseUrl = 'apos;https://wave.webaim.org/api/request'apos;;
+  private baseUrl = 'https://wave.webaim.org/api/request';
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -13,7 +13,7 @@ export class WaveAPI {
       const params = new URLSearchParams({
         key: this.apiKey,
         url: url,
-        format: 'apos;json'apos;,
+        format: 'json',
       });
 
       const response = await fetch(`${this.baseUrl}?${params}`);
@@ -25,7 +25,7 @@ export class WaveAPI {
       const data = await response.json();
 
       if (data.status?.success !== true) {
-        throw new Error(data.status?.error || 'apos;WAVE analysis failed'apos;);
+        throw new Error(data.status?.error || 'WAVE analysis failed');
       }
 
       const categories = data.categories || {};
@@ -35,7 +35,7 @@ export class WaveAPI {
       const alertCount = Object.values(categories.alert || {}).reduce((sum: number, count: any) => sum + count, 0);
       const contrastErrorCount = Object.values(categories.contrast || {}).reduce((sum: number, count: any) => sum + count, 0);
       
-      // Score sur 100 (plus il y a d'apos;erreurs, plus le score est bas)
+      // Score sur 100 (plus il y a d'erreurs, plus le score est bas)
       const totalIssues = errorCount + (alertCount * 0.5) + contrastErrorCount;
       const score = Math.max(0, Math.min(100, 100 - (totalIssues * 2)));
 
@@ -55,14 +55,14 @@ export class WaveAPI {
       }));
 
       // Déterminer le niveau WCAG
-      let wcagLevel: 'apos;A'apos; | 'apos;AA'apos; | 'apos;AAA'apos; | 'apos;none'apos; = 'apos;none'apos;;
+      let wcagLevel: 'A' | 'AA' | 'AAA' | 'none' = 'none';
       if (errorCount === 0) {
         if (alertCount === 0) {
-          wcagLevel = 'apos;AAA'apos;;
+          wcagLevel = 'AAA';
         } else if (alertCount <= 2) {
-          wcagLevel = 'apos;AA'apos;;
+          wcagLevel = 'AA';
         } else {
-          wcagLevel = 'apos;A'apos;;
+          wcagLevel = 'A';
         }
       }
 
@@ -86,67 +86,67 @@ export class WaveAPI {
 
   private mapErrorType(type: string): string {
     const typeMap: Record<string, string> = {
-      'apos;alt_missing'apos;: 'apos;Images sans texte alternatif'apos;,
-      'apos;alt_redundant'apos;: 'apos;Texte alternatif redondant'apos;,
-      'apos;alt_duplicate'apos;: 'apos;Texte alternatif dupliqué'apos;,
-      'apos;alt_spacer'apos;: 'apos;Image d\'apos;espacement avec alt'apos;,
-      'apos;contrast'apos;: 'apos;Contraste insuffisant'apos;,
-      'apos;heading_missing'apos;: 'apos;Structure de titres manquante'apos;,
-      'apos;heading_skipped'apos;: 'apos;Niveau de titre sauté'apos;,
-      'apos;label_missing'apos;: 'apos;Label manquant'apos;,
-      'apos;label_multiple'apos;: 'apos;Labels multiples'apos;,
-      'apos;language_missing'apos;: 'apos;Langue de page manquante'apos;,
-      'apos;link_empty'apos;: 'apos;Lien vide'apos;,
-      'apos;link_redundant'apos;: 'apos;Lien redondant'apos;,
+      'alt_missing': 'Images sans texte alternatif',
+      'alt_redundant': 'Texte alternatif redondant',
+      'alt_duplicate': 'Texte alternatif dupliqué',
+      'alt_spacer': 'Image d\'espacement avec alt',
+      'contrast': 'Contraste insuffisant',
+      'heading_missing': 'Structure de titres manquante',
+      'heading_skipped': 'Niveau de titre sauté',
+      'label_missing': 'Label manquant',
+      'label_multiple': 'Labels multiples',
+      'language_missing': 'Langue de page manquante',
+      'link_empty': 'Lien vide',
+      'link_redundant': 'Lien redondant',
     };
 
-    return typeMap[type] || type.replace(/_/g, 'apos; 'apos;).replace(/\b\w/g, l => l.toUpperCase());
+    return typeMap[type] || type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }
 
   private getErrorDescription(type: string): string {
     const descriptions: Record<string, string> = {
-      'apos;alt_missing'apos;: 'apos;Des images n\'apos;ont pas de texte alternatif, rendant le contenu inaccessible aux lecteurs d\'apos;écran'apos;,
-      'apos;contrast'apos;: 'apos;Le contraste entre le texte et l\'apos;arrière-plan est insuffisant pour une lecture facile'apos;,
-      'apos;heading_missing'apos;: 'apos;La page manque de structure de titres appropriée pour la navigation'apos;,
-      'apos;label_missing'apos;: 'apos;Des éléments de formulaire n\'apos;ont pas de labels associés'apos;,
-      'apos;language_missing'apos;: 'apos;L\'apos;attribut lang est manquant sur l\'apos;élément html'apos;,
-      'apos;link_empty'apos;: 'apos;Des liens sont vides ou n\'apos;ont pas de texte descriptif'apos;,
+      'alt_missing': 'Des images n\'ont pas de texte alternatif, rendant le contenu inaccessible aux lecteurs d\'écran',
+      'contrast': 'Le contraste entre le texte et l\'arrière-plan est insuffisant pour une lecture facile',
+      'heading_missing': 'La page manque de structure de titres appropriée pour la navigation',
+      'label_missing': 'Des éléments de formulaire n\'ont pas de labels associés',
+      'language_missing': 'L\'attribut lang est manquant sur l\'élément html',
+      'link_empty': 'Des liens sont vides ou n\'ont pas de texte descriptif',
     };
 
-    return descriptions[type] || 'apos;Problème d\'apos;accessibilité détecté'apos;;
+    return descriptions[type] || 'Problème d\'accessibilité détecté';
   }
 
   private getAlertDescription(type: string): string {
     const descriptions: Record<string, string> = {
-      'apos;alt_suspicious'apos;: 'apos;Le texte alternatif pourrait être amélioré'apos;,
-      'apos;heading_possible'apos;: 'apos;Ce texte pourrait être un titre'apos;,
-      'apos;link_suspicious'apos;: 'apos;Ce lien pourrait être amélioré'apos;,
-      'apos;noscript'apos;: 'apos;Contenu noscript détecté'apos;,
+      'alt_suspicious': 'Le texte alternatif pourrait être amélioré',
+      'heading_possible': 'Ce texte pourrait être un titre',
+      'link_suspicious': 'Ce lien pourrait être amélioré',
+      'noscript': 'Contenu noscript détecté',
     };
 
-    return descriptions[type] || 'apos;Alerte d\'apos;accessibilité'apos;;
+    return descriptions[type] || 'Alerte d\'accessibilité';
   }
 
-  private getErrorImpact(type: string): 'apos;minor'apos; | 'apos;moderate'apos; | 'apos;serious'apos; | 'apos;critical'apos; {
-    const impactMap: Record<string, 'apos;minor'apos; | 'apos;moderate'apos; | 'apos;serious'apos; | 'apos;critical'apos;> = {
-      'apos;alt_missing'apos;: 'apos;serious'apos;,
-      'apos;contrast'apos;: 'apos;serious'apos;,
-      'apos;heading_missing'apos;: 'apos;moderate'apos;,
-      'apos;label_missing'apos;: 'apos;serious'apos;,
-      'apos;language_missing'apos;: 'apos;moderate'apos;,
-      'apos;link_empty'apos;: 'apos;serious'apos;,
-      'apos;alt_redundant'apos;: 'apos;minor'apos;,
-      'apos;heading_skipped'apos;: 'apos;moderate'apos;,
+  private getErrorImpact(type: string): 'minor' | 'moderate' | 'serious' | 'critical' {
+    const impactMap: Record<string, 'minor' | 'moderate' | 'serious' | 'critical'> = {
+      'alt_missing': 'serious',
+      'contrast': 'serious',
+      'heading_missing': 'moderate',
+      'label_missing': 'serious',
+      'language_missing': 'moderate',
+      'link_empty': 'serious',
+      'alt_redundant': 'minor',
+      'heading_skipped': 'moderate',
     };
 
-    return impactMap[type] || 'apos;moderate'apos;;
+    return impactMap[type] || 'moderate';
   }
 
   async getCredits(): Promise<ApiResponse<number>> {
     try {
       const params = new URLSearchParams({
         key: this.apiKey,
-        action: 'apos;credits'apos;,
+        action: 'credits',
       });
 
       const response = await fetch(`${this.baseUrl}?${params}`);

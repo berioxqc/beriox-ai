@@ -53,7 +53,7 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
             fontWeight: "700",
             margin: 0,
             marginBottom: 8,
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
           }}>
             Bravo ! Vous avez testé Beriox AI
           </h2>
@@ -61,7 +61,7 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
             fontSize: "16px",
             margin: 0,
             opacity: 0.9,
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
           }}>
             Vos 10 essais gratuits sont terminés
           </p>
@@ -78,7 +78,7 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
               color: "#0a2540",
               margin: 0,
               marginBottom: 16,
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
               Continuez avec un compte gratuit
             </h3>
@@ -103,14 +103,14 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
                   <div style={{
                     fontSize: "16px"
                   }}>
-                    {benefit.split('apos; 'apos;)[0]}
+                    {benefit.split(' ')[0]}
                   </div>
                   <div style={{
                     fontSize: "14px",
                     color: "#425466",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                   }}>
-                    {benefit.substring(benefit.indexOf('apos; 'apos;) + 1)}
+                    {benefit.substring(benefit.indexOf(' ') + 1)}
                   </div>
                 </div>
               ))}
@@ -139,7 +139,7 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 12,
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onMouseOver={(e) => {
                 e.currentTarget.style.background = "#5a51e5";
@@ -172,7 +172,7 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 fontWeight: "500",
                 cursor: "pointer",
                 transition: "color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onMouseOver={(e) => e.currentTarget.style.color = "#425466"}
               onMouseOut={(e) => e.currentTarget.style.color = "#8898aa"}

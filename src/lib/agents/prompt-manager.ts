@@ -6,7 +6,7 @@
 export interface AgentPrompt {
   id: string;
   agentName: string;
-  promptType: 'apos;analysis'apos; | 'apos;generation'apos; | 'apos;optimization'apos; | 'apos;audit'apos; | 'apos;creative'apos;;
+  promptType: 'analysis' | 'generation' | 'optimization' | 'audit' | 'creative';
   title: string;
   description: string;
   currentPrompt: string;
@@ -42,11 +42,11 @@ export class PromptManager {
   private initializeDefaultPrompts() {
     // RadarFoxAI Prompts
     this.addPrompt({
-      id: 'apos;radar-fox-analysis'apos;,
-      agentName: 'apos;RadarFoxAI'apos;,
-      promptType: 'apos;analysis'apos;,
-      title: 'apos;Analyse de veille concurrentielle'apos;,
-      description: 'apos;Prompt pour analyser les concurrents et le marché'apos;,
+      id: 'radar-fox-analysis',
+      agentName: 'RadarFoxAI',
+      promptType: 'analysis',
+      title: 'Analyse de veille concurrentielle',
+      description: 'Prompt pour analyser les concurrents et le marché',
       currentPrompt: `Analysez les concurrents suivants: {competitors}. 
 Identifiez leurs forces, faiblesses, opportunités et menaces.
 Détectez les tendances émergentes du marché.
@@ -59,44 +59,44 @@ Détectez les tendances émergentes du marché.
 Générez des actions immédiates basées sur vos insights.
 Fournissez des recommandations stratégiques à court, moyen et long terme.
 Format de réponse: rapport structuré avec métriques et actions prioritaires.`,
-      variables: ['apos;{competitors}'apos;, 'apos;{market_focus}'apos;, 'apos;{timeframe}'apos;],
+      variables: ['{competitors}', '{market_focus}', '{timeframe}'],
       lastModified: new Date().toISOString(),
-      modifiedBy: 'apos;system'apos;,
+      modifiedBy: 'system',
       isActive: true
     });
 
     // InsightPulseBot Prompts
     this.addPrompt({
-      id: 'apos;insight-pulse-analysis'apos;,
-      agentName: 'apos;InsightPulseBot'apos;,
-      promptType: 'apos;analysis'apos;,
-      title: 'apos;Analyse de données et génération d\'apos;insights'apos;,
-      description: 'apos;Prompt pour transformer les données en insights actionnables'apos;,
+      id: 'insight-pulse-analysis',
+      agentName: 'InsightPulseBot',
+      promptType: 'analysis',
+      title: 'Analyse de données et génération d\'insights',
+      description: 'Prompt pour transformer les données en insights actionnables',
       currentPrompt: `Analysez les données suivantes: {data}.
 Extrayez 3 constats majeurs avec des chiffres clés.
 Générez 3 actions concrètes à entreprendre.
 Évaluez la qualité des données (complétude, précision, fraîcheur).
-Fournissez des recommandations d'apos;amélioration.
+Fournissez des recommandations d'amélioration.
 Format: 3 constats + 3 actions + évaluation qualité.`,
       defaultPrompt: `Analysez les données suivantes: {data}.
 Extrayez 3 constats majeurs avec des chiffres clés.
 Générez 3 actions concrètes à entreprendre.
 Évaluez la qualité des données (complétude, précision, fraîcheur).
-Fournissez des recommandations d'apos;amélioration.
+Fournissez des recommandations d'amélioration.
 Format: 3 constats + 3 actions + évaluation qualité.`,
-      variables: ['apos;{data}'apos;, 'apos;{metrics}'apos;, 'apos;{timeframe}'apos;],
+      variables: ['{data}', '{metrics}', '{timeframe}'],
       lastModified: new Date().toISOString(),
-      modifiedBy: 'apos;system'apos;,
+      modifiedBy: 'system',
       isActive: true
     });
 
     // EchoBrandAI Prompts
     this.addPrompt({
-      id: 'apos;echo-brand-audit'apos;,
-      agentName: 'apos;EchoBrandAI'apos;,
-      promptType: 'apos;audit'apos;,
-      title: 'apos;Audit de cohérence de marque'apos;,
-      description: 'apos;Prompt pour auditer la cohérence de marque'apos;,
+      id: 'echo-brand-audit',
+      agentName: 'EchoBrandAI',
+      promptType: 'audit',
+      title: 'Audit de cohérence de marque',
+      description: 'Prompt pour auditer la cohérence de marque',
       currentPrompt: `Auditez le contenu suivant: {content}.
 Vérifiez la cohérence avec les guidelines de marque: {guidelines}.
 Évaluez le ton, le vocabulaire et le messaging.
@@ -109,19 +109,19 @@ Vérifiez la cohérence avec les guidelines de marque: {guidelines}.
 Identifiez les problèmes et suggérez des améliorations.
 Calculez un score global de cohérence.
 Format: audit détaillé avec scores et recommandations.`,
-      variables: ['apos;{content}'apos;, 'apos;{guidelines}'apos;, 'apos;{brand_voice}'apos;],
+      variables: ['{content}', '{guidelines}', '{brand_voice}'],
       lastModified: new Date().toISOString(),
-      modifiedBy: 'apos;system'apos;,
+      modifiedBy: 'system',
       isActive: true
     });
 
     // TrendSculptorBot Prompts
     this.addPrompt({
-      id: 'apos;trend-sculptor-creative'apos;,
-      agentName: 'apos;TrendSculptorBot'apos;,
-      promptType: 'apos;creative'apos;,
-      title: 'apos;Génération de concepts créatifs'apos;,
-      description: 'apos;Prompt pour générer des concepts basés sur les tendances'apos;,
+      id: 'trend-sculptor-creative',
+      agentName: 'TrendSculptorBot',
+      promptType: 'creative',
+      title: 'Génération de concepts créatifs',
+      description: 'Prompt pour générer des concepts basés sur les tendances',
       currentPrompt: `Analysez les tendances suivantes: {trends}.
 Générez 3 concepts créatifs originaux.
 Chaque concept doit inclure: titre, description, inspiration, audience cible, canaux, angle unique.
@@ -134,34 +134,34 @@ Chaque concept doit inclure: titre, description, inspiration, audience cible, ca
 Évaluez la faisabilité et les risques.
 Créez un moodboard pour chaque concept.
 Format: concepts détaillés avec moodboards et évaluations.`,
-      variables: ['apos;{trends}'apos;, 'apos;{brand_context}'apos;, 'apos;{target_audience}'apos;],
+      variables: ['{trends}', '{brand_context}', '{target_audience}'],
       lastModified: new Date().toISOString(),
-      modifiedBy: 'apos;system'apos;,
+      modifiedBy: 'system',
       isActive: true
     });
 
     // ConversionHackerAI Prompts
     this.addPrompt({
-      id: 'apos;conversion-hacker-optimization'apos;,
-      agentName: 'apos;ConversionHackerAI'apos;,
-      promptType: 'apos;optimization'apos;,
-      title: 'apos;Optimisation des conversions'apos;,
-      description: 'apos;Prompt pour analyser et optimiser les conversions'apos;,
+      id: 'conversion-hacker-optimization',
+      agentName: 'ConversionHackerAI',
+      promptType: 'optimization',
+      title: 'Optimisation des conversions',
+      description: 'Prompt pour analyser et optimiser les conversions',
       currentPrompt: `Analysez les métriques de conversion: {metrics}.
-Identifiez les opportunités d'apos;optimisation prioritaires.
+Identifiez les opportunités d'optimisation prioritaires.
 Proposez des tests A/B spécifiques avec hypothèses.
 Analysez les heatmaps: {heatmaps}.
 Générez des recommandations immédiates et à long terme.
 Format: analyse détaillée avec tests et recommandations.`,
       defaultPrompt: `Analysez les métriques de conversion: {metrics}.
-Identifiez les opportunités d'apos;optimisation prioritaires.
+Identifiez les opportunités d'optimisation prioritaires.
 Proposez des tests A/B spécifiques avec hypothèses.
 Analysez les heatmaps: {heatmaps}.
 Générez des recommandations immédiates et à long terme.
 Format: analyse détaillée avec tests et recommandations.`,
-      variables: ['apos;{metrics}'apos;, 'apos;{heatmaps}'apos;, 'apos;{focus_areas}'apos;],
+      variables: ['{metrics}', '{heatmaps}', '{focus_areas}'],
       lastModified: new Date().toISOString(),
-      modifiedBy: 'apos;system'apos;,
+      modifiedBy: 'system',
       isActive: true
     });
   }
@@ -172,40 +172,40 @@ Format: analyse détaillée avec tests et recommandations.`,
   private initializeTemplates() {
     this.templates = [
       {
-        id: 'apos;template-analysis'apos;,
-        name: 'apos;Template d\'apos;analyse'apos;,
-        description: 'apos;Template générique pour les analyses'apos;,
+        id: 'template-analysis',
+        name: 'Template d\'analyse',
+        description: 'Template générique pour les analyses',
         template: `Analysez {subject} en vous concentrant sur {focus_areas}.
 Identifiez les {number} points clés.
 Générez des recommandations actionnables.
 Format: rapport structuré avec métriques.`,
-        variables: ['apos;{subject}'apos;, 'apos;{focus_areas}'apos;, 'apos;{number}'apos;],
-        category: 'apos;analysis'apos;,
-        tags: ['apos;générique'apos;, 'apos;analyse'apos;, 'apos;recommandations'apos;]
+        variables: ['{subject}', '{focus_areas}', '{number}'],
+        category: 'analysis',
+        tags: ['générique', 'analyse', 'recommandations']
       },
       {
-        id: 'apos;template-creative'apos;,
-        name: 'apos;Template créatif'apos;,
-        description: 'apos;Template pour la génération créative'apos;,
+        id: 'template-creative',
+        name: 'Template créatif',
+        description: 'Template pour la génération créative',
         template: `Créez {number} concepts basés sur {inspiration}.
 Chaque concept doit être {style} et {tone}.
 Incluez: titre, description, audience, canaux.
 Format: concepts détaillés avec moodboards.`,
-        variables: ['apos;{number}'apos;, 'apos;{inspiration}'apos;, 'apos;{style}'apos;, 'apos;{tone}'apos;],
-        category: 'apos;creative'apos;,
-        tags: ['apos;créatif'apos;, 'apos;concepts'apos;, 'apos;design'apos;]
+        variables: ['{number}', '{inspiration}', '{style}', '{tone}'],
+        category: 'creative',
+        tags: ['créatif', 'concepts', 'design']
       },
       {
-        id: 'apos;template-optimization'apos;,
-        name: 'apos;Template d\'apos;optimisation'apos;,
-        description: 'apos;Template pour l\'apos;optimisation'apos;,
+        id: 'template-optimization',
+        name: 'Template d\'optimisation',
+        description: 'Template pour l\'optimisation',
         template: `Optimisez {target} pour améliorer {metric}.
 Identifiez {number} opportunités prioritaires.
 Proposez des tests A/B avec hypothèses.
-Format: plan d'apos;optimisation avec tests.`,
-        variables: ['apos;{target}'apos;, 'apos;{metric}'apos;, 'apos;{number}'apos;],
-        category: 'apos;optimization'apos;,
-        tags: ['apos;optimisation'apos;, 'apos;tests'apos;, 'apos;métriques'apos;]
+Format: plan d'optimisation avec tests.`,
+        variables: ['{target}', '{metric}', '{number}'],
+        category: 'optimization',
+        tags: ['optimisation', 'tests', 'métriques']
       }
     ];
   }
@@ -243,7 +243,7 @@ Format: plan d'apos;optimisation avec tests.`,
   }
 
   /**
-   * Récupère tous les prompts d'apos;un agent
+   * Récupère tous les prompts d'un agent
    */
   getAgentPrompts(agentName: string): AgentPrompt[] {
     return Array.from(this.prompts.values()).filter(p => p.agentName === agentName);
@@ -309,7 +309,7 @@ Format: plan d'apos;optimisation avec tests.`,
 
     let newPrompt = template.template;
     Object.entries(variables).forEach(([key, value]) => {
-      newPrompt = newPrompt.replace(new RegExp(key, 'apos;g'apos;), value);
+      newPrompt = newPrompt.replace(new RegExp(key, 'g'), value);
     });
 
     return this.updatePrompt(promptId, {
@@ -324,21 +324,21 @@ Format: plan d'apos;optimisation avec tests.`,
     const errors: string[] = [];
 
     if (!prompt || prompt.trim().length === 0) {
-      errors.push('apos;Le prompt ne peut pas être vide'apos;);
+      errors.push('Le prompt ne peut pas être vide');
     }
 
     if (prompt.length < 50) {
-      errors.push('apos;Le prompt doit contenir au moins 50 caractères'apos;);
+      errors.push('Le prompt doit contenir au moins 50 caractères');
     }
 
     if (prompt.length > 2000) {
-      errors.push('apos;Le prompt ne peut pas dépasser 2000 caractères'apos;);
+      errors.push('Le prompt ne peut pas dépasser 2000 caractères');
     }
 
     // Vérifier les variables non fermées
     const openVariables = prompt.match(/\{[^}]*$/g);
     if (openVariables) {
-      errors.push('apos;Variables non fermées détectées'apos;);
+      errors.push('Variables non fermées détectées');
     }
 
     return {
@@ -374,7 +374,7 @@ Format: plan d'apos;optimisation avec tests.`,
           if (validation.isValid) {
             this.addPrompt(prompt);
           } else {
-            errors.push(`Prompt ${prompt.id}: ${validation.errors.join('apos;, 'apos;)}`);
+            errors.push(`Prompt ${prompt.id}: ${validation.errors.join(', ')}`);
           }
         });
       }
@@ -390,7 +390,7 @@ Format: plan d'apos;optimisation avec tests.`,
     } catch (error) {
       return {
         success: false,
-        errors: ['apos;Format JSON invalide'apos;]
+        errors: ['Format JSON invalide']
       };
     }
   }
@@ -399,7 +399,7 @@ Format: plan d'apos;optimisation avec tests.`,
    * Génère un rapport des prompts
    */
   generatePromptReport(): string {
-    const agents = ['apos;RadarFoxAI'apos;, 'apos;InsightPulseBot'apos;, 'apos;EchoBrandAI'apos;, 'apos;TrendSculptorBot'apos;, 'apos;ConversionHackerAI'apos;];
+    const agents = ['RadarFoxAI', 'InsightPulseBot', 'EchoBrandAI', 'TrendSculptorBot', 'ConversionHackerAI'];
     
     let report = "📝 **RAPPORT DES PROMPTS - GESTIONNAIRE BERIOX AI**\n\n";
     
@@ -414,7 +414,7 @@ Format: plan d'apos;optimisation avec tests.`,
         report += `## ${agentName}\n`;
         report += `• Prompts: ${agentPrompts.length}\n`;
         report += `• Actifs: ${agentPrompts.filter(p => p.isActive).length}\n`;
-        report += `• Modifiés: ${agentPrompts.filter(p => p.modifiedBy !== 'apos;system'apos;).length}\n\n`;
+        report += `• Modifiés: ${agentPrompts.filter(p => p.modifiedBy !== 'system').length}\n\n`;
       }
     });
 
@@ -422,7 +422,7 @@ Format: plan d'apos;optimisation avec tests.`,
     this.templates.forEach(template => {
       report += `• **${template.name}** (${template.category})\n`;
       report += `  ${template.description}\n`;
-      report += `  Variables: ${template.variables.join('apos;, 'apos;)}\n\n`;
+      report += `  Variables: ${template.variables.join(', ')}\n\n`;
     });
 
     return report;

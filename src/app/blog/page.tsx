@@ -1,69 +1,69 @@
-import { Metadata } from 'apos;next'apos;;
-import Link from 'apos;next/link'apos;;
-import Layout from 'apos;@/components/Layout'apos;;
+import { Metadata } from 'next';
+import Link from 'next/link';
+import Layout from '@/components/Layout';
 
 export const metadata: Metadata = {
-  title: 'apos;Blog Beriox AI - Intelligence Artificielle et Automatisation'apos;,
-  description: 'apos;Découvrez les dernières tendances en IA, automatisation et productivité. Articles techniques, tutoriels et insights sur l\'apos;intelligence artificielle.'apos;,
-  keywords: 'apos;IA, intelligence artificielle, automatisation, productivité, blog technique, tutoriels IA'apos;,
+  title: 'Blog Beriox AI - Intelligence Artificielle et Automatisation',
+  description: 'Découvrez les dernières tendances en IA, automatisation et productivité. Articles techniques, tutoriels et insights sur l\'intelligence artificielle.',
+  keywords: 'IA, intelligence artificielle, automatisation, productivité, blog technique, tutoriels IA',
   openGraph: {
-    title: 'apos;Blog Beriox AI - Intelligence Artificielle et Automatisation'apos;,
-    description: 'apos;Découvrez les dernières tendances en IA, automatisation et productivité.'apos;,
-    type: 'apos;website'apos;,
-    url: 'apos;https://beriox-ai.vercel.app/blog'apos;,
+    title: 'Blog Beriox AI - Intelligence Artificielle et Automatisation',
+    description: 'Découvrez les dernières tendances en IA, automatisation et productivité.',
+    type: 'website',
+    url: 'https://beriox-ai.vercel.app/blog',
   },
 };
 
 const blogPosts = [
   {
-    id: 'apos;ia-automatisation-2024'apos;,
-    title: 'apos;L\'apos;IA d\'apos;Automatisation en 2024 : Tendances et Opportunités'apos;,
-    excerpt: 'apos;Découvrez comment l\'apos;intelligence artificielle révolutionne l\'apos;automatisation des tâches et améliore la productivité des entreprises.'apos;,
-    category: 'apos;Tendances IA'apos;,
-    readTime: 'apos;8 min'apos;,
-    publishedAt: 'apos;2024-01-15'apos;,
-    image: 'apos;/blog/ia-automatisation-2024.jpg'apos;,
+    id: 'ia-automatisation-2024',
+    title: 'L\'IA d\'Automatisation en 2024 : Tendances et Opportunités',
+    excerpt: 'Découvrez comment l\'intelligence artificielle révolutionne l\'automatisation des tâches et améliore la productivité des entreprises.',
+    category: 'Tendances IA',
+    readTime: '8 min',
+    publishedAt: '2024-01-15',
+    image: '/blog/ia-automatisation-2024.jpg',
     featured: true,
   },
   {
-    id: 'apos;agents-ia-productivite'apos;,
-    title: 'apos;Comment les Agents IA Transforment la Productivité'apos;,
-    excerpt: 'apos;Les agents intelligents comme KarineAI, HugoAI et JPBot révolutionnent la façon dont nous travaillons et collaborons.'apos;,
-    category: 'apos;Agents IA'apos;,
-    readTime: 'apos;6 min'apos;,
-    publishedAt: 'apos;2024-01-10'apos;,
-    image: 'apos;/blog/agents-ia-productivite.jpg'apos;,
+    id: 'agents-ia-productivite',
+    title: 'Comment les Agents IA Transforment la Productivité',
+    excerpt: 'Les agents intelligents comme KarineAI, HugoAI et JPBot révolutionnent la façon dont nous travaillons et collaborons.',
+    category: 'Agents IA',
+    readTime: '6 min',
+    publishedAt: '2024-01-10',
+    image: '/blog/agents-ia-productivite.jpg',
     featured: false,
   },
   {
-    id: 'apos;orchestration-ia-avancee'apos;,
-    title: 'apos;L\'apos;Orchestration IA Avancée : Au-delà de l\'apos;Automatisation Simple'apos;,
-    excerpt: 'apos;Comment orchestrer intelligemment plusieurs agents IA pour des résultats exceptionnels et une efficacité maximale.'apos;,
-    category: 'apos;Orchestration'apos;,
-    readTime: 'apos;10 min'apos;,
-    publishedAt: 'apos;2024-01-05'apos;,
-    image: 'apos;/blog/orchestration-ia-avancee.jpg'apos;,
+    id: 'orchestration-ia-avancee',
+    title: 'L\'Orchestration IA Avancée : Au-delà de l\'Automatisation Simple',
+    excerpt: 'Comment orchestrer intelligemment plusieurs agents IA pour des résultats exceptionnels et une efficacité maximale.',
+    category: 'Orchestration',
+    readTime: '10 min',
+    publishedAt: '2024-01-05',
+    image: '/blog/orchestration-ia-avancee.jpg',
     featured: false,
   },
   {
-    id: 'apos;seo-ia-2024'apos;,
-    title: 'apos;SEO et IA en 2024 : Stratégies Gagnantes'apos;,
-    excerpt: 'apos;Comment utiliser l\'apos;intelligence artificielle pour optimiser votre référencement et améliorer votre visibilité en ligne.'apos;,
-    category: 'apos;SEO'apos;,
-    readTime: 'apos;7 min'apos;,
-    publishedAt: 'apos;2024-01-01'apos;,
-    image: 'apos;/blog/seo-ia-2024.jpg'apos;,
+    id: 'seo-ia-2024',
+    title: 'SEO et IA en 2024 : Stratégies Gagnantes',
+    excerpt: 'Comment utiliser l\'intelligence artificielle pour optimiser votre référencement et améliorer votre visibilité en ligne.',
+    category: 'SEO',
+    readTime: '7 min',
+    publishedAt: '2024-01-01',
+    image: '/blog/seo-ia-2024.jpg',
     featured: false,
   },
 ];
 
 const categories = [
-  { name: 'apos;Tendances IA'apos;, count: 1 },
-  { name: 'apos;Agents IA'apos;, count: 1 },
-  { name: 'apos;Orchestration'apos;, count: 1 },
-  { name: 'apos;SEO'apos;, count: 1 },
-  { name: 'apos;Productivité'apos;, count: 2 },
-  { name: 'apos;Tutoriels'apos;, count: 0 },
+  { name: 'Tendances IA', count: 1 },
+  { name: 'Agents IA', count: 1 },
+  { name: 'Orchestration', count: 1 },
+  { name: 'SEO', count: 1 },
+  { name: 'Productivité', count: 2 },
+  { name: 'Tutoriels', count: 0 },
 ];
 
 export default function BlogPage() {
@@ -119,7 +119,7 @@ export default function BlogPage() {
                     href={`/blog/${featuredPost.id}`}
                     className="inline-flex items-center text-purple-600 hover:text-purple-700 font-medium"
                   >
-                    Lire l'apos;article complet
+                    Lire l'article complet
                     <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
@@ -185,7 +185,7 @@ export default function BlogPage() {
             Restez informé des dernières tendances IA
           </h3>
           <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-            Recevez nos articles exclusifs, tutoriels et insights sur l'apos;intelligence 
+            Recevez nos articles exclusifs, tutoriels et insights sur l'intelligence 
             artificielle directement dans votre boîte mail.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
@@ -195,7 +195,7 @@ export default function BlogPage() {
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
             />
             <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-              S'apos;abonner
+              S'abonner
             </button>
           </div>
         </div>

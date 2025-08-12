@@ -1,62 +1,62 @@
-import Stripe from 'apos;stripe'apos;;
+import Stripe from 'stripe';
 
 // Configuration Stripe avec gestion des environnements
-const isProduction = process.env.NODE_ENV === 'apos;production'apos;;
+const isProduction = process.env.NODE_ENV === 'production';
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
 if (!stripeSecretKey) {
-  throw new Error('apos;STRIPE_SECRET_KEY is not configured'apos;);
+  throw new Error('STRIPE_SECRET_KEY is not configured');
 }
 
 // Configuration Stripe
 const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: 'apos;2025-07-30.basil'apos;,
+  apiVersion: '2025-07-30.basil',
   typescript: true,
 });
 
 // Plans de facturation
 export const STRIPE_PLANS = {
   COMPETITOR_INTELLIGENCE: {
-    id: isProduction ? 'apos;price_competitor_intelligence_prod'apos; : 'apos;price_competitor_intelligence_test'apos;,
-    name: 'apos;Competitor Intelligence'apos;,
+    id: isProduction ? 'price_competitor_intelligence_prod' : 'price_competitor_intelligence_test',
+    name: 'Competitor Intelligence',
     price: 4500, // 45.00 USD en centimes
-    currency: 'apos;usd'apos;,
-    interval: 'apos;month'apos;,
+    currency: 'usd',
+    interval: 'month',
     features: [
-      'apos;Veille concurrentielle avancée'apos;,
-      'apos;Analyses SimilarWeb & SEMrush'apos;,
-      'apos;Alertes en temps réel'apos;,
-      'apos;Rapports détaillés'apos;,
-      'apos;Support prioritaire'apos;
+      'Veille concurrentielle avancée',
+      'Analyses SimilarWeb & SEMrush',
+      'Alertes en temps réel',
+      'Rapports détaillés',
+      'Support prioritaire'
     ]
   },
   COMPETITOR_INTELLIGENCE_YEARLY: {
-    id: isProduction ? 'apos;price_competitor_intelligence_yearly_prod'apos; : 'apos;price_competitor_intelligence_yearly_test'apos;,
-    name: 'apos;Competitor Intelligence (Annuel)'apos;,
+    id: isProduction ? 'price_competitor_intelligence_yearly_prod' : 'price_competitor_intelligence_yearly_test',
+    name: 'Competitor Intelligence (Annuel)',
     price: 36000, // 360.00 USD en centimes (2 mois gratuits)
-    currency: 'apos;usd'apos;,
-    interval: 'apos;year'apos;,
+    currency: 'usd',
+    interval: 'year',
     features: [
-      'apos;Veille concurrentielle avancée'apos;,
-      'apos;Analyses SimilarWeb & SEMrush'apos;,
-      'apos;Alertes en temps réel'apos;,
-      'apos;Rapports détaillés'apos;,
-      'apos;Support prioritaire'apos;,
-      'apos;2 mois gratuits'apos;
+      'Veille concurrentielle avancée',
+      'Analyses SimilarWeb & SEMrush',
+      'Alertes en temps réel',
+      'Rapports détaillés',
+      'Support prioritaire',
+      '2 mois gratuits'
     ]
   }
 };
 
 // Webhook events à gérer
 export const STRIPE_WEBHOOK_EVENTS = [
-  'apos;checkout.session.completed'apos;,
-  'apos;customer.subscription.created'apos;,
-  'apos;customer.subscription.updated'apos;,
-  'apos;customer.subscription.deleted'apos;,
-  'apos;invoice.payment_succeeded'apos;,
-  'apos;invoice.payment_failed'apos;,
-  'apos;customer.created'apos;,
-  'apos;customer.updated'apos;
+  'checkout.session.completed',
+  'customer.subscription.created',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+  'invoice.payment_succeeded',
+  'invoice.payment_failed',
+  'customer.created',
+  'customer.updated'
 ];
 
 // Validation du webhook
@@ -64,7 +64,7 @@ export const validateWebhook = (payload: string, signature: string) => {
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   
   if (!webhookSecret) {
-    throw new Error('apos;STRIPE_WEBHOOK_SECRET is not configured'apos;);
+    throw new Error('STRIPE_WEBHOOK_SECRET is not configured');
   }
 
   try {
@@ -74,7 +74,7 @@ export const validateWebhook = (payload: string, signature: string) => {
   }
 };
 
-// Création d'apos;une session de checkout
+// Création d'une session de checkout
 export const createCheckoutSession = async ({
   customerId,
   priceId,
@@ -90,26 +90,26 @@ export const createCheckoutSession = async ({
 }) => {
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
-    payment_method_types: ['apos;card'apos;],
+    payment_method_types: ['card'],
     line_items: [
       {
         price: priceId,
         quantity: 1,
       },
     ],
-    mode: 'apos;subscription'apos;,
+    mode: 'subscription',
     success_url: successUrl,
     cancel_url: cancelUrl,
     metadata,
     allow_promotion_codes: true,
-    billing_address_collection: 'apos;required'apos;,
-    customer_creation: customerId ? undefined : 'apos;always'apos;,
+    billing_address_collection: 'required',
+    customer_creation: customerId ? undefined : 'always',
   });
 
   return session;
 };
 
-// Création d'apos;un portail client
+// Création d'un portail client
 export const createCustomerPortalSession = async (customerId: string, returnUrl: string) => {
   const session = await stripe.billingPortal.sessions.create({
     customer: customerId,
@@ -119,26 +119,26 @@ export const createCustomerPortalSession = async (customerId: string, returnUrl:
   return session;
 };
 
-// Récupération d'apos;un client
+// Récupération d'un client
 export const getCustomer = async (customerId: string) => {
   return await stripe.customers.retrieve(customerId);
 };
 
-// Mise à jour d'apos;un client
+// Mise à jour d'un client
 export const updateCustomer = async (customerId: string, data: Stripe.CustomerUpdateParams) => {
   return await stripe.customers.update(customerId, data);
 };
 
-// Récupération des abonnements d'apos;un client
+// Récupération des abonnements d'un client
 export const getCustomerSubscriptions = async (customerId: string) => {
   return await stripe.subscriptions.list({
     customer: customerId,
-    status: 'apos;all'apos;,
-    expand: ['apos;data.default_payment_method'apos;],
+    status: 'all',
+    expand: ['data.default_payment_method'],
   });
 };
 
-// Annulation d'apos;un abonnement
+// Annulation d'un abonnement
 export const cancelSubscription = async (subscriptionId: string, cancelAtPeriodEnd = true) => {
   if (cancelAtPeriodEnd) {
     return await stripe.subscriptions.update(subscriptionId, {
@@ -149,14 +149,14 @@ export const cancelSubscription = async (subscriptionId: string, cancelAtPeriodE
   }
 };
 
-// Récupération d'apos;un abonnement
+// Récupération d'un abonnement
 export const getSubscription = async (subscriptionId: string) => {
   return await stripe.subscriptions.retrieve(subscriptionId, {
-    expand: ['apos;default_payment_method'apos;, 'apos;customer'apos;],
+    expand: ['default_payment_method', 'customer'],
   });
 };
 
-// Création d'apos;un remboursement
+// Création d'un remboursement
 export const createRefund = async (paymentIntentId: string, amount?: number, reason?: Stripe.RefundCreateParams.Reason) => {
   const refundData: Stripe.RefundCreateParams = {
     payment_intent: paymentIntentId,
@@ -178,26 +178,26 @@ export const getBillingEvents = async (customerId: string, limit = 10) => {
   return await stripe.invoices.list({
     customer: customerId,
     limit,
-    expand: ['apos;data.payment_intent'apos;],
+    expand: ['data.payment_intent'],
   });
 };
 
-// Vérification du statut d'apos;un paiement
+// Vérification du statut d'un paiement
 export const getPaymentStatus = async (paymentIntentId: string) => {
   return await stripe.paymentIntents.retrieve(paymentIntentId);
 };
 
-// Création d'apos;un coupon
+// Création d'un coupon
 export const createCoupon = async (data: Stripe.CouponCreateParams) => {
   return await stripe.coupons.create(data);
 };
 
-// Récupération d'apos;un coupon
+// Récupération d'un coupon
 export const getCoupon = async (couponId: string) => {
   return await stripe.coupons.retrieve(couponId);
 };
 
-// Suppression d'apos;un coupon
+// Suppression d'un coupon
 export const deleteCoupon = async (couponId: string) => {
   return await stripe.coupons.del(couponId);
 };
@@ -208,11 +208,11 @@ export const getBillingMetrics = async (customerId: string) => {
   const invoices = await getBillingEvents(customerId, 50);
 
   const totalRevenue = invoices.data
-    .filter(invoice => invoice.status === 'apos;paid'apos;)
+    .filter(invoice => invoice.status === 'paid')
     .reduce((sum, invoice) => sum + (invoice.amount_paid || 0), 0);
 
   const activeSubscriptions = subscriptions.data.filter(sub => 
-    ['apos;active'apos;, 'apos;trialing'apos;].includes(sub.status)
+    ['active', 'trialing'].includes(sub.status)
   );
 
   return {

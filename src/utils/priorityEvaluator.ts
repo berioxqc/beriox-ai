@@ -1,7 +1,7 @@
-// Utilitaire pour l'apos;évaluation automatique de priorité par PriorityBot
+// Utilitaire pour l'évaluation automatique de priorité par PriorityBot
 
 export interface PriorityEvaluation {
-  priority: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
+  priority: 'high' | 'medium' | 'low';
   score: number;
   reasoning: string;
   factors: {
@@ -13,34 +13,34 @@ export interface PriorityEvaluation {
 }
 
 export function evaluatePriority(objective: string, context?: string): PriorityEvaluation {
-  const text = `${objective} ${context || 'apos;'apos;}`.toLowerCase();
+  const text = `${objective} ${context || ''}`.toLowerCase();
   
-  // Mots-clés pour l'apos;urgence (0-10)
+  // Mots-clés pour l'urgence (0-10)
   const urgencyKeywords = {
-    high: ['apos;urgent'apos;, 'apos;immédiat'apos;, 'apos;asap'apos;, 'apos;rapidement'apos;, 'apos;tout de suite'apos;, 'apos;deadline'apos;, 'apos;échéance'apos;, 'apos;critique'apos;, 'apos;bloquant'apos;],
-    medium: ['apos;bientôt'apos;, 'apos;prochainement'apos;, 'apos;dans la semaine'apos;, 'apos;important'apos;, 'apos;nécessaire'apos;],
-    low: ['apos;plus tard'apos;, 'apos;éventuellement'apos;, 'apos;à long terme'apos;, 'apos;quand possible'apos;, 'apos;optionnel'apos;]
+    high: ['urgent', 'immédiat', 'asap', 'rapidement', 'tout de suite', 'deadline', 'échéance', 'critique', 'bloquant'],
+    medium: ['bientôt', 'prochainement', 'dans la semaine', 'important', 'nécessaire'],
+    low: ['plus tard', 'éventuellement', 'à long terme', 'quand possible', 'optionnel']
   };
 
-  // Mots-clés pour l'apos;impact business (0-10)
+  // Mots-clés pour l'impact business (0-10)
   const impactKeywords = {
-    high: ['apos;chiffre d\'apos;affaires'apos;, 'apos;revenus'apos;, 'apos;clients'apos;, 'apos;croissance'apos;, 'apos;stratégique'apos;, 'apos;transformation'apos;, 'apos;innovation'apos;, 'apos;concurrence'apos;, 'apos;marché'apos;],
-    medium: ['apos;amélioration'apos;, 'apos;optimisation'apos;, 'apos;efficacité'apos;, 'apos;qualité'apos;, 'apos;processus'apos;, 'apos;équipe'apos;],
-    low: ['apos;documentation'apos;, 'apos;organisation'apos;, 'apos;maintenance'apos;, 'apos;nettoyage'apos;, 'apos;archivage'apos;]
+    high: ['chiffre d\'affaires', 'revenus', 'clients', 'croissance', 'stratégique', 'transformation', 'innovation', 'concurrence', 'marché'],
+    medium: ['amélioration', 'optimisation', 'efficacité', 'qualité', 'processus', 'équipe'],
+    low: ['documentation', 'organisation', 'maintenance', 'nettoyage', 'archivage']
   };
 
   // Mots-clés pour la complexité (0-10, inversé pour le score)
   const complexityKeywords = {
-    high: ['apos;développement'apos;, 'apos;architecture'apos;, 'apos;système'apos;, 'apos;intégration'apos;, 'apos;migration'apos;, 'apos;refactoring'apos;, 'apos;technique'apos;],
-    medium: ['apos;analyse'apos;, 'apos;étude'apos;, 'apos;recherche'apos;, 'apos;conception'apos;, 'apos;design'apos;],
-    low: ['apos;simple'apos;, 'apos;basique'apos;, 'apos;rapide'apos;, 'apos;facile'apos;, 'apos;direct'apos;]
+    high: ['développement', 'architecture', 'système', 'intégration', 'migration', 'refactoring', 'technique'],
+    medium: ['analyse', 'étude', 'recherche', 'conception', 'design'],
+    low: ['simple', 'basique', 'rapide', 'facile', 'direct']
   };
 
   // Mots-clés stratégiques (0-10)
   const strategicKeywords = {
-    high: ['apos;vision'apos;, 'apos;mission'apos;, 'apos;objectifs'apos;, 'apos;stratégie'apos;, 'apos;roadmap'apos;, 'apos;pivot'apos;, 'apos;expansion'apos;, 'apos;lancement'apos;],
-    medium: ['apos;projet'apos;, 'apos;initiative'apos;, 'apos;campagne'apos;, 'apos;amélioration'apos;],
-    low: ['apos;tâche'apos;, 'apos;correction'apos;, 'apos;ajustement'apos;, 'apos;modification'apos;]
+    high: ['vision', 'mission', 'objectifs', 'stratégie', 'roadmap', 'pivot', 'expansion', 'lancement'],
+    medium: ['projet', 'initiative', 'campagne', 'amélioration'],
+    low: ['tâche', 'correction', 'ajustement', 'modification']
   };
 
   // Calcul des scores
@@ -53,13 +53,13 @@ export function evaluatePriority(objective: string, context?: string): PriorityE
   const globalScore = (urgency * 0.3) + (impact * 0.4) + (complexity * 0.1) + (strategic * 0.2);
 
   // Détermination de la priorité
-  let priority: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
+  let priority: 'high' | 'medium' | 'low';
   if (globalScore >= 7) {
-    priority = 'apos;high'apos;;
+    priority = 'high';
   } else if (globalScore >= 4) {
-    priority = 'apos;medium'apos;;
+    priority = 'medium';
   } else {
-    priority = 'apos;low'apos;;
+    priority = 'low';
   }
 
   // Génération du raisonnement
@@ -97,22 +97,22 @@ function calculateKeywordScore(text: string, keywords: { high: string[], medium:
 }
 
 function generateReasoning(
-  priority: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;,
+  priority: 'high' | 'medium' | 'low',
   factors: { urgency: number, impact: number, complexity: number, strategic: number },
   text: string
 ): string {
   const reasons = [];
 
-  // Analyse de l'apos;urgence
+  // Analyse de l'urgence
   if (factors.urgency >= 7) {
     reasons.push("🔥 Urgence élevée détectée");
   } else if (factors.urgency >= 4) {
     reasons.push("⏰ Urgence modérée");
   } else {
-    reasons.push("📅 Pas d'apos;urgence particulière");
+    reasons.push("📅 Pas d'urgence particulière");
   }
 
-  // Analyse de l'apos;impact
+  // Analyse de l'impact
   if (factors.impact >= 7) {
     reasons.push("💎 Impact business majeur");
   } else if (factors.impact >= 4) {
@@ -143,7 +143,7 @@ function generateReasoning(
     low: "BASSE - À traiter selon disponibilité"
   };
 
-  return `PriorityBot recommande une priorité ${priorityLabels[priority]}.\n\n${reasons.join('apos; • 'apos;)}`;
+  return `PriorityBot recommande une priorité ${priorityLabels[priority]}.\n\n${reasons.join(' • ')}`;
 }
 
 // Fonction pour obtenir une évaluation avec prompt GPT (optionnel, pour cas complexes)
@@ -151,7 +151,7 @@ export async function getAIPriorityEvaluation(objective: string, context?: strin
   const prompt = `En tant que PriorityBot, expert en priorisation de missions business, analyse cette mission et détermine sa priorité.
 
 Mission: ${objective}
-${context ? `Contexte: ${context}` : 'apos;'apos;}
+${context ? `Contexte: ${context}` : ''}
 
 Évalue selon ces critères:
 1. Urgence (délais, contraintes temporelles)
@@ -173,10 +173,10 @@ Réponds au format JSON:
 }`;
 
   try {
-    const response = await fetch('apos;/api/openai'apos;, {
-      method: 'apos;POST'apos;,
+    const response = await fetch('/api/openai', {
+      method: 'POST',
       headers: {
-        'apos;Content-Type'apos;: 'apos;application/json'apos;,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         prompt,
@@ -188,8 +188,8 @@ Réponds au format JSON:
     const data = await response.json();
     return JSON.parse(data.response);
   } catch (error) {
-    // Fallback vers l'apos;évaluation locale
-    console.warn('apos;Fallback vers évaluation locale:'apos;, error);
+    // Fallback vers l'évaluation locale
+    console.warn('Fallback vers évaluation locale:', error);
     return evaluatePriority(objective, context);
   }
 }

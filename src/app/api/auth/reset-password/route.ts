@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { prisma } from 'apos;@/lib/prisma'apos;;
-import bcrypt from 'apos;bcryptjs'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
     if (!token || !password) {
       return NextResponse.json(
-        { error: 'apos;Token et nouveau mot de passe requis'apos; },
+        { error: 'Token et nouveau mot de passe requis' },
         { status: 400 }
       );
     }
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     // Validation du mot de passe
     if (password.length < 8) {
       return NextResponse.json(
-        { error: 'apos;Le mot de passe doit contenir au moins 8 caractères'apos; },
+        { error: 'Le mot de passe doit contenir au moins 8 caractères' },
         { status: 400 }
       );
     }
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
     if (!resetToken) {
       return NextResponse.json(
-        { error: 'apos;Token de réinitialisation invalide'apos; },
+        { error: 'Token de réinitialisation invalide' },
         { status: 400 }
       );
     }
@@ -41,19 +41,19 @@ export async function POST(request: NextRequest) {
       });
 
       return NextResponse.json(
-        { error: 'apos;Token de réinitialisation expiré'apos; },
+        { error: 'Token de réinitialisation expiré' },
         { status: 400 }
       );
     }
 
-    // Trouver l'apos;utilisateur
+    // Trouver l'utilisateur
     const user = await prisma.user.findUnique({
       where: { email: resetToken.identifier }
     });
 
     if (!user) {
       return NextResponse.json(
-        { error: 'apos;Utilisateur non trouvé'apos; },
+        { error: 'Utilisateur non trouvé' },
         { status: 404 }
       );
     }
@@ -73,13 +73,13 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({
-      message: 'apos;Mot de passe mis à jour avec succès'apos;
+      message: 'Mot de passe mis à jour avec succès'
     });
 
   } catch (error) {
-    console.error('apos;Erreur lors de la réinitialisation du mot de passe:'apos;, error);
+    console.error('Erreur lors de la réinitialisation du mot de passe:', error);
     return NextResponse.json(
-      { error: 'apos;Erreur interne du serveur'apos; },
+      { error: 'Erreur interne du serveur' },
       { status: 500 }
     );
   }

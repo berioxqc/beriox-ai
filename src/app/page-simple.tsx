@@ -21,7 +21,7 @@ export default function HomeSimple() {
     <AuthGuard>
       <Layout 
         title="Accueil" 
-        subtitle="Vue d'apos;ensemble de vos missions et de votre équipe IA"
+        subtitle="Vue d'ensemble de vos missions et de votre équipe IA"
       >
         <div style={{
           background: "white",
@@ -49,7 +49,7 @@ export default function HomeSimple() {
             lineHeight: "1.6",
             marginBottom: "24px"
           }}>
-            Votre plateforme d'apos;intelligence artificielle pour la gestion de missions et d'apos;équipes.
+            Votre plateforme d'intelligence artificielle pour la gestion de missions et d'équipes.
           </p>
 
           <div style={{

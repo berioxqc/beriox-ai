@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { getServerSession } from 'apos;next-auth'apos;;
-import { authOptions } from 'apos;../auth/[...nextauth]/route'apos;;
-import { integrationManager, initializeIntegrations } from 'apos;@/lib/integrations'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]/route';
+import { integrationManager, initializeIntegrations } from '@/lib/integrations';
 
-// Initialiser les intégrations si ce n'apos;est pas déjà fait
+// Initialiser les intégrations si ce n'est pas déjà fait
 initializeIntegrations();
 
 export async function GET(req: NextRequest) {
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'apos;Non authentifié'apos; }, { status: 401 });
+      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
     }
 
     const integrations = integrationManager.getAll();
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
       integrations,
     });
   } catch (error: any) {
-    console.error('apos;Erreur lors du chargement des intégrations:'apos;, error);
+    console.error('Erreur lors du chargement des intégrations:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

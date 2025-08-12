@@ -66,7 +66,7 @@ export default function QuickActions() {
             label: "Paramètres",
             icon: "cog",
             href: "/settings",
-            description: "Configurer l'apos;application"
+            description: "Configurer l'application"
           }
         ];
       
@@ -96,7 +96,7 @@ export default function QuickActions() {
 
   return (
     <div style={{ position: "relative" }}>
-      {/* Bouton d'apos;ouverture */}
+      {/* Bouton d'ouverture */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         style={{
@@ -112,7 +112,7 @@ export default function QuickActions() {
           alignItems: "center",
           gap: "6px",
           transition: "all 0.2s",
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         }}
         onMouseOver={(e) => {
           e.currentTarget.style.background = "rgba(99, 91, 255, 0.12)";
@@ -173,7 +173,7 @@ export default function QuickActions() {
                 fontSize: "14px",
                 fontWeight: "600",
                 color: "#374151",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 Actions rapides
               </div>
@@ -181,7 +181,7 @@ export default function QuickActions() {
                 fontSize: "12px",
                 color: "#6b7280",
                 marginTop: "2px",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 Navigation contextuelle
               </div>
@@ -204,7 +204,7 @@ export default function QuickActions() {
                     fontSize: "14px",
                     fontWeight: "500",
                     transition: "background-color 0.2s",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                   }}
                   onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f9fafb"}
                   onMouseOut={(e) => e.currentTarget.style.backgroundColor = "transparent"}
@@ -259,7 +259,7 @@ export default function QuickActions() {
                 fontSize: "11px",
                 color: "#6b7280",
                 textAlign: "center",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 Actions adaptées à votre contexte
               </div>

@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { deploymentMonitor } from 'apos;@/lib/monitoring/deployment-monitor'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
-import { prisma } from 'apos;@/lib/prisma'apos;;
-import { redis } from 'apos;@/lib/redis'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { deploymentMonitor } from '@/lib/monitoring/deployment-monitor';
+import { logger } from '@/lib/logger';
+import { prisma } from '@/lib/prisma';
+import { redis } from '@/lib/redis';
 
 export async function GET(request: NextRequest) {
   try {
@@ -22,29 +22,29 @@ export async function GET(request: NextRequest) {
     const cpuUsage = process.cpuUsage();
 
     const healthStatus = {
-      status: 'apos;healthy'apos;,
+      status: 'healthy',
       timestamp: new Date().toISOString(),
       responseTime,
-      version: process.env.npm_package_version || 'apos;1.0.0'apos;,
-      environment: process.env.NODE_ENV || 'apos;development'apos;,
-      deploymentId: process.env.VERCEL_DEPLOYMENT_ID || 'apos;local'apos;,
+      version: process.env.npm_package_version || '1.0.0',
+      environment: process.env.NODE_ENV || 'development',
+      deploymentId: process.env.VERCEL_DEPLOYMENT_ID || 'local',
       
       services: {
         database: {
-          status: dbHealth.status === 'apos;fulfilled'apos; ? 'apos;healthy'apos; : 'apos;unhealthy'apos;,
-          responseTime: dbHealth.status === 'apos;fulfilled'apos; ? dbHealth.value.responseTime : null,
-          error: dbHealth.status === 'apos;rejected'apos; ? dbHealth.reason?.message : null
+          status: dbHealth.status === 'fulfilled' ? 'healthy' : 'unhealthy',
+          responseTime: dbHealth.status === 'fulfilled' ? dbHealth.value.responseTime : null,
+          error: dbHealth.status === 'rejected' ? dbHealth.reason?.message : null
         },
         redis: {
-          status: redisHealth.status === 'apos;fulfilled'apos; ? 'apos;healthy'apos; : 'apos;unhealthy'apos;,
-          responseTime: redisHealth.status === 'apos;fulfilled'apos; ? redisHealth.value.responseTime : null,
-          error: redisHealth.status === 'apos;rejected'apos; ? redisHealth.reason?.message : null
+          status: redisHealth.status === 'fulfilled' ? 'healthy' : 'unhealthy',
+          responseTime: redisHealth.status === 'fulfilled' ? redisHealth.value.responseTime : null,
+          error: redisHealth.status === 'rejected' ? redisHealth.reason?.message : null
         },
         monitoring: {
-          status: monitorHealth.status === 'apos;fulfilled'apos; ? 'apos;healthy'apos; : 'apos;unhealthy'apos;,
-          healthy: monitorHealth.status === 'apos;fulfilled'apos; ? monitorHealth.value.healthy : false,
-          issues: monitorHealth.status === 'apos;fulfilled'apos; ? monitorHealth.value.issues : [],
-          lastCheck: monitorHealth.status === 'apos;fulfilled'apos; ? monitorHealth.value.lastCheck : null
+          status: monitorHealth.status === 'fulfilled' ? 'healthy' : 'unhealthy',
+          healthy: monitorHealth.status === 'fulfilled' ? monitorHealth.value.healthy : false,
+          issues: monitorHealth.status === 'fulfilled' ? monitorHealth.value.issues : [],
+          lastCheck: monitorHealth.status === 'fulfilled' ? monitorHealth.value.lastCheck : null
         }
       },
       
@@ -68,46 +68,46 @@ export async function GET(request: NextRequest) {
 
     // Déterminer le statut global
     const hasUnhealthyServices = Object.values(healthStatus.services).some(
-      service => service.status === 'apos;unhealthy'apos;
+      service => service.status === 'unhealthy'
     );
     
     if (hasUnhealthyServices) {
-      healthStatus.status = 'apos;degraded'apos;;
+      healthStatus.status = 'degraded';
     }
 
     // Vérifier les seuils critiques
     if (healthStatus.responseTime > 10000) { // 10 secondes
-      healthStatus.status = 'apos;critical'apos;;
+      healthStatus.status = 'critical';
     }
 
     if (healthStatus.performance.memory.heapUsed > 1000) { // 1GB
-      healthStatus.status = 'apos;warning'apos;;
+      healthStatus.status = 'warning';
     }
 
     // Log pour le monitoring
-    logger.info('apos;Health check completed'apos;, {
+    logger.info('Health check completed', {
       status: healthStatus.status,
       responseTime,
       memoryUsage: healthStatus.performance.memory.heapUsed
     });
 
     return NextResponse.json(healthStatus, {
-      status: healthStatus.status === 'apos;healthy'apos; ? 200 : 
-              healthStatus.status === 'apos;degraded'apos; ? 200 : 
-              healthStatus.status === 'apos;warning'apos; ? 200 : 503
+      status: healthStatus.status === 'healthy' ? 200 : 
+              healthStatus.status === 'degraded' ? 200 : 
+              healthStatus.status === 'warning' ? 200 : 503
     });
 
   } catch (error) {
-    logger.error('apos;Health check failed:'apos;, error);
+    logger.error('Health check failed:', error);
     
     return NextResponse.json({
-      status: 'apos;critical'apos;,
+      status: 'critical',
       timestamp: new Date().toISOString(),
-      error: error instanceof Error ? error.message : 'apos;Unknown error'apos;,
+      error: error instanceof Error ? error.message : 'Unknown error',
       services: {
-        database: { status: 'apos;unknown'apos; },
-        redis: { status: 'apos;unknown'apos; },
-        monitoring: { status: 'apos;unknown'apos; }
+        database: { status: 'unknown' },
+        redis: { status: 'unknown' },
+        monitoring: { status: 'unknown' }
       }
     }, { status: 503 });
   }
@@ -123,7 +123,7 @@ async function checkDatabaseHealth(): Promise<{ responseTime: number }> {
       responseTime: Date.now() - startTime
     };
   } catch (error) {
-    throw new Error(`Database health check failed: ${error instanceof Error ? error.message : 'apos;Unknown error'apos;}`);
+    throw new Error(`Database health check failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
@@ -137,7 +137,7 @@ async function checkRedisHealth(): Promise<{ responseTime: number }> {
       responseTime: Date.now() - startTime
     };
   } catch (error) {
-    throw new Error(`Redis health check failed: ${error instanceof Error ? error.message : 'apos;Unknown error'apos;}`);
+    throw new Error(`Redis health check failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 
@@ -148,24 +148,24 @@ export async function POST(request: NextRequest) {
     const { checkType } = body;
 
     switch (checkType) {
-      case 'apos;database'apos;:
+      case 'database':
         return await performDetailedDatabaseCheck();
       
-      case 'apos;redis'apos;:
+      case 'redis':
         return await performDetailedRedisCheck();
       
-      case 'apos;external-apis'apos;:
+      case 'external-apis':
         return await performExternalApisCheck();
       
-      case 'apos;performance'apos;:
+      case 'performance':
         return await performPerformanceCheck();
       
       default:
-        return NextResponse.json({ error: 'apos;Invalid check type'apos; }, { status: 400 });
+        return NextResponse.json({ error: 'Invalid check type' }, { status: 400 });
     }
   } catch (error) {
-    logger.error('apos;Detailed health check failed:'apos;, error);
-    return NextResponse.json({ error: 'apos;Health check failed'apos; }, { status: 500 });
+    logger.error('Detailed health check failed:', error);
+    return NextResponse.json({ error: 'Health check failed' }, { status: 500 });
   }
 }
 
@@ -176,12 +176,12 @@ async function performDetailedDatabaseCheck() {
     // Vérifications détaillées de la base de données
     const [connectionCount, tableCount, slowQueries] = await Promise.all([
       prisma.$queryRaw`SELECT count(*) as connections FROM pg_stat_activity WHERE datname = current_database()`,
-      prisma.$queryRaw`SELECT count(*) as tables FROM information_schema.tables WHERE table_schema = 'apos;public'apos;`,
-      prisma.$queryRaw`SELECT count(*) as slow_queries FROM pg_stat_activity WHERE state = 'apos;active'apos; AND now() - query_start > interval 'apos;5 seconds'apos;`
+      prisma.$queryRaw`SELECT count(*) as tables FROM information_schema.tables WHERE table_schema = 'public'`,
+      prisma.$queryRaw`SELECT count(*) as slow_queries FROM pg_stat_activity WHERE state = 'active' AND now() - query_start > interval '5 seconds'`
     ]);
 
     return NextResponse.json({
-      status: 'apos;healthy'apos;,
+      status: 'healthy',
       responseTime: Date.now() - startTime,
       details: {
         connections: (connectionCount as any)[0]?.connections || 0,
@@ -191,9 +191,9 @@ async function performDetailedDatabaseCheck() {
     });
   } catch (error) {
     return NextResponse.json({
-      status: 'apos;unhealthy'apos;,
+      status: 'unhealthy',
       responseTime: Date.now() - startTime,
-      error: error instanceof Error ? error.message : 'apos;Unknown error'apos;
+      error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 503 });
   }
 }
@@ -203,29 +203,29 @@ async function performDetailedRedisCheck() {
   
   try {
     const info = await redis.info();
-    const memoryInfo = await redis.info('apos;memory'apos;);
+    const memoryInfo = await redis.info('memory');
     
     // Parser les informations Redis
-    const clientLines = info.split('apos;\n'apos;).find(line => line.startsWith('apos;connected_clients:'apos;));
-    const memoryLines = memoryInfo.split('apos;\n'apos;).find(line => line.startsWith('apos;used_memory_human:'apos;));
+    const clientLines = info.split('\n').find(line => line.startsWith('connected_clients:'));
+    const memoryLines = memoryInfo.split('\n').find(line => line.startsWith('used_memory_human:'));
     
-    const connections = parseInt(clientLines?.split('apos;:'apos;)[1] || 'apos;0'apos;);
-    const memoryUsed = memoryLines?.split('apos;:'apos;)[1] || 'apos;0B'apos;;
+    const connections = parseInt(clientLines?.split(':')[1] || '0');
+    const memoryUsed = memoryLines?.split(':')[1] || '0B';
 
     return NextResponse.json({
-      status: 'apos;healthy'apos;,
+      status: 'healthy',
       responseTime: Date.now() - startTime,
       details: {
         connections,
         memoryUsed,
-        info: info.split('apos;\n'apos;).slice(0, 10) // Premières 10 lignes d'apos;info
+        info: info.split('\n').slice(0, 10) // Premières 10 lignes d'info
       }
     });
   } catch (error) {
     return NextResponse.json({
-      status: 'apos;unhealthy'apos;,
+      status: 'unhealthy',
       responseTime: Date.now() - startTime,
-      error: error instanceof Error ? error.message : 'apos;Unknown error'apos;
+      error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 503 });
   }
 }
@@ -235,23 +235,23 @@ async function performExternalApisCheck() {
   
   try {
     const apis = [
-      { name: 'apos;OpenAI'apos;, url: 'apos;https://api.openai.com/v1/models'apos; },
-      { name: 'apos;Stripe'apos;, url: 'apos;https://api.stripe.com/v1/account'apos; }
+      { name: 'OpenAI', url: 'https://api.openai.com/v1/models' },
+      { name: 'Stripe', url: 'https://api.stripe.com/v1/account' }
     ];
 
     const results = await Promise.allSettled(
       apis.map(async (api) => {
         const apiStartTime = Date.now();
         const response = await fetch(api.url, { 
-          method: 'apos;HEAD'apos;,
+          method: 'HEAD',
           headers: {
-            'apos;Authorization'apos;: `Bearer ${process.env.OPENAI_API_KEY || 'apos;test'apos;}`
+            'Authorization': `Bearer ${process.env.OPENAI_API_KEY || 'test'}`
           }
         });
         
         return {
           name: api.name,
-          status: response.ok ? 'apos;healthy'apos; : 'apos;unhealthy'apos;,
+          status: response.ok ? 'healthy' : 'unhealthy',
           responseTime: Date.now() - apiStartTime,
           statusCode: response.status
         };
@@ -259,20 +259,20 @@ async function performExternalApisCheck() {
     );
 
     const apiResults = results.map((result, index) => {
-      if (result.status === 'apos;fulfilled'apos;) {
+      if (result.status === 'fulfilled') {
         return result.value;
       } else {
         return {
           name: apis[index].name,
-          status: 'apos;unhealthy'apos;,
+          status: 'unhealthy',
           responseTime: 0,
-          error: result.reason?.message || 'apos;Unknown error'apos;
+          error: result.reason?.message || 'Unknown error'
         };
       }
     });
 
     return NextResponse.json({
-      status: 'apos;healthy'apos;,
+      status: 'healthy',
       responseTime: Date.now() - startTime,
       details: {
         apis: apiResults
@@ -280,9 +280,9 @@ async function performExternalApisCheck() {
     });
   } catch (error) {
     return NextResponse.json({
-      status: 'apos;unhealthy'apos;,
+      status: 'unhealthy',
       responseTime: Date.now() - startTime,
-      error: error instanceof Error ? error.message : 'apos;Unknown error'apos;
+      error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 503 });
   }
 }
@@ -294,7 +294,7 @@ async function performPerformanceCheck() {
     const memoryUsage = process.memoryUsage();
     const cpuUsage = process.cpuUsage();
     
-    // Calculer l'apos;utilisation CPU en pourcentage
+    // Calculer l'utilisation CPU en pourcentage
     const cpuPercent = (cpuUsage.user + cpuUsage.system) / 1000000; // secondes
     
     // Vérifier les seuils
@@ -305,7 +305,7 @@ async function performPerformanceCheck() {
     const cpuWarning = cpuPercent > cpuThreshold;
 
     return NextResponse.json({
-      status: memoryWarning || cpuWarning ? 'apos;warning'apos; : 'apos;healthy'apos;,
+      status: memoryWarning || cpuWarning ? 'warning' : 'healthy',
       responseTime: Date.now() - startTime,
       details: {
         memory: {
@@ -328,9 +328,9 @@ async function performPerformanceCheck() {
     });
   } catch (error) {
     return NextResponse.json({
-      status: 'apos;unhealthy'apos;,
+      status: 'unhealthy',
       responseTime: Date.now() - startTime,
-      error: error instanceof Error ? error.message : 'apos;Unknown error'apos;
+      error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 503 });
   }
 }

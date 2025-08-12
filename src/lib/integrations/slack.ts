@@ -1,8 +1,8 @@
-import { ApiResponse } from 'apos;./types'apos;;
+import { ApiResponse } from './types';
 
 export class SlackAPI {
   private token: string;
-  private baseUrl = 'apos;https://slack.com/api'apos;;
+  private baseUrl = 'https://slack.com/api';
 
   constructor(token: string) {
     this.token = token;
@@ -11,10 +11,10 @@ export class SlackAPI {
   async sendMessage(channel: string, text: string, blocks?: any[]): Promise<ApiResponse<any>> {
     try {
       const response = await fetch(`${this.baseUrl}/chat.postMessage`, {
-        method: 'apos;POST'apos;,
+        method: 'POST',
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Authorization': `Bearer ${this.token}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           channel,
@@ -30,7 +30,7 @@ export class SlackAPI {
       const data = await response.json();
 
       if (!data.ok) {
-        throw new Error(data.error || 'apos;Slack API error'apos;);
+        throw new Error(data.error || 'Slack API error');
       }
 
       return {
@@ -48,37 +48,37 @@ export class SlackAPI {
   async sendMissionNotification(channel: string, mission: any): Promise<ApiResponse<any>> {
     const blocks = [
       {
-        type: 'apos;header'apos;,
+        type: 'header',
         text: {
-          type: 'apos;plain_text'apos;,
-          text: 'apos;🚀 Nouvelle Mission Beriox AI'apos;,
+          type: 'plain_text',
+          text: '🚀 Nouvelle Mission Beriox AI',
         },
       },
       {
-        type: 'apos;section'apos;,
+        type: 'section',
         text: {
-          type: 'apos;mrkdwn'apos;,
-          text: `*Objectif:* ${mission.objective}\n*Priorité:* ${mission.priority || 'apos;Auto'apos;}\n*Statut:* ${mission.status}`,
+          type: 'mrkdwn',
+          text: `*Objectif:* ${mission.objective}\n*Priorité:* ${mission.priority || 'Auto'}\n*Statut:* ${mission.status}`,
         },
       },
       {
-        type: 'apos;section'apos;,
+        type: 'section',
         text: {
-          type: 'apos;mrkdwn'apos;,
-          text: `*Agents mobilisés:* ${mission.agents?.join('apos;, 'apos;) || 'apos;Aucun'apos;}`,
+          type: 'mrkdwn',
+          text: `*Agents mobilisés:* ${mission.agents?.join(', ') || 'Aucun'}`,
         },
       },
       {
-        type: 'apos;actions'apos;,
+        type: 'actions',
         elements: [
           {
-            type: 'apos;button'apos;,
+            type: 'button',
             text: {
-              type: 'apos;plain_text'apos;,
-              text: 'apos;Voir la mission'apos;,
+              type: 'plain_text',
+              text: 'Voir la mission',
             },
             url: `${process.env.NEXTAUTH_URL}/missions/${mission.id}`,
-            style: 'apos;primary'apos;,
+            style: 'primary',
           },
         ],
       },
@@ -90,37 +90,37 @@ export class SlackAPI {
   async sendReportNotification(channel: string, mission: any, report: any): Promise<ApiResponse<any>> {
     const blocks = [
       {
-        type: 'apos;header'apos;,
+        type: 'header',
         text: {
-          type: 'apos;plain_text'apos;,
-          text: 'apos;📊 Rapport Mission Terminée'apos;,
+          type: 'plain_text',
+          text: '📊 Rapport Mission Terminée',
         },
       },
       {
-        type: 'apos;section'apos;,
+        type: 'section',
         text: {
-          type: 'apos;mrkdwn'apos;,
+          type: 'mrkdwn',
           text: `*Mission:* ${mission.objective}\n*Résumé:* ${report.summary}`,
         },
       },
       {
-        type: 'apos;section'apos;,
+        type: 'section',
         text: {
-          type: 'apos;mrkdwn'apos;,
-          text: `*Prochaines étapes:* ${report.nextSteps || 'apos;Aucune action définie'apos;}`,
+          type: 'mrkdwn',
+          text: `*Prochaines étapes:* ${report.nextSteps || 'Aucune action définie'}`,
         },
       },
       {
-        type: 'apos;actions'apos;,
+        type: 'actions',
         elements: [
           {
-            type: 'apos;button'apos;,
+            type: 'button',
             text: {
-              type: 'apos;plain_text'apos;,
-              text: 'apos;Voir le rapport'apos;,
+              type: 'plain_text',
+              text: 'Voir le rapport',
             },
             url: `${process.env.NEXTAUTH_URL}/missions/${mission.id}`,
-            style: 'apos;primary'apos;,
+            style: 'primary',
           },
         ],
       },
@@ -131,33 +131,33 @@ export class SlackAPI {
 
   async sendAlertNotification(channel: string, alert: any): Promise<ApiResponse<any>> {
     const severityEmoji = {
-      low: 'apos;🟡'apos;,
-      medium: 'apos;🟠'apos;,
-      high: 'apos;🔴'apos;,
-      critical: 'apos;🚨'apos;,
+      low: '🟡',
+      medium: '🟠',
+      high: '🔴',
+      critical: '🚨',
     };
 
     const blocks = [
       {
-        type: 'apos;header'apos;,
+        type: 'header',
         text: {
-          type: 'apos;plain_text'apos;,
+          type: 'plain_text',
           text: `${severityEmoji[alert.severity as keyof typeof severityEmoji]} Alerte ${alert.type}`,
         },
       },
       {
-        type: 'apos;section'apos;,
+        type: 'section',
         text: {
-          type: 'apos;mrkdwn'apos;,
+          type: 'mrkdwn',
           text: `*Service:* ${alert.service}\n*Sévérité:* ${alert.severity}\n*Description:* ${alert.description}`,
         },
       },
       {
-        type: 'apos;context'apos;,
+        type: 'context',
         elements: [
           {
-            type: 'apos;mrkdwn'apos;,
-            text: `Détecté le ${new Date(alert.timestamp).toLocaleString('apos;fr-FR'apos;)}`,
+            type: 'mrkdwn',
+            text: `Détecté le ${new Date(alert.timestamp).toLocaleString('fr-FR')}`,
           },
         ],
       },
@@ -170,7 +170,7 @@ export class SlackAPI {
     try {
       const response = await fetch(`${this.baseUrl}/conversations.list`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
+          'Authorization': `Bearer ${this.token}`,
         },
       });
 
@@ -181,7 +181,7 @@ export class SlackAPI {
       const data = await response.json();
 
       if (!data.ok) {
-        throw new Error(data.error || 'apos;Slack API error'apos;);
+        throw new Error(data.error || 'Slack API error');
       }
 
       return {
@@ -205,7 +205,7 @@ export class SlackAPI {
     try {
       const response = await fetch(`${this.baseUrl}/auth.test`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
+          'Authorization': `Bearer ${this.token}`,
         },
       });
 

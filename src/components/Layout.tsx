@@ -28,14 +28,14 @@ export default function Layout({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const isMobile = useIsMobile();
 
-  // Écouter les changements d'apos;état du sidebar
+  // Écouter les changements d'état du sidebar
   useEffect(() => {
     const handleSidebarStateChange = () => {
       setSidebarCollapsed(prev => !prev);
     };
 
-    window.addEventListener('apos;sidebar-toggle'apos;, handleSidebarStateChange);
-    return () => window.removeEventListener('apos;sidebar-toggle'apos;, handleSidebarStateChange);
+    window.addEventListener('sidebar-toggle', handleSidebarStateChange);
+    return () => window.removeEventListener('sidebar-toggle', handleSidebarStateChange);
   }, []);
 
   const handleMissionCreated = (missionId: string) => {
@@ -43,10 +43,10 @@ export default function Layout({
     window.location.href = `/missions/${missionId}`;
   };
 
-  // Calculer la marge gauche en fonction de l'apos;état du sidebar
+  // Calculer la marge gauche en fonction de l'état du sidebar
   const getSidebarMargin = () => {
-    if (!showSidebar) return 'apos;0'apos;;
-    return sidebarCollapsed ? 'apos;64px'apos; : 'apos;256px'apos;;
+    if (!showSidebar) return '0';
+    return sidebarCollapsed ? '64px' : '256px';
   };
 
   return (
@@ -58,8 +58,8 @@ export default function Layout({
       <div 
         className="flex-1 flex flex-col"
         style={{ 
-          marginLeft: showSidebar && !isMobile ? getSidebarMargin() : 'apos;0'apos;,
-          transition: 'apos;margin-left 0.3s ease'apos;
+          marginLeft: showSidebar && !isMobile ? getSidebarMargin() : '0',
+          transition: 'margin-left 0.3s ease'
         }}
       >
         {/* Navigation horizontale */}

@@ -1,17 +1,17 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { getServerSession } from 'apos;next-auth'apos;;
-import { authOptions } from 'apos;@/lib/auth'apos;;
-import { promptManager } from 'apos;@/lib/agents/prompt-manager'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
-import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { promptManager } from '@/lib/agents/prompt-manager';
+import { logger } from '@/lib/logger';
+import { withRateLimit } from '@/lib/rate-limit-advanced';
 
 // POST - Actions sur les prompts (reset, toggle, export, import)
 export const POST = withRateLimit(async (request: NextRequest) => {
   const session = await getServerSession(authOptions);
   
-  // Vérifier que l'apos;utilisateur est super admin
-  if (session?.user?.email !== 'apos;info@beriox.ca'apos;) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+  // Vérifier que l'utilisateur est super admin
+  if (session?.user?.email !== 'info@beriox.ca') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -19,15 +19,15 @@ export const POST = withRateLimit(async (request: NextRequest) => {
     const { action, promptId, data } = body;
 
     switch (action) {
-      case 'apos;reset'apos;:
+      case 'reset':
         // Réinitialiser un prompt à sa valeur par défaut
         if (!promptId) {
-          return NextResponse.json({ error: 'apos;ID du prompt requis'apos; }, { status: 400 });
+          return NextResponse.json({ error: 'ID du prompt requis' }, { status: 400 });
         }
         
-        const resetSuccess = promptManager.resetPrompt(promptId, session.user.email || 'apos;unknown'apos;);
+        const resetSuccess = promptManager.resetPrompt(promptId, session.user.email || 'unknown');
         if (!resetSuccess) {
-          return NextResponse.json({ error: 'apos;Prompt non trouvé'apos; }, { status: 404 });
+          return NextResponse.json({ error: 'Prompt non trouvé' }, { status: 404 });
         }
 
         const resetPrompt = promptManager.getPrompt(promptId);
@@ -35,31 +35,31 @@ export const POST = withRateLimit(async (request: NextRequest) => {
 
         return NextResponse.json({
           success: true,
-          message: 'apos;Prompt réinitialisé avec succès'apos;,
+          message: 'Prompt réinitialisé avec succès',
           data: resetPrompt
         });
 
-      case 'apos;toggle'apos;:
+      case 'toggle':
         // Activer/désactiver un prompt
         if (!promptId) {
-          return NextResponse.json({ error: 'apos;ID du prompt requis'apos; }, { status: 400 });
+          return NextResponse.json({ error: 'ID du prompt requis' }, { status: 400 });
         }
         
-        const toggleSuccess = promptManager.togglePrompt(promptId, session.user.email || 'apos;unknown'apos;);
+        const toggleSuccess = promptManager.togglePrompt(promptId, session.user.email || 'unknown');
         if (!toggleSuccess) {
-          return NextResponse.json({ error: 'apos;Prompt non trouvé'apos; }, { status: 404 });
+          return NextResponse.json({ error: 'Prompt non trouvé' }, { status: 404 });
         }
 
         const toggledPrompt = promptManager.getPrompt(promptId);
-        logger.info(`Prompt ${toggledPrompt?.isActive ? 'apos;activé'apos; : 'apos;désactivé'apos;} par ${session.user.email}:`, promptId);
+        logger.info(`Prompt ${toggledPrompt?.isActive ? 'activé' : 'désactivé'} par ${session.user.email}:`, promptId);
 
         return NextResponse.json({
           success: true,
-          message: `Prompt ${toggledPrompt?.isActive ? 'apos;activé'apos; : 'apos;désactivé'apos;} avec succès`,
+          message: `Prompt ${toggledPrompt?.isActive ? 'activé' : 'désactivé'} avec succès`,
           data: toggledPrompt
         });
 
-      case 'apos;export'apos;:
+      case 'export':
         // Exporter tous les prompts
         const exportData = promptManager.exportPrompts();
         
@@ -67,24 +67,24 @@ export const POST = withRateLimit(async (request: NextRequest) => {
 
         return NextResponse.json({
           success: true,
-          message: 'apos;Prompts exportés avec succès'apos;,
+          message: 'Prompts exportés avec succès',
           data: {
             export: exportData,
-            filename: `beriox-prompts-${new Date().toISOString().split('apos;T'apos;)[0]}.json`
+            filename: `beriox-prompts-${new Date().toISOString().split('T')[0]}.json`
           }
         });
 
-      case 'apos;import'apos;:
+      case 'import':
         // Importer des prompts
         if (!data) {
-          return NextResponse.json({ error: 'apos;Données d\'apos;import requises'apos; }, { status: 400 });
+          return NextResponse.json({ error: 'Données d\'import requises' }, { status: 400 });
         }
         
         const importResult = promptManager.importPrompts(data);
         
         if (!importResult.success) {
           return NextResponse.json({
-            error: 'apos;Erreur lors de l\'apos;import'apos;,
+            error: 'Erreur lors de l\'import',
             details: importResult.errors
           }, { status: 400 });
         }
@@ -93,30 +93,30 @@ export const POST = withRateLimit(async (request: NextRequest) => {
 
         return NextResponse.json({
           success: true,
-          message: 'apos;Prompts importés avec succès'apos;,
+          message: 'Prompts importés avec succès',
           data: {
             imported: true,
             errors: importResult.errors
           }
         });
 
-      case 'apos;apply-template'apos;:
+      case 'apply-template':
         // Appliquer un template à un prompt
         const { templateId, variables } = body;
         
         if (!promptId || !templateId) {
-          return NextResponse.json({ error: 'apos;ID du prompt et du template requis'apos; }, { status: 400 });
+          return NextResponse.json({ error: 'ID du prompt et du template requis' }, { status: 400 });
         }
         
         const templateSuccess = promptManager.applyTemplate(
           promptId, 
           templateId, 
           variables || {}, 
-          session.user.email || 'apos;unknown'apos;
+          session.user.email || 'unknown'
         );
         
         if (!templateSuccess) {
-          return NextResponse.json({ error: 'apos;Erreur lors de l\'apos;application du template'apos; }, { status: 400 });
+          return NextResponse.json({ error: 'Erreur lors de l\'application du template' }, { status: 400 });
         }
 
         const templatedPrompt = promptManager.getPrompt(promptId);
@@ -124,16 +124,16 @@ export const POST = withRateLimit(async (request: NextRequest) => {
 
         return NextResponse.json({
           success: true,
-          message: 'apos;Template appliqué avec succès'apos;,
+          message: 'Template appliqué avec succès',
           data: templatedPrompt
         });
 
-      case 'apos;validate'apos;:
+      case 'validate':
         // Valider un prompt
         const { prompt } = body;
         
         if (!prompt) {
-          return NextResponse.json({ error: 'apos;Prompt requis'apos; }, { status: 400 });
+          return NextResponse.json({ error: 'Prompt requis' }, { status: 400 });
         }
         
         const validation = promptManager.validatePrompt(prompt);
@@ -144,10 +144,10 @@ export const POST = withRateLimit(async (request: NextRequest) => {
         });
 
       default:
-        return NextResponse.json({ error: 'apos;Action non reconnue'apos; }, { status: 400 });
+        return NextResponse.json({ error: 'Action non reconnue' }, { status: 400 });
     }
   } catch (error) {
-    logger.error('apos;Erreur lors de l\'apos;action sur les prompts:'apos;, error);
-    return NextResponse.json({ error: 'apos;Erreur serveur'apos; }, { status: 500 });
+    logger.error('Erreur lors de l\'action sur les prompts:', error);
+    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
   }
-}, 'apos;super-admin-prompts-actions'apos;);
+}, 'super-admin-prompts-actions');

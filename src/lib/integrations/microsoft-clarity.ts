@@ -1,8 +1,8 @@
-import { ApiResponse, UxData } from 'apos;./types'apos;;
+import { ApiResponse, UxData } from './types';
 
 export class MicrosoftClarityAPI {
   private apiKey: string;
-  private baseUrl = 'apos;https://www.clarity.ms/api'apos;;
+  private baseUrl = 'https://www.clarity.ms/api';
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -12,8 +12,8 @@ export class MicrosoftClarityAPI {
     try {
       const response = await fetch(`${this.baseUrl}/projects`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.apiKey}`,
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
         },
       });
 
@@ -40,13 +40,13 @@ export class MicrosoftClarityAPI {
       const params = new URLSearchParams({
         start: startDate,
         end: endDate,
-        limit: 'apos;100'apos;,
+        limit: '100',
       });
 
       const response = await fetch(`${this.baseUrl}/projects/${projectId}/sessions?${params}`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.apiKey}`,
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
         },
       });
 
@@ -60,8 +60,8 @@ export class MicrosoftClarityAPI {
       const recordings = data.sessions?.map((session: any) => ({
         sessionId: session.id,
         duration: session.totalTime || 0,
-        url: session.url || 'apos;'apos;,
-        userAgent: session.userAgent || 'apos;Unknown'apos;,
+        url: session.url || '',
+        userAgent: session.userAgent || 'Unknown',
       })) || [];
 
       // Simuler des données de heatmap (Clarity ne fournit pas directement ces données via API)
@@ -96,8 +96,8 @@ export class MicrosoftClarityAPI {
 
       const response = await fetch(`${this.baseUrl}/projects/${projectId}/heatmaps?${params}`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.apiKey}`,
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
         },
       });
 

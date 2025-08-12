@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Déterminer le plan effectif (avec accès premium temporaire)
-    const basePlan = user.planId || 'apos;free'apos;;
+    const basePlan = user.planId || 'free';
     const effectivePlan = PlanService.getEffectivePlan(basePlan, user.premiumAccess);
     const canUseGPT = PlanService.canUseGPTQuestions(effectivePlan);
     const hasPremiumAccess = PlanService.hasPremiumAccess(user.premiumAccess);
@@ -38,13 +38,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Objectif de mission requis" }, { status: 400 });
     }
 
-    // Si l'apos;utilisateur ne peut pas utiliser GPT, retourner des questions génériques
+    // Si l'utilisateur ne peut pas utiliser GPT, retourner des questions génériques
     if (!canUseGPT) {
       console.log(`🚫 Utilisateur ${user.email} (plan: ${effectivePlan}, premium: ${hasPremiumAccess}) - Questions GPT non autorisées`);
       
       const genericQuestions = [
         {
-          label: "💡 Dans quel contexte avez-vous besoin d'apos;aide ?",
+          label: "💡 Dans quel contexte avez-vous besoin d'aide ?",
           placeholder: "Ex: Pour mon site web, client spécifique, projet urgent..."
         },
         {
@@ -67,8 +67,8 @@ export async function POST(req: NextRequest) {
 
     console.log(`✅ Utilisateur ${user.email} (plan: ${effectivePlan}, premium: ${hasPremiumAccess}) - Questions GPT autorisées`);
 
-    // Prompt pour GPT afin de générer 3 questions d'apos;alignement personnalisées
-    const prompt = `Analyse cette demande de mission et génère exactement 3 questions d'apos;alignement stratégiques pour mieux comprendre le besoin du client.
+    // Prompt pour GPT afin de générer 3 questions d'alignement personnalisées
+    const prompt = `Analyse cette demande de mission et génère exactement 3 questions d'alignement stratégiques pour mieux comprendre le besoin du client.
 
 MISSION: "${objective}"
 
@@ -91,7 +91,7 @@ FORMAT REQUIS (JSON strict):
       "placeholder": "Ex: [exemple de contrainte ou contexte]"
     },
     {
-      "label": "✨ [Question sur l'apos;objectif ou résultat attendu]",
+      "label": "✨ [Question sur l'objectif ou résultat attendu]",
       "placeholder": "Ex: [exemple de résultat souhaité]"
     }
   ]
@@ -110,7 +110,7 @@ Génère maintenant 3 questions spécifiques pour cette mission.`;
       messages: [
         {
           role: "system",
-          content: "Tu es un expert en analyse de besoins clients. Tu génères des questions d'apos;alignement précises et pertinentes pour mieux comprendre les demandes. Réponds UNIQUEMENT en JSON valide."
+          content: "Tu es un expert en analyse de besoins clients. Tu génères des questions d'alignement précises et pertinentes pour mieux comprendre les demandes. Réponds UNIQUEMENT en JSON valide."
         },
         {
           role: "user",
@@ -123,20 +123,20 @@ Génère maintenant 3 questions spécifiques pour cette mission.`;
 
     // Validation de la réponse
     if (!response.questions || !Array.isArray(response.questions) || response.questions.length !== 3) {
-      console.error('apos;Réponse GPT invalide:'apos;, response);
+      console.error('Réponse GPT invalide:', response);
       
       // Questions de fallback si GPT échoue
       const fallbackQuestions = [
         {
-          label: "🎯 Quel est l'apos;objectif principal de cette demande ?",
-          placeholder: "Ex: Augmenter les ventes, améliorer l'apos;efficacité, résoudre un problème..."
+          label: "🎯 Quel est l'objectif principal de cette demande ?",
+          placeholder: "Ex: Augmenter les ventes, améliorer l'efficacité, résoudre un problème..."
         },
         {
           label: "📋 Dans quel contexte ou avec quelles contraintes ?",
           placeholder: "Ex: Budget limité, délai serré, équipe réduite, public spécifique..."
         },
         {
-          label: "✨ Comment saurez-vous que c'apos;est réussi ?",
+          label: "✨ Comment saurez-vous que c'est réussi ?",
           placeholder: "Ex: Métriques précises, feedback positif, objectif atteint..."
         }
       ];
@@ -158,7 +158,7 @@ Génère maintenant 3 questions spécifiques pour cette mission.`;
       };
     });
 
-    console.log('apos;✅ Questions GPT générées pour mission:'apos;, objective.substring(0, 50) + 'apos;...'apos;);
+    console.log('✅ Questions GPT générées pour mission:', objective.substring(0, 50) + '...');
     
     return NextResponse.json({ 
       questions: validatedQuestions,
@@ -167,9 +167,9 @@ Génère maintenant 3 questions spécifiques pour cette mission.`;
     });
 
   } catch (error) {
-    console.error('apos;Erreur génération questions:'apos;, error);
+    console.error('Erreur génération questions:', error);
     
-    // Questions de fallback en cas d'apos;erreur
+    // Questions de fallback en cas d'erreur
     const fallbackQuestions = [
       {
         label: "🎯 Quel est votre objectif principal ?",

@@ -1,17 +1,17 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { getServerSession } from 'apos;next-auth'apos;;
-import { authOptions } from 'apos;@/app/api/auth/[...nextauth]/route'apos;;
-import { validateRequest, validateQueryParams } from 'apos;@/lib/validation-schemas'apos;;
-import { errorHandlerMiddleware, AuthenticationError, AuthorizationError } from 'apos;@/lib/error-handler'apos;;
-import { prisma } from 'apos;@/lib/prisma'apos;;
-import { z } from 'apos;zod'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { validateRequest, validateQueryParams } from '@/lib/validation-schemas';
+import { errorHandlerMiddleware, AuthenticationError, AuthorizationError } from '@/lib/error-handler';
+import { prisma } from '@/lib/prisma';
+import { z } from 'zod';
 
 // Schémas de validation
 const CompanySearchSchema = z.object({
-  query: z.string().min(1, 'apos;Recherche requise'apos;).max(100, 'apos;Recherche trop longue'apos;),
+  query: z.string().min(1, 'Recherche requise').max(100, 'Recherche trop longue'),
   location: z.string().optional(),
   radius: z.number().min(100).max(50000).default(5000), // en mètres
-  type: z.string().optional(), // type d'apos;entreprise
+  type: z.string().optional(), // type d'entreprise
   hasWebsite: z.boolean().optional(), // filtrer par présence de site web
   limit: z.number().min(1).max(100).default(20),
   offset: z.number().min(0).default(0)
@@ -19,8 +19,8 @@ const CompanySearchSchema = z.object({
 
 const CompanyFilterSchema = z.object({
   industries: z.array(z.string()).optional(),
-  employeeCount: z.enum(['apos;1-10'apos;, 'apos;11-50'apos;, 'apos;51-200'apos;, 'apos;201-1000'apos;, 'apos;1000+'apos;]).optional(),
-  revenue: z.enum(['apos;<1M'apos;, 'apos;1M-10M'apos;, 'apos;10M-100M'apos;, 'apos;100M+'apos;]).optional(),
+  employeeCount: z.enum(['1-10', '11-50', '51-200', '201-1000', '1000+']).optional(),
+  revenue: z.enum(['<1M', '1M-10M', '10M-100M', '100M+']).optional(),
   location: z.string().optional(),
   hasWebsite: z.boolean().optional(),
   hasEmail: z.boolean().optional(),
@@ -50,14 +50,14 @@ export interface Company {
 
 class GooglePlacesService {
   private apiKey: string;
-  private baseUrl = 'apos;https://maps.googleapis.com/maps/api/place'apos;;
+  private baseUrl = 'https://maps.googleapis.com/maps/api/place';
 
   constructor() {
-    this.apiKey = process.env.GOOGLE_PLACES_API_KEY || 'apos;'apos;;
+    this.apiKey = process.env.GOOGLE_PLACES_API_KEY || '';
   }
 
   /**
-   * Vérifier si l'apos;API est configurée
+   * Vérifier si l'API est configurée
    */
   isConfigured(): boolean {
     return !!this.apiKey;
@@ -69,9 +69,9 @@ class GooglePlacesService {
   async searchCompanies(params: z.infer<typeof CompanySearchSchema>): Promise<Company[]> {
     const { query, location, radius, type, hasWebsite, limit, offset } = params;
 
-    // Vérifier si l'apos;API est configurée
+    // Vérifier si l'API est configurée
     if (!this.isConfigured()) {
-      console.warn('apos;Google Places API not configured, returning empty results'apos;);
+      console.warn('Google Places API not configured, returning empty results');
       return [];
     }
 
@@ -79,17 +79,17 @@ class GooglePlacesService {
       // Recherche de base avec Google Places
       const searchUrl = `${this.baseUrl}/textsearch/json`;
       const searchParams = new URLSearchParams({
-        query: `${query} ${type || 'apos;'apos;}`.trim(),
-        location: location || 'apos;'apos;,
+        query: `${query} ${type || ''}`.trim(),
+        location: location || '',
         radius: radius.toString(),
-        type: 'apos;establishment'apos;,
+        type: 'establishment',
         key: this.apiKey
       });
 
       const searchResponse = await fetch(`${searchUrl}?${searchParams}`);
       const searchData = await searchResponse.json();
 
-      if (searchData.status !== 'apos;OK'apos;) {
+      if (searchData.status !== 'OK') {
         throw new Error(`Google Places API error: ${searchData.status}`);
       }
 
@@ -116,33 +116,33 @@ class GooglePlacesService {
       return companies;
 
     } catch (error) {
-      console.error('apos;Google Places search failed:'apos;, error);
+      console.error('Google Places search failed:', error);
       throw error;
     }
   }
 
   /**
-   * Obtenir les détails d'apos;une entreprise
+   * Obtenir les détails d'une entreprise
    */
   private async getCompanyDetails(placeId: string): Promise<Company> {
     const detailsUrl = `${this.baseUrl}/details/json`;
     const params = new URLSearchParams({
       place_id: placeId,
-      fields: 'apos;name,formatted_address,formatted_phone_number,website,email,rating,user_ratings_total,types,geometry,place_id'apos;,
+      fields: 'name,formatted_address,formatted_phone_number,website,email,rating,user_ratings_total,types,geometry,place_id',
       key: this.apiKey
     });
 
     const response = await fetch(`${detailsUrl}?${params}`);
     const data = await response.json();
 
-    if (data.status !== 'apos;OK'apos;) {
+    if (data.status !== 'OK') {
       throw new Error(`Failed to get company details: ${data.status}`);
     }
 
     const result = data.result;
-    const website = result.website || 'apos;'apos;;
-    const email = result.email || 'apos;'apos;;
-    const phone = result.formatted_phone_number || 'apos;'apos;;
+    const website = result.website || '';
+    const email = result.email || '';
+    const phone = result.formatted_phone_number || '';
 
     return {
       id: placeId,
@@ -215,7 +215,7 @@ export const GET = errorHandlerMiddleware(async (request: NextRequest) => {
   const session = await getServerSession(authOptions);
   
   if (!session?.user?.email) {
-    throw new AuthenticationError('apos;Non authentifié'apos;);
+    throw new AuthenticationError('Non authentifié');
   }
 
   // Vérifier les permissions admin
@@ -224,19 +224,19 @@ export const GET = errorHandlerMiddleware(async (request: NextRequest) => {
     select: { role: true }
   });
 
-  if (!user || !['apos;admin'apos;, 'apos;super_admin'apos;].includes(user.role)) {
-    throw new AuthorizationError('apos;Accès administrateur requis'apos;);
+  if (!user || !['admin', 'super_admin'].includes(user.role)) {
+    throw new AuthorizationError('Accès administrateur requis');
   }
 
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('apos;action'apos;);
+  const action = searchParams.get('action');
 
   switch (action) {
-    case 'apos;search'apos;:
+    case 'search':
       const searchParams = validateQueryParams(request.nextUrl.searchParams, CompanySearchSchema);
       const companies = await placesService.searchCompanies(searchParams);
       
-             console.log('apos;Company search performed:'apos;, {
+             console.log('Company search performed:', {
          userId: session.user.email, 
          query: searchParams.query,
          resultsCount: companies.length 
@@ -249,9 +249,9 @@ export const GET = errorHandlerMiddleware(async (request: NextRequest) => {
         query: searchParams.query
       });
 
-    case 'apos;filter'apos;:
+    case 'filter':
       const filterParams = validateQueryParams(request.nextUrl.searchParams, CompanyFilterSchema);
-      const companiesToFilter = JSON.parse(searchParams.get('apos;companies'apos;) || 'apos;[]'apos;);
+      const companiesToFilter = JSON.parse(searchParams.get('companies') || '[]');
       const filteredCompanies = await placesService.filterCompanies(companiesToFilter, filterParams);
 
       return NextResponse.json({
@@ -263,7 +263,7 @@ export const GET = errorHandlerMiddleware(async (request: NextRequest) => {
 
     default:
       return NextResponse.json({
-        error: 'apos;Action invalide. Utilisez: search ou filter'apos;
+        error: 'Action invalide. Utilisez: search ou filter'
       }, { status: 400 });
   }
 });
@@ -273,7 +273,7 @@ export const POST = errorHandlerMiddleware(async (request: NextRequest) => {
   const session = await getServerSession(authOptions);
   
   if (!session?.user?.email) {
-    throw new AuthenticationError('apos;Non authentifié'apos;);
+    throw new AuthenticationError('Non authentifié');
   }
 
   // Vérifier les permissions admin
@@ -282,15 +282,15 @@ export const POST = errorHandlerMiddleware(async (request: NextRequest) => {
     select: { role: true }
   });
 
-  if (!user || !['apos;admin'apos;, 'apos;super_admin'apos;].includes(user.role)) {
-    throw new AuthorizationError('apos;Accès administrateur requis'apos;);
+  if (!user || !['admin', 'super_admin'].includes(user.role)) {
+    throw new AuthorizationError('Accès administrateur requis');
   }
 
   const body = await request.json();
   const { companies, campaignName, notes } = body;
 
   if (!companies || !Array.isArray(companies) || companies.length === 0) {
-    throw new Error('apos;Liste d\'apos;entreprises requise'apos;);
+    throw new Error('Liste d\'entreprises requise');
   }
 
   // Sauvegarder les entreprises ciblées
@@ -306,14 +306,14 @@ export const POST = errorHandlerMiddleware(async (request: NextRequest) => {
       hasWebsite: company.hasWebsite,
       hasEmail: company.hasEmail,
       hasPhone: company.hasPhone,
-      campaignName: campaignName || 'apos;Default Campaign'apos;,
-      notes: notes || 'apos;'apos;,
+      campaignName: campaignName || 'Default Campaign',
+      notes: notes || '',
       addedBy: session.user.email,
-      status: 'apos;pending'apos;
+      status: 'pending'
     }))
   });
 
-         console.log('apos;Targeted companies saved:'apos;, {
+         console.log('Targeted companies saved:', {
          userId: session.user.email, 
          count: savedCompanies.count,
          campaignName 

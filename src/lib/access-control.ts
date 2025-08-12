@@ -1,10 +1,10 @@
 /**
- * Système de contrôle d'apos;accès pour Beriox AI
- * Gestion des permissions basées sur les rôles et plans d'apos;abonnement
+ * Système de contrôle d'accès pour Beriox AI
+ * Gestion des permissions basées sur les rôles et plans d'abonnement
  */
 
 export interface UserPermissions {
-  role: 'apos;USER'apos; | 'apos;ADMIN'apos; | 'apos;SUPER_ADMIN'apos;;
+  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
   plan?: string;
   hasAccess?: boolean;
 }
@@ -13,7 +13,7 @@ export interface RouteConfig {
   path: string;
   label: string;
   icon: string;
-  requiredRole?: 'apos;USER'apos; | 'apos;ADMIN'apos; | 'apos;SUPER_ADMIN'apos;;
+  requiredRole?: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
   requiredPlan?: string[];
   premiumOnly?: boolean;
   superAdminOnly?: boolean;
@@ -24,109 +24,109 @@ export interface RouteConfig {
 export const ROUTE_CONFIGS: RouteConfig[] = [
   // Routes publiques (tous les utilisateurs connectés)
   {
-    path: 'apos;/'apos;,
-    label: 'apos;Tableau de bord'apos;,
-    icon: 'apos;home'apos;,
-    requiredRole: 'apos;USER'apos;
+    path: '/',
+    label: 'Tableau de bord',
+    icon: 'home',
+    requiredRole: 'USER'
   },
   {
-    path: 'apos;/missions'apos;,
-    label: 'apos;Missions'apos;,
-    icon: 'apos;tasks'apos;,
-    requiredRole: 'apos;USER'apos;
+    path: '/missions',
+    label: 'Missions',
+    icon: 'tasks',
+    requiredRole: 'USER'
   },
   {
-    path: 'apos;/agents'apos;,
-    label: 'apos;Équipe IA'apos;,
-    icon: 'apos;users'apos;,
-    requiredRole: 'apos;USER'apos;
+    path: '/agents',
+    label: 'Équipe IA',
+    icon: 'users',
+    requiredRole: 'USER'
   },
   {
-    path: 'apos;/novabot'apos;,
-    label: 'apos;NovaBot'apos;,
-    icon: 'apos;brain'apos;,
-    requiredRole: 'apos;USER'apos;
+    path: '/novabot',
+    label: 'NovaBot',
+    icon: 'brain',
+    requiredRole: 'USER'
   },
   {
-    path: 'apos;/profile'apos;,
-    label: 'apos;Profil'apos;,
-    icon: 'apos;user'apos;,
-    requiredRole: 'apos;USER'apos;
+    path: '/profile',
+    label: 'Profil',
+    icon: 'user',
+    requiredRole: 'USER'
   },
   {
-    path: 'apos;/pricing'apos;,
-    label: 'apos;Prix'apos;,
-    icon: 'apos;dollar-sign'apos;,
-    requiredRole: 'apos;USER'apos;
+    path: '/pricing',
+    label: 'Prix',
+    icon: 'dollar-sign',
+    requiredRole: 'USER'
   },
   {
-    path: 'apos;/settings'apos;,
-    label: 'apos;Paramètres'apos;,
-    icon: 'apos;cog'apos;,
-    requiredRole: 'apos;USER'apos;
+    path: '/settings',
+    label: 'Paramètres',
+    icon: 'cog',
+    requiredRole: 'USER'
   },
 
   // Routes premium
   {
-    path: 'apos;/time-tracking'apos;,
-    label: 'apos;Time Tracking'apos;,
-    icon: 'apos;clock'apos;,
-    requiredRole: 'apos;USER'apos;,
+    path: '/time-tracking',
+    label: 'Time Tracking',
+    icon: 'clock',
+    requiredRole: 'USER',
     premiumOnly: true,
-    description: 'apos;Gestion du temps et des projets'apos;
+    description: 'Gestion du temps et des projets'
   },
   {
-    path: 'apos;/form-optimization'apos;,
-    label: 'apos;Optimisation Formulaires'apos;,
-    icon: 'apos;edit'apos;,
-    requiredRole: 'apos;USER'apos;,
+    path: '/form-optimization',
+    label: 'Optimisation Formulaires',
+    icon: 'edit',
+    requiredRole: 'USER',
     premiumOnly: true,
-    description: 'apos;Optimisation des formulaires et conversion'apos;
+    description: 'Optimisation des formulaires et conversion'
   },
   {
-    path: 'apos;/integrations'apos;,
-    label: 'apos;Intégrations'apos;,
-    icon: 'apos;puzzle-piece'apos;,
-    requiredRole: 'apos;USER'apos;,
+    path: '/integrations',
+    label: 'Intégrations',
+    icon: 'puzzle-piece',
+    requiredRole: 'USER',
     premiumOnly: true,
-    description: 'apos;Intégrations tierces'apos;
+    description: 'Intégrations tierces'
   },
 
   // Routes spécifiques aux plans
   {
-    path: 'apos;/competitors'apos;,
-    label: 'apos;Veille Concurrentielle'apos;,
-    icon: 'apos;search'apos;,
-    requiredRole: 'apos;USER'apos;,
-    requiredPlan: ['apos;competitor-intelligence'apos;, 'apos;enterprise'apos;],
-    description: 'apos;Analyse de la concurrence'apos;
+    path: '/competitors',
+    label: 'Veille Concurrentielle',
+    icon: 'search',
+    requiredRole: 'USER',
+    requiredPlan: ['competitor-intelligence', 'enterprise'],
+    description: 'Analyse de la concurrence'
   },
 
   // Routes admin
   {
-    path: 'apos;/admin/premium-access'apos;,
-    label: 'apos;Accès Premium'apos;,
-    icon: 'apos;crown'apos;,
-    requiredRole: 'apos;ADMIN'apos;,
-    description: 'apos;Gestion des accès premium'apos;
+    path: '/admin/premium-access',
+    label: 'Accès Premium',
+    icon: 'crown',
+    requiredRole: 'ADMIN',
+    description: 'Gestion des accès premium'
   },
 
   // Routes super admin
   {
-    path: 'apos;/super-admin'apos;,
-    label: 'apos;Super-Admin'apos;,
-    icon: 'apos;crown'apos;,
-    requiredRole: 'apos;SUPER_ADMIN'apos;,
+    path: '/super-admin',
+    label: 'Super-Admin',
+    icon: 'crown',
+    requiredRole: 'SUPER_ADMIN',
     superAdminOnly: true,
-    description: 'apos;Panneau d\'apos;administration'apos;
+    description: 'Panneau d\'administration'
   },
   {
-    path: 'apos;/super-admin/users'apos;,
-    label: 'apos;Gestion Utilisateurs'apos;,
-    icon: 'apos;users'apos;,
-    requiredRole: 'apos;SUPER_ADMIN'apos;,
+    path: '/super-admin/users',
+    label: 'Gestion Utilisateurs',
+    icon: 'users',
+    requiredRole: 'SUPER_ADMIN',
     superAdminOnly: true,
-    description: 'apos;Gestion des utilisateurs et rôles'apos;
+    description: 'Gestion des utilisateurs et rôles'
   }
 ];
 
@@ -147,9 +147,9 @@ export function hasRouteAccess(
   // Vérifier le rôle requis
   if (route.requiredRole) {
     const roleHierarchy = {
-      'apos;USER'apos;: 1,
-      'apos;ADMIN'apos;: 2,
-      'apos;SUPER_ADMIN'apos;: 3
+      'USER': 1,
+      'ADMIN': 2,
+      'SUPER_ADMIN': 3
     };
 
     const userRoleLevel = roleHierarchy[userPermissions.role] || 0;
@@ -160,12 +160,12 @@ export function hasRouteAccess(
     }
   }
 
-  // Vérifier si c'apos;est réservé aux super admins
-  if (route.superAdminOnly && userPermissions.role !== 'apos;SUPER_ADMIN'apos;) {
+  // Vérifier si c'est réservé aux super admins
+  if (route.superAdminOnly && userPermissions.role !== 'SUPER_ADMIN') {
     return false;
   }
 
-  // Vérifier si c'apos;est premium seulement
+  // Vérifier si c'est premium seulement
   if (route.premiumOnly && !userPermissions.hasAccess) {
     return false;
   }
@@ -188,7 +188,7 @@ export function getVisibleRoutes(userPermissions: UserPermissions): RouteConfig[
 }
 
 /**
- * Obtient les informations d'apos;une route
+ * Obtient les informations d'une route
  */
 export function getRouteInfo(routePath: string): RouteConfig | null {
   return ROUTE_CONFIGS.find(r => r.path === routePath) || null;
@@ -205,40 +205,40 @@ export function canSeeInMenu(
 }
 
 /**
- * Obtient le message d'apos;erreur pour une route inaccessible
+ * Obtient le message d'erreur pour une route inaccessible
  */
 export function getAccessDeniedMessage(routePath: string, userPermissions: UserPermissions): string {
   const route = getRouteInfo(routePath);
   
   if (!route) {
-    return 'apos;Page non trouvée'apos;;
+    return 'Page non trouvée';
   }
 
-  if (route.superAdminOnly && userPermissions.role !== 'apos;SUPER_ADMIN'apos;) {
-    return 'apos;Accès réservé aux super administrateurs'apos;;
+  if (route.superAdminOnly && userPermissions.role !== 'SUPER_ADMIN') {
+    return 'Accès réservé aux super administrateurs';
   }
 
   if (route.premiumOnly && !userPermissions.hasAccess) {
-    return 'apos;Cette fonctionnalité nécessite un abonnement premium'apos;;
+    return 'Cette fonctionnalité nécessite un abonnement premium';
   }
 
   if (route.requiredPlan && route.requiredPlan.length > 0) {
     if (!userPermissions.plan || !route.requiredPlan.includes(userPermissions.plan)) {
-      return `Cette fonctionnalité nécessite le plan ${route.requiredPlan.join('apos; ou 'apos;)}`;
+      return `Cette fonctionnalité nécessite le plan ${route.requiredPlan.join(' ou ')}`;
     }
   }
 
   if (route.requiredRole) {
     const roleLabels = {
-      'apos;USER'apos;: 'apos;utilisateur'apos;,
-      'apos;ADMIN'apos;: 'apos;administrateur'apos;,
-      'apos;SUPER_ADMIN'apos;: 'apos;super administrateur'apos;
+      'USER': 'utilisateur',
+      'ADMIN': 'administrateur',
+      'SUPER_ADMIN': 'super administrateur'
     };
     
     const userRoleLevel = {
-      'apos;USER'apos;: 1,
-      'apos;ADMIN'apos;: 2,
-      'apos;SUPER_ADMIN'apos;: 3
+      'USER': 1,
+      'ADMIN': 2,
+      'SUPER_ADMIN': 3
     };
 
     if (userRoleLevel[userPermissions.role] < userRoleLevel[route.requiredRole]) {
@@ -246,5 +246,5 @@ export function getAccessDeniedMessage(routePath: string, userPermissions: UserP
     }
   }
 
-  return 'apos;Accès refusé'apos;;
+  return 'Accès refusé';
 }

@@ -1,5 +1,5 @@
-import { Suspense } from 'apos;react'apos;;
-import BotRecommendations from 'apos;@/components/bots/BotRecommendations'apos;;
+import { Suspense } from 'react';
+import BotRecommendations from '@/components/bots/BotRecommendations';
 
 export default function RecommendationsPage() {
   return (

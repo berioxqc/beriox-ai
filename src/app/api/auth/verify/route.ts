@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { prisma } from 'apos;@/lib/prisma'apos;;
-import { sendWelcomeEmail } from 'apos;@/lib/email'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { sendWelcomeEmail } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const token = searchParams.get('apos;token'apos;);
+    const token = searchParams.get('token');
 
     if (!token) {
       return NextResponse.json(
-        { error: 'apos;Token de vérification manquant'apos; },
+        { error: 'Token de vérification manquant' },
         { status: 400 }
       );
     }
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 
     if (!verificationToken) {
       return NextResponse.json(
-        { error: 'apos;Token de vérification invalide'apos; },
+        { error: 'Token de vérification invalide' },
         { status: 400 }
       );
     }
@@ -34,24 +34,24 @@ export async function GET(request: NextRequest) {
       });
 
       return NextResponse.json(
-        { error: 'apos;Token de vérification expiré'apos; },
+        { error: 'Token de vérification expiré' },
         { status: 400 }
       );
     }
 
-    // Trouver l'apos;utilisateur
+    // Trouver l'utilisateur
     const user = await prisma.user.findUnique({
       where: { email: verificationToken.identifier }
     });
 
     if (!user) {
       return NextResponse.json(
-        { error: 'apos;Utilisateur non trouvé'apos; },
+        { error: 'Utilisateur non trouvé' },
         { status: 404 }
       );
     }
 
-    // Vérifier l'apos;email
+    // Vérifier l'email
     await prisma.user.update({
       where: { id: user.id },
       data: { emailVerified: new Date() }
@@ -62,18 +62,18 @@ export async function GET(request: NextRequest) {
       where: { token }
     });
 
-    // Envoyer l'apos;email de bienvenue
+    // Envoyer l'email de bienvenue
     await sendWelcomeEmail(user.email!, user.name);
 
     return NextResponse.json({
-      message: 'apos;Email vérifié avec succès ! Votre compte est maintenant actif.'apos;,
+      message: 'Email vérifié avec succès ! Votre compte est maintenant actif.',
       userId: user.id
     });
 
   } catch (error) {
-    console.error('apos;Erreur lors de la vérification:'apos;, error);
+    console.error('Erreur lors de la vérification:', error);
     return NextResponse.json(
-      { error: 'apos;Erreur interne du serveur'apos; },
+      { error: 'Erreur interne du serveur' },
       { status: 500 }
     );
   }

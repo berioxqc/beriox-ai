@@ -1,25 +1,25 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { metrics } from 'apos;@/lib/metrics'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { metrics } from '@/lib/metrics';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   const startTime = Date.now();
   
   try {
-    // Vérifier l'apos;authentification pour les métriques sensibles
-    const authHeader = request.headers.get('apos;authorization'apos;);
+    // Vérifier l'authentification pour les métriques sensibles
+    const authHeader = request.headers.get('authorization');
     const isAuthenticated = authHeader === `Bearer ${process.env.METRICS_API_KEY}`;
     
     if (!isAuthenticated) {
       return NextResponse.json({
-        error: 'apos;Unauthorized'apos;,
-        message: 'apos;API key required for metrics access'apos;
+        error: 'Unauthorized',
+        message: 'API key required for metrics access'
       }, {
         status: 401,
         headers: {
-          'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
-          'apos;Pragma'apos;: 'apos;no-cache'apos;,
-          'apos;Expires'apos;: 'apos;0'apos;
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
         }
       });
     }
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
       },
       environment: {
         nodeEnv: process.env.NODE_ENV,
-        version: process.env.npm_package_version || 'apos;1.0.0'apos;
+        version: process.env.npm_package_version || '1.0.0'
       }
     };
 
@@ -54,8 +54,8 @@ export async function GET(request: NextRequest) {
       duration: Date.now() - startTime
     };
 
-    logger.info('apos;Metrics exported successfully'apos;, {
-      action: 'apos;metrics_export'apos;,
+    logger.info('Metrics exported successfully', {
+      action: 'metrics_export',
       duration: response.duration,
       metricsCount: allMetrics.metrics.length,
       performanceCount: allMetrics.performanceMetrics.length
@@ -64,30 +64,30 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(response, {
       status: 200,
       headers: {
-        'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
-        'apos;Pragma'apos;: 'apos;no-cache'apos;,
-        'apos;Expires'apos;: 'apos;0'apos;,
-        'apos;Content-Type'apos;: 'apos;application/json'apos;
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'Content-Type': 'application/json'
       }
     });
 
   } catch (error) {
-    logger.error('apos;Metrics export failed'apos;, error as Error, {
-      action: 'apos;metrics_export'apos;,
+    logger.error('Metrics export failed', error as Error, {
+      action: 'metrics_export',
       duration: Date.now() - startTime
     });
 
     return NextResponse.json({
-      error: 'apos;Internal Server Error'apos;,
-      message: 'apos;Failed to export metrics'apos;,
+      error: 'Internal Server Error',
+      message: 'Failed to export metrics',
       timestamp: new Date().toISOString(),
       duration: Date.now() - startTime
     }, {
       status: 500,
       headers: {
-        'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
-        'apos;Pragma'apos;: 'apos;no-cache'apos;,
-        'apos;Expires'apos;: 'apos;0'apos;
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     });
   }
@@ -97,14 +97,14 @@ export async function POST(request: NextRequest) {
   const startTime = Date.now();
   
   try {
-    // Vérifier l'apos;authentification
-    const authHeader = request.headers.get('apos;authorization'apos;);
+    // Vérifier l'authentification
+    const authHeader = request.headers.get('authorization');
     const isAuthenticated = authHeader === `Bearer ${process.env.METRICS_API_KEY}`;
     
     if (!isAuthenticated) {
       return NextResponse.json({
-        error: 'apos;Unauthorized'apos;,
-        message: 'apos;API key required for metrics access'apos;
+        error: 'Unauthorized',
+        message: 'API key required for metrics access'
       }, {
         status: 401
       });
@@ -114,44 +114,44 @@ export async function POST(request: NextRequest) {
     const { action, data } = body;
 
     switch (action) {
-      case 'apos;cleanup'apos;:
+      case 'cleanup':
         const maxAge = data?.maxAge || 24 * 60 * 60 * 1000; // 24 heures par défaut
         metrics.cleanup(maxAge);
         
-        logger.info('apos;Metrics cleanup triggered'apos;, {
-          action: 'apos;metrics_cleanup_triggered'apos;,
+        logger.info('Metrics cleanup triggered', {
+          action: 'metrics_cleanup_triggered',
           maxAge,
           duration: Date.now() - startTime
         });
         
         return NextResponse.json({
           success: true,
-          action: 'apos;cleanup'apos;,
+          action: 'cleanup',
           maxAge,
           timestamp: new Date().toISOString(),
           duration: Date.now() - startTime
         });
 
-      case 'apos;reset'apos;:
+      case 'reset':
         // Note: Cette action devrait être utilisée avec précaution
         // metrics.reset(); // Méthode à implémenter si nécessaire
         
-        logger.warn('apos;Metrics reset requested'apos;, {
-          action: 'apos;metrics_reset_requested'apos;,
+        logger.warn('Metrics reset requested', {
+          action: 'metrics_reset_requested',
           duration: Date.now() - startTime
         });
         
         return NextResponse.json({
           success: true,
-          action: 'apos;reset'apos;,
-          message: 'apos;Reset functionality not implemented'apos;,
+          action: 'reset',
+          message: 'Reset functionality not implemented',
           timestamp: new Date().toISOString(),
           duration: Date.now() - startTime
         });
 
       default:
         return NextResponse.json({
-          error: 'apos;Invalid action'apos;,
+          error: 'Invalid action',
           message: `Unknown action: ${action}`,
           timestamp: new Date().toISOString(),
           duration: Date.now() - startTime
@@ -161,14 +161,14 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    logger.error('apos;Metrics action failed'apos;, error as Error, {
-      action: 'apos;metrics_action'apos;,
+    logger.error('Metrics action failed', error as Error, {
+      action: 'metrics_action',
       duration: Date.now() - startTime
     });
 
     return NextResponse.json({
-      error: 'apos;Internal Server Error'apos;,
-      message: 'apos;Failed to process metrics action'apos;,
+      error: 'Internal Server Error',
+      message: 'Failed to process metrics action',
       timestamp: new Date().toISOString(),
       duration: Date.now() - startTime
     }, {

@@ -10,10 +10,10 @@ import Icon from "@/components/ui/Icon";
 
 // Fonction pour formater le contenu Markdown
 function formatMarkdownContent(content: any): string {
-  if (typeof content === 'apos;string'apos;) {
+  if (typeof content === 'string') {
     return content;
   }
-  if (typeof content === 'apos;object'apos; && content.content) {
+  if (typeof content === 'object' && content.content) {
     return content.content;
   }
   return JSON.stringify(content, null, 2);
@@ -21,39 +21,39 @@ function formatMarkdownContent(content: any): string {
 
 // Fonction pour formater le contenu en HTML simple
 function formatAsHtml(content: string): JSX.Element {
-  const lines = content.split('apos;\n'apos;);
+  const lines = content.split('\n');
   return (
     <div>
       {lines.map((line, index) => {
         // Titres
-        if (line.startsWith('apos;# 'apos;)) {
-          return <h3 key={index} style={{ fontSize: 'apos;18px'apos;, fontWeight: 'apos;700'apos;, color: 'apos;#0a2540'apos;, marginBottom: 'apos;12px'apos;, marginTop: index > 0 ? 'apos;24px'apos; : 'apos;0'apos; }}>{line.substring(2)}</h3>;
+        if (line.startsWith('# ')) {
+          return <h3 key={index} style={{ fontSize: '18px', fontWeight: '700', color: '#0a2540', marginBottom: '12px', marginTop: index > 0 ? '24px' : '0' }}>{line.substring(2)}</h3>;
         }
-        if (line.startsWith('apos;## 'apos;)) {
-          return <h4 key={index} style={{ fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#0a2540'apos;, marginBottom: 'apos;8px'apos;, marginTop: 'apos;20px'apos; }}>{line.substring(3)}</h4>;
+        if (line.startsWith('## ')) {
+          return <h4 key={index} style={{ fontSize: '16px', fontWeight: '600', color: '#0a2540', marginBottom: '8px', marginTop: '20px' }}>{line.substring(3)}</h4>;
         }
-        if (line.startsWith('apos;### 'apos;)) {
-          return <h5 key={index} style={{ fontSize: 'apos;14px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#425466'apos;, marginBottom: 'apos;6px'apos;, marginTop: 'apos;16px'apos; }}>{line.substring(4)}</h5>;
+        if (line.startsWith('### ')) {
+          return <h5 key={index} style={{ fontSize: '14px', fontWeight: '600', color: '#425466', marginBottom: '6px', marginTop: '16px' }}>{line.substring(4)}</h5>;
         }
         // Listes
-        if (line.startsWith('apos;- 'apos;)) {
-          return <div key={index} style={{ marginLeft: 'apos;16px'apos;, marginBottom: 'apos;4px'apos; }}>• {line.substring(2)}</div>;
+        if (line.startsWith('- ')) {
+          return <div key={index} style={{ marginLeft: '16px', marginBottom: '4px' }}>• {line.substring(2)}</div>;
         }
         // Gras
-        if (line.includes('apos;**'apos;)) {
-          const parts = line.split('apos;**'apos;);
+        if (line.includes('**')) {
+          const parts = line.split('**');
           return (
-            <div key={index} style={{ marginBottom: 'apos;4px'apos; }}>
+            <div key={index} style={{ marginBottom: '4px' }}>
               {parts.map((part, i) => i % 2 === 1 ? <strong key={i}>{part}</strong> : part)}
             </div>
           );
         }
         // Ligne vide
-        if (line.trim() === 'apos;'apos;) {
-          return <div key={index} style={{ height: 'apos;8px'apos; }} />;
+        if (line.trim() === '') {
+          return <div key={index} style={{ height: '8px' }} />;
         }
         // Texte normal
-        return <div key={index} style={{ marginBottom: 'apos;4px'apos; }}>{line}</div>;
+        return <div key={index} style={{ marginBottom: '4px' }}>{line}</div>;
       })}
     </div>
   );
@@ -155,7 +155,7 @@ const AGENTS_INFO = {
     icon: "bolt",
     color: "#ff6b35",
     role: "Évaluateur Priorité",
-    specialty: "Analyse d'apos;urgence & Impact",
+    specialty: "Analyse d'urgence & Impact",
     age: 0
   }
 };
@@ -170,7 +170,7 @@ export default function MissionDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [restarting, setRestarting] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'apos;overview'apos; | 'apos;briefs'apos; | 'apos;deliverables'apos; | 'apos;report'apos;>('apos;overview'apos;);
+  const [activeTab, setActiveTab] = useState<'overview' | 'briefs' | 'deliverables' | 'report'>('overview');
   const [selectedBrief, setSelectedBrief] = useState<Brief | null>(null);
   const [regeneratingReport, setRegeneratingReport] = useState(false);
 
@@ -183,19 +183,19 @@ export default function MissionDetailPage() {
   // Gestion de la fermeture de la modal par Escape
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'apos;Escape'apos; && selectedBrief) {
+      if (event.key === 'Escape' && selectedBrief) {
         setSelectedBrief(null);
       }
     };
 
     if (selectedBrief) {
-      document.addEventListener('apos;keydown'apos;, handleEscape);
-      document.body.style.overflow = 'apos;hidden'apos;; // Empêcher le scroll en arrière-plan
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden'; // Empêcher le scroll en arrière-plan
     }
 
     return () => {
-      document.removeEventListener('apos;keydown'apos;, handleEscape);
-      document.body.style.overflow = 'apos;unset'apos;;
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
     };
   }, [selectedBrief]);
 
@@ -241,25 +241,25 @@ export default function MissionDetailPage() {
       setRestarting(agentName);
       
       const response = await fetch(`/api/missions/${params.id}/restart-agent`, {
-        method: 'apos;POST'apos;,
+        method: 'POST',
         headers: {
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ agent: agentName })
       });
 
       if (!response.ok) {
-        throw new Error('apos;Erreur lors du redémarrage'apos;);
+        throw new Error('Erreur lors du redémarrage');
       }
 
       // Recharger les données après redémarrage
       setTimeout(() => {
         fetchMissionData(params.id as string);
-      }, 4000); // Attendre 4 secondes pour laisser le temps à l'apos;agent de travailler
+      }, 4000); // Attendre 4 secondes pour laisser le temps à l'agent de travailler
 
     } catch (error) {
-      console.error('apos;Erreur redémarrage:'apos;, error);
-      alert('apos;Erreur lors du redémarrage de l\'apos;agent'apos;);
+      console.error('Erreur redémarrage:', error);
+      alert('Erreur lors du redémarrage de l\'agent');
     } finally {
       setRestarting(null);
     }
@@ -270,14 +270,14 @@ export default function MissionDetailPage() {
       setRegeneratingReport(true);
       
       const response = await fetch(`/api/missions/${params.id}/regenerate-report`, {
-        method: 'apos;POST'apos;,
+        method: 'POST',
         headers: {
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Content-Type': 'application/json',
         }
       });
 
       if (!response.ok) {
-        throw new Error('apos;Erreur lors de la régénération du rapport'apos;);
+        throw new Error('Erreur lors de la régénération du rapport');
       }
 
       const data = await response.json();
@@ -287,8 +287,8 @@ export default function MissionDetailPage() {
       // fetchMissionData(params.id as string);
 
     } catch (error) {
-      console.error('apos;Erreur régénération rapport:'apos;, error);
-      alert('apos;Erreur lors de la régénération du rapport'apos;);
+      console.error('Erreur régénération rapport:', error);
+      alert('Erreur lors de la régénération du rapport');
     } finally {
       setRegeneratingReport(false);
     }
@@ -345,7 +345,7 @@ export default function MissionDetailPage() {
             <div style={{
               textAlign: "center",
               color: "#8898aa",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
               <div style={{
                 width: "40px",
@@ -381,16 +381,16 @@ export default function MissionDetailPage() {
               fontWeight: "600",
               color: "#df1b41",
               marginBottom: 8,
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
               Mission introuvable
             </h3>
             <p style={{
               color: "#8898aa",
               marginBottom: 24,
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
-              {error || "Cette mission n'apos;existe pas ou a été supprimée"}
+              {error || "Cette mission n'existe pas ou a été supprimée"}
             </p>
             <Link
               href="/missions"
@@ -402,7 +402,7 @@ export default function MissionDetailPage() {
                 textDecoration: "none",
                 fontSize: "14px",
                 fontWeight: "500",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
             >
               ← Retour aux missions
@@ -427,7 +427,7 @@ export default function MissionDetailPage() {
           fontSize: "14px",
           fontWeight: "500",
           transition: "all 0.2s",
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         }}
         onMouseOver={(e) => {
           e.currentTarget.style.borderColor = "#c7d2fe";
@@ -453,7 +453,7 @@ export default function MissionDetailPage() {
             fontSize: "14px",
             fontWeight: "500",
             transition: "all 0.2s",
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
           }}
           onMouseOver={(e) => e.currentTarget.style.background = "#1a365d"}
           onMouseOut={(e) => e.currentTarget.style.background = "#0a2540"}
@@ -474,7 +474,7 @@ export default function MissionDetailPage() {
   // Agents de travail (exclure PriorityBot du calcul de progression)
   const workAgents = agentsWithBriefs.filter(agent => agent !== "PriorityBot");
   
-  // Tous les agents à afficher (inclure PriorityBot pour l'apos;affichage)
+  // Tous les agents à afficher (inclure PriorityBot pour l'affichage)
   const allAgentsToDisplay = [...agentsWithBriefs];
   if (briefs.some(b => b.agent === "PriorityBot")) {
     allAgentsToDisplay.push("PriorityBot");
@@ -492,17 +492,17 @@ export default function MissionDetailPage() {
     return (
       <div
         style={{
-          position: 'apos;fixed'apos;,
+          position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'apos;rgba(0, 0, 0, 0.6)'apos;,
-          display: 'apos;flex'apos;,
-          alignItems: 'apos;center'apos;,
-          justifyContent: 'apos;center'apos;,
+          background: 'rgba(0, 0, 0, 0.6)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           zIndex: 1000,
-          padding: 'apos;20px'apos;
+          padding: '20px'
         }}
         onClick={(e) => {
           if (e.target === e.currentTarget) {
@@ -512,46 +512,46 @@ export default function MissionDetailPage() {
       >
         <div
           style={{
-            background: 'apos;white'apos;,
+            background: 'white',
             borderRadius: 12,
-            maxWidth: 'apos;800px'apos;,
-            maxHeight: 'apos;80vh'apos;,
-            width: 'apos;100%'apos;,
-            overflow: 'apos;hidden'apos;,
-            boxShadow: 'apos;0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'apos;,
-            position: 'apos;relative'apos;
+            maxWidth: '800px',
+            maxHeight: '80vh',
+            width: '100%',
+            overflow: 'hidden',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            position: 'relative'
           }}
         >
           {/* Header de la modal */}
           <div style={{
             background: `${agentInfo?.color || "#8898aa"}15`,
-            padding: 'apos;20px 24px'apos;,
-            borderBottom: 'apos;1px solid #e3e8ee'apos;,
-            display: 'apos;flex'apos;,
-            alignItems: 'apos;center'apos;,
-            justifyContent: 'apos;space-between'apos;
+            padding: '20px 24px',
+            borderBottom: '1px solid #e3e8ee',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
           }}>
-            <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
               <div style={{
-                fontSize: 'apos;24px'apos;
+                fontSize: '24px'
               }}>
                 {agentInfo?.emoji || "🤖"}
               </div>
               <div>
                 <div style={{
-                  fontSize: 'apos;18px'apos;,
-                  fontWeight: 'apos;600'apos;,
-                  color: 'apos;#0a2540'apos;,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  color: '#0a2540',
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
                   Brief pour {brief.agent}
                 </div>
                 <div style={{
-                  fontSize: 'apos;14px'apos;,
-                  color: 'apos;#8898aa'apos;,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontSize: '14px',
+                  color: '#8898aa',
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  {agentInfo?.role || "Agent"} • {new Date(brief.createdAt).toLocaleDateString('apos;fr-FR'apos;)}
+                  {agentInfo?.role || "Agent"} • {new Date(brief.createdAt).toLocaleDateString('fr-FR')}
                 </div>
               </div>
             </div>
@@ -560,25 +560,25 @@ export default function MissionDetailPage() {
             <button
               onClick={onClose}
               style={{
-                background: 'apos;transparent'apos;,
-                border: 'apos;none'apos;,
-                fontSize: 'apos;24px'apos;,
-                color: 'apos;#8898aa'apos;,
-                cursor: 'apos;pointer'apos;,
-                padding: 'apos;8px'apos;,
-                borderRadius: 'apos;6px'apos;,
-                display: 'apos;flex'apos;,
-                alignItems: 'apos;center'apos;,
-                justifyContent: 'apos;center'apos;,
-                transition: 'apos;all 0.2s'apos;
+                background: 'transparent',
+                border: 'none',
+                fontSize: '24px',
+                color: '#8898aa',
+                cursor: 'pointer',
+                padding: '8px',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'apos;#f6f9fc'apos;;
-                e.currentTarget.style.color = 'apos;#425466'apos;;
+                e.currentTarget.style.background = '#f6f9fc';
+                e.currentTarget.style.color = '#425466';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'apos;transparent'apos;;
-                e.currentTarget.style.color = 'apos;#8898aa'apos;;
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#8898aa';
               }}
             >
               ✕
@@ -587,13 +587,13 @@ export default function MissionDetailPage() {
 
           {/* Contenu de la modal */}
           <div style={{
-            padding: 'apos;24px'apos;,
-            maxHeight: 'apos;calc(80vh - 120px)'apos;,
-            overflow: 'apos;auto'apos;,
-            fontSize: 'apos;14px'apos;,
-            color: 'apos;#425466'apos;,
-            lineHeight: 'apos;1.6'apos;,
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+            padding: '24px',
+            maxHeight: 'calc(80vh - 120px)',
+            overflow: 'auto',
+            fontSize: '14px',
+            color: '#425466',
+            lineHeight: '1.6',
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
           }}>
             {formatAsHtml(formattedContent)}
           </div>
@@ -606,7 +606,7 @@ export default function MissionDetailPage() {
     <AuthGuard>
       <Layout
         title={mission.objective}
-        subtitle={`Mission créée le ${new Date(mission.createdAt).toLocaleDateString('apos;fr-FR'apos;)}`}
+        subtitle={`Mission créée le ${new Date(mission.createdAt).toLocaleDateString('fr-FR')}`}
         headerActions={headerActions}
       >
         {/* En-tête de la mission */}
@@ -636,7 +636,7 @@ export default function MissionDetailPage() {
                 fontWeight: "600",
                 textTransform: "uppercase",
                 letterSpacing: "0.5px",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 {getStatusLabel(mission.status)}
               </div>
@@ -648,7 +648,7 @@ export default function MissionDetailPage() {
                   borderRadius: 6,
                   fontSize: "13px",
                   fontWeight: "600",
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
                   Priorité {mission.priority}
                 </div>
@@ -664,7 +664,7 @@ export default function MissionDetailPage() {
               <div style={{
                 fontSize: "14px",
                 color: "#425466",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 Progression
               </div>
@@ -687,7 +687,7 @@ export default function MissionDetailPage() {
                 fontSize: "14px",
                 fontWeight: "600",
                 color: "#0a2540",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 {progressPercentage}%
               </div>
@@ -702,7 +702,7 @@ export default function MissionDetailPage() {
                   fontSize: "12px",
                   color: "#8898aa",
                   marginBottom: 4,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
                   Échéance
                 </div>
@@ -710,9 +710,9 @@ export default function MissionDetailPage() {
                   fontSize: "14px",
                   fontWeight: "600",
                   color: "#0a2540",
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  {new Date(mission.deadline).toLocaleDateString('apos;fr-FR'apos;)}
+                  {new Date(mission.deadline).toLocaleDateString('fr-FR')}
                 </div>
               </div>
             )}
@@ -731,7 +731,7 @@ export default function MissionDetailPage() {
                 fontWeight: "600",
                 color: "#0a2540",
                 marginBottom: 8,
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 Contexte de la mission
               </h4>
@@ -740,7 +740,7 @@ export default function MissionDetailPage() {
                 color: "#425466",
                 lineHeight: "1.6",
                 margin: 0,
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 {mission.context}
               </p>
@@ -762,10 +762,10 @@ export default function MissionDetailPage() {
             borderBottom: "1px solid #e3e8ee"
           }}>
             {[
-              { key: 'apos;overview'apos;, label: 'apos;Vue d\'apos;ensemble'apos;, icon: 'apos;📋'apos; },
-              { key: 'apos;briefs'apos;, label: 'apos;Briefs agents'apos;, icon: 'apos;📝'apos;, count: briefs.length },
-              { key: 'apos;deliverables'apos;, label: 'apos;Livrables'apos;, icon: 'apos;🎯'apos;, count: deliverables.length },
-              { key: 'apos;report'apos;, label: 'apos;Rapport final'apos;, icon: 'apos;📊'apos; }
+              { key: 'overview', label: 'Vue d\'ensemble', icon: '📋' },
+              { key: 'briefs', label: 'Briefs agents', icon: '📝', count: briefs.length },
+              { key: 'deliverables', label: 'Livrables', icon: '🎯', count: deliverables.length },
+              { key: 'report', label: 'Rapport final', icon: '📊' }
             ].map((tab) => (
               <button
                 key={tab.key}
@@ -785,7 +785,7 @@ export default function MissionDetailPage() {
                   alignItems: "center",
                   justifyContent: "center",
                   gap: 8,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}
                 onMouseOver={(e) => {
                   if (activeTab !== tab.key) {
@@ -820,16 +820,16 @@ export default function MissionDetailPage() {
 
           {/* Contenu des onglets */}
           <div style={{ padding: 32 }}>
-            {activeTab === 'apos;overview'apos; && (
+            {activeTab === 'overview' && (
               <div>
                 <h3 style={{
                   fontSize: "18px",
                   fontWeight: "600",
                   color: "#0a2540",
                   marginBottom: 24,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  📋 Vue d'apos;ensemble de la mission
+                  📋 Vue d'ensemble de la mission
                 </h3>
 
                 {/* Statistiques rapides */}
@@ -853,7 +853,7 @@ export default function MissionDetailPage() {
                       fontSize: "14px",
                       color: "#0570de",
                       fontWeight: "500",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       Agents mobilisés
                     </div>
@@ -873,7 +873,7 @@ export default function MissionDetailPage() {
                       fontSize: "14px",
                       color: "#00d924",
                       fontWeight: "500",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       Livrables produits
                     </div>
@@ -893,7 +893,7 @@ export default function MissionDetailPage() {
                       fontSize: "14px",
                       color: "#f79009",
                       fontWeight: "500",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       Progression
                     </div>
@@ -918,7 +918,7 @@ export default function MissionDetailPage() {
                       fontSize: "14px",
                       color: report ? "#00d924" : "#8898aa",
                       fontWeight: "500",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       {report ? "Rapport final" : "En attente"}
                     </div>
@@ -937,7 +937,7 @@ export default function MissionDetailPage() {
                     fontWeight: "600",
                     color: "#0a2540",
                     marginBottom: 20,
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                   }}>
                     🎯 Équipe mobilisée
                   </h4>
@@ -986,14 +986,14 @@ export default function MissionDetailPage() {
                               fontWeight: "600",
                               color: "#0a2540",
                               marginBottom: 4,
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                             }}>
                               {agentName}
                             </div>
                             <div style={{
                               fontSize: "13px",
                               color: "#8898aa",
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                             }}>
                               {info.specialty}
                             </div>
@@ -1013,7 +1013,7 @@ export default function MissionDetailPage() {
                                 fontSize: "10px",
                                 fontWeight: "600",
                                 textTransform: "uppercase",
-                                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                               }}>
                                 SYSTÈME
                               </span>
@@ -1028,7 +1028,7 @@ export default function MissionDetailPage() {
                               fontSize: "12px",
                               color: hasBrief ? "#00d924" : "#8898aa",
                               fontWeight: "500",
-                              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                             }}>
                               {isPriorityBot && hasBrief ? "Priorité évaluée" : 
                                hasDeliverable ? "Livrable produit" : 
@@ -1049,7 +1049,7 @@ export default function MissionDetailPage() {
                                 fontSize: "11px",
                                 color: restarting === agentName ? "#8898aa" : "#425466",
                                 cursor: restarting === agentName ? "not-allowed" : "pointer",
-                                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
+                                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                                 display: "flex",
                                 alignItems: "center",
                                 gap: 4,
@@ -1089,14 +1089,14 @@ export default function MissionDetailPage() {
               </div>
             )}
 
-            {activeTab === 'apos;briefs'apos; && (
+            {activeTab === 'briefs' && (
               <div>
                 <h3 style={{
                   fontSize: "18px",
                   fontWeight: "600",
                   color: "#0a2540",
                   marginBottom: 24,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
                   📝 Briefs distribués aux agents
                 </h3>
@@ -1112,14 +1112,14 @@ export default function MissionDetailPage() {
                       fontSize: "16px",
                       marginBottom: 8,
                       fontWeight: "500",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       Aucun brief généré pour le moment
                     </div>
                     <div style={{
                       fontSize: "14px",
                       color: "#8898aa",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       Les briefs apparaîtront ici une fois la mission découpée
                     </div>
@@ -1148,14 +1148,14 @@ export default function MissionDetailPage() {
               </div>
             )}
 
-            {activeTab === 'apos;deliverables'apos; && (
+            {activeTab === 'deliverables' && (
               <div>
                 <h3 style={{
                   fontSize: "18px",
                   fontWeight: "600",
                   color: "#0a2540",
                   marginBottom: 24,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
                   🎯 Livrables des agents
                 </h3>
@@ -1171,14 +1171,14 @@ export default function MissionDetailPage() {
                       fontSize: "16px",
                       marginBottom: 8,
                       fontWeight: "500",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       Aucun livrable produit pour le moment
                     </div>
                     <div style={{
                       fontSize: "14px",
                       color: "#8898aa",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       Les livrables des agents apparaîtront ici une fois leurs analyses terminées
                     </div>
@@ -1206,14 +1206,14 @@ export default function MissionDetailPage() {
               </div>
             )}
 
-            {activeTab === 'apos;report'apos; && (
+            {activeTab === 'report' && (
               <div>
                 <h3 style={{
                   fontSize: "18px",
                   fontWeight: "600",
                   color: "#0a2540",
                   marginBottom: 24,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
                   📊 Rapport final de mission
                 </h3>
@@ -1229,7 +1229,7 @@ export default function MissionDetailPage() {
                       fontSize: "16px",
                       marginBottom: 8,
                       fontWeight: "500",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       {deliverables.length > 0 ? "Rapport final manquant" : "Rapport final en cours de compilation"}
                     </div>
@@ -1237,10 +1237,10 @@ export default function MissionDetailPage() {
                       fontSize: "14px",
                       color: "#8898aa",
                       marginBottom: deliverables.length > 0 ? 24 : 0,
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       {deliverables.length > 0 
-                        ? "Des livrables sont disponibles mais le rapport final n'apos;a pas été généré" 
+                        ? "Des livrables sont disponibles mais le rapport final n'a pas été généré" 
                         : "Le rapport final sera disponible une fois tous les agents terminés"
                       }
                     </div>
@@ -1259,7 +1259,7 @@ export default function MissionDetailPage() {
                           fontSize: "14px",
                           fontWeight: "500",
                           cursor: regeneratingReport ? "not-allowed" : "pointer",
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                           display: "flex",
                           alignItems: "center",
                           gap: 8,
@@ -1312,16 +1312,16 @@ export default function MissionDetailPage() {
                           fontSize: "15px",
                           fontWeight: "600",
                           color: "#0a2540",
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                         }}>
                           Rapport Final Compilé
                         </div>
                         <div style={{
                           fontSize: "13px",
                           color: "#8898aa",
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                         }}>
-                          Généré le {new Date(report.createdAt).toLocaleDateString('apos;fr-FR'apos;)}
+                          Généré le {new Date(report.createdAt).toLocaleDateString('fr-FR')}
                         </div>
                       </div>
                     </div>
@@ -1331,7 +1331,7 @@ export default function MissionDetailPage() {
                         fontSize: "14px",
                         color: "#425466",
                         lineHeight: "1.6",
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                       }}>
                         {report.detailsMd ? formatAsHtml(report.detailsMd) : "Rapport final disponible"}
                       </div>

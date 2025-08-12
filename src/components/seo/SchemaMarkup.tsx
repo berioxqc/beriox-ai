@@ -1,101 +1,101 @@
-import Script from 'apos;next/script'apos;;
+import Script from 'next/script';
 
 interface SchemaMarkupProps {
-  type: 'apos;organization'apos; | 'apos;website'apos; | 'apos;article'apos; | 'apos;product'apos; | 'apos;breadcrumb'apos;;
+  type: 'organization' | 'website' | 'article' | 'product' | 'breadcrumb';
   data: any;
 }
 
 export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
   const getSchema = () => {
     switch (type) {
-      case 'apos;organization'apos;:
+      case 'organization':
         return {
-          'apos;@context'apos;: 'apos;https://schema.org'apos;,
-          'apos;@type'apos;: 'apos;Organization'apos;,
-          name: 'apos;Beriox AI'apos;,
-          url: 'apos;https://beriox-ai.vercel.app'apos;,
-          logo: 'apos;https://beriox-ai.vercel.app/logo.png'apos;,
-          description: 'apos;Plateforme d\'apos;intelligence artificielle pour l\'apos;automatisation et l\'apos;orchestration d\'apos;agents IA'apos;,
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Beriox AI',
+          url: 'https://beriox-ai.vercel.app',
+          logo: 'https://beriox-ai.vercel.app/logo.png',
+          description: 'Plateforme d\'intelligence artificielle pour l\'automatisation et l\'orchestration d\'agents IA',
           sameAs: [
-            'apos;https://twitter.com/berioxai'apos;,
-            'apos;https://linkedin.com/company/beriox-ai'apos;,
+            'https://twitter.com/berioxai',
+            'https://linkedin.com/company/beriox-ai',
           ],
           contactPoint: {
-            'apos;@type'apos;: 'apos;ContactPoint'apos;,
-            contactType: 'apos;customer service'apos;,
-            email: 'apos;contact@beriox-ai.com'apos;,
+            '@type': 'ContactPoint',
+            contactType: 'customer service',
+            email: 'contact@beriox-ai.com',
           },
         };
 
-      case 'apos;website'apos;:
+      case 'website':
         return {
-          'apos;@context'apos;: 'apos;https://schema.org'apos;,
-          'apos;@type'apos;: 'apos;WebSite'apos;,
-          name: 'apos;Beriox AI'apos;,
-          url: 'apos;https://beriox-ai.vercel.app'apos;,
-          description: 'apos;Plateforme d\'apos;intelligence artificielle pour l\'apos;automatisation et l\'apos;orchestration d\'apos;agents IA'apos;,
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Beriox AI',
+          url: 'https://beriox-ai.vercel.app',
+          description: 'Plateforme d\'intelligence artificielle pour l\'automatisation et l\'orchestration d\'agents IA',
           potentialAction: {
-            'apos;@type'apos;: 'apos;SearchAction'apos;,
-            target: 'apos;https://beriox-ai.vercel.app/search?q={search_term_string}'apos;,
-            'apos;query-input'apos;: 'apos;required name=search_term_string'apos;,
+            '@type': 'SearchAction',
+            target: 'https://beriox-ai.vercel.app/search?q={search_term_string}',
+            'query-input': 'required name=search_term_string',
           },
         };
 
-      case 'apos;article'apos;:
+      case 'article':
         return {
-          'apos;@context'apos;: 'apos;https://schema.org'apos;,
-          'apos;@type'apos;: 'apos;Article'apos;,
+          '@context': 'https://schema.org',
+          '@type': 'Article',
           headline: data.title,
           description: data.excerpt,
           image: data.image,
           author: {
-            'apos;@type'apos;: 'apos;Organization'apos;,
-            name: 'apos;Beriox AI'apos;,
+            '@type': 'Organization',
+            name: 'Beriox AI',
           },
           publisher: {
-            'apos;@type'apos;: 'apos;Organization'apos;,
-            name: 'apos;Beriox AI'apos;,
+            '@type': 'Organization',
+            name: 'Beriox AI',
             logo: {
-              'apos;@type'apos;: 'apos;ImageObject'apos;,
-              url: 'apos;https://beriox-ai.vercel.app/logo.png'apos;,
+              '@type': 'ImageObject',
+              url: 'https://beriox-ai.vercel.app/logo.png',
             },
           },
           datePublished: data.publishedAt,
           dateModified: data.publishedAt,
           mainEntityOfPage: {
-            'apos;@type'apos;: 'apos;WebPage'apos;,
-            'apos;@id'apos;: `https://beriox-ai.vercel.app/blog/${data.id}`,
+            '@type': 'WebPage',
+            '@id': `https://beriox-ai.vercel.app/blog/${data.id}`,
           },
         };
 
-      case 'apos;product'apos;:
+      case 'product':
         return {
-          'apos;@context'apos;: 'apos;https://schema.org'apos;,
-          'apos;@type'apos;: 'apos;SoftwareApplication'apos;,
-          name: 'apos;Beriox AI Platform'apos;,
-          description: 'apos;Plateforme d\'apos;intelligence artificielle pour l\'apos;automatisation et l\'apos;orchestration d\'apos;agents IA'apos;,
-          url: 'apos;https://beriox-ai.vercel.app'apos;,
-          applicationCategory: 'apos;BusinessApplication'apos;,
-          operatingSystem: 'apos;Web Browser'apos;,
+          '@context': 'https://schema.org',
+          '@type': 'SoftwareApplication',
+          name: 'Beriox AI Platform',
+          description: 'Plateforme d\'intelligence artificielle pour l\'automatisation et l\'orchestration d\'agents IA',
+          url: 'https://beriox-ai.vercel.app',
+          applicationCategory: 'BusinessApplication',
+          operatingSystem: 'Web Browser',
           offers: {
-            'apos;@type'apos;: 'apos;Offer'apos;,
-            price: 'apos;0'apos;,
-            priceCurrency: 'apos;USD'apos;,
-            description: 'apos;Version gratuite disponible'apos;,
+            '@type': 'Offer',
+            price: '0',
+            priceCurrency: 'USD',
+            description: 'Version gratuite disponible',
           },
           aggregateRating: {
-            'apos;@type'apos;: 'apos;AggregateRating'apos;,
-            ratingValue: 'apos;4.8'apos;,
-            ratingCount: 'apos;127'apos;,
+            '@type': 'AggregateRating',
+            ratingValue: '4.8',
+            ratingCount: '127',
           },
         };
 
-      case 'apos;breadcrumb'apos;:
+      case 'breadcrumb':
         return {
-          'apos;@context'apos;: 'apos;https://schema.org'apos;,
-          'apos;@type'apos;: 'apos;BreadcrumbList'apos;,
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
           itemListElement: data.items.map((item: any, index: number) => ({
-            'apos;@type'apos;: 'apos;ListItem'apos;,
+            '@type': 'ListItem',
             position: index + 1,
             name: item.name,
             item: item.url,

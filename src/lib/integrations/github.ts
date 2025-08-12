@@ -1,8 +1,8 @@
-import { ApiResponse } from 'apos;./types'apos;;
+import { ApiResponse } from './types';
 
 export class GitHubAPI {
   private token: string;
-  private baseUrl = 'apos;https://api.github.com'apos;;
+  private baseUrl = 'https://api.github.com';
 
   constructor(token: string) {
     this.token = token;
@@ -16,8 +16,8 @@ export class GitHubAPI {
 
       const response = await fetch(url, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
-          'apos;Accept'apos;: 'apos;application/vnd.github.v3+json'apos;,
+          'Authorization': `Bearer ${this.token}`,
+          'Accept': 'application/vnd.github.v3+json',
         },
       });
 
@@ -54,12 +54,12 @@ export class GitHubAPI {
   async getCommits(owner: string, repo: string, since?: string): Promise<ApiResponse<any[]>> {
     try {
       const params = new URLSearchParams();
-      if (since) params.append('apos;since'apos;, since);
+      if (since) params.append('since', since);
 
       const response = await fetch(`${this.baseUrl}/repos/${owner}/${repo}/commits?${params}`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
-          'apos;Accept'apos;: 'apos;application/vnd.github.v3+json'apos;,
+          'Authorization': `Bearer ${this.token}`,
+          'Accept': 'application/vnd.github.v3+json',
         },
       });
 
@@ -89,12 +89,12 @@ export class GitHubAPI {
     }
   }
 
-  async getIssues(owner: string, repo: string, state: 'apos;open'apos; | 'apos;closed'apos; | 'apos;all'apos; = 'apos;open'apos;): Promise<ApiResponse<any[]>> {
+  async getIssues(owner: string, repo: string, state: 'open' | 'closed' | 'all' = 'open'): Promise<ApiResponse<any[]>> {
     try {
       const response = await fetch(`${this.baseUrl}/repos/${owner}/${repo}/issues?state=${state}`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
-          'apos;Accept'apos;: 'apos;application/vnd.github.v3+json'apos;,
+          'Authorization': `Bearer ${this.token}`,
+          'Accept': 'application/vnd.github.v3+json',
         },
       });
 
@@ -127,12 +127,12 @@ export class GitHubAPI {
     }
   }
 
-  async getPullRequests(owner: string, repo: string, state: 'apos;open'apos; | 'apos;closed'apos; | 'apos;all'apos; = 'apos;open'apos;): Promise<ApiResponse<any[]>> {
+  async getPullRequests(owner: string, repo: string, state: 'open' | 'closed' | 'all' = 'open'): Promise<ApiResponse<any[]>> {
     try {
       const response = await fetch(`${this.baseUrl}/repos/${owner}/${repo}/pulls?state=${state}`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
-          'apos;Accept'apos;: 'apos;application/vnd.github.v3+json'apos;,
+          'Authorization': `Bearer ${this.token}`,
+          'Accept': 'application/vnd.github.v3+json',
         },
       });
 
@@ -172,8 +172,8 @@ export class GitHubAPI {
     try {
       const response = await fetch(`${this.baseUrl}/repos/${owner}/${repo}/stats/contributors`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
-          'apos;Accept'apos;: 'apos;application/vnd.github.v3+json'apos;,
+          'Authorization': `Bearer ${this.token}`,
+          'Accept': 'application/vnd.github.v3+json',
         },
       });
 
@@ -205,8 +205,8 @@ export class GitHubAPI {
     try {
       const response = await fetch(`${this.baseUrl}/rate_limit`, {
         headers: {
-          'apos;Authorization'apos;: `Bearer ${this.token}`,
-          'apos;Accept'apos;: 'apos;application/vnd.github.v3+json'apos;,
+          'Authorization': `Bearer ${this.token}`,
+          'Accept': 'application/vnd.github.v3+json',
         },
       });
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from 'apos;react'apos;;
-import { useSession } from 'apos;next-auth/react'apos;;
-import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlay,
   faPause,
@@ -22,7 +22,7 @@ import {
   faTimesCircle,
   faEdit,
   faTrash
-} from 'apos;@fortawesome/free-solid-svg-icons'apos;;
+} from '@fortawesome/free-solid-svg-icons';
 import {
   TimeEntry,
   Project,
@@ -30,7 +30,7 @@ import {
   Task,
   TimeTrackingStats,
   TimeTrackingSettings
-} from 'apos;@/lib/time-tracking'apos;;
+} from '@/lib/time-tracking';
 
 interface TimeTrackingDashboardProps {
   className?: string;
@@ -46,10 +46,10 @@ interface DashboardState {
   settings: TimeTrackingSettings | null;
   loading: boolean;
   error: string | null;
-  currentView: 'apos;timer'apos; | 'apos;entries'apos; | 'apos;projects'apos; | 'apos;clients'apos; | 'apos;tasks'apos; | 'apos;timesheet'apos; | 'apos;expenses'apos; | 'apos;invoices'apos; | 'apos;stats'apos; | 'apos;settings'apos;;
+  currentView: 'timer' | 'entries' | 'projects' | 'clients' | 'tasks' | 'timesheet' | 'expenses' | 'invoices' | 'stats' | 'settings';
 }
 
-export default function TimeTrackingDashboard({ className = 'apos;'apos; }: TimeTrackingDashboardProps) {
+export default function TimeTrackingDashboard({ className = '' }: TimeTrackingDashboardProps) {
   const { data: session } = useSession();
   const [state, setState] = useState<DashboardState>({
     activeTimer: null,
@@ -61,7 +61,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
     settings: null,
     loading: true,
     error: null,
-    currentView: 'apos;timer'apos;
+    currentView: 'timer'
   });
 
   // Charger les données initiales
@@ -81,13 +81,13 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
         statsRes,
         settingsRes
       ] = await Promise.all([
-        fetch('apos;/api/time-tracking?action=active-timer'apos;),
-        fetch('apos;/api/time-tracking?action=entries'apos;),
-        fetch('apos;/api/time-tracking?action=projects'apos;),
-        fetch('apos;/api/time-tracking?action=clients'apos;),
-        fetch('apos;/api/time-tracking?action=tasks'apos;),
-        fetch('apos;/api/time-tracking?action=stats&period=week'apos;),
-        fetch('apos;/api/time-tracking?action=settings'apos;)
+        fetch('/api/time-tracking?action=active-timer'),
+        fetch('/api/time-tracking?action=entries'),
+        fetch('/api/time-tracking?action=projects'),
+        fetch('/api/time-tracking?action=clients'),
+        fetch('/api/time-tracking?action=tasks'),
+        fetch('/api/time-tracking?action=stats&period=week'),
+        fetch('/api/time-tracking?action=settings')
       ]);
 
       const activeTimer = activeTimerRes.ok ? (await activeTimerRes.json()).activeTimer : null;
@@ -114,7 +114,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
       setState(prev => ({
         ...prev,
         loading: false,
-        error: 'apos;Erreur lors du chargement des données'apos;
+        error: 'Erreur lors du chargement des données'
       }));
     }
   };
@@ -124,9 +124,9 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
     if (!session?.user?.id) return;
 
     try {
-      const response = await fetch('apos;/api/time-tracking?action=start-timer'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const response = await fetch('/api/time-tracking?action=start-timer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectId, description, taskId })
       });
 
@@ -135,7 +135,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
         setState(prev => ({ ...prev, activeTimer: entry }));
       }
     } catch (error) {
-      console.error('apos;Erreur lors du démarrage du timer:'apos;, error);
+      console.error('Erreur lors du démarrage du timer:', error);
     }
   };
 
@@ -144,8 +144,8 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
     if (!session?.user?.id) return;
 
     try {
-      const response = await fetch('apos;/api/time-tracking?action=stop-timer'apos;, {
-        method: 'apos;PUT'apos;
+      const response = await fetch('/api/time-tracking?action=stop-timer', {
+        method: 'PUT'
       });
 
       if (response.ok) {
@@ -157,7 +157,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
         }));
       }
     } catch (error) {
-      console.error('apos;Erreur lors de l\'apos;arrêt du timer:'apos;, error);
+      console.error('Erreur lors de l\'arrêt du timer:', error);
     }
   };
 
@@ -166,8 +166,8 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
     if (!session?.user?.id) return;
 
     try {
-      const response = await fetch('apos;/api/time-tracking?action=pause-timer'apos;, {
-        method: 'apos;PUT'apos;
+      const response = await fetch('/api/time-tracking?action=pause-timer', {
+        method: 'PUT'
       });
 
       if (response.ok) {
@@ -175,7 +175,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
         setState(prev => ({ ...prev, activeTimer: entry }));
       }
     } catch (error) {
-      console.error('apos;Erreur lors de la pause du timer:'apos;, error);
+      console.error('Erreur lors de la pause du timer:', error);
     }
   };
 
@@ -184,8 +184,8 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
     if (!session?.user?.id) return;
 
     try {
-      const response = await fetch('apos;/api/time-tracking?action=resume-timer'apos;, {
-        method: 'apos;PUT'apos;
+      const response = await fetch('/api/time-tracking?action=resume-timer', {
+        method: 'PUT'
       });
 
       if (response.ok) {
@@ -193,7 +193,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
         setState(prev => ({ ...prev, activeTimer: entry }));
       }
     } catch (error) {
-      console.error('apos;Erreur lors de la reprise du timer:'apos;, error);
+      console.error('Erreur lors de la reprise du timer:', error);
     }
   };
 
@@ -203,7 +203,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
     const minutes = Math.floor((seconds % 3600) / 60);
     
     if (hours > 0) {
-      return `${hours}h ${minutes.toString().padStart(2, 'apos;0'apos;)}m`;
+      return `${hours}h ${minutes.toString().padStart(2, '0')}m`;
     }
     return `${minutes}m`;
   };
@@ -281,7 +281,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
             </h1>
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => setState(prev => ({ ...prev, currentView: 'apos;settings'apos; }))}
+                onClick={() => setState(prev => ({ ...prev, currentView: 'settings' }))}
                 className="p-2 text-gray-400 hover:text-gray-600"
                 title="Paramètres"
               >
@@ -297,23 +297,23 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
         <div className="max-w-7xl mx-auto px-4">
           <nav className="flex space-x-8 overflow-x-auto">
             {[
-              { id: 'apos;timer'apos;, label: 'apos;Timer'apos;, icon: faClock },
-              { id: 'apos;entries'apos;, label: 'apos;Entrées'apos;, icon: faClock },
-              { id: 'apos;projects'apos;, label: 'apos;Projets'apos;, icon: faProjectDiagram },
-              { id: 'apos;clients'apos;, label: 'apos;Clients'apos;, icon: faUsers },
-              { id: 'apos;tasks'apos;, label: 'apos;Tâches'apos;, icon: faTasks },
-              { id: 'apos;timesheet'apos;, label: 'apos;Feuilles'apos;, icon: faCalendarAlt },
-              { id: 'apos;expenses'apos;, label: 'apos;Dépenses'apos;, icon: faReceipt },
-              { id: 'apos;invoices'apos;, label: 'apos;Factures'apos;, icon: faFileInvoiceDollar },
-              { id: 'apos;stats'apos;, label: 'apos;Statistiques'apos;, icon: faChartBar }
+              { id: 'timer', label: 'Timer', icon: faClock },
+              { id: 'entries', label: 'Entrées', icon: faClock },
+              { id: 'projects', label: 'Projets', icon: faProjectDiagram },
+              { id: 'clients', label: 'Clients', icon: faUsers },
+              { id: 'tasks', label: 'Tâches', icon: faTasks },
+              { id: 'timesheet', label: 'Feuilles', icon: faCalendarAlt },
+              { id: 'expenses', label: 'Dépenses', icon: faReceipt },
+              { id: 'invoices', label: 'Factures', icon: faFileInvoiceDollar },
+              { id: 'stats', label: 'Statistiques', icon: faChartBar }
             ].map((item) => (
               <button
                 key={item.id}
                 onClick={() => setState(prev => ({ ...prev, currentView: item.id as any }))}
                 className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap ${
                   state.currentView === item.id
-                    ? 'apos;border-blue-500 text-blue-600'apos;
-                    : 'apos;border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'apos;
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
                 <FontAwesomeIcon icon={item.icon} className="w-4 h-4" />
@@ -327,7 +327,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
       {/* Contenu principal */}
       <div className="flex-1 p-6">
         <div className="max-w-7xl mx-auto">
-          {state.currentView === 'apos;timer'apos; && (
+          {state.currentView === 'timer' && (
             <TimerView
               activeTimer={state.activeTimer}
               projects={state.projects}
@@ -341,7 +341,7 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
             />
           )}
 
-          {state.currentView === 'apos;entries'apos; && (
+          {state.currentView === 'entries' && (
             <EntriesView
               entries={state.timeEntries}
               projects={state.projects}
@@ -349,35 +349,35 @@ export default function TimeTrackingDashboard({ className = 'apos;'apos; }: Time
             />
           )}
 
-          {state.currentView === 'apos;projects'apos; && (
+          {state.currentView === 'projects' && (
             <ProjectsView projects={state.projects} clients={state.clients} />
           )}
 
-          {state.currentView === 'apos;clients'apos; && (
+          {state.currentView === 'clients' && (
             <ClientsView clients={state.clients} />
           )}
 
-          {state.currentView === 'apos;tasks'apos; && (
+          {state.currentView === 'tasks' && (
             <TasksView tasks={state.tasks} projects={state.projects} />
           )}
 
-          {state.currentView === 'apos;timesheet'apos; && (
+          {state.currentView === 'timesheet' && (
             <TimesheetView />
           )}
 
-          {state.currentView === 'apos;expenses'apos; && (
+          {state.currentView === 'expenses' && (
             <ExpensesView />
           )}
 
-          {state.currentView === 'apos;invoices'apos; && (
+          {state.currentView === 'invoices' && (
             <InvoicesView />
           )}
 
-          {state.currentView === 'apos;stats'apos; && (
+          {state.currentView === 'stats' && (
             <StatsView stats={state.stats} formatDuration={formatDuration} />
           )}
 
-          {state.currentView === 'apos;settings'apos; && (
+          {state.currentView === 'settings' && (
             <SettingsView settings={state.settings} />
           )}
         </div>
@@ -410,14 +410,14 @@ function TimerView({
   formatDuration,
   getCurrentDuration
 }: TimerViewProps) {
-  const [selectedProject, setSelectedProject] = useState('apos;'apos;);
-  const [selectedTask, setSelectedTask] = useState('apos;'apos;);
-  const [description, setDescription] = useState('apos;'apos;);
+  const [selectedProject, setSelectedProject] = useState('');
+  const [selectedTask, setSelectedTask] = useState('');
+  const [description, setDescription] = useState('');
 
   const handleStartTimer = () => {
     if (!selectedProject || !description.trim()) return;
     onStartTimer(selectedProject, description.trim(), selectedTask || undefined);
-    setDescription('apos;'apos;);
+    setDescription('');
   };
 
   const projectTasks = tasks.filter(task => task.projectId === selectedProject);
@@ -446,7 +446,7 @@ function TimerView({
               </p>
             </div>
             <div className="flex justify-center space-x-4">
-              {activeTimer.status === 'apos;active'apos; ? (
+              {activeTimer.status === 'active' ? (
                 <>
                   <button
                     onClick={onPauseTimer}
@@ -602,7 +602,7 @@ function EntriesView({ entries, projects, formatDuration }: EntriesViewProps) {
                     {new Date(entry.startTime).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {projects.find(p => p.id === entry.projectId)?.name || 'apos;Projet inconnu'apos;}
+                    {projects.find(p => p.id === entry.projectId)?.name || 'Projet inconnu'}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {entry.description}
@@ -663,12 +663,12 @@ function ProjectsView({ projects, clients }: ProjectsViewProps) {
                   {project.name}
                 </h3>
                 <p className="text-sm text-gray-500">
-                  {clients.find(c => c.id === project.clientId)?.name || 'apos;Client inconnu'apos;}
+                  {clients.find(c => c.id === project.clientId)?.name || 'Client inconnu'}
                 </p>
               </div>
               <div
                 className="w-4 h-4 rounded-full"
-                style={{ backgroundColor: project.color || 'apos;#3B82F6'apos; }}
+                style={{ backgroundColor: project.color || '#3B82F6' }}
               ></div>
             </div>
             
@@ -758,16 +758,16 @@ function TasksView({ tasks, projects }: TasksViewProps) {
                 {task.name}
               </h3>
               <span className={`px-2 py-1 text-xs rounded-full ${
-                task.priority === 'apos;high'apos; ? 'apos;bg-red-100 text-red-800'apos; :
-                task.priority === 'apos;medium'apos; ? 'apos;bg-yellow-100 text-yellow-800'apos; :
-                'apos;bg-green-100 text-green-800'apos;
+                task.priority === 'high' ? 'bg-red-100 text-red-800' :
+                task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                'bg-green-100 text-green-800'
               }`}>
                 {task.priority}
               </span>
             </div>
             
             <p className="text-sm text-gray-500 mb-4">
-              {projects.find(p => p.id === task.projectId)?.name || 'apos;Projet inconnu'apos;}
+              {projects.find(p => p.id === task.projectId)?.name || 'Projet inconnu'}
             </p>
 
             {task.description && (

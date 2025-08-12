@@ -1,40 +1,40 @@
 "use client";
 
-import { useState } from 'apos;react'apos;;
-import { signIn } from 'apos;next-auth/react'apos;;
-import { useRouter } from 'apos;next/navigation'apos;;
-import Link from 'apos;next/link'apos;;
-import Icon from 'apos;@/components/ui/Icon'apos;;
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Icon from '@/components/ui/Icon';
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('apos;'apos;);
-  const [success, setSuccess] = useState('apos;'apos;);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [formData, setFormData] = useState({
-    name: 'apos;'apos;,
-    email: 'apos;'apos;,
-    password: 'apos;'apos;,
-    confirmPassword: 'apos;'apos;
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
   });
   const router = useRouter();
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);
-    setError('apos;'apos;);
+    setError('');
     
     try {
-      const result = await signIn('apos;google'apos;, { 
-        callbackUrl: 'apos;/missions'apos;,
+      const result = await signIn('google', { 
+        callbackUrl: '/missions',
         redirect: false 
       });
       
       if (result?.error) {
-        setError('apos;Erreur lors de l\'apos;inscription avec Google'apos;);
+        setError('Erreur lors de l\'inscription avec Google');
       } else if (result?.ok) {
-        router.push('apos;/missions'apos;);
+        router.push('/missions');
       }
     } catch (error) {
-      setError('apos;Erreur lors de l\'apos;inscription'apos;);
+      setError('Erreur lors de l\'inscription');
     } finally {
       setIsLoading(false);
     }
@@ -43,27 +43,27 @@ export default function SignUpPage() {
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('apos;'apos;);
-    setSuccess('apos;'apos;);
+    setError('');
+    setSuccess('');
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('apos;Les mots de passe ne correspondent pas'apos;);
+      setError('Les mots de passe ne correspondent pas');
       setIsLoading(false);
       return;
     }
 
     if (formData.password.length < 8) {
-      setError('apos;Le mot de passe doit contenir au moins 8 caractères'apos;);
+      setError('Le mot de passe doit contenir au moins 8 caractères');
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await fetch('apos;/api/auth/register'apos;, {
-        method: 'apos;POST'apos;,
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
         headers: {
-          'apos;Content-Type'apos;: 'apos;application/json'apos;,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: formData.name,
@@ -75,13 +75,13 @@ export default function SignUpPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'apos;Erreur lors de l\'apos;inscription'apos;);
+        setError(data.error || 'Erreur lors de l\'inscription');
       } else {
         setSuccess(data.message);
-        setFormData({ name: 'apos;'apos;, email: 'apos;'apos;, password: 'apos;'apos;, confirmPassword: 'apos;'apos; });
+        setFormData({ name: '', email: '', password: '', confirmPassword: '' });
       }
     } catch (error) {
-      setError('apos;Erreur lors de l\'apos;inscription'apos;);
+      setError('Erreur lors de l\'inscription');
     } finally {
       setIsLoading(false);
     }
@@ -205,13 +205,13 @@ export default function SignUpPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'apos;Création du compte...'apos; : 'apos;Créer mon compte'apos;}
+              {isLoading ? 'Création du compte...' : 'Créer mon compte'}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <div className="text-sm text-gray-400">
-              Déjà un compte ?{'apos; 'apos;}
+              Déjà un compte ?{' '}
               <Link 
                 href="/auth/signin"
                 className="text-purple-300 hover:text-purple-200 transition-colors"

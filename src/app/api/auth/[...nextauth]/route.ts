@@ -17,7 +17,7 @@ export const authOptions: any = {
   },
   callbacks: {
     async session({ session, user }) {
-      // Ajouter l'apos;ID utilisateur à la session
+      // Ajouter l'ID utilisateur à la session
       if (session.user && user) {
         session.user.id = user.id;
       }
@@ -26,7 +26,7 @@ export const authOptions: any = {
     async signIn({ user, account, profile }) {
       // Vérifications de sécurité
       if (account?.provider === "google") {
-        // Vérifier que l'apos;email est vérifié
+        // Vérifier que l'email est vérifié
         if (!profile?.email_verified) {
           console.warn("Tentative de connexion avec email non vérifié:", profile?.email);
           return false;
@@ -49,12 +49,12 @@ export const authOptions: any = {
       // Gestion intelligente des redirections
       console.log("🔄 Redirection:", { url, baseUrl });
       
-      // Si l'apos;URL est relative, la construire avec baseUrl
+      // Si l'URL est relative, la construire avec baseUrl
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       }
       
-      // Si l'apos;URL appartient au même domaine
+      // Si l'URL appartient au même domaine
       if (new URL(url).origin === baseUrl) {
         return url;
       }

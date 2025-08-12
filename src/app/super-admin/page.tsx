@@ -76,7 +76,7 @@ export default function SuperAdminPage() {
   const { data: session } = useSession();
   const [stats, setStats] = useState<SystemStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('apos;overview'apos;);
+  const [activeTab, setActiveTab] = useState('overview');
 
 
 
@@ -121,7 +121,7 @@ export default function SuperAdminPage() {
       
       setStats(mockStats);
     } catch (error) {
-      console.error('apos;Erreur lors du chargement des statistiques:'apos;, error);
+      console.error('Erreur lors du chargement des statistiques:', error);
     } finally {
       setLoading(false);
     }
@@ -130,180 +130,180 @@ export default function SuperAdminPage() {
   const quickActions: QuickAction[] = [
     // Gestion des Utilisateurs
     {
-      id: 'apos;users'apos;,
-      title: 'apos;Gestion Utilisateurs'apos;,
-      description: 'apos;Gérer les comptes, permissions et profils'apos;,
+      id: 'users',
+      title: 'Gestion Utilisateurs',
+      description: 'Gérer les comptes, permissions et profils',
       icon: faUsers,
-      href: 'apos;/admin/users'apos;,
-      color: 'apos;#3b82f6'apos;,
-      category: 'apos;users'apos;
+      href: '/admin/users',
+      color: '#3b82f6',
+      category: 'users'
     },
     {
-      id: 'apos;premium'apos;,
-      title: 'apos;Accès Premium'apos;,
-      description: 'apos;Gérer les abonnements et accès premium'apos;,
+      id: 'premium',
+      title: 'Accès Premium',
+      description: 'Gérer les abonnements et accès premium',
       icon: faCrown,
-      href: 'apos;/admin/premium-access'apos;,
-      color: 'apos;#f59e0b'apos;,
-      category: 'apos;users'apos;
+      href: '/admin/premium-access',
+      color: '#f59e0b',
+      category: 'users'
     },
 
     // Missions et IA
     {
-      id: 'apos;missions'apos;,
-      title: 'apos;Gestion Missions'apos;,
-      description: 'apos;Surveiller et gérer les missions IA'apos;,
+      id: 'missions',
+      title: 'Gestion Missions',
+      description: 'Surveiller et gérer les missions IA',
       icon: faRocket,
-      href: 'apos;/admin/missions'apos;,
-      color: 'apos;#10b981'apos;,
-      category: 'apos;missions'apos;
+      href: '/admin/missions',
+      color: '#10b981',
+      category: 'missions'
     },
     {
-      id: 'apos;agents'apos;,
-      title: 'apos;Agents IA'apos;,
-      description: 'apos;Configurer et optimiser les agents IA'apos;,
+      id: 'agents',
+      title: 'Agents IA',
+      description: 'Configurer et optimiser les agents IA',
       icon: faBrain,
-      href: 'apos;/agents'apos;,
-      color: 'apos;#8b5cf6'apos;,
-      category: 'apos;missions'apos;
+      href: '/agents',
+      color: '#8b5cf6',
+      category: 'missions'
     },
     {
-      id: 'apos;recommendations'apos;,
-      title: 'apos;Recommandations'apos;,
-      description: 'apos;Gérer les recommandations d\'apos;agents'apos;,
+      id: 'recommendations',
+      title: 'Recommandations',
+      description: 'Gérer les recommandations d\'agents',
       icon: faChartLine,
-      href: 'apos;/admin/recommendations'apos;,
-      color: 'apos;#06b6d4'apos;,
-      category: 'apos;missions'apos;
+      href: '/admin/recommendations',
+      color: '#06b6d4',
+      category: 'missions'
     },
 
     // Paiements et Finances
     {
-      id: 'apos;payments'apos;,
-      title: 'apos;Paiements Stripe'apos;,
-      description: 'apos;Gérer les paiements et facturations'apos;,
+      id: 'payments',
+      title: 'Paiements Stripe',
+      description: 'Gérer les paiements et facturations',
       icon: faCreditCard,
-      href: 'apos;/admin/payments'apos;,
-      color: 'apos;#6366f1'apos;,
-      category: 'apos;finance'apos;
+      href: '/admin/payments',
+      color: '#6366f1',
+      category: 'finance'
     },
     {
-      id: 'apos;refunds'apos;,
-      title: 'apos;Remboursements'apos;,
-      description: 'apos;Traiter les demandes de remboursement'apos;,
+      id: 'refunds',
+      title: 'Remboursements',
+      description: 'Traiter les demandes de remboursement',
       icon: faTicketAlt,
-      href: 'apos;/admin/refunds'apos;,
-      color: 'apos;#ef4444'apos;,
-      category: 'apos;finance'apos;
+      href: '/admin/refunds',
+      color: '#ef4444',
+      category: 'finance'
     },
     {
-      id: 'apos;coupons'apos;,
-      title: 'apos;Codes Promo'apos;,
-      description: 'apos;Créer et gérer les codes de réduction'apos;,
+      id: 'coupons',
+      title: 'Codes Promo',
+      description: 'Créer et gérer les codes de réduction',
       icon: faTicketAlt,
-      href: 'apos;/admin/coupons'apos;,
-      color: 'apos;#84cc16'apos;,
-      category: 'apos;finance'apos;
+      href: '/admin/coupons',
+      color: '#84cc16',
+      category: 'finance'
     },
 
     // Système et Performance
     {
-      id: 'apos;monitoring'apos;,
-      title: 'apos;Monitoring'apos;,
-      description: 'apos;Surveiller les performances système'apos;,
+      id: 'monitoring',
+      title: 'Monitoring',
+      description: 'Surveiller les performances système',
       icon: faServer,
-      href: 'apos;/admin/monitoring'apos;,
-      color: 'apos;#f97316'apos;,
-      category: 'apos;system'apos;
+      href: '/admin/monitoring',
+      color: '#f97316',
+      category: 'system'
     },
     {
-      id: 'apos;cache'apos;,
-      title: 'apos;Cache Redis'apos;,
-      description: 'apos;Gérer le cache et les performances'apos;,
+      id: 'cache',
+      title: 'Cache Redis',
+      description: 'Gérer le cache et les performances',
       icon: faDatabase,
-      href: 'apos;/admin/cache'apos;,
-      color: 'apos;#dc2626'apos;,
-      category: 'apos;system'apos;
+      href: '/admin/cache',
+      color: '#dc2626',
+      category: 'system'
     },
     {
-      id: 'apos;rate-limit'apos;,
-      title: 'apos;Rate Limiting'apos;,
-      description: 'apos;Configurer les limites de requêtes'apos;,
+      id: 'rate-limit',
+      title: 'Rate Limiting',
+      description: 'Configurer les limites de requêtes',
       icon: faShieldAlt,
-      href: 'apos;/admin/rate-limit'apos;,
-      color: 'apos;#7c3aed'apos;,
-      category: 'apos;system'apos;
+      href: '/admin/rate-limit',
+      color: '#7c3aed',
+      category: 'system'
     },
 
     // Sécurité
     {
-      id: 'apos;security'apos;,
-      title: 'apos;Sécurité'apos;,
-      description: 'apos;Audit de sécurité et logs'apos;,
+      id: 'security',
+      title: 'Sécurité',
+      description: 'Audit de sécurité et logs',
       icon: faShieldAlt,
-      href: 'apos;/admin/security'apos;,
-      color: 'apos;#059669'apos;,
-      category: 'apos;security'apos;
+      href: '/admin/security',
+      color: '#059669',
+      category: 'security'
     },
     {
-      id: 'apos;logs'apos;,
-      title: 'apos;Logs Système'apos;,
-      description: 'apos;Consulter les logs d\'apos;application'apos;,
+      id: 'logs',
+      title: 'Logs Système',
+      description: 'Consulter les logs d\'application',
       icon: faFileAlt,
-      href: 'apos;/admin/logs'apos;,
-      color: 'apos;#6b7280'apos;,
-      category: 'apos;security'apos;
+      href: '/admin/logs',
+      color: '#6b7280',
+      category: 'security'
     },
 
     // Analytics et Rapports
     {
-      id: 'apos;analytics'apos;,
-      title: 'apos;Analytics'apos;,
-      description: 'apos;Analyses détaillées et rapports'apos;,
+      id: 'analytics',
+      title: 'Analytics',
+      description: 'Analyses détaillées et rapports',
       icon: faChartLine,
-      href: 'apos;/admin/analytics'apos;,
-      color: 'apos;#0891b2'apos;,
-      category: 'apos;analytics'apos;
+      href: '/admin/analytics',
+      color: '#0891b2',
+      category: 'analytics'
     },
     {
-      id: 'apos;reports'apos;,
-      title: 'apos;Rapports'apos;,
-      description: 'apos;Générer des rapports personnalisés'apos;,
+      id: 'reports',
+      title: 'Rapports',
+      description: 'Générer des rapports personnalisés',
       icon: faFileAlt,
-      href: 'apos;/admin/reports'apos;,
-      color: 'apos;#be185d'apos;,
-      category: 'apos;analytics'apos;
+      href: '/admin/reports',
+      color: '#be185d',
+      category: 'analytics'
     },
 
     // Configuration
     {
-      id: 'apos;settings'apos;,
-      title: 'apos;Configuration'apos;,
-      description: 'apos;Paramètres système avancés'apos;,
+      id: 'settings',
+      title: 'Configuration',
+      description: 'Paramètres système avancés',
       icon: faCog,
-      href: 'apos;/admin/settings'apos;,
-      color: 'apos;#374151'apos;,
-      category: 'apos;config'apos;
+      href: '/admin/settings',
+      color: '#374151',
+      category: 'config'
     },
     {
-      id: 'apos;integrations'apos;,
-      title: 'apos;Intégrations'apos;,
-      description: 'apos;Gérer les intégrations externes'apos;,
+      id: 'integrations',
+      title: 'Intégrations',
+      description: 'Gérer les intégrations externes',
       icon: faNetworkWired,
-      href: 'apos;/integrations'apos;,
-      color: 'apos;#0ea5e9'apos;,
-      category: 'apos;config'apos;
+      href: '/integrations',
+      color: '#0ea5e9',
+      category: 'config'
     }
   ];
 
   const categories = {
-    users: { name: 'apos;Utilisateurs'apos;, color: 'apos;#3b82f6'apos; },
-    missions: { name: 'apos;Missions & IA'apos;, color: 'apos;#10b981'apos; },
-    finance: { name: 'apos;Finance'apos;, color: 'apos;#6366f1'apos; },
-    system: { name: 'apos;Système'apos;, color: 'apos;#f97316'apos; },
-    security: { name: 'apos;Sécurité'apos;, color: 'apos;#059669'apos; },
-    analytics: { name: 'apos;Analytics'apos;, color: 'apos;#0891b2'apos; },
-    config: { name: 'apos;Configuration'apos;, color: 'apos;#374151'apos; }
+    users: { name: 'Utilisateurs', color: '#3b82f6' },
+    missions: { name: 'Missions & IA', color: '#10b981' },
+    finance: { name: 'Finance', color: '#6366f1' },
+    system: { name: 'Système', color: '#f97316' },
+    security: { name: 'Sécurité', color: '#059669' },
+    analytics: { name: 'Analytics', color: '#0891b2' },
+    config: { name: 'Configuration', color: '#374151' }
   };
 
   const getActionsByCategory = (category: string) => {
@@ -314,8 +314,8 @@ export default function SuperAdminPage() {
     return (
       <AuthGuard>
         <Layout>
-          <div style={{ padding: 'apos;40px'apos;, textAlign: 'apos;center'apos; }}>
-            <div style={{ fontSize: 'apos;24px'apos;, color: 'apos;#6b7280'apos; }}>Chargement...</div>
+          <div style={{ padding: '40px', textAlign: 'center' }}>
+            <div style={{ fontSize: '24px', color: '#6b7280' }}>Chargement...</div>
           </div>
         </Layout>
       </AuthGuard>
@@ -326,138 +326,138 @@ export default function SuperAdminPage() {
     <AuthGuard>
       <AccessGuard superAdminOnly={true}>
         <Layout>
-        <div style={{ padding: 'apos;24px'apos;, maxWidth: 'apos;1400px'apos;, margin: 'apos;0 auto'apos; }}>
+        <div style={{ padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
           {/* Header */}
-          <div style={{ marginBottom: 'apos;32px'apos; }}>
-            <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;16px'apos;, marginBottom: 'apos;8px'apos; }}>
-              <div style={{ fontSize: 'apos;32px'apos; }}>👑</div>
-              <h1 style={{ fontSize: 'apos;32px'apos;, fontWeight: 'apos;700'apos;, margin: 'apos;0'apos; }}>
+          <div style={{ marginBottom: '32px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '8px' }}>
+              <div style={{ fontSize: '32px' }}>👑</div>
+              <h1 style={{ fontSize: '32px', fontWeight: '700', margin: '0' }}>
                 Super-Admin Dashboard
               </h1>
             </div>
-            <p style={{ color: 'apos;#6b7280'apos;, fontSize: 'apos;16px'apos;, margin: 'apos;0'apos; }}>
+            <p style={{ color: '#6b7280', fontSize: '16px', margin: '0' }}>
               Contrôle total sur Beriox AI - {session?.user?.email}
             </p>
           </div>
 
           {/* Tabs */}
           <div style={{ 
-            display: 'apos;flex'apos;, 
-            gap: 'apos;8px'apos;, 
-            marginBottom: 'apos;32px'apos;,
-            borderBottom: 'apos;1px solid #e5e7eb'apos;,
-            paddingBottom: 'apos;16px'apos;
+            display: 'flex', 
+            gap: '8px', 
+            marginBottom: '32px',
+            borderBottom: '1px solid #e5e7eb',
+            paddingBottom: '16px'
           }}>
-            {['apos;overview'apos;, 'apos;actions'apos;, 'apos;system'apos;, 'apos;analytics'apos;, 'apos;users'apos;].map(tab => (
+            {['overview', 'actions', 'system', 'analytics', 'users'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 style={{
-                  padding: 'apos;12px 24px'apos;,
-                  border: 'apos;none'apos;,
-                  borderRadius: 'apos;8px'apos;,
-                  cursor: 'apos;pointer'apos;,
-                  fontWeight: 'apos;600'apos;,
-                  backgroundColor: activeTab === tab ? 'apos;#635bff'apos; : 'apos;transparent'apos;,
-                  color: activeTab === tab ? 'apos;white'apos; : 'apos;#6b7280'apos;,
-                  transition: 'apos;all 0.2s'apos;
+                  padding: '12px 24px',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  backgroundColor: activeTab === tab ? '#635bff' : 'transparent',
+                  color: activeTab === tab ? 'white' : '#6b7280',
+                  transition: 'all 0.2s'
                 }}
               >
-                {tab === 'apos;overview'apos; && 'apos;Vue d\'apos;ensemble'apos;}
-                {tab === 'apos;actions'apos; && 'apos;Actions Rapides'apos;}
-                {tab === 'apos;system'apos; && 'apos;Système'apos;}
-                {tab === 'apos;analytics'apos; && 'apos;Analytics'apos;}
-                {tab === 'apos;users'apos; && 'apos;Gestion Utilisateurs'apos;}
+                {tab === 'overview' && 'Vue d\'ensemble'}
+                {tab === 'actions' && 'Actions Rapides'}
+                {tab === 'system' && 'Système'}
+                {tab === 'analytics' && 'Analytics'}
+                {tab === 'users' && 'Gestion Utilisateurs'}
               </button>
             ))}
           </div>
 
           {/* Overview Tab */}
-          {activeTab === 'apos;overview'apos; && (
+          {activeTab === 'overview' && (
             <div>
               {/* Stats Cards */}
               <div style={{ 
-                display: 'apos;grid'apos;, 
-                gridTemplateColumns: 'apos;repeat(auto-fit, minmax(250px, 1fr))'apos;, 
-                gap: 'apos;24px'apos;, 
-                marginBottom: 'apos;32px'apos; 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+                gap: '24px', 
+                marginBottom: '32px' 
               }}>
                 {/* Users Stats */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;12px'apos;, marginBottom: 'apos;16px'apos; }}>
-                    <FontAwesomeIcon icon={faUsers} style={{ color: 'apos;#3b82f6'apos;, fontSize: 'apos;20px'apos; }} />
-                    <h3 style={{ margin: 'apos;0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>Utilisateurs</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    <FontAwesomeIcon icon={faUsers} style={{ color: '#3b82f6', fontSize: '20px' }} />
+                    <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}>Utilisateurs</h3>
                   </div>
-                  <div style={{ fontSize: 'apos;32px'apos;, fontWeight: 'apos;700'apos;, marginBottom: 'apos;8px'apos; }}>
+                  <div style={{ fontSize: '32px', fontWeight: '700', marginBottom: '8px' }}>
                     {stats?.users.total.toLocaleString()}
                   </div>
-                  <div style={{ color: 'apos;#6b7280'apos;, fontSize: 'apos;14px'apos; }}>
+                  <div style={{ color: '#6b7280', fontSize: '14px' }}>
                     {stats?.users.premium} premium • {stats?.users.newThisMonth} nouveaux ce mois
                   </div>
                 </div>
 
                 {/* Missions Stats */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;12px'apos;, marginBottom: 'apos;16px'apos; }}>
-                    <FontAwesomeIcon icon={faRocket} style={{ color: 'apos;#10b981'apos;, fontSize: 'apos;20px'apos; }} />
-                    <h3 style={{ margin: 'apos;0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>Missions</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    <FontAwesomeIcon icon={faRocket} style={{ color: '#10b981', fontSize: '20px' }} />
+                    <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}>Missions</h3>
                   </div>
-                  <div style={{ fontSize: 'apos;32px'apos;, fontWeight: 'apos;700'apos;, marginBottom: 'apos;8px'apos; }}>
+                  <div style={{ fontSize: '32px', fontWeight: '700', marginBottom: '8px' }}>
                     {stats?.missions.total.toLocaleString()}
                   </div>
-                  <div style={{ color: 'apos;#6b7280'apos;, fontSize: 'apos;14px'apos; }}>
+                  <div style={{ color: '#6b7280', fontSize: '14px' }}>
                     {stats?.missions.completed} complétées • {stats?.missions.inProgress} en cours
                   </div>
                 </div>
 
                 {/* Revenue Stats */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;12px'apos;, marginBottom: 'apos;16px'apos; }}>
-                    <FontAwesomeIcon icon={faChartLine} style={{ color: 'apos;#f59e0b'apos;, fontSize: 'apos;20px'apos; }} />
-                    <h3 style={{ margin: 'apos;0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>Revenus</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    <FontAwesomeIcon icon={faChartLine} style={{ color: '#f59e0b', fontSize: '20px' }} />
+                    <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}>Revenus</h3>
                   </div>
-                  <div style={{ fontSize: 'apos;32px'apos;, fontWeight: 'apos;700'apos;, marginBottom: 'apos;8px'apos; }}>
+                  <div style={{ fontSize: '32px', fontWeight: '700', marginBottom: '8px' }}>
                     ${stats?.revenue.monthly.toLocaleString()}
                   </div>
-                  <div style={{ color: 'apos;#6b7280'apos;, fontSize: 'apos;14px'apos; }}>
+                  <div style={{ color: '#6b7280', fontSize: '14px' }}>
                     Ce mois • +{stats?.revenue.growth}% vs mois dernier
                   </div>
                 </div>
 
                 {/* Performance Stats */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;12px'apos;, marginBottom: 'apos;16px'apos; }}>
-                    <FontAwesomeIcon icon={faServer} style={{ color: 'apos;#f97316'apos;, fontSize: 'apos;20px'apos; }} />
-                    <h3 style={{ margin: 'apos;0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>Performance</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    <FontAwesomeIcon icon={faServer} style={{ color: '#f97316', fontSize: '20px' }} />
+                    <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}>Performance</h3>
                   </div>
-                  <div style={{ fontSize: 'apos;32px'apos;, fontWeight: 'apos;700'apos;, marginBottom: 'apos;8px'apos; }}>
+                  <div style={{ fontSize: '32px', fontWeight: '700', marginBottom: '8px' }}>
                     {stats?.performance.uptime}%
                   </div>
-                  <div style={{ color: 'apos;#6b7280'apos;, fontSize: 'apos;14px'apos; }}>
+                  <div style={{ color: '#6b7280', fontSize: '14px' }}>
                     Uptime • {stats?.performance.avgResponseTime}ms réponse
                   </div>
                 </div>
@@ -465,61 +465,61 @@ export default function SuperAdminPage() {
 
               {/* Quick Actions Grid */}
               <div>
-                <h2 style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;600'apos;, marginBottom: 'apos;24px'apos; }}>
+                <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '24px' }}>
                   Actions Rapides
                 </h2>
                 <div style={{ 
-                  display: 'apos;grid'apos;, 
-                  gridTemplateColumns: 'apos;repeat(auto-fit, minmax(300px, 1fr))'apos;, 
-                  gap: 'apos;16px'apos; 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+                  gap: '16px' 
                 }}>
                   {quickActions.slice(0, 6).map(action => (
                     <Link
                       key={action.id}
                       href={action.href}
                       style={{
-                        display: 'apos;flex'apos;,
-                        alignItems: 'apos;center'apos;,
-                        gap: 'apos;16px'apos;,
-                        padding: 'apos;20px'apos;,
-                        backgroundColor: 'apos;white'apos;,
-                        borderRadius: 'apos;12px'apos;,
-                        border: 'apos;1px solid #e5e7eb'apos;,
-                        textDecoration: 'apos;none'apos;,
-                        color: 'apos;inherit'apos;,
-                        transition: 'apos;all 0.2s'apos;,
-                        boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '16px',
+                        padding: '20px',
+                        backgroundColor: 'white',
+                        borderRadius: '12px',
+                        border: '1px solid #e5e7eb',
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        transition: 'all 0.2s',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'apos;translateY(-2px)'apos;;
-                        e.currentTarget.style.boxShadow = 'apos;0 4px 12px rgba(0,0,0,0.15)'apos;;
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'apos;translateY(0)'apos;;
-                        e.currentTarget.style.boxShadow = 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;;
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
                       }}
                     >
                       <div style={{ 
-                        width: 'apos;48px'apos;, 
-                        height: 'apos;48px'apos;, 
-                        borderRadius: 'apos;12px'apos;, 
+                        width: '48px', 
+                        height: '48px', 
+                        borderRadius: '12px', 
                         backgroundColor: action.color,
-                        display: 'apos;flex'apos;,
-                        alignItems: 'apos;center'apos;,
-                        justifyContent: 'apos;center'apos;,
-                        color: 'apos;white'apos;
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white'
                       }}>
-                        <FontAwesomeIcon icon={action.icon} style={{ fontSize: 'apos;20px'apos; }} />
+                        <FontAwesomeIcon icon={action.icon} style={{ fontSize: '20px' }} />
                       </div>
                       <div style={{ flex: 1 }}>
-                        <h3 style={{ margin: 'apos;0 0 4px 0'apos;, fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos; }}>
+                        <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: '600' }}>
                           {action.title}
                         </h3>
-                        <p style={{ margin: 'apos;0'apos;, fontSize: 'apos;14px'apos;, color: 'apos;#6b7280'apos; }}>
+                        <p style={{ margin: '0', fontSize: '14px', color: '#6b7280' }}>
                           {action.description}
                         </p>
                       </div>
-                      <FontAwesomeIcon icon={faArrowRight} style={{ color: 'apos;#9ca3af'apos; }} />
+                      <FontAwesomeIcon icon={faArrowRight} style={{ color: '#9ca3af' }} />
                     </Link>
                   ))}
                 </div>
@@ -528,74 +528,74 @@ export default function SuperAdminPage() {
           )}
 
           {/* Actions Tab */}
-          {activeTab === 'apos;actions'apos; && (
+          {activeTab === 'actions' && (
             <div>
-              <h2 style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;600'apos;, marginBottom: 'apos;24px'apos; }}>
+              <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '24px' }}>
                 Toutes les Actions Administratives
               </h2>
               
               {Object.entries(categories).map(([categoryKey, category]) => (
-                <div key={categoryKey} style={{ marginBottom: 'apos;32px'apos; }}>
+                <div key={categoryKey} style={{ marginBottom: '32px' }}>
                   <h3 style={{ 
-                    fontSize: 'apos;20px'apos;, 
-                    fontWeight: 'apos;600'apos;, 
-                    marginBottom: 'apos;16px'apos;,
+                    fontSize: '20px', 
+                    fontWeight: '600', 
+                    marginBottom: '16px',
                     color: category.color
                   }}>
                     {category.name}
                   </h3>
                   <div style={{ 
-                    display: 'apos;grid'apos;, 
-                    gridTemplateColumns: 'apos;repeat(auto-fit, minmax(300px, 1fr))'apos;, 
-                    gap: 'apos;16px'apos; 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+                    gap: '16px' 
                   }}>
                     {getActionsByCategory(categoryKey).map(action => (
                       <Link
                         key={action.id}
                         href={action.href}
                         style={{
-                          display: 'apos;flex'apos;,
-                          alignItems: 'apos;center'apos;,
-                          gap: 'apos;16px'apos;,
-                          padding: 'apos;20px'apos;,
-                          backgroundColor: 'apos;white'apos;,
-                          borderRadius: 'apos;12px'apos;,
-                          border: 'apos;1px solid #e5e7eb'apos;,
-                          textDecoration: 'apos;none'apos;,
-                          color: 'apos;inherit'apos;,
-                          transition: 'apos;all 0.2s'apos;,
-                          boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '16px',
+                          padding: '20px',
+                          backgroundColor: 'white',
+                          borderRadius: '12px',
+                          border: '1px solid #e5e7eb',
+                          textDecoration: 'none',
+                          color: 'inherit',
+                          transition: 'all 0.2s',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'apos;translateY(-2px)'apos;;
-                          e.currentTarget.style.boxShadow = 'apos;0 4px 12px rgba(0,0,0,0.15)'apos;;
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'apos;translateY(0)'apos;;
-                          e.currentTarget.style.boxShadow = 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;;
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
                         }}
                       >
                         <div style={{ 
-                          width: 'apos;48px'apos;, 
-                          height: 'apos;48px'apos;, 
-                          borderRadius: 'apos;12px'apos;, 
+                          width: '48px', 
+                          height: '48px', 
+                          borderRadius: '12px', 
                           backgroundColor: action.color,
-                          display: 'apos;flex'apos;,
-                          alignItems: 'apos;center'apos;,
-                          justifyContent: 'apos;center'apos;,
-                          color: 'apos;white'apos;
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'white'
                         }}>
-                          <FontAwesomeIcon icon={action.icon} style={{ fontSize: 'apos;20px'apos; }} />
+                          <FontAwesomeIcon icon={action.icon} style={{ fontSize: '20px' }} />
                         </div>
                         <div style={{ flex: 1 }}>
-                          <h3 style={{ margin: 'apos;0 0 4px 0'apos;, fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos; }}>
+                          <h3 style={{ margin: '0 0 4px 0', fontSize: '16px', fontWeight: '600' }}>
                             {action.title}
                           </h3>
-                          <p style={{ margin: 'apos;0'apos;, fontSize: 'apos;14px'apos;, color: 'apos;#6b7280'apos; }}>
+                          <p style={{ margin: '0', fontSize: '14px', color: '#6b7280' }}>
                             {action.description}
                           </p>
                         </div>
-                        <FontAwesomeIcon icon={faArrowRight} style={{ color: 'apos;#9ca3af'apos; }} />
+                        <FontAwesomeIcon icon={faArrowRight} style={{ color: '#9ca3af' }} />
                       </Link>
                     ))}
                   </div>
@@ -605,88 +605,88 @@ export default function SuperAdminPage() {
           )}
 
           {/* System Tab */}
-          {activeTab === 'apos;system'apos; && (
+          {activeTab === 'system' && (
             <div>
-              <h2 style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;600'apos;, marginBottom: 'apos;24px'apos; }}>
+              <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '24px' }}>
                 État du Système
               </h2>
               
               <div style={{ 
-                display: 'apos;grid'apos;, 
-                gridTemplateColumns: 'apos;repeat(auto-fit, minmax(300px, 1fr))'apos;, 
-                gap: 'apos;24px'apos; 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+                gap: '24px' 
               }}>
                 {/* System Resources */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <h3 style={{ margin: 'apos;0 0 16px 0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>
+                  <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600' }}>
                     Ressources Système
                   </h3>
-                  <div style={{ display: 'apos;flex'apos;, flexDirection: 'apos;column'apos;, gap: 'apos;12px'apos; }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     <div>
-                      <div style={{ display: 'apos;flex'apos;, justifyContent: 'apos;space-between'apos;, marginBottom: 'apos;4px'apos; }}>
-                        <span style={{ fontSize: 'apos;14px'apos; }}>CPU</span>
-                        <span style={{ fontSize: 'apos;14px'apos;, fontWeight: 'apos;600'apos; }}>{stats?.system.cpu}%</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                        <span style={{ fontSize: '14px' }}>CPU</span>
+                        <span style={{ fontSize: '14px', fontWeight: '600' }}>{stats?.system.cpu}%</span>
                       </div>
                       <div style={{ 
-                        width: 'apos;100%'apos;, 
-                        height: 'apos;8px'apos;, 
-                        backgroundColor: 'apos;#e5e7eb'apos;, 
-                        borderRadius: 'apos;4px'apos;,
-                        overflow: 'apos;hidden'apos;
+                        width: '100%', 
+                        height: '8px', 
+                        backgroundColor: '#e5e7eb', 
+                        borderRadius: '4px',
+                        overflow: 'hidden'
                       }}>
                         <div style={{ 
                           width: `${stats?.system.cpu}%`, 
-                          height: 'apos;100%'apos;, 
-                          backgroundColor: stats?.system.cpu && stats.system.cpu > 80 ? 'apos;#ef4444'apos; : 'apos;#10b981'apos;,
-                          transition: 'apos;width 0.3s'apos;
+                          height: '100%', 
+                          backgroundColor: stats?.system.cpu && stats.system.cpu > 80 ? '#ef4444' : '#10b981',
+                          transition: 'width 0.3s'
                         }} />
                       </div>
                     </div>
                     
                     <div>
-                      <div style={{ display: 'apos;flex'apos;, justifyContent: 'apos;space-between'apos;, marginBottom: 'apos;4px'apos; }}>
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Mémoire</span>
-                        <span style={{ fontSize: 'apos;14px'apos;, fontWeight: 'apos;600'apos; }}>{stats?.system.memory}%</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                        <span style={{ fontSize: '14px' }}>Mémoire</span>
+                        <span style={{ fontSize: '14px', fontWeight: '600' }}>{stats?.system.memory}%</span>
                       </div>
                       <div style={{ 
-                        width: 'apos;100%'apos;, 
-                        height: 'apos;8px'apos;, 
-                        backgroundColor: 'apos;#e5e7eb'apos;, 
-                        borderRadius: 'apos;4px'apos;,
-                        overflow: 'apos;hidden'apos;
+                        width: '100%', 
+                        height: '8px', 
+                        backgroundColor: '#e5e7eb', 
+                        borderRadius: '4px',
+                        overflow: 'hidden'
                       }}>
                         <div style={{ 
                           width: `${stats?.system.memory}%`, 
-                          height: 'apos;100%'apos;, 
-                          backgroundColor: stats?.system.memory && stats.system.memory > 80 ? 'apos;#ef4444'apos; : 'apos;#10b981'apos;,
-                          transition: 'apos;width 0.3s'apos;
+                          height: '100%', 
+                          backgroundColor: stats?.system.memory && stats.system.memory > 80 ? '#ef4444' : '#10b981',
+                          transition: 'width 0.3s'
                         }} />
                       </div>
                     </div>
                     
                     <div>
-                      <div style={{ display: 'apos;flex'apos;, justifyContent: 'apos;space-between'apos;, marginBottom: 'apos;4px'apos; }}>
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Disque</span>
-                        <span style={{ fontSize: 'apos;14px'apos;, fontWeight: 'apos;600'apos; }}>{stats?.system.disk}%</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                        <span style={{ fontSize: '14px' }}>Disque</span>
+                        <span style={{ fontSize: '14px', fontWeight: '600' }}>{stats?.system.disk}%</span>
                       </div>
                       <div style={{ 
-                        width: 'apos;100%'apos;, 
-                        height: 'apos;8px'apos;, 
-                        backgroundColor: 'apos;#e5e7eb'apos;, 
-                        borderRadius: 'apos;4px'apos;,
-                        overflow: 'apos;hidden'apos;
+                        width: '100%', 
+                        height: '8px', 
+                        backgroundColor: '#e5e7eb', 
+                        borderRadius: '4px',
+                        overflow: 'hidden'
                       }}>
                         <div style={{ 
                           width: `${stats?.system.disk}%`, 
-                          height: 'apos;100%'apos;, 
-                          backgroundColor: stats?.system.disk && stats.system.disk > 80 ? 'apos;#ef4444'apos; : 'apos;#10b981'apos;,
-                          transition: 'apos;width 0.3s'apos;
+                          height: '100%', 
+                          backgroundColor: stats?.system.disk && stats.system.disk > 80 ? '#ef4444' : '#10b981',
+                          transition: 'width 0.3s'
                         }} />
                       </div>
                     </div>
@@ -695,40 +695,40 @@ export default function SuperAdminPage() {
 
                 {/* Performance Metrics */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <h3 style={{ margin: 'apos;0 0 16px 0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>
+                  <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600' }}>
                     Métriques de Performance
                   </h3>
-                  <div style={{ display: 'apos;flex'apos;, flexDirection: 'apos;column'apos;, gap: 'apos;16px'apos; }}>
-                    <div style={{ display: 'apos;flex'apos;, justifyContent: 'apos;space-between'apos;, alignItems: 'apos;center'apos; }}>
-                      <span style={{ fontSize: 'apos;14px'apos; }}>Temps de réponse moyen</span>
-                      <span style={{ fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#10b981'apos; }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '14px' }}>Temps de réponse moyen</span>
+                      <span style={{ fontSize: '16px', fontWeight: '600', color: '#10b981' }}>
                         {stats?.performance.avgResponseTime}ms
                       </span>
                     </div>
                     
-                    <div style={{ display: 'apos;flex'apos;, justifyContent: 'apos;space-between'apos;, alignItems: 'apos;center'apos; }}>
-                      <span style={{ fontSize: 'apos;14px'apos; }}>Uptime</span>
-                      <span style={{ fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#10b981'apos; }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '14px' }}>Uptime</span>
+                      <span style={{ fontSize: '16px', fontWeight: '600', color: '#10b981' }}>
                         {stats?.performance.uptime}%
                       </span>
                     </div>
                     
-                    <div style={{ display: 'apos;flex'apos;, justifyContent: 'apos;space-between'apos;, alignItems: 'apos;center'apos; }}>
-                      <span style={{ fontSize: 'apos;14px'apos; }}>Cache Hit Rate</span>
-                      <span style={{ fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#10b981'apos; }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '14px' }}>Cache Hit Rate</span>
+                      <span style={{ fontSize: '16px', fontWeight: '600', color: '#10b981' }}>
                         {stats?.performance.cacheHitRate}%
                       </span>
                     </div>
                     
-                    <div style={{ display: 'apos;flex'apos;, justifyContent: 'apos;space-between'apos;, alignItems: 'apos;center'apos; }}>
-                      <span style={{ fontSize: 'apos;14px'apos; }}>Taux d'apos;erreur</span>
-                      <span style={{ fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#ef4444'apos; }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span style={{ fontSize: '14px' }}>Taux d'erreur</span>
+                      <span style={{ fontSize: '16px', fontWeight: '600', color: '#ef4444' }}>
                         {stats?.performance.errorRate}%
                       </span>
                     </div>
@@ -737,67 +737,67 @@ export default function SuperAdminPage() {
 
                 {/* System Actions */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <h3 style={{ margin: 'apos;0 0 16px 0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>
+                  <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600' }}>
                     Actions Système
                   </h3>
-                  <div style={{ display: 'apos;flex'apos;, flexDirection: 'apos;column'apos;, gap: 'apos;12px'apos; }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     <Link
                       href="/admin/monitoring"
                       style={{
-                        display: 'apos;flex'apos;,
-                        alignItems: 'apos;center'apos;,
-                        gap: 'apos;12px'apos;,
-                        padding: 'apos;12px'apos;,
-                        backgroundColor: 'apos;#f3f4f6'apos;,
-                        borderRadius: 'apos;8px'apos;,
-                        textDecoration: 'apos;none'apos;,
-                        color: 'apos;inherit'apos;,
-                        transition: 'apos;all 0.2s'apos;
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '12px',
+                        backgroundColor: '#f3f4f6',
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        transition: 'all 0.2s'
                       }}
                     >
-                      <FontAwesomeIcon icon={faEye} style={{ color: 'apos;#f97316'apos; }} />
+                      <FontAwesomeIcon icon={faEye} style={{ color: '#f97316' }} />
                       <span>Monitoring en temps réel</span>
                     </Link>
                     
                     <Link
                       href="/admin/cache"
                       style={{
-                        display: 'apos;flex'apos;,
-                        alignItems: 'apos;center'apos;,
-                        gap: 'apos;12px'apos;,
-                        padding: 'apos;12px'apos;,
-                        backgroundColor: 'apos;#f3f4f6'apos;,
-                        borderRadius: 'apos;8px'apos;,
-                        textDecoration: 'apos;none'apos;,
-                        color: 'apos;inherit'apos;,
-                        transition: 'apos;all 0.2s'apos;
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '12px',
+                        backgroundColor: '#f3f4f6',
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        transition: 'all 0.2s'
                       }}
                     >
-                      <FontAwesomeIcon icon={faDatabase} style={{ color: 'apos;#dc2626'apos; }} />
+                      <FontAwesomeIcon icon={faDatabase} style={{ color: '#dc2626' }} />
                       <span>Gestion du cache</span>
                     </Link>
                     
                     <Link
                       href="/admin/logs"
                       style={{
-                        display: 'apos;flex'apos;,
-                        alignItems: 'apos;center'apos;,
-                        gap: 'apos;12px'apos;,
-                        padding: 'apos;12px'apos;,
-                        backgroundColor: 'apos;#f3f4f6'apos;,
-                        borderRadius: 'apos;8px'apos;,
-                        textDecoration: 'apos;none'apos;,
-                        color: 'apos;inherit'apos;,
-                        transition: 'apos;all 0.2s'apos;
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '12px',
+                        backgroundColor: '#f3f4f6',
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        transition: 'all 0.2s'
                       }}
                     >
-                      <FontAwesomeIcon icon={faFileAlt} style={{ color: 'apos;#6b7280'apos; }} />
+                      <FontAwesomeIcon icon={faFileAlt} style={{ color: '#6b7280' }} />
                       <span>Logs système</span>
                     </Link>
                   </div>
@@ -807,52 +807,52 @@ export default function SuperAdminPage() {
           )}
 
           {/* Analytics Tab */}
-          {activeTab === 'apos;analytics'apos; && (
+          {activeTab === 'analytics' && (
             <div>
-              <h2 style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;600'apos;, marginBottom: 'apos;24px'apos; }}>
+              <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '24px' }}>
                 Analytics et Rapports
               </h2>
               
               <div style={{ 
-                display: 'apos;grid'apos;, 
-                gridTemplateColumns: 'apos;repeat(auto-fit, minmax(300px, 1fr))'apos;, 
-                gap: 'apos;24px'apos; 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+                gap: '24px' 
               }}>
                 {/* Revenue Analytics */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <h3 style={{ margin: 'apos;0 0 16px 0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>
+                  <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600' }}>
                     Revenus
                   </h3>
-                  <div style={{ display: 'apos;flex'apos;, flexDirection: 'apos;column'apos;, gap: 'apos;16px'apos; }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         Revenus ce mois
                       </div>
-                      <div style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;700'apos;, color: 'apos;#10b981'apos; }}>
+                      <div style={{ fontSize: '24px', fontWeight: '700', color: '#10b981' }}>
                         ${stats?.revenue.monthly.toLocaleString()}
                       </div>
                     </div>
                     
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         Revenus totaux
                       </div>
-                      <div style={{ fontSize: 'apos;20px'apos;, fontWeight: 'apos;600'apos; }}>
+                      <div style={{ fontSize: '20px', fontWeight: '600' }}>
                         ${stats?.revenue.total.toLocaleString()}
                       </div>
                     </div>
                     
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         Croissance
                       </div>
-                      <div style={{ fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#10b981'apos; }}>
+                      <div style={{ fontSize: '16px', fontWeight: '600', color: '#10b981' }}>
                         +{stats?.revenue.growth}%
                       </div>
                     </div>
@@ -861,39 +861,39 @@ export default function SuperAdminPage() {
 
                 {/* User Analytics */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <h3 style={{ margin: 'apos;0 0 16px 0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>
+                  <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600' }}>
                     Utilisateurs
                   </h3>
-                  <div style={{ display: 'apos;flex'apos;, flexDirection: 'apos;column'apos;, gap: 'apos;16px'apos; }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         Total utilisateurs
                       </div>
-                      <div style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;700'apos; }}>
+                      <div style={{ fontSize: '24px', fontWeight: '700' }}>
                         {stats?.users.total.toLocaleString()}
                       </div>
                     </div>
                     
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         Utilisateurs premium
                       </div>
-                      <div style={{ fontSize: 'apos;20px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#f59e0b'apos; }}>
+                      <div style={{ fontSize: '20px', fontWeight: '600', color: '#f59e0b' }}>
                         {stats?.users.premium.toLocaleString()}
                       </div>
                     </div>
                     
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         Nouveaux ce mois
                       </div>
-                      <div style={{ fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#10b981'apos; }}>
+                      <div style={{ fontSize: '16px', fontWeight: '600', color: '#10b981' }}>
                         +{stats?.users.newThisMonth}
                       </div>
                     </div>
@@ -902,39 +902,39 @@ export default function SuperAdminPage() {
 
                 {/* Mission Analytics */}
                 <div style={{ 
-                  padding: 'apos;24px'apos;, 
-                  backgroundColor: 'apos;white'apos;, 
-                  borderRadius: 'apos;12px'apos;, 
-                  border: 'apos;1px solid #e5e7eb'apos;,
-                  boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;
+                  padding: '24px', 
+                  backgroundColor: 'white', 
+                  borderRadius: '12px', 
+                  border: '1px solid #e5e7eb',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                 }}>
-                  <h3 style={{ margin: 'apos;0 0 16px 0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>
+                  <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', fontWeight: '600' }}>
                     Missions
                   </h3>
-                  <div style={{ display: 'apos;flex'apos;, flexDirection: 'apos;column'apos;, gap: 'apos;16px'apos; }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         Total missions
                       </div>
-                      <div style={{ fontSize: 'apos;24px'apos;, fontWeight: 'apos;700'apos; }}>
+                      <div style={{ fontSize: '24px', fontWeight: '700' }}>
                         {stats?.missions.total.toLocaleString()}
                       </div>
                     </div>
                     
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         Taux de succès
                       </div>
-                      <div style={{ fontSize: 'apos;20px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#10b981'apos; }}>
+                      <div style={{ fontSize: '20px', fontWeight: '600', color: '#10b981' }}>
                         {stats?.missions.total ? Math.round((stats.missions.completed / stats.missions.total) * 100) : 0}%
                       </div>
                     </div>
                     
                     <div>
-                      <div style={{ fontSize: 'apos;12px'apos;, color: 'apos;#6b7280'apos;, marginBottom: 'apos;4px'apos; }}>
+                      <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>
                         En cours
                       </div>
-                      <div style={{ fontSize: 'apos;16px'apos;, fontWeight: 'apos;600'apos;, color: 'apos;#f59e0b'apos; }}>
+                      <div style={{ fontSize: '16px', fontWeight: '600', color: '#f59e0b' }}>
                         {stats?.missions.inProgress}
                       </div>
                     </div>
@@ -945,34 +945,34 @@ export default function SuperAdminPage() {
           )}
 
           {/* Users Tab */}
-          {activeTab === 'apos;users'apos; && (
+          {activeTab === 'users' && (
             <div>
               <div style={{ 
-                padding: 'apos;24px'apos;, 
-                backgroundColor: 'apos;white'apos;, 
-                borderRadius: 'apos;12px'apos;, 
-                border: 'apos;1px solid #e5e7eb'apos;,
-                boxShadow: 'apos;0 1px 3px rgba(0,0,0,0.1)'apos;,
-                marginBottom: 'apos;24px'apos;
+                padding: '24px', 
+                backgroundColor: 'white', 
+                borderRadius: '12px', 
+                border: '1px solid #e5e7eb',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                marginBottom: '24px'
               }}>
-                <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;12px'apos;, marginBottom: 'apos;16px'apos; }}>
-                  <FontAwesomeIcon icon={faUsers} style={{ color: 'apos;#3b82f6'apos;, fontSize: 'apos;20px'apos; }} />
-                  <h3 style={{ margin: 'apos;0'apos;, fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos; }}>Gestion des Utilisateurs</h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                  <FontAwesomeIcon icon={faUsers} style={{ color: '#3b82f6', fontSize: '20px' }} />
+                  <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}>Gestion des Utilisateurs</h3>
                 </div>
-                <p style={{ color: 'apos;#6b7280'apos;, margin: 'apos;0 0 24px 0'apos; }}>
-                  Gérez les utilisateurs, assignez les rôles et surveillez l'apos;activité.
+                <p style={{ color: '#6b7280', margin: '0 0 24px 0' }}>
+                  Gérez les utilisateurs, assignez les rôles et surveillez l'activité.
                 </p>
                 <Link href="/super-admin/users" style={{
-                  display: 'apos;inline-flex'apos;,
-                  alignItems: 'apos;center'apos;,
-                  gap: 'apos;8px'apos;,
-                  padding: 'apos;12px 24px'apos;,
-                  backgroundColor: 'apos;#635bff'apos;,
-                  color: 'apos;white'apos;,
-                  textDecoration: 'apos;none'apos;,
-                  borderRadius: 'apos;8px'apos;,
-                  fontWeight: 'apos;600'apos;,
-                  transition: 'apos;all 0.2s'apos;
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 24px',
+                  backgroundColor: '#635bff',
+                  color: 'white',
+                  textDecoration: 'none',
+                  borderRadius: '8px',
+                  fontWeight: '600',
+                  transition: 'all 0.2s'
                 }}>
                   <FontAwesomeIcon icon={faUsers} />
                   Accéder à la gestion des utilisateurs

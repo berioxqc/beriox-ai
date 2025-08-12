@@ -1,5 +1,5 @@
-import { BotRecommendationEngine } from 'apos;./bot-recommendations'apos;;
-import { prisma } from 'apos;./prisma.ts'apos;;
+import { BotRecommendationEngine } from './bot-recommendations';
+import { prisma } from './prisma.ts';
 
 export interface BotIntegrationConfig {
   botId: string;
@@ -24,34 +24,34 @@ export class BotIntegrationManager {
   private initializeDefaultBots() {
     const defaultBots: BotIntegrationConfig[] = [
       {
-        botId: 'apos;karine'apos;,
-        botName: 'apos;Karine'apos;,
-        botType: 'apos;analyst'apos;,
-        capabilities: ['apos;performance'apos;, 'apos;security'apos;, 'apos;ux'apos;],
+        botId: 'karine',
+        botName: 'Karine',
+        botType: 'analyst',
+        capabilities: ['performance', 'security', 'ux'],
         autoRecommendations: true,
         recommendationInterval: 24
       },
       {
-        botId: 'apos;hugo'apos;,
-        botName: 'apos;Hugo'apos;,
-        botType: 'apos;developer'apos;,
-        capabilities: ['apos;technical'apos;, 'apos;performance'apos;],
+        botId: 'hugo',
+        botName: 'Hugo',
+        botType: 'developer',
+        capabilities: ['technical', 'performance'],
         autoRecommendations: true,
         recommendationInterval: 12
       },
       {
-        botId: 'apos;jpbot'apos;,
-        botName: 'apos;JP Bot'apos;,
-        botType: 'apos;business'apos;,
-        capabilities: ['apos;business'apos;, 'apos;ux'apos;],
+        botId: 'jpbot',
+        botName: 'JP Bot',
+        botType: 'business',
+        capabilities: ['business', 'ux'],
         autoRecommendations: true,
         recommendationInterval: 48
       },
       {
-        botId: 'apos;elodie'apos;,
-        botName: 'apos;Elodie'apos;,
-        botType: 'apos;qa'apos;,
-        capabilities: ['apos;security'apos;, 'apos;ux'apos;, 'apos;technical'apos;],
+        botId: 'elodie',
+        botName: 'Elodie',
+        botType: 'qa',
+        capabilities: ['security', 'ux', 'technical'],
         autoRecommendations: true,
         recommendationInterval: 6
       }
@@ -81,7 +81,7 @@ export class BotIntegrationManager {
             type: config.botType,
             capabilities: config.capabilities,
             isActive: true,
-            userId: 'apos;system'apos;, // Bot système
+            userId: 'system', // Bot système
             settings: {
               autoRecommendations: config.autoRecommendations,
               recommendationInterval: config.recommendationInterval
@@ -93,7 +93,7 @@ export class BotIntegrationManager {
       this.configs.set(config.botId, config);
       console.log(`✅ Bot ${config.botName} enregistré avec succès`);
     } catch (error) {
-      console.error(`❌ Erreur lors de l'apos;enregistrement du bot ${config.botName}:`, error);
+      console.error(`❌ Erreur lors de l'enregistrement du bot ${config.botName}:`, error);
       throw error;
     }
   }
@@ -117,7 +117,7 @@ export class BotIntegrationManager {
       config.capabilities.includes(rec.type)
     );
 
-    // Ajouter l'apos;ID du bot à chaque recommandation
+    // Ajouter l'ID du bot à chaque recommandation
     const recommendationsWithBot = botRecommendations.map(rec => ({
       ...rec,
       botId: botId
@@ -188,14 +188,14 @@ export class BotIntegrationManager {
       const pendingRecommendations = await prisma.botRecommendation.count({
         where: { 
           botId: botId,
-          status: 'apos;pending'apos;
+          status: 'pending'
         }
       });
 
       const implementedRecommendations = await prisma.botRecommendation.count({
         where: { 
           botId: botId,
-          status: 'apos;implemented'apos;
+          status: 'implemented'
         }
       });
 
@@ -216,7 +216,7 @@ export class BotIntegrationManager {
   }
 
   /**
-   * Obtenir les recommandations d'apos;un bot
+   * Obtenir les recommandations d'un bot
    */
   async getBotRecommendations(botId: string, userId: string, filters?: unknown): Promise<any[]> {
     const where: unknown = {
@@ -231,8 +231,8 @@ export class BotIntegrationManager {
     return await prisma.botRecommendation.findMany({
       where,
       orderBy: [
-        { priority: 'apos;desc'apos; },
-        { createdAt: 'apos;desc'apos; }
+        { priority: 'desc' },
+        { createdAt: 'desc' }
       ],
       include: {
         bot: {
@@ -253,7 +253,7 @@ export class BotIntegrationManager {
   }
 
   /**
-   * Mettre à jour la configuration d'apos;un bot
+   * Mettre à jour la configuration d'un bot
    */
   async updateBotConfig(botId: string, updates: Partial<BotIntegrationConfig>): Promise<void> {
     const config = this.configs.get(botId);

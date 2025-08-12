@@ -1,15 +1,15 @@
 "use client";
-import React, { useState, useEffect } from 'apos;react'apos;;
-import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
-import { IconDefinition } from 'apos;@fortawesome/fontawesome-svg-core'apos;;
-import { getIconDynamic, preloadCommonIcons } from 'apos;@/lib/icons-dynamic'apos;;
+import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { getIconDynamic, preloadCommonIcons } from '@/lib/icons-dynamic';
 
 interface IconOptimizedProps {
   name: string;
   className?: string;
   style?: React.CSSProperties;
   spin?: boolean;
-  size?: 'apos;xs'apos; | 'apos;sm'apos; | 'apos;lg'apos; | 'apos;1x'apos; | 'apos;2x'apos; | 'apos;3x'apos; | 'apos;4x'apos; | 'apos;5x'apos; | 'apos;6x'apos; | 'apos;7x'apos; | 'apos;8x'apos; | 'apos;9x'apos; | 'apos;10x'apos;;
+  size?: 'xs' | 'sm' | 'lg' | '1x' | '2x' | '3x' | '4x' | '5x' | '6x' | '7x' | '8x' | '9x' | '10x';
   fallback?: React.ReactNode;
   onLoad?: () => void;
   onError?: (error: Error) => void;
@@ -17,11 +17,11 @@ interface IconOptimizedProps {
 
 export const IconOptimized: React.FC<IconOptimizedProps> = ({ 
   name, 
-  className = 'apos;'apos;, 
+  className = '', 
   style = {}, 
   spin = false,
-  size = 'apos;1x'apos;,
-  fallback = 'apos;⚠️'apos;,
+  size = '1x',
+  fallback = '⚠️',
   onLoad,
   onError
 }) => {
@@ -52,7 +52,7 @@ export const IconOptimized: React.FC<IconOptimizedProps> = ({
         }
       } catch (err) {
         if (isMounted) {
-          const error = err instanceof Error ? err : new Error('apos;Failed to load icon'apos;);
+          const error = err instanceof Error ? err : new Error('Failed to load icon');
           setError(error);
           onError?.(error);
           setLoading(false);
@@ -72,17 +72,17 @@ export const IconOptimized: React.FC<IconOptimizedProps> = ({
     preloadCommonIcons().catch(console.warn);
   }, []);
 
-  // Affichage du fallback pendant le chargement ou en cas d'apos;erreur
+  // Affichage du fallback pendant le chargement ou en cas d'erreur
   if (loading || error || !icon) {
     return (
       <span 
         className={className} 
         style={{ 
           ...style, 
-          display: 'apos;inline-block'apos;,
-          width: size === 'apos;1x'apos; ? 'apos;1em'apos; : size,
-          height: size === 'apos;1x'apos; ? 'apos;1em'apos; : size,
-          textAlign: 'apos;center'apos;
+          display: 'inline-block',
+          width: size === '1x' ? '1em' : size,
+          height: size === '1x' ? '1em' : size,
+          textAlign: 'center'
         }}
       >
         {fallback}
@@ -127,7 +127,7 @@ export function useIconOptimized(name: string) {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err : new Error('apos;Failed to load icon'apos;));
+          setError(err instanceof Error ? err : new Error('Failed to load icon'));
           setLoading(false);
         }
       }
@@ -170,7 +170,7 @@ export const IconCacheStats: React.FC = () => {
 
   useEffect(() => {
     // Importer dynamiquement pour éviter le chargement côté serveur
-    import('apos;@/lib/icons-dynamic'apos;).then(({ getIconCacheStats }) => {
+    import('@/lib/icons-dynamic').then(({ getIconCacheStats }) => {
       setStats(getIconCacheStats());
     });
   }, []);
@@ -179,17 +179,17 @@ export const IconCacheStats: React.FC = () => {
 
   return (
     <div style={{ 
-      position: 'apos;fixed'apos;, 
+      position: 'fixed', 
       bottom: 10, 
       right: 10, 
-      background: 'apos;#f0f0f0'apos;, 
-      padding: 'apos;8px'apos;, 
-      borderRadius: 'apos;4px'apos;,
-      fontSize: 'apos;12px'apos;,
+      background: '#f0f0f0', 
+      padding: '8px', 
+      borderRadius: '4px',
+      fontSize: '12px',
       zIndex: 1000
     }}>
       <div>Cache: {stats.size} icônes</div>
-      <div>Dernières: {stats.keys.slice(-3).join('apos;, 'apos;)}</div>
+      <div>Dernières: {stats.keys.slice(-3).join(', ')}</div>
     </div>
   );
 };

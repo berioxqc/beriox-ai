@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { getServerSession } from 'apos;next-auth'apos;;
-import { authOptions } from 'apos;@/app/api/auth/[...nextauth]/route'apos;;
-import { MessagingService } from 'apos;@/lib/messaging-service'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { MessagingService } from '@/lib/messaging-service';
 
 const getEmailConfig = () => ({
-  host: process.env.SMTP_HOST || 'apos;smtp.gmail.com'apos;,
-  port: parseInt(process.env.SMTP_PORT || 'apos;587'apos;),
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.SMTP_PORT || '587'),
   secure: false,
   auth: {
-    user: process.env.SMTP_USER || 'apos;support@beriox.ai'apos;,
-    pass: process.env.SMTP_PASS || 'apos;'apos;
+    user: process.env.SMTP_USER || 'support@beriox.ai',
+    pass: process.env.SMTP_PASS || ''
   }
 });
 
@@ -20,20 +20,20 @@ export async function GET(request: NextRequest) {
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'apos;Non autorisé'apos; }, { status: 401 });
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
-    const category = searchParams.get('apos;category'apos;);
+    const category = searchParams.get('category');
 
     const messagingService = getMessagingService();
     const templates = await messagingService.getTemplates(category || undefined);
     return NextResponse.json({ templates });
 
   } catch (error) {
-    console.error('apos;Erreur lors de la récupération des templates:'apos;, error);
+    console.error('Erreur lors de la récupération des templates:', error);
     return NextResponse.json(
-      { error: 'apos;Erreur lors de la récupération des templates'apos; },
+      { error: 'Erreur lors de la récupération des templates' },
       { status: 500 }
     );
   }
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'apos;Non autorisé'apos; }, { status: 401 });
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
     const body = await request.json();
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     // Validation des données
     if (!name || !subject || !templateBody || !category) {
       return NextResponse.json(
-        { error: 'apos;Name, subject, body et category sont requis'apos; },
+        { error: 'Name, subject, body et category sont requis' },
         { status: 400 }
       );
     }
@@ -80,9 +80,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ template });
 
   } catch (error) {
-    console.error('apos;Erreur lors de la création du template:'apos;, error);
+    console.error('Erreur lors de la création du template:', error);
     return NextResponse.json(
-      { error: 'apos;Erreur lors de la création du template'apos; },
+      { error: 'Erreur lors de la création du template' },
       { status: 500 }
     );
   }

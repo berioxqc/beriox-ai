@@ -1,4 +1,4 @@
-import { prisma } from 'apos;./prisma.ts'apos;;
+import { prisma } from './prisma.ts';
 
 export interface DatabaseMetrics {
   tableStats: TableStats[];
@@ -34,12 +34,12 @@ export interface SlowQuery {
 }
 
 export interface OptimizationRecommendation {
-  type: 'apos;index'apos; | 'apos;query'apos; | 'apos;maintenance'apos; | 'apos;structure'apos;;
-  priority: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos; | 'apos;critical'apos;;
+  type: 'index' | 'query' | 'maintenance' | 'structure';
+  priority: 'low' | 'medium' | 'high' | 'critical';
   title: string;
   description: string;
   impact: string;
-  effort: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
+  effort: 'low' | 'medium' | 'high';
   sql?: string;
 }
 
@@ -48,7 +48,7 @@ export class DatabaseOptimizer {
    * Analyser les performances de la base de données
    */
   async analyzeDatabase(): Promise<DatabaseMetrics> {
-    console.log('apos;🔍 Analyse de la base de données...'apos;);
+    console.log('🔍 Analyse de la base de données...');
 
     const tableStats = await this.getTableStats();
     const indexUsage = await this.getIndexUsage();
@@ -81,23 +81,23 @@ export class DatabaseOptimizer {
           last_autovacuum,
           last_analyze,
           last_autoanalyze,
-          pg_size_pretty(pg_total_relation_size(schemaname||'apos;.'apos;||tablename)) as total_size,
-          pg_size_pretty(pg_relation_size(schemaname||'apos;.'apos;||tablename)) as table_size,
-          pg_size_pretty(pg_indexes_size(schemaname||'apos;.'apos;||tablename)) as index_size
+          pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) as total_size,
+          pg_size_pretty(pg_relation_size(schemaname||'.'||tablename)) as table_size,
+          pg_size_pretty(pg_indexes_size(schemaname||'.'||tablename)) as index_size
         FROM pg_stat_user_tables 
-        WHERE schemaname = 'apos;public'apos;
-        ORDER BY pg_total_relation_size(schemaname||'apos;.'apos;||tablename) DESC
+        WHERE schemaname = 'public'
+        ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC
       `;
 
       return result as TableStats[];
     } catch (error) {
-      console.error('apos;Erreur lors de la récupération des stats des tables:'apos;, error);
+      console.error('Erreur lors de la récupération des stats des tables:', error);
       return [];
     }
   }
 
   /**
-   * Obtenir l'apos;utilisation des index
+   * Obtenir l'utilisation des index
    */
   private async getIndexUsage(): Promise<IndexUsage[]> {
     try {
@@ -115,13 +115,13 @@ export class DatabaseOptimizer {
             ELSE 0 
           END as usage_percentage
         FROM pg_stat_user_indexes 
-        WHERE schemaname = 'apos;public'apos;
+        WHERE schemaname = 'public'
         ORDER BY idx_scan DESC
       `;
 
       return result as IndexUsage[];
     } catch (error) {
-      console.error('apos;Erreur lors de la récupération de l\'apos;utilisation des index:'apos;, error);
+      console.error('Erreur lors de la récupération de l\'utilisation des index:', error);
       return [];
     }
   }
@@ -139,20 +139,20 @@ export class DatabaseOptimizer {
           mean_time as avg_time,
           rows
         FROM pg_stat_statements 
-        WHERE query NOT LIKE 'apos;%pg_stat_statements%'apos;
+        WHERE query NOT LIKE '%pg_stat_statements%'
         ORDER BY mean_time DESC 
         LIMIT 10
       `;
 
       return result as SlowQuery[];
     } catch (error) {
-      console.error('apos;Erreur lors de la récupération des requêtes lentes:'apos;, error);
+      console.error('Erreur lors de la récupération des requêtes lentes:', error);
       return [];
     }
   }
 
   /**
-   * Générer des recommandations d'apos;optimisation
+   * Générer des recommandations d'optimisation
    */
   private async generateRecommendations(
     tableStats: TableStats[],
@@ -168,13 +168,13 @@ export class DatabaseOptimizer {
 
     if (tablesWithDeadRows.length > 0) {
       recommendations.push({
-        type: 'apos;maintenance'apos;,
-        priority: 'apos;high'apos;,
-        title: 'apos;VACUUM des tables avec beaucoup de dead rows'apos;,
+        type: 'maintenance',
+        priority: 'high',
+        title: 'VACUUM des tables avec beaucoup de dead rows',
         description: `${tablesWithDeadRows.length} table(s) ont plus de 10% de dead rows`,
-        impact: 'apos;Amélioration des performances et libération d\'apos;espace disque'apos;,
-        effort: 'apos;low'apos;,
-        sql: tablesWithDeadRows.map(table => `VACUUM ANALYZE "${table.tableName}";`).join('apos;\n'apos;)
+        impact: 'Amélioration des performances et libération d\'espace disque',
+        effort: 'low',
+        sql: tablesWithDeadRows.map(table => `VACUUM ANALYZE "${table.tableName}";`).join('\n')
       });
     }
 
@@ -182,13 +182,13 @@ export class DatabaseOptimizer {
     const unusedIndexes = indexUsage.filter(index => index.scans === 0);
     if (unusedIndexes.length > 0) {
       recommendations.push({
-        type: 'apos;index'apos;,
-        priority: 'apos;medium'apos;,
-        title: 'apos;Supprimer les index non utilisés'apos;,
+        type: 'index',
+        priority: 'medium',
+        title: 'Supprimer les index non utilisés',
         description: `${unusedIndexes.length} index non utilisés détectés`,
-        impact: 'apos;Réduction de l\'apos;espace disque et amélioration des performances d\'apos;écriture'apos;,
-        effort: 'apos;low'apos;,
-        sql: unusedIndexes.map(index => `DROP INDEX IF EXISTS "${index.indexName}";`).join('apos;\n'apos;)
+        impact: 'Réduction de l\'espace disque et amélioration des performances d\'écriture',
+        effort: 'low',
+        sql: unusedIndexes.map(index => `DROP INDEX IF EXISTS "${index.indexName}";`).join('\n')
       });
     }
 
@@ -196,12 +196,12 @@ export class DatabaseOptimizer {
     const verySlowQueries = slowQueries.filter(query => query.avgTime > 100);
     if (verySlowQueries.length > 0) {
       recommendations.push({
-        type: 'apos;query'apos;,
-        priority: 'apos;critical'apos;,
-        title: 'apos;Optimiser les requêtes très lentes'apos;,
+        type: 'query',
+        priority: 'critical',
+        title: 'Optimiser les requêtes très lentes',
         description: `${verySlowQueries.length} requête(s) avec un temps moyen > 100ms`,
-        impact: 'apos;Amélioration significative des temps de réponse'apos;,
-        effort: 'apos;high'apos;
+        impact: 'Amélioration significative des temps de réponse',
+        effort: 'high'
       });
     }
 
@@ -209,32 +209,32 @@ export class DatabaseOptimizer {
     const tablesWithoutFKIndexes = await this.findTablesWithoutFKIndexes();
     if (tablesWithoutFKIndexes.length > 0) {
       recommendations.push({
-        type: 'apos;index'apos;,
-        priority: 'apos;high'apos;,
-        title: 'apos;Ajouter des index sur les clés étrangères'apos;,
+        type: 'index',
+        priority: 'high',
+        title: 'Ajouter des index sur les clés étrangères',
         description: `${tablesWithoutFKIndexes.length} table(s) sans index sur les FK`,
-        impact: 'apos;Amélioration des performances des jointures'apos;,
-        effort: 'apos;medium'apos;,
+        impact: 'Amélioration des performances des jointures',
+        effort: 'medium',
         sql: tablesWithoutFKIndexes.map(fk => 
           `CREATE INDEX CONCURRENTLY "idx_${fk.tableName}_${fk.columnName}" ON "${fk.tableName}" ("${fk.columnName}");`
-        ).join('apos;\n'apos;)
+        ).join('\n')
       });
     }
 
     // Vérifier les tables avec beaucoup de données
     const largeTables = tableStats.filter(table => {
-      const sizeMB = parseInt((table as any).total_size.replace(/[^\d]/g, 'apos;'apos;));
+      const sizeMB = parseInt((table as any).total_size.replace(/[^\d]/g, ''));
       return sizeMB > 100; // Plus de 100MB
     });
 
     if (largeTables.length > 0) {
       recommendations.push({
-        type: 'apos;maintenance'apos;,
-        priority: 'apos;medium'apos;,
-        title: 'apos;Partitionner les grandes tables'apos;,
+        type: 'maintenance',
+        priority: 'medium',
+        title: 'Partitionner les grandes tables',
         description: `${largeTables.length} table(s) de plus de 100MB détectées`,
-        impact: 'apos;Amélioration des performances des requêtes sur grandes tables'apos;,
-        effort: 'apos;high'apos;
+        impact: 'Amélioration des performances des requêtes sur grandes tables',
+        effort: 'high'
       });
     }
 
@@ -259,69 +259,69 @@ export class DatabaseOptimizer {
         JOIN information_schema.constraint_column_usage AS ccu
           ON ccu.constraint_name = tc.constraint_name
           AND ccu.table_schema = tc.table_schema
-        WHERE tc.constraint_type = 'apos;FOREIGN KEY'apos;
-        AND tc.table_schema = 'apos;public'apos;
+        WHERE tc.constraint_type = 'FOREIGN KEY'
+        AND tc.table_schema = 'public'
         AND NOT EXISTS (
           SELECT 1 FROM pg_indexes 
           WHERE tablename = tc.table_name 
-          AND indexdef LIKE 'apos;%'apos; || kcu.column_name || 'apos;%'apos;
+          AND indexdef LIKE '%' || kcu.column_name || '%'
         )
       `;
 
       return result as any[];
     } catch (error) {
-      console.error('apos;Erreur lors de la recherche des FK sans index:'apos;, error);
+      console.error('Erreur lors de la recherche des FK sans index:', error);
       return [];
     }
   }
 
   /**
-   * Exécuter les recommandations d'apos;optimisation
+   * Exécuter les recommandations d'optimisation
    */
   async executeOptimizations(recommendations: OptimizationRecommendation[]): Promise<void> {
-    console.log('apos;🚀 Exécution des optimisations...'apos;);
+    console.log('🚀 Exécution des optimisations...');
 
     for (const recommendation of recommendations) {
-      if (recommendation.sql && recommendation.priority === 'apos;high'apos;) {
+      if (recommendation.sql && recommendation.priority === 'high') {
         try {
           console.log(`📝 Exécution: ${recommendation.title}`);
           await prisma.$executeRawUnsafe(recommendation.sql);
           console.log(`✅ Succès: ${recommendation.title}`);
         } catch (error) {
-          console.error(`❌ Erreur lors de l'apos;exécution de ${recommendation.title}:`, error);
+          console.error(`❌ Erreur lors de l'exécution de ${recommendation.title}:`, error);
         }
       }
     }
   }
 
   /**
-   * Générer un rapport d'apos;optimisation
+   * Générer un rapport d'optimisation
    */
   async generateOptimizationReport(): Promise<string> {
     const metrics = await this.analyzeDatabase();
     
-    let report = 'apos;# Rapport d\'apos;Optimisation de la Base de Données\n\n'apos;;
+    let report = '# Rapport d\'Optimisation de la Base de Données\n\n';
     
     // Statistiques des tables
-    report += 'apos;## 📊 Statistiques des Tables\n\n'apos;;
-    report += 'apos;| Table | Lignes | Taille | Index | Total |\n'apos;;
-    report += 'apos;|-------|--------|--------|-------|-------|\n'apos;;
+    report += '## 📊 Statistiques des Tables\n\n';
+    report += '| Table | Lignes | Taille | Index | Total |\n';
+    report += '|-------|--------|--------|-------|-------|\n';
     
     metrics.tableStats.forEach(table => {
-      report += `| ${table.tableName} | ${(table as any).live_rows || 0} | ${(table as any).table_size || 'apos;N/A'apos;} | ${(table as any).index_size || 'apos;N/A'apos;} | ${(table as any).total_size || 'apos;N/A'apos;} |\n`;
+      report += `| ${table.tableName} | ${(table as any).live_rows || 0} | ${(table as any).table_size || 'N/A'} | ${(table as any).index_size || 'N/A'} | ${(table as any).total_size || 'N/A'} |\n`;
     });
     
     // Index les plus utilisés
-    report += 'apos;\n## 🔍 Index les Plus Utilisés\n\n'apos;;
-    report += 'apos;| Index | Table | Scans | Efficacité |\n'apos;;
-    report += 'apos;|-------|-------|-------|------------|\n'apos;;
+    report += '\n## 🔍 Index les Plus Utilisés\n\n';
+    report += '| Index | Table | Scans | Efficacité |\n';
+    report += '|-------|-------|-------|------------|\n';
     
     metrics.indexUsage.slice(0, 10).forEach(index => {
       report += `| ${index.indexName} | ${index.tableName} | ${index.scans} | ${index.usagePercentage}% |\n`;
     });
     
     // Recommandations
-    report += 'apos;\n## 🎯 Recommandations d\'apos;Optimisation\n\n'apos;;
+    report += '\n## 🎯 Recommandations d\'Optimisation\n\n';
     
     const priorityOrder = { critical: 1, high: 2, medium: 3, low: 4 };
     const sortedRecommendations = metrics.recommendations.sort((a, b) => 
@@ -335,9 +335,9 @@ export class DatabaseOptimizer {
       report += `**Effort:** ${rec.effort}\n\n`;
       
       if (rec.sql) {
-        report += 'apos;```sql\n'apos;;
+        report += '```sql\n';
         report += rec.sql;
-        report += 'apos;\n```\n\n'apos;;
+        report += '\n```\n\n';
       }
     });
     

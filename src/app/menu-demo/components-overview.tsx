@@ -43,7 +43,7 @@ export default function ComponentsOverview() {
       name: "Breadcrumb.tsx",
       icon: "route",
       color: "#ef4444",
-      description: "Navigation contextuelle avec fil d'apos;Ariane",
+      description: "Navigation contextuelle avec fil d'Ariane",
       features: [
         "Support des pages dynamiques",
         "Hiérarchie parent-enfant",
@@ -55,7 +55,7 @@ export default function ComponentsOverview() {
       name: "QuickActions.tsx",
       icon: "bolt",
       color: "#8b5cf6",
-      description: "Menu d'apos;actions rapides contextuelles",
+      description: "Menu d'actions rapides contextuelles",
       features: [
         "Actions adaptées selon la page actuelle",
         "Menu déroulant élégant",
@@ -92,7 +92,7 @@ export default function ComponentsOverview() {
         marginBottom: "24px",
         textAlign: "center"
       }}>
-        Vue d'apos;Ensemble des Composants
+        Vue d'Ensemble des Composants
       </h3>
 
       <div style={{

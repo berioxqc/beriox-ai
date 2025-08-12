@@ -1,4 +1,4 @@
-import { openai } from 'apos;@/lib/openai'apos;;
+import { openai } from '@/lib/openai';
 
 export interface AlignmentQuestion {
   id: string;
@@ -10,7 +10,7 @@ export interface AlignmentQuestion {
 export async function generateAlignmentQuestions(objective: string): Promise<AlignmentQuestion[]> {
   try {
     const prompt = `
-Analyse cet objectif de mission et génère exactement 3 questions d'apos;alignement pertinentes pour aider les agents IA à mieux comprendre les besoins spécifiques.
+Analyse cet objectif de mission et génère exactement 3 questions d'alignement pertinentes pour aider les agents IA à mieux comprendre les besoins spécifiques.
 
 Objectif de la mission: "${objective}"
 
@@ -42,7 +42,7 @@ Instructions:
   }
 ]
 
-Exemples d'apos;adaptation selon le type de mission:
+Exemples d'adaptation selon le type de mission:
 - Marketing → questions sur audience, budget, canaux
 - Développement → questions sur technologie, utilisateurs, délais  
 - Design → questions sur style, marque, public cible
@@ -59,16 +59,16 @@ Génère maintenant les 3 questions pour cette mission:`;
 
     const response = completion.choices[0]?.message?.content;
     if (!response) {
-      throw new Error('apos;Pas de réponse de OpenAI'apos;);
+      throw new Error('Pas de réponse de OpenAI');
     }
 
     // Nettoyer la réponse et parser le JSON
-    const cleanResponse = response.trim().replace(/```json\n?|\n?```/g, 'apos;'apos;);
+    const cleanResponse = response.trim().replace(/```json\n?|\n?```/g, '');
     const questions: AlignmentQuestion[] = JSON.parse(cleanResponse);
 
     // Validation
     if (!Array.isArray(questions) || questions.length !== 3) {
-      throw new Error('apos;Format de réponse invalide'apos;);
+      throw new Error('Format de réponse invalide');
     }
 
     // Vérifier que chaque question a les champs requis
@@ -81,15 +81,15 @@ Génère maintenant les 3 questions pour cette mission:`;
     return questions;
 
   } catch (error) {
-    console.error('apos;Erreur lors de la génération des questions:'apos;, error);
+    console.error('Erreur lors de la génération des questions:', error);
     
-    // Fallback vers des questions génériques en cas d'apos;erreur
+    // Fallback vers des questions génériques en cas d'erreur
     return [
       {
         id: "context",
         emoji: "📋",
         label: "Quel est le contexte spécifique de cette mission ?",
-        placeholder: "Décrivez le contexte, l'apos;environnement ou la situation actuelle..."
+        placeholder: "Décrivez le contexte, l'environnement ou la situation actuelle..."
       },
       {
         id: "target", 

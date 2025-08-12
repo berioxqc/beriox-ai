@@ -1,8 +1,8 @@
 "use client";
-import React from 'apos;react'apos;;
-import Dashboard from 'apos;@/components/Dashboard'apos;;
-import ExportSystem from 'apos;@/components/ExportSystem'apos;;
-import { Icon } from 'apos;@/components/ui/Icon'apos;;
+import React from 'react';
+import Dashboard from '@/components/Dashboard';
+import ExportSystem from '@/components/ExportSystem';
+import { Icon } from '@/components/ui/Icon';
 
 export default function FeaturesDemoPage() {
   return (
@@ -36,7 +36,7 @@ export default function FeaturesDemoPage() {
               <Icon name="download" size="2x" />
             </div>
             <div className="feature-info">
-              <h2>Système d'apos;Export Avancé</h2>
+              <h2>Système d'Export Avancé</h2>
               <p>Exportez vos données en PDF, Excel ou CSV avec des graphiques personnalisés</p>
             </div>
           </div>
@@ -53,14 +53,14 @@ export default function FeaturesDemoPage() {
             </div>
             <div className="feature-info">
               <h2>Notifications Intelligentes</h2>
-              <p>Système d'apos;alertes en temps réel avec filtres et actions rapides</p>
+              <p>Système d'alertes en temps réel avec filtres et actions rapides</p>
             </div>
           </div>
           <div className="feature-demo">
             <div className="notification-demo">
               <div className="demo-notification">
                 <div className="notification-header">
-                  <Icon name="lightbulb" style={{ color: 'apos;#ea580c'apos; }} />
+                  <Icon name="lightbulb" style={{ color: '#ea580c' }} />
                   <span>Nouvelle opportunité détectée</span>
                   <span className="notification-time">Il y a 30 min</span>
                 </div>
@@ -68,14 +68,14 @@ export default function FeaturesDemoPage() {
                   Votre concurrent a baissé ses prix de 15%. Action recommandée.
                 </div>
                 <div className="notification-actions">
-                  <button className="action-btn">Voir l'apos;analyse</button>
+                  <button className="action-btn">Voir l'analyse</button>
                   <button className="action-btn secondary">Ignorer</button>
                 </div>
               </div>
 
               <div className="demo-notification critical">
                 <div className="notification-header">
-                  <Icon name="exclamation-triangle" style={{ color: 'apos;#dc2626'apos; }} />
+                  <Icon name="exclamation-triangle" style={{ color: '#dc2626' }} />
                   <span>Erreur de sécurité critique</span>
                   <span className="notification-time">Il y a 2h</span>
                 </div>
@@ -89,12 +89,12 @@ export default function FeaturesDemoPage() {
 
               <div className="demo-notification success">
                 <div className="notification-header">
-                  <Icon name="check-circle" style={{ color: 'apos;#10b981'apos; }} />
+                  <Icon name="check-circle" style={{ color: '#10b981' }} />
                   <span>Mission terminée</span>
                   <span className="notification-time">Il y a 4h</span>
                 </div>
                 <div className="notification-content">
-                  L'apos;analyse SEO Amazon a été complétée avec succès.
+                  L'analyse SEO Amazon a été complétée avec succès.
                 </div>
               </div>
             </div>
@@ -108,7 +108,7 @@ export default function FeaturesDemoPage() {
               <Icon name="puzzle-piece" size="2x" />
             </div>
             <div className="feature-info">
-              <h2>Système d'apos;Icônes Centralisé</h2>
+              <h2>Système d'Icônes Centralisé</h2>
               <p>Plus de 80 icônes FontAwesome organisées et optimisées</p>
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function FeaturesDemoPage() {
               <div className="icon-category">
                 <h3>Navigation</h3>
                 <div className="icon-grid">
-                  {['apos;home'apos;, 'apos;tasks'apos;, 'apos;users'apos;, 'apos;cog'apos;, 'apos;plus'apos;, 'apos;search'apos;, 'apos;user'apos;, 'apos;dollar-sign'apos;].map(icon => (
+                  {['home', 'tasks', 'users', 'cog', 'plus', 'search', 'user', 'dollar-sign'].map(icon => (
                     <div key={icon} className="icon-item">
                       <Icon name={icon} size="lg" />
                       <span>{icon}</span>
@@ -129,7 +129,7 @@ export default function FeaturesDemoPage() {
               <div className="icon-category">
                 <h3>Actions</h3>
                 <div className="icon-grid">
-                  {['apos;play'apos;, 'apos;stop'apos;, 'apos;pause'apos;, 'apos;refresh'apos;, 'apos;edit'apos;, 'apos;trash'apos;, 'apos;save'apos;, 'apos;check'apos;].map(icon => (
+                  {['play', 'stop', 'pause', 'refresh', 'edit', 'trash', 'save', 'check'].map(icon => (
                     <div key={icon} className="icon-item">
                       <Icon name={icon} size="lg" />
                       <span>{icon}</span>
@@ -141,7 +141,7 @@ export default function FeaturesDemoPage() {
               <div className="icon-category">
                 <h3>Statuts</h3>
                 <div className="icon-grid">
-                  {['apos;spinner'apos;, 'apos;exclamation-triangle'apos;, 'apos;info-circle'apos;, 'apos;check-circle'apos;, 'apos;times-circle'apos;].map(icon => (
+                  {['spinner', 'exclamation-triangle', 'info-circle', 'check-circle', 'times-circle'].map(icon => (
                     <div key={icon} className="icon-item">
                       <Icon name={icon} size="lg" />
                       <span>{icon}</span>

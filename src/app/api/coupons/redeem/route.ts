@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
     const { code } = await req.json();
     
-    if (!code || typeof code !== 'apos;string'apos;) {
+    if (!code || typeof code !== 'string') {
       return NextResponse.json({ error: "Code coupon requis" }, { status: 400 });
     }
 
@@ -47,8 +47,8 @@ export async function POST(req: NextRequest) {
     const now = new Date();
 
     // Coupon actif ?
-    if (coupon.status !== 'apos;ACTIVE'apos;) {
-      return NextResponse.json({ error: "Ce coupon n'apos;est plus actif" }, { status: 400 });
+    if (coupon.status !== 'ACTIVE') {
+      return NextResponse.json({ error: "Ce coupon n'est plus actif" }, { status: 400 });
     }
 
     // Coupon expiré ?
@@ -58,21 +58,21 @@ export async function POST(req: NextRequest) {
 
     // Coupon pas encore valide ?
     if (coupon.validFrom > now) {
-      return NextResponse.json({ error: "Ce coupon n'apos;est pas encore valide" }, { status: 400 });
+      return NextResponse.json({ error: "Ce coupon n'est pas encore valide" }, { status: 400 });
     }
 
-    // Limite d'apos;utilisation atteinte ?
+    // Limite d'utilisation atteinte ?
     if (coupon.maxUses && coupon.currentUses >= coupon.maxUses) {
-      return NextResponse.json({ error: "Ce coupon a atteint sa limite d'apos;utilisation" }, { status: 400 });
+      return NextResponse.json({ error: "Ce coupon a atteint sa limite d'utilisation" }, { status: 400 });
     }
 
-    // L'apos;utilisateur a-t-il déjà utilisé ce coupon ?
+    // L'utilisateur a-t-il déjà utilisé ce coupon ?
     const existingRedemption = coupon.redemptions.find(r => r.userId === user.id);
     if (existingRedemption) {
       return NextResponse.json({ error: "Vous avez déjà utilisé ce coupon" }, { status: 400 });
     }
 
-    // L'apos;utilisateur a-t-il déjà un accès premium actif ?
+    // L'utilisateur a-t-il déjà un accès premium actif ?
     if (user.premiumAccess && user.premiumAccess.isActive && user.premiumAccess.endDate > now) {
       return NextResponse.json({ 
         error: "Vous avez déjà un accès premium actif",
@@ -87,11 +87,11 @@ export async function POST(req: NextRequest) {
     let planActivated: string | null = null;
     let expiresAt: Date | null = null;
 
-    if (coupon.type === 'apos;PREMIUM_TRIAL'apos; && coupon.planId && coupon.duration) {
+    if (coupon.type === 'PREMIUM_TRIAL' && coupon.planId && coupon.duration) {
       planActivated = coupon.planId;
       expiresAt = new Date(now.getTime() + (coupon.duration * 24 * 60 * 60 * 1000));
 
-      // Créer ou mettre à jour l'apos;accès premium
+      // Créer ou mettre à jour l'accès premium
       await prisma.premiumAccess.upsert({
         where: { userId: user.id },
         update: {
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
           startDate: now,
           endDate: expiresAt,
           isActive: true,
-          source: 'apos;coupon'apos;,
+          source: 'coupon',
           sourceId: coupon.id,
           updatedAt: now
         },
@@ -109,13 +109,13 @@ export async function POST(req: NextRequest) {
           startDate: now,
           endDate: expiresAt,
           isActive: true,
-          source: 'apos;coupon'apos;,
+          source: 'coupon',
           sourceId: coupon.id
         }
       });
     }
 
-    // Enregistrer l'apos;utilisation du coupon
+    // Enregistrer l'utilisation du coupon
     await prisma.couponRedemption.create({
       data: {
         couponId: coupon.id,
@@ -125,13 +125,13 @@ export async function POST(req: NextRequest) {
       }
     });
 
-    // Mettre à jour le compteur d'apos;utilisation du coupon
+    // Mettre à jour le compteur d'utilisation du coupon
     await prisma.coupon.update({
       where: { id: coupon.id },
       data: {
         currentUses: coupon.currentUses + 1,
-        // Marquer comme utilisé si c'apos;était à usage unique
-        status: (coupon.maxUses === 1) ? 'apos;USED'apos; : coupon.status
+        // Marquer comme utilisé si c'était à usage unique
+        status: (coupon.maxUses === 1) ? 'USED' : coupon.status
       }
     });
 
@@ -153,9 +153,9 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('apos;Erreur utilisation coupon:'apos;, error);
+    console.error('Erreur utilisation coupon:', error);
     return NextResponse.json({ 
-      error: "Erreur lors de l'apos;utilisation du coupon" 
+      error: "Erreur lors de l'utilisation du coupon" 
     }, { status: 500 });
   }
 }

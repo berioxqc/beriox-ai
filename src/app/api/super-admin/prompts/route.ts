@@ -1,23 +1,23 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { getServerSession } from 'apos;next-auth'apos;;
-import { authOptions } from 'apos;@/lib/auth'apos;;
-import { promptManager } from 'apos;@/lib/agents/prompt-manager'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
-import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { promptManager } from '@/lib/agents/prompt-manager';
+import { logger } from '@/lib/logger';
+import { withRateLimit } from '@/lib/rate-limit-advanced';
 
 // GET - Récupérer tous les prompts
 export const GET = withRateLimit(async (request: NextRequest) => {
   const session = await getServerSession(authOptions);
   
-  // Vérifier que l'apos;utilisateur est super admin
-  if (session?.user?.email !== 'apos;info@beriox.ca'apos;) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+  // Vérifier que l'utilisateur est super admin
+  if (session?.user?.email !== 'info@beriox.ca') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const agentName = searchParams.get('apos;agent'apos;);
-    const promptType = searchParams.get('apos;type'apos;);
+    const agentName = searchParams.get('agent');
+    const promptType = searchParams.get('type');
 
     let prompts;
     if (agentName) {
@@ -43,23 +43,23 @@ export const GET = withRateLimit(async (request: NextRequest) => {
         stats: {
           total: prompts.length,
           active: prompts.filter(p => p.isActive).length,
-          modified: prompts.filter(p => p.modifiedBy !== 'apos;system'apos;).length
+          modified: prompts.filter(p => p.modifiedBy !== 'system').length
         }
       }
     });
   } catch (error) {
-    logger.error('apos;Erreur lors de la récupération des prompts:'apos;, error);
-    return NextResponse.json({ error: 'apos;Erreur serveur'apos; }, { status: 500 });
+    logger.error('Erreur lors de la récupération des prompts:', error);
+    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
   }
-}, 'apos;super-admin-prompts-get'apos;);
+}, 'super-admin-prompts-get');
 
 // POST - Créer un nouveau prompt
 export const POST = withRateLimit(async (request: NextRequest) => {
   const session = await getServerSession(authOptions);
   
-  // Vérifier que l'apos;utilisateur est super admin
-  if (session?.user?.email !== 'apos;info@beriox.ca'apos;) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+  // Vérifier que l'utilisateur est super admin
+  if (session?.user?.email !== 'info@beriox.ca') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -70,7 +70,7 @@ export const POST = withRateLimit(async (request: NextRequest) => {
     const validation = promptManager.validatePrompt(prompt.currentPrompt);
     if (!validation.isValid) {
       return NextResponse.json({
-        error: 'apos;Prompt invalide'apos;,
+        error: 'Prompt invalide',
         details: validation.errors
       }, { status: 400 });
     }
@@ -78,7 +78,7 @@ export const POST = withRateLimit(async (request: NextRequest) => {
     // Ajouter le prompt
     promptManager.addPrompt({
       ...prompt,
-      modifiedBy: session.user.email || 'apos;unknown'apos;,
+      modifiedBy: session.user.email || 'unknown',
       lastModified: new Date().toISOString()
     });
 
@@ -86,22 +86,22 @@ export const POST = withRateLimit(async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      message: 'apos;Prompt créé avec succès'apos;,
+      message: 'Prompt créé avec succès',
       data: prompt
     });
   } catch (error) {
-    logger.error('apos;Erreur lors de la création du prompt:'apos;, error);
-    return NextResponse.json({ error: 'apos;Erreur serveur'apos; }, { status: 500 });
+    logger.error('Erreur lors de la création du prompt:', error);
+    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
   }
-}, 'apos;super-admin-prompts-post'apos;);
+}, 'super-admin-prompts-post');
 
 // PUT - Mettre à jour un prompt
 export const PUT = withRateLimit(async (request: NextRequest) => {
   const session = await getServerSession(authOptions);
   
-  // Vérifier que l'apos;utilisateur est super admin
-  if (session?.user?.email !== 'apos;info@beriox.ca'apos;) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+  // Vérifier que l'utilisateur est super admin
+  if (session?.user?.email !== 'info@beriox.ca') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
@@ -109,7 +109,7 @@ export const PUT = withRateLimit(async (request: NextRequest) => {
     const { promptId, updates } = body;
 
     if (!promptId) {
-      return NextResponse.json({ error: 'apos;ID du prompt requis'apos; }, { status: 400 });
+      return NextResponse.json({ error: 'ID du prompt requis' }, { status: 400 });
     }
 
     // Validation si le prompt est modifié
@@ -117,7 +117,7 @@ export const PUT = withRateLimit(async (request: NextRequest) => {
       const validation = promptManager.validatePrompt(updates.currentPrompt);
       if (!validation.isValid) {
         return NextResponse.json({
-          error: 'apos;Prompt invalide'apos;,
+          error: 'Prompt invalide',
           details: validation.errors
         }, { status: 400 });
       }
@@ -127,11 +127,11 @@ export const PUT = withRateLimit(async (request: NextRequest) => {
     const success = promptManager.updatePrompt(
       promptId, 
       updates, 
-      session.user.email || 'apos;unknown'apos;
+      session.user.email || 'unknown'
     );
 
     if (!success) {
-      return NextResponse.json({ error: 'apos;Prompt non trouvé'apos; }, { status: 404 });
+      return NextResponse.json({ error: 'Prompt non trouvé' }, { status: 404 });
     }
 
     const updatedPrompt = promptManager.getPrompt(promptId);
@@ -140,53 +140,53 @@ export const PUT = withRateLimit(async (request: NextRequest) => {
 
     return NextResponse.json({
       success: true,
-      message: 'apos;Prompt mis à jour avec succès'apos;,
+      message: 'Prompt mis à jour avec succès',
       data: updatedPrompt
     });
   } catch (error) {
-    logger.error('apos;Erreur lors de la mise à jour du prompt:'apos;, error);
-    return NextResponse.json({ error: 'apos;Erreur serveur'apos; }, { status: 500 });
+    logger.error('Erreur lors de la mise à jour du prompt:', error);
+    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
   }
-}, 'apos;super-admin-prompts-put'apos;);
+}, 'super-admin-prompts-put');
 
 // DELETE - Supprimer un prompt
 export const DELETE = withRateLimit(async (request: NextRequest) => {
   const session = await getServerSession(authOptions);
   
-  // Vérifier que l'apos;utilisateur est super admin
-  if (session?.user?.email !== 'apos;info@beriox.ca'apos;) {
-    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
+  // Vérifier que l'utilisateur est super admin
+  if (session?.user?.email !== 'info@beriox.ca') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const promptId = searchParams.get('apos;id'apos;);
+    const promptId = searchParams.get('id');
 
     if (!promptId) {
-      return NextResponse.json({ error: 'apos;ID du prompt requis'apos; }, { status: 400 });
+      return NextResponse.json({ error: 'ID du prompt requis' }, { status: 400 });
     }
 
     // Vérifier que le prompt existe
     const prompt = promptManager.getPrompt(promptId);
     if (!prompt) {
-      return NextResponse.json({ error: 'apos;Prompt non trouvé'apos; }, { status: 404 });
+      return NextResponse.json({ error: 'Prompt non trouvé' }, { status: 404 });
     }
 
     // Supprimer le prompt
     const success = promptManager.deletePrompt(promptId);
 
     if (!success) {
-      return NextResponse.json({ error: 'apos;Erreur lors de la suppression'apos; }, { status: 500 });
+      return NextResponse.json({ error: 'Erreur lors de la suppression' }, { status: 500 });
     }
 
     logger.info(`Prompt supprimé par ${session.user.email}:`, promptId);
 
     return NextResponse.json({
       success: true,
-      message: 'apos;Prompt supprimé avec succès'apos;
+      message: 'Prompt supprimé avec succès'
     });
   } catch (error) {
-    logger.error('apos;Erreur lors de la suppression du prompt:'apos;, error);
-    return NextResponse.json({ error: 'apos;Erreur serveur'apos; }, { status: 500 });
+    logger.error('Erreur lors de la suppression du prompt:', error);
+    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
   }
-}, 'apos;super-admin-prompts-delete'apos;);
+}, 'super-admin-prompts-delete');

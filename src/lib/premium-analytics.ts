@@ -1,4 +1,4 @@
-// Système d'apos;Analytics Premium Beriox
+// Système d'Analytics Premium Beriox
 export interface BerioxKPIs {
   bpi: number;
   trustScore: number;
@@ -11,11 +11,11 @@ export interface OpportunityItem {
   id: string;
   title: string;
   description: string;
-  impact: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
-  effort: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
+  impact: 'high' | 'medium' | 'low';
+  effort: 'high' | 'medium' | 'low';
   priority: number;
   estimatedGain: string;
-  actionType: 'apos;seo'apos; | 'apos;performance'apos; | 'apos;conversion'apos; | 'apos;security'apos; | 'apos;ux'apos;;
+  actionType: 'seo' | 'performance' | 'conversion' | 'security' | 'ux';
 }
 
 export interface PredictiveMetrics {
@@ -23,7 +23,7 @@ export interface PredictiveMetrics {
     current: number;
     predicted: number;
     confidence: number;
-    trend: 'apos;up'apos; | 'apos;down'apos; | 'apos;stable'apos;;
+    trend: 'up' | 'down' | 'stable';
   };
   conversionForecast: {
     currentRate: number;
@@ -39,8 +39,8 @@ export interface PredictiveMetrics {
 
 export interface RiskAlert {
   id: string;
-  type: 'apos;critical'apos; | 'apos;warning'apos; | 'apos;info'apos;;
-  category: 'apos;seo'apos; | 'apos;performance'apos; | 'apos;security'apos; | 'apos;reputation'apos;;
+  type: 'critical' | 'warning' | 'info';
+  category: 'seo' | 'performance' | 'security' | 'reputation';
   title: string;
   description: string;
   action: string;
@@ -71,24 +71,24 @@ export class PremiumAnalyticsEngine {
   static generateOpportunityRadar(): OpportunityItem[] {
     return [
       {
-        id: 'apos;seo-positions'apos;,
-        title: 'apos;Optimiser les mots-clés en page 2'apos;,
-        description: 'apos;Plusieurs mots-clés sont entre les positions 11-20'apos;,
-        impact: 'apos;high'apos;,
-        effort: 'apos;medium'apos;,
+        id: 'seo-positions',
+        title: 'Optimiser les mots-clés en page 2',
+        description: 'Plusieurs mots-clés sont entre les positions 11-20',
+        impact: 'high',
+        effort: 'medium',
         priority: 95,
-        estimatedGain: 'apos;+25% de trafic organique'apos;,
-        actionType: 'apos;seo'apos;
+        estimatedGain: '+25% de trafic organique',
+        actionType: 'seo'
       },
       {
-        id: 'apos;performance-speed'apos;,
-        title: 'apos;Optimiser les pages lentes'apos;,
-        description: 'apos;Pages avec score PageSpeed < 70'apos;,
-        impact: 'apos;high'apos;,
-        effort: 'apos;medium'apos;,
+        id: 'performance-speed',
+        title: 'Optimiser les pages lentes',
+        description: 'Pages avec score PageSpeed < 70',
+        impact: 'high',
+        effort: 'medium',
         priority: 90,
-        estimatedGain: 'apos;+15% de conversions'apos;,
-        actionType: 'apos;performance'apos;
+        estimatedGain: '+15% de conversions',
+        actionType: 'performance'
       }
     ];
   }
@@ -99,7 +99,7 @@ export class PremiumAnalyticsEngine {
         current: 1250,
         predicted: 1450,
         confidence: 0.85,
-        trend: 'apos;up'apos;
+        trend: 'up'
       },
       conversionForecast: {
         currentRate: 2.8,
@@ -108,8 +108,8 @@ export class PremiumAnalyticsEngine {
       },
       seoRiskScore: {
         score: 25,
-        factors: ['apos;Erreurs d\'apos;indexation'apos;, 'apos;Perte de backlinks'apos;],
-        recommendation: 'apos;Corriger les erreurs Search Console'apos;
+        factors: ['Erreurs d\'indexation', 'Perte de backlinks'],
+        recommendation: 'Corriger les erreurs Search Console'
       }
     };
   }
@@ -117,12 +117,12 @@ export class PremiumAnalyticsEngine {
   static detectRiskAlerts(): RiskAlert[] {
     return [
       {
-        id: 'apos;traffic-drop'apos;,
-        type: 'apos;warning'apos;,
-        category: 'apos;seo'apos;,
-        title: 'apos;Baisse de trafic détectée'apos;,
-        description: 'apos;Chute de 15% sur les 7 derniers jours'apos;,
-        action: 'apos;Analyser les positions perdues'apos;,
+        id: 'traffic-drop',
+        type: 'warning',
+        category: 'seo',
+        title: 'Baisse de trafic détectée',
+        description: 'Chute de 15% sur les 7 derniers jours',
+        action: 'Analyser les positions perdues',
         detectedAt: new Date(),
         severity: 70
       }
@@ -138,12 +138,12 @@ export async function generatePremiumReport(missionId: string, userPlan: string)
   let predictiveMetrics: PredictiveMetrics | null = null;
   let riskAlerts: RiskAlert[] = [];
 
-  if (userPlan === 'apos;pro'apos; || userPlan === 'apos;enterprise'apos;) {
+  if (userPlan === 'pro' || userPlan === 'enterprise') {
     opportunityRadar = PremiumAnalyticsEngine.generateOpportunityRadar();
     predictiveMetrics = PremiumAnalyticsEngine.generatePredictiveMetrics();
   }
 
-  if (userPlan === 'apos;enterprise'apos;) {
+  if (userPlan === 'enterprise') {
     riskAlerts = PremiumAnalyticsEngine.detectRiskAlerts();
   }
 
@@ -152,9 +152,9 @@ export async function generatePremiumReport(missionId: string, userPlan: string)
     trustScore,
     opportunityRadar,
     predictiveMetrics: predictiveMetrics || {
-      trafficForecast30d: { current: 0, predicted: 0, confidence: 0, trend: 'apos;stable'apos; },
+      trafficForecast30d: { current: 0, predicted: 0, confidence: 0, trend: 'stable' },
       conversionForecast: { currentRate: 0, predictedRate: 0, potentialGain: 0 },
-      seoRiskScore: { score: 0, factors: [], recommendation: 'apos;'apos; }
+      seoRiskScore: { score: 0, factors: [], recommendation: '' }
     },
     riskAlerts
   };

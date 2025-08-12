@@ -1,12 +1,12 @@
-import { Metadata } from 'apos;next'apos;;
-import { Suspense } from 'apos;react'apos;;
-import Layout from 'apos;@/components/Layout'apos;;
-import MetricsDashboard from 'apos;@/components/metrics/MetricsDashboard'apos;;
+import { Metadata } from 'next';
+import { Suspense } from 'react';
+import Layout from '@/components/Layout';
+import MetricsDashboard from '@/components/metrics/MetricsDashboard';
 
 export const metadata: Metadata = {
-  title: 'apos;Dashboard Métriques - Beriox AI'apos;,
-  description: 'apos;Suivez les performances de vos agents IA, le ROI et les métriques système en temps réel.'apos;,
-  keywords: 'apos;métriques, dashboard, performance, ROI, agents IA'apos;,
+  title: 'Dashboard Métriques - Beriox AI',
+  description: 'Suivez les performances de vos agents IA, le ROI et les métriques système en temps réel.',
+  keywords: 'métriques, dashboard, performance, ROI, agents IA',
 };
 
 export default function MetricsDashboardPage() {

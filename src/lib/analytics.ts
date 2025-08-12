@@ -1,4 +1,4 @@
-// Service d'apos;intégration avec Google Analytics 4 API
+// Service d'intégration avec Google Analytics 4 API
 
 export interface AnalyticsConnection {
   id: string;
@@ -79,53 +79,53 @@ class GoogleAnalyticsService {
   private clientId: string;
   private clientSecret: string;
   private redirectUri: string;
-  private scope = 'apos;https://www.googleapis.com/auth/analytics.readonly'apos;;
+  private scope = 'https://www.googleapis.com/auth/analytics.readonly';
 
   constructor() {
-    this.clientId = process.env.GOOGLE_ANALYTICS_CLIENT_ID || 'apos;'apos;;
-    this.clientSecret = process.env.GOOGLE_ANALYTICS_CLIENT_SECRET || 'apos;'apos;;
-    this.redirectUri = process.env.GOOGLE_ANALYTICS_REDIRECT_URI || 'apos;http://localhost:4001/api/analytics/callback'apos;;
+    this.clientId = process.env.GOOGLE_ANALYTICS_CLIENT_ID || '';
+    this.clientSecret = process.env.GOOGLE_ANALYTICS_CLIENT_SECRET || '';
+    this.redirectUri = process.env.GOOGLE_ANALYTICS_REDIRECT_URI || 'http://localhost:4001/api/analytics/callback';
     
-    // Ne pas afficher d'apos;avertissement lors du build
-    if (typeof window === 'apos;undefined'apos; && process.env.NODE_ENV === 'apos;production'apos;) {
+    // Ne pas afficher d'avertissement lors du build
+    if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
       if (!this.clientId || !this.clientSecret) {
         // Log silencieux en production
       }
     } else if (!this.clientId || !this.clientSecret) {
-      console.warn('apos;⚠️ Google Analytics credentials not configured'apos;);
+      console.warn('⚠️ Google Analytics credentials not configured');
     }
   }
 
   /**
-   * Génère l'apos;URL d'apos;autorisation OAuth2
+   * Génère l'URL d'autorisation OAuth2
    */
   getAuthUrl(userId: string): string {
     const params = new URLSearchParams({
       client_id: this.clientId,
       redirect_uri: this.redirectUri,
       scope: this.scope,
-      response_type: 'apos;code'apos;,
-      access_type: 'apos;offline'apos;,
-      prompt: 'apos;consent'apos;,
-      state: userId // Pour identifier l'apos;utilisateur au retour
+      response_type: 'code',
+      access_type: 'offline',
+      prompt: 'consent',
+      state: userId // Pour identifier l'utilisateur au retour
     });
 
     return `https://accounts.google.com/o/oauth2/v2/auth?${params}`;
   }
 
   /**
-   * Échange le code d'apos;autorisation contre des tokens
+   * Échange le code d'autorisation contre des tokens
    */
   async exchangeCodeForTokens(code: string): Promise<{accessToken: string, refreshToken: string} | null> {
     try {
-      const response = await fetch('apos;https://oauth2.googleapis.com/token'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/x-www-form-urlencoded'apos; },
+      const response = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
           client_id: this.clientId,
           client_secret: this.clientSecret,
           redirect_uri: this.redirectUri,
-          grant_type: 'apos;authorization_code'apos;,
+          grant_type: 'authorization_code',
           code: code
         })
       });
@@ -141,24 +141,24 @@ class GoogleAnalyticsService {
       };
 
     } catch (error) {
-      console.error('apos;❌ Error exchanging code for tokens:'apos;, error);
+      console.error('❌ Error exchanging code for tokens:', error);
       return null;
     }
   }
 
   /**
-   * Rafraîchit le token d'apos;accès
+   * Rafraîchit le token d'accès
    */
   async refreshAccessToken(refreshToken: string): Promise<string | null> {
     try {
-      const response = await fetch('apos;https://oauth2.googleapis.com/token'apos;, {
-        method: 'apos;POST'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/x-www-form-urlencoded'apos; },
+      const response = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
           client_id: this.clientId,
           client_secret: this.clientSecret,
           refresh_token: refreshToken,
-          grant_type: 'apos;refresh_token'apos;
+          grant_type: 'refresh_token'
         })
       });
 
@@ -170,7 +170,7 @@ class GoogleAnalyticsService {
       return data.access_token;
 
     } catch (error) {
-      console.error('apos;❌ Error refreshing token:'apos;, error);
+      console.error('❌ Error refreshing token:', error);
       return null;
     }
   }
@@ -180,8 +180,8 @@ class GoogleAnalyticsService {
    */
   async getProperties(accessToken: string): Promise<Array<{id: string, name: string, websiteUrl: string}> | null> {
     try {
-      const response = await fetch('apos;https://analyticsadmin.googleapis.com/v1alpha/accounts/-/properties'apos;, {
-        headers: { 'apos;Authorization'apos;: `Bearer ${accessToken}` }
+      const response = await fetch('https://analyticsadmin.googleapis.com/v1alpha/accounts/-/properties', {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
       });
 
       if (!response.ok) {
@@ -190,13 +190,13 @@ class GoogleAnalyticsService {
 
       const data = await response.json();
       return data.properties?.map((prop: any) => ({
-        id: prop.name.split('apos;/'apos;).pop(),
+        id: prop.name.split('/').pop(),
         name: prop.displayName,
-        websiteUrl: prop.websiteUrl || 'apos;'apos;
+        websiteUrl: prop.websiteUrl || ''
       })) || [];
 
     } catch (error) {
-      console.error('apos;❌ Error fetching properties:'apos;, error);
+      console.error('❌ Error fetching properties:', error);
       return null;
     }
   }
@@ -207,52 +207,52 @@ class GoogleAnalyticsService {
   async getAnalyticsData(
     propertyId: string, 
     accessToken: string, 
-    startDate: string = 'apos;30daysAgo'apos;, 
-    endDate: string = 'apos;today'apos;
+    startDate: string = '30daysAgo', 
+    endDate: string = 'today'
   ): Promise<AnalyticsData | null> {
     try {
       // Requête pour les métriques principales
       const mainMetrics = await this.runReport(propertyId, accessToken, {
         dateRanges: [{ startDate, endDate }],
         metrics: [
-          { name: 'apos;activeUsers'apos; },
-          { name: 'apos;newUsers'apos; },
-          { name: 'apos;sessions'apos; },
-          { name: 'apos;screenPageViews'apos; },
-          { name: 'apos;bounceRate'apos; },
-          { name: 'apos;averageSessionDuration'apos; },
-          { name: 'apos;conversions'apos; },
-          { name: 'apos;conversionRate'apos; }
+          { name: 'activeUsers' },
+          { name: 'newUsers' },
+          { name: 'sessions' },
+          { name: 'screenPageViews' },
+          { name: 'bounceRate' },
+          { name: 'averageSessionDuration' },
+          { name: 'conversions' },
+          { name: 'conversionRate' }
         ]
       });
 
       // Requête pour les sources de trafic
       const trafficSources = await this.runReport(propertyId, accessToken, {
         dateRanges: [{ startDate, endDate }],
-        dimensions: [{ name: 'apos;sessionSource'apos; }, { name: 'apos;sessionMedium'apos; }],
-        metrics: [{ name: 'apos;activeUsers'apos; }, { name: 'apos;sessions'apos; }],
-        orderBys: [{ metric: { metricName: 'apos;activeUsers'apos; }, desc: true }],
+        dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+        metrics: [{ name: 'activeUsers' }, { name: 'sessions' }],
+        orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }],
         limit: 10
       });
 
       // Requête pour les appareils
       const devices = await this.runReport(propertyId, accessToken, {
         dateRanges: [{ startDate, endDate }],
-        dimensions: [{ name: 'apos;deviceCategory'apos; }],
-        metrics: [{ name: 'apos;activeUsers'apos; }],
-        orderBys: [{ metric: { metricName: 'apos;activeUsers'apos; }, desc: true }]
+        dimensions: [{ name: 'deviceCategory' }],
+        metrics: [{ name: 'activeUsers' }],
+        orderBys: [{ metric: { metricName: 'activeUsers' }, desc: true }]
       });
 
       // Requête pour les pages populaires
       const topPages = await this.runReport(propertyId, accessToken, {
         dateRanges: [{ startDate, endDate }],
-        dimensions: [{ name: 'apos;pagePath'apos; }],
+        dimensions: [{ name: 'pagePath' }],
         metrics: [
-          { name: 'apos;screenPageViews'apos; },
-          { name: 'apos;averageTimeOnScreen'apos; },
-          { name: 'apos;bounceRate'apos; }
+          { name: 'screenPageViews' },
+          { name: 'averageTimeOnScreen' },
+          { name: 'bounceRate' }
         ],
-        orderBys: [{ metric: { metricName: 'apos;screenPageViews'apos; }, desc: true }],
+        orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
         limit: 10
       });
 
@@ -264,7 +264,7 @@ class GoogleAnalyticsService {
       });
 
     } catch (error) {
-      console.error('apos;❌ Error fetching analytics data:'apos;, error);
+      console.error('❌ Error fetching analytics data:', error);
       return null;
     }
   }
@@ -274,10 +274,10 @@ class GoogleAnalyticsService {
    */
   private async runReport(propertyId: string, accessToken: string, request: any): Promise<any> {
     const response = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`, {
-      method: 'apos;POST'apos;,
+      method: 'POST',
       headers: {
-        'apos;Authorization'apos;: `Bearer ${accessToken}`,
-        'apos;Content-Type'apos;: 'apos;application/json'apos;
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(request)
     });
@@ -303,14 +303,14 @@ class GoogleAnalyticsService {
     // Métriques principales
     const mainRow = mainMetrics.rows?.[0]?.metricValues || [];
     const overview = {
-      users: parseInt(mainRow[0]?.value || 'apos;0'apos;),
-      newUsers: parseInt(mainRow[1]?.value || 'apos;0'apos;),
-      sessions: parseInt(mainRow[2]?.value || 'apos;0'apos;),
-      pageviews: parseInt(mainRow[3]?.value || 'apos;0'apos;),
-      bounceRate: parseFloat(mainRow[4]?.value || 'apos;0'apos;),
-      averageSessionDuration: parseFloat(mainRow[5]?.value || 'apos;0'apos;),
-      conversions: parseInt(mainRow[6]?.value || 'apos;0'apos;),
-      conversionRate: parseFloat(mainRow[7]?.value || 'apos;0'apos;)
+      users: parseInt(mainRow[0]?.value || '0'),
+      newUsers: parseInt(mainRow[1]?.value || '0'),
+      sessions: parseInt(mainRow[2]?.value || '0'),
+      pageviews: parseInt(mainRow[3]?.value || '0'),
+      bounceRate: parseFloat(mainRow[4]?.value || '0'),
+      averageSessionDuration: parseFloat(mainRow[5]?.value || '0'),
+      conversions: parseInt(mainRow[6]?.value || '0'),
+      conversionRate: parseFloat(mainRow[7]?.value || '0')
     };
 
     // Sources de trafic
@@ -362,7 +362,7 @@ class GoogleAnalyticsService {
   }
 
   /**
-   * Génère un rapport d'apos;analyse lisible
+   * Génère un rapport d'analyse lisible
    */
   generateAnalyticsReport(data: AnalyticsData, propertyName: string): string {
     const { overview, traffic, content } = data;
@@ -370,10 +370,10 @@ class GoogleAnalyticsService {
 
     return `# 📊 Rapport Google Analytics - ${propertyName}
 
-**Période d'apos;analyse :** ${period}
+**Période d'analyse :** ${period}
 **Propriété :** ${data.propertyId}
 
-## 🎯 Vue d'apos;ensemble
+## 🎯 Vue d'ensemble
 
 ### Audiences
 - **Utilisateurs :** ${overview.users.toLocaleString()} (${overview.newUsers.toLocaleString()} nouveaux)
@@ -395,13 +395,13 @@ ${traffic.sources.map((source, index) =>
   `${index + 1}. **${source.source}** (${source.medium})
    - ${source.users.toLocaleString()} utilisateurs (${source.percentage.toFixed(1)}%)
    - ${source.sessions.toLocaleString()} sessions`
-).join('apos;\n\n'apos;)}
+).join('\n\n')}
 
 ## 📱 Répartition par Appareils
 
 ${traffic.devices.map(device => 
   `- **${device.category}** : ${device.users.toLocaleString()} utilisateurs (${device.percentage.toFixed(1)}%)`
-).join('apos;\n'apos;)}
+).join('\n')}
 
 ## 📄 Pages les Plus Populaires
 
@@ -410,7 +410,7 @@ ${content.topPages.map((page, index) =>
    - ${page.pageviews.toLocaleString()} vues
    - ${Math.round(page.avgTimeOnPage / 60)}min ${Math.round(page.avgTimeOnPage % 60)}s en moyenne
    - ${page.bounceRate.toFixed(1)}% de rebond`
-).join('apos;\n\n'apos;)}
+).join('\n\n')}
 
 ## 💡 Recommandations AnalyticsBot
 
@@ -418,10 +418,10 @@ ${content.topPages.map((page, index) =>
 ${this.generateRecommendations(data)}
 
 ### 📈 Actions Suggérées
-- **Améliorer l'apos;engagement** : Réduire le taux de rebond sur les pages principales
+- **Améliorer l'engagement** : Réduire le taux de rebond sur les pages principales
 - **Diversifier le trafic** : Développer les sources moins représentées
 - **Optimiser les conversions** : Analyser le parcours utilisateur sur les pages à fort trafic
-- **Mobile-first** : ${traffic.devices.find(d => d.category === 'apos;mobile'apos;)?.percentage || 0 > 50 ? 'apos;Continuer'apos; : 'apos;Prioriser'apos;} l'apos;optimisation mobile
+- **Mobile-first** : ${traffic.devices.find(d => d.category === 'mobile')?.percentage || 0 > 50 ? 'Continuer' : 'Prioriser'} l'optimisation mobile
 
 ---
 *Rapport généré par AnalyticsBot - Beriox AI*`;
@@ -436,26 +436,26 @@ ${this.generateRecommendations(data)}
 
     // Taux de rebond élevé
     if (overview.bounceRate > 70) {
-      recommendations.push('apos;🔴 **Taux de rebond élevé** : Améliorer la pertinence du contenu et la vitesse de chargement'apos;);
+      recommendations.push('🔴 **Taux de rebond élevé** : Améliorer la pertinence du contenu et la vitesse de chargement');
     }
 
     // Durée de session faible
     if (overview.averageSessionDuration < 120) {
-      recommendations.push('apos;🟡 **Sessions courtes** : Optimiser l\'apos;engagement avec du contenu interactif'apos;);
+      recommendations.push('🟡 **Sessions courtes** : Optimiser l\'engagement avec du contenu interactif');
     }
 
     // Taux de conversion faible
     if (overview.conversionRate < 2) {
-      recommendations.push('apos;🔴 **Conversions faibles** : Revoir le tunnel de conversion et les CTA'apos;);
+      recommendations.push('🔴 **Conversions faibles** : Revoir le tunnel de conversion et les CTA');
     }
 
     // Dépendance à une source de trafic
     const topSource = traffic.sources[0];
     if (topSource && topSource.percentage > 60) {
-      recommendations.push('apos;🟡 **Dépendance trafic** : Diversifier les sources d\'apos;acquisition'apos;);
+      recommendations.push('🟡 **Dépendance trafic** : Diversifier les sources d\'acquisition');
     }
 
-    return recommendations.length > 0 ? recommendations.join('apos;\n'apos;) : 'apos;✅ Performances globalement satisfaisantes'apos;;
+    return recommendations.length > 0 ? recommendations.join('\n') : '✅ Performances globalement satisfaisantes';
   }
 }
 

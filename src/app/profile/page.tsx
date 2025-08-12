@@ -1,10 +1,10 @@
-'apos;use client'apos;;
+'use client';
 
-import { useSession, signOut } from 'apos;next-auth/react'apos;;
-import { useState, useEffect } from 'apos;react'apos;;
-import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
-import { useTheme } from 'apos;@/hooks/useTheme'apos;;
-import Layout from 'apos;@/components/Layout'apos;;
+import { useSession, signOut } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useTheme } from '@/hooks/useTheme';
+import Layout from '@/components/Layout';
 
 interface UserStats {
   totalMissions: number;
@@ -33,7 +33,7 @@ interface UserProfile {
     weekly: boolean;
   };
   preferences: {
-    theme: 'apos;light'apos; | 'apos;dark'apos; | 'apos;auto'apos;;
+    theme: 'light' | 'dark' | 'auto';
     compactMode: boolean;
     autoSave: boolean;
   };
@@ -45,17 +45,17 @@ interface ApiUsageData {
   used: number;
   limit: number;
   lastUpdate: string;
-  status: 'apos;healthy'apos; | 'apos;warning'apos; | 'apos;error'apos;;
+  status: 'healthy' | 'warning' | 'error';
   data?: any[];
 }
 
 interface DashboardData {
   apiUsage: ApiUsageData[];
   recentAlerts: {
-    type: 'apos;security'apos; | 'apos;performance'apos; | 'apos;seo'apos; | 'apos;uptime'apos;;
+    type: 'security' | 'performance' | 'seo' | 'uptime';
     message: string;
     timestamp: string;
-    severity: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
+    severity: 'low' | 'medium' | 'high';
   }[];
   performanceMetrics: {
     avgLoadTime: number;
@@ -73,7 +73,7 @@ export default function ProfilePage() {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'apos;overview'apos; | 'apos;profile'apos; | 'apos;apis'apos; | 'apos;metrics'apos; | 'apos;preferences'apos; | 'apos;subscription'apos;>('apos;overview'apos;);
+  const [activeTab, setActiveTab] = useState<'overview' | 'profile' | 'apis' | 'metrics' | 'preferences' | 'subscription'>('overview');
 
   useEffect(() => {
     if (session?.user) {
@@ -85,13 +85,13 @@ export default function ProfilePage() {
 
   const fetchUserStats = async () => {
     try {
-      const res = await fetch('apos;/api/user/stats'apos;);
+      const res = await fetch('/api/user/stats');
       if (res.ok) {
         const stats = await res.json();
         setUserStats(stats);
       }
     } catch (error) {
-      console.error('apos;Erreur lors du chargement des stats:'apos;, error);
+      console.error('Erreur lors du chargement des stats:', error);
     } finally {
       setLoading(false);
     }
@@ -99,74 +99,74 @@ export default function ProfilePage() {
 
   const fetchUserProfile = async () => {
     try {
-      const res = await fetch('apos;/api/user/profile'apos;);
+      const res = await fetch('/api/user/profile');
       if (res.ok) {
         const profile = await res.json();
         setUserProfile(profile.user);
       }
     } catch (error) {
-      console.error('apos;Erreur lors du chargement du profil:'apos;, error);
+      console.error('Erreur lors du chargement du profil:', error);
     }
   };
 
   const fetchDashboardData = async () => {
     try {
       // Simulation des données de tableau de bord pour la démonstration
-      // En production, ceci viendrait d'apos;une vraie API
+      // En production, ceci viendrait d'une vraie API
       const mockData: DashboardData = {
         apiUsage: [
           {
-            apiName: 'apos;pagespeed'apos;,
-            displayName: 'apos;PageSpeed Insights'apos;,
+            apiName: 'pagespeed',
+            displayName: 'PageSpeed Insights',
             used: 127,
             limit: 500,
             lastUpdate: new Date().toISOString(),
-            status: 'apos;healthy'apos;,
+            status: 'healthy',
             data: [
-              { date: 'apos;2024-01-01'apos;, score: 85 },
-              { date: 'apos;2024-01-02'apos;, score: 87 },
-              { date: 'apos;2024-01-03'apos;, score: 89 }
+              { date: '2024-01-01', score: 85 },
+              { date: '2024-01-02', score: 87 },
+              { date: '2024-01-03', score: 89 }
             ]
           },
           {
-            apiName: 'apos;security'apos;,
-            displayName: 'apos;Security Scan'apos;,
+            apiName: 'security',
+            displayName: 'Security Scan',
             used: 45,
             limit: 100,
             lastUpdate: new Date().toISOString(),
-            status: 'apos;warning'apos;,
+            status: 'warning',
             data: [
-              { date: 'apos;2024-01-01'apos;, vulnerabilities: 3 },
-              { date: 'apos;2024-01-02'apos;, vulnerabilities: 2 },
-              { date: 'apos;2024-01-03'apos;, vulnerabilities: 1 }
+              { date: '2024-01-01', vulnerabilities: 3 },
+              { date: '2024-01-02', vulnerabilities: 2 },
+              { date: '2024-01-03', vulnerabilities: 1 }
             ]
           },
           {
-            apiName: 'apos;uptime'apos;,
-            displayName: 'apos;Uptime Monitoring'apos;,
+            apiName: 'uptime',
+            displayName: 'Uptime Monitoring',
             used: 234,
             limit: 1000,
             lastUpdate: new Date().toISOString(),
-            status: 'apos;healthy'apos;,
+            status: 'healthy',
             data: [
-              { date: 'apos;2024-01-01'apos;, uptime: 99.9 },
-              { date: 'apos;2024-01-02'apos;, uptime: 99.8 },
-              { date: 'apos;2024-01-03'apos;, uptime: 100 }
+              { date: '2024-01-01', uptime: 99.9 },
+              { date: '2024-01-02', uptime: 99.8 },
+              { date: '2024-01-03', uptime: 100 }
             ]
           }
         ],
         recentAlerts: [
           {
-            type: 'apos;security'apos;,
-            message: 'apos;Nouvelle vulnérabilité détectée sur example.com'apos;,
+            type: 'security',
+            message: 'Nouvelle vulnérabilité détectée sur example.com',
             timestamp: new Date(Date.now() - 3600000).toISOString(),
-            severity: 'apos;medium'apos;
+            severity: 'medium'
           },
           {
-            type: 'apos;performance'apos;,
-            message: 'apos;Temps de chargement élevé détecté (3.2s)'apos;,
+            type: 'performance',
+            message: 'Temps de chargement élevé détecté (3.2s)',
             timestamp: new Date(Date.now() - 7200000).toISOString(),
-            severity: 'apos;low'apos;
+            severity: 'low'
           }
         ],
         performanceMetrics: {
@@ -179,15 +179,15 @@ export default function ProfilePage() {
       
       setDashboardData(mockData);
     } catch (error) {
-      console.error('apos;Erreur lors du chargement des données dashboard:'apos;, error);
+      console.error('Erreur lors du chargement des données dashboard:', error);
     }
   };
 
   const handleSaveName = async () => {
     try {
-      const res = await fetch('apos;/api/user/profile'apos;, {
-        method: 'apos;PATCH'apos;,
-        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
+      const res = await fetch('/api/user/profile', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name }),
       });
 
@@ -196,25 +196,25 @@ export default function ProfilePage() {
         // Rafraîchir la session
         window.location.reload();
       } else {
-        alert('apos;Erreur lors de la sauvegarde'apos;);
+        alert('Erreur lors de la sauvegarde');
       }
     } catch (error) {
-      alert('apos;Erreur lors de la sauvegarde'apos;);
+      alert('Erreur lors de la sauvegarde');
     }
   };
 
   const getSubscriptionBadge = (status: string, planId: string) => {
-    if (status === 'apos;active'apos;) {
-      const color = planId === 'apos;pro'apos; ? theme.colors.primary.main : theme.colors.warning;
-      const label = planId === 'apos;pro'apos; ? 'apos;Pro'apos; : planId === 'apos;enterprise'apos; ? 'apos;Enterprise'apos; : 'apos;Actif'apos;;
+    if (status === 'active') {
+      const color = planId === 'pro' ? theme.colors.primary.main : theme.colors.warning;
+      const label = planId === 'pro' ? 'Pro' : planId === 'enterprise' ? 'Enterprise' : 'Actif';
       return (
         <span style={{
-          backgroundColor: color + 'apos;20'apos;,
+          backgroundColor: color + '20',
           color: color,
-          padding: 'apos;4px 12px'apos;,
-          borderRadius: 'apos;20px'apos;,
-          fontSize: 'apos;12px'apos;,
-          fontWeight: 'apos;bold'apos;,
+          padding: '4px 12px',
+          borderRadius: '20px',
+          fontSize: '12px',
+          fontWeight: 'bold',
           border: `1px solid ${color}40`
         }}>
           {label}
@@ -225,26 +225,26 @@ export default function ProfilePage() {
       <span style={{
         backgroundColor: theme.colors.neutral[100],
         color: theme.colors.neutral[600],
-        padding: 'apos;4px 12px'apos;,
-        borderRadius: 'apos;20px'apos;,
-        fontSize: 'apos;12px'apos;,
-        fontWeight: 'apos;bold'apos;
+        padding: '4px 12px',
+        borderRadius: '20px',
+        fontSize: '12px',
+        fontWeight: 'bold'
       }}>
         Essai Gratuit
       </span>
     );
   };
 
-  if (status === 'apos;loading'apos;) {
+  if (status === 'loading') {
     return (
       <Layout>
         <div style={{ 
-          display: 'apos;flex'apos;, 
-          justifyContent: 'apos;center'apos;, 
-          alignItems: 'apos;center'apos;, 
-          minHeight: 'apos;400px'apos; 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          minHeight: '400px' 
         }}>
-          <FontAwesomeIcon icon="spinner" spin style={{ fontSize: 'apos;32px'apos;, color: theme.colors.neutral[400] }} />
+          <FontAwesomeIcon icon="spinner" spin style={{ fontSize: '32px', color: theme.colors.neutral[400] }} />
         </div>
       </Layout>
     );
@@ -253,9 +253,9 @@ export default function ProfilePage() {
   if (!session) {
     return (
       <Layout>
-        <div style={{ textAlign: 'apos;center'apos;, padding: 'apos;60px 20px'apos; }}>
-          <FontAwesomeIcon icon="user" style={{ fontSize: 'apos;48px'apos;, color: theme.colors.neutral[400], marginBottom: 'apos;20px'apos; }} />
-          <h2 style={{ color: theme.colors.neutral[700], marginBottom: 'apos;10px'apos; }}>
+        <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+          <FontAwesomeIcon icon="user" style={{ fontSize: '48px', color: theme.colors.neutral[400], marginBottom: '20px' }} />
+          <h2 style={{ color: theme.colors.neutral[700], marginBottom: '10px' }}>
             Connexion requise
           </h2>
           <p style={{ color: theme.colors.neutral[600] }}>
@@ -269,65 +269,65 @@ export default function ProfilePage() {
   return (
     <Layout>
       <div style={{ 
-        maxWidth: 'apos;800px'apos;,
-        margin: 'apos;0 auto'apos;,
+        maxWidth: '800px',
+        margin: '0 auto',
         padding: theme.spacing.xl
       }}>
         {/* Header */}
         <div style={{
-          backgroundColor: 'apos;white'apos;,
-          borderRadius: 'apos;16px'apos;,
+          backgroundColor: 'white',
+          borderRadius: '16px',
           padding: theme.spacing.xl,
-          boxShadow: 'apos;0 4px 6px rgba(0, 0, 0, 0.05)'apos;,
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
           marginBottom: theme.spacing.xl
         }}>
-          <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.lg }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.lg }}>
             {/* Avatar */}
             <div style={{
-              width: 'apos;80px'apos;,
-              height: 'apos;80px'apos;,
-              borderRadius: 'apos;50%'apos;,
-              backgroundImage: session.user.image ? `url(${session.user.image})` : 'apos;none'apos;,
-              backgroundColor: session.user.image ? 'apos;transparent'apos; : theme.colors.primary.main,
-              backgroundSize: 'apos;cover'apos;,
-              backgroundPosition: 'apos;center'apos;,
-              display: 'apos;flex'apos;,
-              alignItems: 'apos;center'apos;,
-              justifyContent: 'apos;center'apos;,
-              fontSize: 'apos;32px'apos;,
-              fontWeight: 'apos;bold'apos;,
-              color: 'apos;white'apos;
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              backgroundImage: session.user.image ? `url(${session.user.image})` : 'none',
+              backgroundColor: session.user.image ? 'transparent' : theme.colors.primary.main,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '32px',
+              fontWeight: 'bold',
+              color: 'white'
             }}>
-              {!session.user.image && (session.user.name ? session.user.name.charAt(0).toUpperCase() : 'apos;U'apos;)}
+              {!session.user.image && (session.user.name ? session.user.name.charAt(0).toUpperCase() : 'U')}
             </div>
 
             {/* Info utilisateur */}
             <div style={{ flex: 1 }}>
-              <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.md, marginBottom: theme.spacing.sm }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.md, marginBottom: theme.spacing.sm }}>
                 {editing ? (
-                  <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.sm }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       style={{
-                        fontSize: 'apos;24px'apos;,
-                        fontWeight: 'apos;bold'apos;,
+                        fontSize: '24px',
+                        fontWeight: 'bold',
                         border: `2px solid ${theme.colors.primary.main}`,
-                        borderRadius: 'apos;8px'apos;,
-                        padding: 'apos;8px 12px'apos;,
-                        outline: 'apos;none'apos;
+                        borderRadius: '8px',
+                        padding: '8px 12px',
+                        outline: 'none'
                       }}
                     />
                     <button
                       onClick={handleSaveName}
                       style={{
                         backgroundColor: theme.colors.success,
-                        color: 'apos;white'apos;,
-                        border: 'apos;none'apos;,
-                        borderRadius: 'apos;6px'apos;,
-                        padding: 'apos;8px 12px'apos;,
-                        cursor: 'apos;pointer'apos;
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '6px',
+                        padding: '8px 12px',
+                        cursor: 'pointer'
                       }}
                     >
                       <FontAwesomeIcon icon="check" />
@@ -335,15 +335,15 @@ export default function ProfilePage() {
                     <button
                       onClick={() => {
                         setEditing(false);
-                        setName(session.user.name || 'apos;'apos;);
+                        setName(session.user.name || '');
                       }}
                       style={{
                         backgroundColor: theme.colors.neutral[300],
                         color: theme.colors.neutral[700],
-                        border: 'apos;none'apos;,
-                        borderRadius: 'apos;6px'apos;,
-                        padding: 'apos;8px 12px'apos;,
-                        cursor: 'apos;pointer'apos;
+                        border: 'none',
+                        borderRadius: '6px',
+                        padding: '8px 12px',
+                        cursor: 'pointer'
                       }}
                     >
                       <FontAwesomeIcon icon="times" />
@@ -352,21 +352,21 @@ export default function ProfilePage() {
                 ) : (
                   <>
                     <h1 style={{ 
-                      fontSize: 'apos;24px'apos;,
-                      fontWeight: 'apos;bold'apos;,
+                      fontSize: '24px',
+                      fontWeight: 'bold',
                       color: theme.colors.neutral[900],
                       margin: 0
                     }}>
-                      {session.user.name || 'apos;Utilisateur'apos;}
+                      {session.user.name || 'Utilisateur'}
                     </h1>
                     <button
                       onClick={() => setEditing(true)}
                       style={{
-                        backgroundColor: 'apos;transparent'apos;,
-                        border: 'apos;none'apos;,
+                        backgroundColor: 'transparent',
+                        border: 'none',
                         color: theme.colors.neutral[500],
-                        cursor: 'apos;pointer'apos;,
-                        padding: 'apos;4px'apos;
+                        cursor: 'pointer',
+                        padding: '4px'
                       }}
                     >
                       <FontAwesomeIcon icon="edit" />
@@ -390,84 +390,84 @@ export default function ProfilePage() {
 
         {/* Statistiques */}
         {loading ? (
-          <div style={{ textAlign: 'apos;center'apos;, padding: 'apos;40px'apos; }}>
-            <FontAwesomeIcon icon="spinner" spin style={{ fontSize: 'apos;24px'apos;, color: theme.colors.neutral[400] }} />
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            <FontAwesomeIcon icon="spinner" spin style={{ fontSize: '24px', color: theme.colors.neutral[400] }} />
           </div>
         ) : userStats && (
           <div style={{
-            display: 'apos;grid'apos;,
-            gridTemplateColumns: 'apos;repeat(auto-fit, minmax(200px, 1fr))'apos;,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
             gap: theme.spacing.lg,
             marginBottom: theme.spacing.xl
           }}>
             <div style={{
-              backgroundColor: 'apos;white'apos;,
-              borderRadius: 'apos;12px'apos;,
+              backgroundColor: 'white',
+              borderRadius: '12px',
               padding: theme.spacing.lg,
-              boxShadow: 'apos;0 2px 4px rgba(0, 0, 0, 0.05)'apos;,
-              textAlign: 'apos;center'apos;
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+              textAlign: 'center'
             }}>
               <FontAwesomeIcon icon="tasks" style={{ 
-                fontSize: 'apos;24px'apos;, 
+                fontSize: '24px', 
                 color: theme.colors.primary.main,
                 marginBottom: theme.spacing.sm
               }} />
               <div style={{ 
-                fontSize: 'apos;28px'apos;, 
-                fontWeight: 'apos;bold'apos;, 
+                fontSize: '28px', 
+                fontWeight: 'bold', 
                 color: theme.colors.neutral[900] 
               }}>
                 {userStats.totalMissions}
               </div>
-              <div style={{ color: theme.colors.neutral[600], fontSize: 'apos;14px'apos; }}>
+              <div style={{ color: theme.colors.neutral[600], fontSize: '14px' }}>
                 Missions créées
               </div>
             </div>
 
             <div style={{
-              backgroundColor: 'apos;white'apos;,
-              borderRadius: 'apos;12px'apos;,
+              backgroundColor: 'white',
+              borderRadius: '12px',
               padding: theme.spacing.lg,
-              boxShadow: 'apos;0 2px 4px rgba(0, 0, 0, 0.05)'apos;,
-              textAlign: 'apos;center'apos;
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+              textAlign: 'center'
             }}>
               <FontAwesomeIcon icon="check-circle" style={{ 
-                fontSize: 'apos;24px'apos;, 
+                fontSize: '24px', 
                 color: theme.colors.success,
                 marginBottom: theme.spacing.sm
               }} />
               <div style={{ 
-                fontSize: 'apos;28px'apos;, 
-                fontWeight: 'apos;bold'apos;, 
+                fontSize: '28px', 
+                fontWeight: 'bold', 
                 color: theme.colors.neutral[900] 
               }}>
                 {userStats.completedMissions}
               </div>
-              <div style={{ color: theme.colors.neutral[600], fontSize: 'apos;14px'apos; }}>
+              <div style={{ color: theme.colors.neutral[600], fontSize: '14px' }}>
                 Missions terminées
               </div>
             </div>
 
             <div style={{
-              backgroundColor: 'apos;white'apos;,
-              borderRadius: 'apos;12px'apos;,
+              backgroundColor: 'white',
+              borderRadius: '12px',
               padding: theme.spacing.lg,
-              boxShadow: 'apos;0 2px 4px rgba(0, 0, 0, 0.05)'apos;,
-              textAlign: 'apos;center'apos;
+              boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+              textAlign: 'center'
             }}>
               <FontAwesomeIcon icon="calendar" style={{ 
-                fontSize: 'apos;24px'apos;, 
+                fontSize: '24px', 
                 color: theme.colors.info,
                 marginBottom: theme.spacing.sm
               }} />
               <div style={{ 
-                fontSize: 'apos;16px'apos;, 
-                fontWeight: 'apos;bold'apos;, 
+                fontSize: '16px', 
+                fontWeight: 'bold', 
                 color: theme.colors.neutral[900] 
               }}>
-                {new Date(userStats.joinDate).toLocaleDateString('apos;fr-FR'apos;)}
+                {new Date(userStats.joinDate).toLocaleDateString('fr-FR')}
               </div>
-              <div style={{ color: theme.colors.neutral[600], fontSize: 'apos;14px'apos; }}>
+              <div style={{ color: theme.colors.neutral[600], fontSize: '14px' }}>
                 Membre depuis
               </div>
             </div>
@@ -475,23 +475,23 @@ export default function ProfilePage() {
         )}
 
         {/* Tableaux de Bord API */}
-        {userStats && userStats.planId !== 'apos;free'apos; && (
+        {userStats && userStats.planId !== 'free' && (
           <div style={{
-            backgroundColor: 'apos;white'apos;,
-            borderRadius: 'apos;16px'apos;,
+            backgroundColor: 'white',
+            borderRadius: '16px',
             padding: theme.spacing.xl,
-            boxShadow: 'apos;0 4px 6px rgba(0, 0, 0, 0.05)'apos;,
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
             marginBottom: theme.spacing.xl
           }}>
             <div style={{
-              display: 'apos;flex'apos;,
-              justifyContent: 'apos;space-between'apos;,
-              alignItems: 'apos;center'apos;,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               marginBottom: theme.spacing.lg
             }}>
               <h3 style={{ 
-                fontSize: 'apos;20px'apos;,
-                fontWeight: 'apos;bold'apos;,
+                fontSize: '20px',
+                fontWeight: 'bold',
                 color: theme.colors.neutral[900],
                 margin: 0
               }}>
@@ -500,36 +500,36 @@ export default function ProfilePage() {
               
               {/* Onglets */}
               <div style={{
-                display: 'apos;flex'apos;,
+                display: 'flex',
                 backgroundColor: theme.colors.neutral[100],
-                borderRadius: 'apos;8px'apos;,
-                padding: 'apos;4px'apos;
+                borderRadius: '8px',
+                padding: '4px'
               }}>
                 {[
-                  { id: 'apos;overview'apos;, label: 'apos;Vue d\'apos;ensemble'apos;, icon: 'apos;chart-bar'apos; },
-                  { id: 'apos;profile'apos;, label: 'apos;Profil'apos;, icon: 'apos;user'apos; },
-                  { id: 'apos;subscription'apos;, label: 'apos;Abonnement'apos;, icon: 'apos;credit-card'apos; },
-                  { id: 'apos;apis'apos;, label: 'apos;APIs'apos;, icon: 'apos;plug'apos; },
-                  { id: 'apos;metrics'apos;, label: 'apos;Métriques'apos;, icon: 'apos;tachometer-alt'apos; },
-                  { id: 'apos;preferences'apos;, label: 'apos;Préférences'apos;, icon: 'apos;cog'apos; }
+                  { id: 'overview', label: 'Vue d\'ensemble', icon: 'chart-bar' },
+                  { id: 'profile', label: 'Profil', icon: 'user' },
+                  { id: 'subscription', label: 'Abonnement', icon: 'credit-card' },
+                  { id: 'apis', label: 'APIs', icon: 'plug' },
+                  { id: 'metrics', label: 'Métriques', icon: 'tachometer-alt' },
+                  { id: 'preferences', label: 'Préférences', icon: 'cog' }
                 ].map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
                     style={{
-                      padding: 'apos;8px 16px'apos;,
-                      borderRadius: 'apos;6px'apos;,
-                      border: 'apos;none'apos;,
-                      backgroundColor: activeTab === tab.id ? 'apos;white'apos; : 'apos;transparent'apos;,
+                      padding: '8px 16px',
+                      borderRadius: '6px',
+                      border: 'none',
+                      backgroundColor: activeTab === tab.id ? 'white' : 'transparent',
                       color: activeTab === tab.id ? theme.colors.primary.main : theme.colors.neutral[600],
-                      cursor: 'apos;pointer'apos;,
-                      fontSize: 'apos;14px'apos;,
-                      fontWeight: activeTab === tab.id ? 'apos;600'apos; : 'apos;400'apos;,
-                      boxShadow: activeTab === tab.id ? 'apos;0 1px 3px rgba(0,0,0,0.1)'apos; : 'apos;none'apos;,
-                      transition: 'apos;all 0.2s'apos;
+                      cursor: 'pointer',
+                      fontSize: '14px',
+                      fontWeight: activeTab === tab.id ? '600' : '400',
+                      boxShadow: activeTab === tab.id ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                      transition: 'all 0.2s'
                     }}
                   >
-                    <FontAwesomeIcon icon={tab.icon as any} style={{ marginRight: 'apos;6px'apos; }} />
+                    <FontAwesomeIcon icon={tab.icon as any} style={{ marginRight: '6px' }} />
                     {tab.label}
                   </button>
                 ))}
@@ -537,34 +537,34 @@ export default function ProfilePage() {
             </div>
 
             {/* Contenu des onglets */}
-            {activeTab === 'apos;overview'apos; && dashboardData && (
+            {activeTab === 'overview' && dashboardData && (
               <div>
                 {/* Métriques de performance */}
                 <div style={{
-                  display: 'apos;grid'apos;,
-                  gridTemplateColumns: 'apos;repeat(auto-fit, minmax(200px, 1fr))'apos;,
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
                   gap: theme.spacing.md,
                   marginBottom: theme.spacing.lg
                 }}>
                   <div style={{
                     padding: theme.spacing.md,
                     backgroundColor: theme.colors.neutral[50],
-                    borderRadius: 'apos;8px'apos;,
-                    textAlign: 'apos;center'apos;
+                    borderRadius: '8px',
+                    textAlign: 'center'
                   }}>
                     <FontAwesomeIcon icon="clock" style={{ 
-                      fontSize: 'apos;20px'apos;, 
+                      fontSize: '20px', 
                       color: theme.colors.info,
                       marginBottom: theme.spacing.xs
                     }} />
                     <div style={{ 
-                      fontSize: 'apos;24px'apos;, 
-                      fontWeight: 'apos;bold'apos;, 
+                      fontSize: '24px', 
+                      fontWeight: 'bold', 
                       color: theme.colors.neutral[900] 
                     }}>
                       {dashboardData.performanceMetrics.avgLoadTime}s
                     </div>
-                    <div style={{ color: theme.colors.neutral[600], fontSize: 'apos;12px'apos; }}>
+                    <div style={{ color: theme.colors.neutral[600], fontSize: '12px' }}>
                       Temps de chargement moyen
                     </div>
                   </div>
@@ -572,22 +572,22 @@ export default function ProfilePage() {
                   <div style={{
                     padding: theme.spacing.md,
                     backgroundColor: theme.colors.neutral[50],
-                    borderRadius: 'apos;8px'apos;,
-                    textAlign: 'apos;center'apos;
+                    borderRadius: '8px',
+                    textAlign: 'center'
                   }}>
                     <FontAwesomeIcon icon="shield-alt" style={{ 
-                      fontSize: 'apos;20px'apos;, 
+                      fontSize: '20px', 
                       color: theme.colors.success,
                       marginBottom: theme.spacing.xs
                     }} />
                     <div style={{ 
-                      fontSize: 'apos;24px'apos;, 
-                      fontWeight: 'apos;bold'apos;, 
+                      fontSize: '24px', 
+                      fontWeight: 'bold', 
                       color: theme.colors.neutral[900] 
                     }}>
                       {dashboardData.performanceMetrics.securityScore}/100
                     </div>
-                    <div style={{ color: theme.colors.neutral[600], fontSize: 'apos;12px'apos; }}>
+                    <div style={{ color: theme.colors.neutral[600], fontSize: '12px' }}>
                       Score de sécurité
                     </div>
                   </div>
@@ -595,22 +595,22 @@ export default function ProfilePage() {
                   <div style={{
                     padding: theme.spacing.md,
                     backgroundColor: theme.colors.neutral[50],
-                    borderRadius: 'apos;8px'apos;,
-                    textAlign: 'apos;center'apos;
+                    borderRadius: '8px',
+                    textAlign: 'center'
                   }}>
                     <FontAwesomeIcon icon="search" style={{ 
-                      fontSize: 'apos;20px'apos;, 
+                      fontSize: '20px', 
                       color: theme.colors.primary.main,
                       marginBottom: theme.spacing.xs
                     }} />
                     <div style={{ 
-                      fontSize: 'apos;24px'apos;, 
-                      fontWeight: 'apos;bold'apos;, 
+                      fontSize: '24px', 
+                      fontWeight: 'bold', 
                       color: theme.colors.neutral[900] 
                     }}>
                       {dashboardData.performanceMetrics.seoScore}/100
                     </div>
-                    <div style={{ color: theme.colors.neutral[600], fontSize: 'apos;12px'apos; }}>
+                    <div style={{ color: theme.colors.neutral[600], fontSize: '12px' }}>
                       Score SEO
                     </div>
                   </div>
@@ -618,22 +618,22 @@ export default function ProfilePage() {
                   <div style={{
                     padding: theme.spacing.md,
                     backgroundColor: theme.colors.neutral[50],
-                    borderRadius: 'apos;8px'apos;,
-                    textAlign: 'apos;center'apos;
+                    borderRadius: '8px',
+                    textAlign: 'center'
                   }}>
                     <FontAwesomeIcon icon="server" style={{ 
-                      fontSize: 'apos;20px'apos;, 
+                      fontSize: '20px', 
                       color: theme.colors.warning,
                       marginBottom: theme.spacing.xs
                     }} />
                     <div style={{ 
-                      fontSize: 'apos;24px'apos;, 
-                      fontWeight: 'apos;bold'apos;, 
+                      fontSize: '24px', 
+                      fontWeight: 'bold', 
                       color: theme.colors.neutral[900] 
                     }}>
                       {dashboardData.performanceMetrics.uptimePercentage}%
                     </div>
-                    <div style={{ color: theme.colors.neutral[600], fontSize: 'apos;12px'apos; }}>
+                    <div style={{ color: theme.colors.neutral[600], fontSize: '12px' }}>
                       Temps de fonctionnement
                     </div>
                   </div>
@@ -644,11 +644,11 @@ export default function ProfilePage() {
                   <div style={{
                     padding: theme.spacing.lg,
                     backgroundColor: theme.colors.neutral[50],
-                    borderRadius: 'apos;8px'apos;
+                    borderRadius: '8px'
                   }}>
                     <h4 style={{
-                      fontSize: 'apos;16px'apos;,
-                      fontWeight: 'apos;600'apos;,
+                      fontSize: '16px',
+                      fontWeight: '600',
                       color: theme.colors.neutral[900],
                       marginBottom: theme.spacing.md
                     }}>
@@ -657,44 +657,44 @@ export default function ProfilePage() {
                     
                     {dashboardData.recentAlerts.map((alert, index) => (
                       <div key={index} style={{
-                        display: 'apos;flex'apos;,
-                        alignItems: 'apos;center'apos;,
+                        display: 'flex',
+                        alignItems: 'center',
                         padding: theme.spacing.sm,
-                        backgroundColor: 'apos;white'apos;,
-                        borderRadius: 'apos;6px'apos;,
+                        backgroundColor: 'white',
+                        borderRadius: '6px',
                         marginBottom: theme.spacing.xs,
                         border: `1px solid ${
-                          alert.severity === 'apos;high'apos; ? theme.colors.error + 'apos;40'apos; :
-                          alert.severity === 'apos;medium'apos; ? theme.colors.warning + 'apos;40'apos; :
-                          theme.colors.info + 'apos;40'apos;
+                          alert.severity === 'high' ? theme.colors.error + '40' :
+                          alert.severity === 'medium' ? theme.colors.warning + '40' :
+                          theme.colors.info + '40'
                         }`
                       }}>
                         <FontAwesomeIcon 
                           icon={
-                            alert.type === 'apos;security'apos; ? 'apos;shield-alt'apos; :
-                            alert.type === 'apos;performance'apos; ? 'apos;tachometer-alt'apos; :
-                            alert.type === 'apos;seo'apos; ? 'apos;search'apos; : 'apos;server'apos;
+                            alert.type === 'security' ? 'shield-alt' :
+                            alert.type === 'performance' ? 'tachometer-alt' :
+                            alert.type === 'seo' ? 'search' : 'server'
                           }
                           style={{ 
-                            color: alert.severity === 'apos;high'apos; ? theme.colors.error :
-                                   alert.severity === 'apos;medium'apos; ? theme.colors.warning :
+                            color: alert.severity === 'high' ? theme.colors.error :
+                                   alert.severity === 'medium' ? theme.colors.warning :
                                    theme.colors.info,
                             marginRight: theme.spacing.sm
                           }} 
                         />
                         <div style={{ flex: 1 }}>
                           <div style={{ 
-                            fontSize: 'apos;14px'apos;, 
+                            fontSize: '14px', 
                             color: theme.colors.neutral[900],
-                            marginBottom: 'apos;2px'apos;
+                            marginBottom: '2px'
                           }}>
                             {alert.message}
                           </div>
                           <div style={{ 
-                            fontSize: 'apos;12px'apos;, 
+                            fontSize: '12px', 
                             color: theme.colors.neutral[600]
                           }}>
-                            {new Date(alert.timestamp).toLocaleString('apos;fr-FR'apos;)}
+                            {new Date(alert.timestamp).toLocaleString('fr-FR')}
                           </div>
                         </div>
                       </div>
@@ -704,109 +704,109 @@ export default function ProfilePage() {
               </div>
             )}
 
-            {activeTab === 'apos;apis'apos; && dashboardData && (
+            {activeTab === 'apis' && dashboardData && (
               <div style={{
-                display: 'apos;grid'apos;,
-                gridTemplateColumns: 'apos;repeat(auto-fit, minmax(300px, 1fr))'apos;,
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
                 gap: theme.spacing.lg
               }}>
                 {dashboardData.apiUsage.map((api) => (
                   <div key={api.apiName} style={{
                     padding: theme.spacing.lg,
                     backgroundColor: theme.colors.neutral[50],
-                    borderRadius: 'apos;8px'apos;,
+                    borderRadius: '8px',
                     border: `2px solid ${
-                      api.status === 'apos;healthy'apos; ? theme.colors.success + 'apos;40'apos; :
-                      api.status === 'apos;warning'apos; ? theme.colors.warning + 'apos;40'apos; :
-                      theme.colors.error + 'apos;40'apos;
+                      api.status === 'healthy' ? theme.colors.success + '40' :
+                      api.status === 'warning' ? theme.colors.warning + '40' :
+                      theme.colors.error + '40'
                     }`
                   }}>
                     <div style={{
-                      display: 'apos;flex'apos;,
-                      justifyContent: 'apos;space-between'apos;,
-                      alignItems: 'apos;center'apos;,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                       marginBottom: theme.spacing.md
                     }}>
                       <h4 style={{
-                        fontSize: 'apos;16px'apos;,
-                        fontWeight: 'apos;600'apos;,
+                        fontSize: '16px',
+                        fontWeight: '600',
                         color: theme.colors.neutral[900],
                         margin: 0
                       }}>
                         {api.displayName}
                       </h4>
                       <span style={{
-                        padding: 'apos;4px 8px'apos;,
-                        borderRadius: 'apos;4px'apos;,
-                        fontSize: 'apos;12px'apos;,
-                        fontWeight: 'apos;600'apos;,
-                        backgroundColor: api.status === 'apos;healthy'apos; ? theme.colors.success + 'apos;20'apos; :
-                                        api.status === 'apos;warning'apos; ? theme.colors.warning + 'apos;20'apos; :
-                                        theme.colors.error + 'apos;20'apos;,
-                        color: api.status === 'apos;healthy'apos; ? theme.colors.success :
-                               api.status === 'apos;warning'apos; ? theme.colors.warning :
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        backgroundColor: api.status === 'healthy' ? theme.colors.success + '20' :
+                                        api.status === 'warning' ? theme.colors.warning + '20' :
+                                        theme.colors.error + '20',
+                        color: api.status === 'healthy' ? theme.colors.success :
+                               api.status === 'warning' ? theme.colors.warning :
                                theme.colors.error
                       }}>
-                        {api.status === 'apos;healthy'apos; ? 'apos;✓ OK'apos; :
-                         api.status === 'apos;warning'apos; ? 'apos;⚠ Attention'apos; : 'apos;✗ Erreur'apos;}
+                        {api.status === 'healthy' ? '✓ OK' :
+                         api.status === 'warning' ? '⚠ Attention' : '✗ Erreur'}
                       </span>
                     </div>
 
                     <div style={{ marginBottom: theme.spacing.md }}>
                       <div style={{
-                        display: 'apos;flex'apos;,
-                        justifyContent: 'apos;space-between'apos;,
-                        marginBottom: 'apos;4px'apos;
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginBottom: '4px'
                       }}>
-                        <span style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600] }}>
+                        <span style={{ fontSize: '14px', color: theme.colors.neutral[600] }}>
                           Utilisation
                         </span>
-                        <span style={{ fontSize: 'apos;14px'apos;, fontWeight: 'apos;600'apos; }}>
+                        <span style={{ fontSize: '14px', fontWeight: '600' }}>
                           {api.used}/{api.limit}
                         </span>
                       </div>
                       <div style={{
-                        width: 'apos;100%'apos;,
-                        height: 'apos;8px'apos;,
+                        width: '100%',
+                        height: '8px',
                         backgroundColor: theme.colors.neutral[200],
-                        borderRadius: 'apos;4px'apos;,
-                        overflow: 'apos;hidden'apos;
+                        borderRadius: '4px',
+                        overflow: 'hidden'
                       }}>
                         <div style={{
                           width: `${(api.used / api.limit) * 100}%`,
-                          height: 'apos;100%'apos;,
-                          backgroundColor: api.status === 'apos;healthy'apos; ? theme.colors.success :
-                                          api.status === 'apos;warning'apos; ? theme.colors.warning :
+                          height: '100%',
+                          backgroundColor: api.status === 'healthy' ? theme.colors.success :
+                                          api.status === 'warning' ? theme.colors.warning :
                                           theme.colors.error,
-                          transition: 'apos;width 0.3s'apos;
+                          transition: 'width 0.3s'
                         }} />
                       </div>
                     </div>
 
                     <div style={{
-                      fontSize: 'apos;12px'apos;,
+                      fontSize: '12px',
                       color: theme.colors.neutral[600]
                     }}>
-                      Dernière mise à jour: {new Date(api.lastUpdate).toLocaleString('apos;fr-FR'apos;)}
+                      Dernière mise à jour: {new Date(api.lastUpdate).toLocaleString('fr-FR')}
                     </div>
                   </div>
                 ))}
               </div>
             )}
 
-            {activeTab === 'apos;metrics'apos; && (
+            {activeTab === 'metrics' && (
               <div style={{
-                textAlign: 'apos;center'apos;,
+                textAlign: 'center',
                 padding: theme.spacing.xl,
                 color: theme.colors.neutral[600]
               }}>
-                <FontAwesomeIcon icon="chart-line" style={{ fontSize: 'apos;48px'apos;, marginBottom: theme.spacing.lg }} />
+                <FontAwesomeIcon icon="chart-line" style={{ fontSize: '48px', marginBottom: theme.spacing.lg }} />
                 <h4 style={{ marginBottom: theme.spacing.md }}>
                   Graphiques détaillés disponibles bientôt
                 </h4>
                 <p>
                   Cette section contiendra des graphiques interactifs pour visualiser
-                  l'apos;évolution de vos métriques dans le temps.
+                  l'évolution de vos métriques dans le temps.
                 </p>
               </div>
             )}
@@ -814,27 +814,27 @@ export default function ProfilePage() {
         )}
 
         {/* Upgrade pour le plan gratuit */}
-        {userStats && userStats.planId === 'apos;free'apos; && (
+        {userStats && userStats.planId === 'free' && (
           <div style={{
-            backgroundColor: 'apos;white'apos;,
-            borderRadius: 'apos;16px'apos;,
+            backgroundColor: 'white',
+            borderRadius: '16px',
             padding: theme.spacing.xl,
-            boxShadow: 'apos;0 4px 6px rgba(0, 0, 0, 0.05)'apos;,
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
             marginBottom: theme.spacing.xl,
             border: `2px solid ${theme.colors.primary.main}20`
           }}>
-            <div style={{ textAlign: 'apos;center'apos; }}>
+            <div style={{ textAlign: 'center' }}>
               <FontAwesomeIcon 
                 icon="chart-bar" 
                 style={{ 
-                  fontSize: 'apos;48px'apos;, 
+                  fontSize: '48px', 
                   color: theme.colors.primary.main,
                   marginBottom: theme.spacing.lg 
                 }} 
               />
               <h3 style={{
-                fontSize: 'apos;20px'apos;,
-                fontWeight: 'apos;bold'apos;,
+                fontSize: '20px',
+                fontWeight: 'bold',
                 color: theme.colors.neutral[900],
                 marginBottom: theme.spacing.md
               }}>
@@ -843,28 +843,28 @@ export default function ProfilePage() {
               <p style={{
                 color: theme.colors.neutral[600],
                 marginBottom: theme.spacing.lg,
-                lineHeight: 'apos;1.6'apos;
+                lineHeight: '1.6'
               }}>
                 Accédez à des données détaillées sur la performance, la sécurité, le SEO et plus encore.
                 Surveillez vos sites web avec des métriques en temps réel et des alertes proactives.
               </p>
               <button
-                onClick={() => window.location.href = 'apos;/pricing'apos;}
+                onClick={() => window.location.href = '/pricing'}
                 style={{
-                  padding: 'apos;12px 24px'apos;,
+                  padding: '12px 24px',
                   backgroundColor: theme.colors.primary.main,
-                  color: 'apos;white'apos;,
-                  border: 'apos;none'apos;,
-                  borderRadius: 'apos;8px'apos;,
-                  fontSize: 'apos;16px'apos;,
-                  fontWeight: 'apos;600'apos;,
-                  cursor: 'apos;pointer'apos;,
-                  transition: 'apos;all 0.2s'apos;
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
                 }}
                 onMouseOver={(e) => e.currentTarget.style.backgroundColor = theme.colors.primary.dark}
                 onMouseOut={(e) => e.currentTarget.style.backgroundColor = theme.colors.primary.main}
               >
-                <FontAwesomeIcon icon="rocket" style={{ marginRight: 'apos;8px'apos; }} />
+                <FontAwesomeIcon icon="rocket" style={{ marginRight: '8px' }} />
                 Voir les Plans
               </button>
             </div>
@@ -872,98 +872,98 @@ export default function ProfilePage() {
         )}
 
         {/* Onglet Profil */}
-        {activeTab === 'apos;profile'apos; && (
+        {activeTab === 'profile' && (
           <div style={{
-            backgroundColor: 'apos;white'apos;,
-            borderRadius: 'apos;16px'apos;,
+            backgroundColor: 'white',
+            borderRadius: '16px',
             padding: theme.spacing.xl,
-            boxShadow: 'apos;0 4px 6px rgba(0, 0, 0, 0.05)'apos;,
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
             marginBottom: theme.spacing.xl
           }}>
             <h3 style={{
-              fontSize: 'apos;20px'apos;,
-              fontWeight: 'apos;bold'apos;,
+              fontSize: '20px',
+              fontWeight: 'bold',
               color: theme.colors.neutral[900],
               marginBottom: theme.spacing.lg
             }}>
               📋 Informations personnelles
             </h3>
 
-            <div style={{ display: 'apos;grid'apos;, gap: theme.spacing.lg }}>
+            <div style={{ display: 'grid', gap: theme.spacing.lg }}>
               {/* Informations de base */}
-              <div style={{ display: 'apos;grid'apos;, gridTemplateColumns: 'apos;1fr 1fr'apos;, gap: theme.spacing.md }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: theme.spacing.md }}>
                 <div>
                   <label style={{
-                    display: 'apos;block'apos;,
-                    fontSize: 'apos;14px'apos;,
-                    fontWeight: 'apos;600'apos;,
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: '600',
                     color: theme.colors.neutral[700],
-                    marginBottom: 'apos;8px'apos;
+                    marginBottom: '8px'
                   }}>
                     Nom complet
                   </label>
                   <input
                     type="text"
-                    value={userProfile?.name || session?.user?.name || 'apos;'apos;}
+                    value={userProfile?.name || session?.user?.name || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, name: e.target.value } : null)}
                     style={{
-                      width: 'apos;100%'apos;,
-                      padding: 'apos;12px'apos;,
-                      border: 'apos;1px solid #e3e8ee'apos;,
-                      borderRadius: 'apos;6px'apos;,
-                      fontSize: 'apos;14px'apos;
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '6px',
+                      fontSize: '14px'
                     }}
                   />
                 </div>
 
                 <div>
                   <label style={{
-                    display: 'apos;block'apos;,
-                    fontSize: 'apos;14px'apos;,
-                    fontWeight: 'apos;600'apos;,
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: '600',
                     color: theme.colors.neutral[700],
-                    marginBottom: 'apos;8px'apos;
+                    marginBottom: '8px'
                   }}>
                     Email
                   </label>
                   <input
                     type="email"
-                    value={userProfile?.email || session?.user?.email || 'apos;'apos;}
+                    value={userProfile?.email || session?.user?.email || ''}
                     disabled
                     style={{
-                      width: 'apos;100%'apos;,
-                      padding: 'apos;12px'apos;,
-                      border: 'apos;1px solid #e3e8ee'apos;,
-                      borderRadius: 'apos;6px'apos;,
-                      fontSize: 'apos;14px'apos;,
-                      backgroundColor: 'apos;#f8fafc'apos;,
-                      color: 'apos;#6b7280'apos;
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      backgroundColor: '#f8fafc',
+                      color: '#6b7280'
                     }}
                   />
                 </div>
               </div>
 
               {/* Informations professionnelles */}
-              <div style={{ display: 'apos;grid'apos;, gridTemplateColumns: 'apos;1fr 1fr'apos;, gap: theme.spacing.md }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: theme.spacing.md }}>
                 <div>
                   <label style={{
-                    display: 'apos;block'apos;,
-                    fontSize: 'apos;14px'apos;,
-                    fontWeight: 'apos;600'apos;,
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: '600',
                     color: theme.colors.neutral[700],
-                    marginBottom: 'apos;8px'apos;
+                    marginBottom: '8px'
                   }}>
                     Industrie
                   </label>
                   <select
-                    value={userProfile?.industry || 'apos;'apos;}
+                    value={userProfile?.industry || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, industry: e.target.value } : null)}
                     style={{
-                      width: 'apos;100%'apos;,
-                      padding: 'apos;12px'apos;,
-                      border: 'apos;1px solid #e3e8ee'apos;,
-                      borderRadius: 'apos;6px'apos;,
-                      fontSize: 'apos;14px'apos;
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '6px',
+                      fontSize: '14px'
                     }}
                   >
                     <option value="">Sélectionner une industrie</option>
@@ -980,49 +980,49 @@ export default function ProfilePage() {
 
                 <div>
                   <label style={{
-                    display: 'apos;block'apos;,
-                    fontSize: 'apos;14px'apos;,
-                    fontWeight: 'apos;600'apos;,
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: '600',
                     color: theme.colors.neutral[700],
-                    marginBottom: 'apos;8px'apos;
+                    marginBottom: '8px'
                   }}>
                     Entreprise
                   </label>
                   <input
                     type="text"
-                    value={userProfile?.company || 'apos;'apos;}
+                    value={userProfile?.company || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, company: e.target.value } : null)}
                     style={{
-                      width: 'apos;100%'apos;,
-                      padding: 'apos;12px'apos;,
-                      border: 'apos;1px solid #e3e8ee'apos;,
-                      borderRadius: 'apos;6px'apos;,
-                      fontSize: 'apos;14px'apos;
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '6px',
+                      fontSize: '14px'
                     }}
                   />
                 </div>
               </div>
 
-              <div style={{ display: 'apos;grid'apos;, gridTemplateColumns: 'apos;1fr 1fr'apos;, gap: theme.spacing.md }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: theme.spacing.md }}>
                 <div>
                   <label style={{
-                    display: 'apos;block'apos;,
-                    fontSize: 'apos;14px'apos;,
-                    fontWeight: 'apos;600'apos;,
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: '600',
                     color: theme.colors.neutral[700],
-                    marginBottom: 'apos;8px'apos;
+                    marginBottom: '8px'
                   }}>
                     Rôle
                   </label>
                   <select
-                    value={userProfile?.role || 'apos;'apos;}
+                    value={userProfile?.role || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, role: e.target.value } : null)}
                     style={{
-                      width: 'apos;100%'apos;,
-                      padding: 'apos;12px'apos;,
-                      border: 'apos;1px solid #e3e8ee'apos;,
-                      borderRadius: 'apos;6px'apos;,
-                      fontSize: 'apos;14px'apos;
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '6px',
+                      fontSize: '14px'
                     }}
                   >
                     <option value="">Sélectionner un rôle</option>
@@ -1038,26 +1038,26 @@ export default function ProfilePage() {
 
                 <div>
                   <label style={{
-                    display: 'apos;block'apos;,
-                    fontSize: 'apos;14px'apos;,
-                    fontWeight: 'apos;600'apos;,
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: '600',
                     color: theme.colors.neutral[700],
-                    marginBottom: 'apos;8px'apos;
+                    marginBottom: '8px'
                   }}>
                     Expérience
                   </label>
                   <select
-                    value={userProfile?.experience || 'apos;'apos;}
+                    value={userProfile?.experience || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, experience: e.target.value } : null)}
                     style={{
-                      width: 'apos;100%'apos;,
-                      padding: 'apos;12px'apos;,
-                      border: 'apos;1px solid #e3e8ee'apos;,
-                      borderRadius: 'apos;6px'apos;,
-                      fontSize: 'apos;14px'apos;
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '6px',
+                      fontSize: '14px'
                     }}
                   >
-                    <option value="">Sélectionner l'apos;expérience</option>
+                    <option value="">Sélectionner l'expérience</option>
                     <option value="beginner">Débutant</option>
                     <option value="intermediate">Intermédiaire</option>
                     <option value="advanced">Avancé</option>
@@ -1069,21 +1069,21 @@ export default function ProfilePage() {
               <button
                 onClick={() => {
                   // Sauvegarder les modifications du profil
-                  console.log('apos;Sauvegarde du profil:'apos;, userProfile);
+                  console.log('Sauvegarde du profil:', userProfile);
                 }}
                 style={{
-                  padding: 'apos;12px 24px'apos;,
+                  padding: '12px 24px',
                   backgroundColor: theme.colors.success,
-                  color: 'apos;white'apos;,
-                  border: 'apos;none'apos;,
-                  borderRadius: 'apos;8px'apos;,
-                  fontSize: 'apos;14px'apos;,
-                  fontWeight: 'apos;600'apos;,
-                  cursor: 'apos;pointer'apos;,
-                  alignSelf: 'apos;flex-start'apos;
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  alignSelf: 'flex-start'
                 }}
               >
-                <FontAwesomeIcon icon="save" style={{ marginRight: 'apos;8px'apos; }} />
+                <FontAwesomeIcon icon="save" style={{ marginRight: '8px' }} />
                 Sauvegarder les modifications
               </button>
             </div>
@@ -1091,47 +1091,47 @@ export default function ProfilePage() {
         )}
 
         {/* Onglet Préférences */}
-        {activeTab === 'apos;preferences'apos; && (
+        {activeTab === 'preferences' && (
           <div style={{
-            backgroundColor: 'apos;white'apos;,
-            borderRadius: 'apos;16px'apos;,
+            backgroundColor: 'white',
+            borderRadius: '16px',
             padding: theme.spacing.xl,
-            boxShadow: 'apos;0 4px 6px rgba(0, 0, 0, 0.05)'apos;,
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
             marginBottom: theme.spacing.xl
           }}>
             <h3 style={{
-              fontSize: 'apos;20px'apos;,
-              fontWeight: 'apos;bold'apos;,
+              fontSize: '20px',
+              fontWeight: 'bold',
               color: theme.colors.neutral[900],
               marginBottom: theme.spacing.lg
             }}>
               ⚙️ Préférences et notifications
             </h3>
 
-            <div style={{ display: 'apos;grid'apos;, gap: theme.spacing.lg }}>
+            <div style={{ display: 'grid', gap: theme.spacing.lg }}>
               {/* Thème */}
               <div>
                 <label style={{
-                  display: 'apos;block'apos;,
-                  fontSize: 'apos;14px'apos;,
-                  fontWeight: 'apos;600'apos;,
+                  display: 'block',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   color: theme.colors.neutral[700],
-                  marginBottom: 'apos;8px'apos;
+                  marginBottom: '8px'
                 }}>
-                  Thème d'apos;affichage
+                  Thème d'affichage
                 </label>
                 <select
-                  value={userProfile?.preferences?.theme || 'apos;auto'apos;}
+                  value={userProfile?.preferences?.theme || 'auto'}
                   onChange={(e) => setUserProfile(prev => prev ? {
                     ...prev,
                     preferences: { ...prev.preferences, theme: e.target.value as any }
                   } : null)}
                   style={{
-                    width: 'apos;100%'apos;,
-                    padding: 'apos;12px'apos;,
-                    border: 'apos;1px solid #e3e8ee'apos;,
-                    borderRadius: 'apos;6px'apos;,
-                    fontSize: 'apos;14px'apos;
+                    width: '100%',
+                    padding: '12px',
+                    border: '1px solid #e3e8ee',
+                    borderRadius: '6px',
+                    fontSize: '14px'
                   }}
                 >
                   <option value="light">Clair</option>
@@ -1143,15 +1143,15 @@ export default function ProfilePage() {
               {/* Notifications */}
               <div>
                 <h4 style={{
-                  fontSize: 'apos;16px'apos;,
-                  fontWeight: 'apos;600'apos;,
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: theme.colors.neutral[800],
                   marginBottom: theme.spacing.md
                 }}>
                   🔔 Notifications
                 </h4>
-                <div style={{ display: 'apos;grid'apos;, gap: theme.spacing.sm }}>
-                  <label style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.sm }}>
+                <div style={{ display: 'grid', gap: theme.spacing.sm }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
                     <input
                       type="checkbox"
                       checked={userProfile?.notifications?.email || false}
@@ -1162,7 +1162,7 @@ export default function ProfilePage() {
                     />
                     <span>Notifications par email</span>
                   </label>
-                  <label style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.sm }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
                     <input
                       type="checkbox"
                       checked={userProfile?.notifications?.push || false}
@@ -1173,7 +1173,7 @@ export default function ProfilePage() {
                     />
                     <span>Notifications push</span>
                   </label>
-                  <label style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.sm }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
                     <input
                       type="checkbox"
                       checked={userProfile?.notifications?.weekly || false}
@@ -1187,18 +1187,18 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Préférences d'apos;interface */}
+              {/* Préférences d'interface */}
               <div>
                 <h4 style={{
-                  fontSize: 'apos;16px'apos;,
-                  fontWeight: 'apos;600'apos;,
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: theme.colors.neutral[800],
                   marginBottom: theme.spacing.md
                 }}>
                   🎨 Interface
                 </h4>
-                <div style={{ display: 'apos;grid'apos;, gap: theme.spacing.sm }}>
-                  <label style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.sm }}>
+                <div style={{ display: 'grid', gap: theme.spacing.sm }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
                     <input
                       type="checkbox"
                       checked={userProfile?.preferences?.compactMode || false}
@@ -1209,7 +1209,7 @@ export default function ProfilePage() {
                     />
                     <span>Mode compact</span>
                   </label>
-                  <label style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.sm }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
                     <input
                       type="checkbox"
                       checked={userProfile?.preferences?.autoSave || false}
@@ -1226,21 +1226,21 @@ export default function ProfilePage() {
               <button
                 onClick={() => {
                   // Sauvegarder les préférences
-                  console.log('apos;Sauvegarde des préférences:'apos;, userProfile);
+                  console.log('Sauvegarde des préférences:', userProfile);
                 }}
                 style={{
-                  padding: 'apos;12px 24px'apos;,
+                  padding: '12px 24px',
                   backgroundColor: theme.colors.primary.main,
-                  color: 'apos;white'apos;,
-                  border: 'apos;none'apos;,
-                  borderRadius: 'apos;8px'apos;,
-                  fontSize: 'apos;14px'apos;,
-                  fontWeight: 'apos;600'apos;,
-                  cursor: 'apos;pointer'apos;,
-                  alignSelf: 'apos;flex-start'apos;
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  alignSelf: 'flex-start'
                 }}
               >
-                <FontAwesomeIcon icon="save" style={{ marginRight: 'apos;8px'apos; }} />
+                <FontAwesomeIcon icon="save" style={{ marginRight: '8px' }} />
                 Sauvegarder les préférences
               </button>
             </div>
@@ -1248,80 +1248,80 @@ export default function ProfilePage() {
         )}
 
         {/* Onglet Abonnement */}
-        {activeTab === 'apos;subscription'apos; && (
+        {activeTab === 'subscription' && (
           <div style={{
-            backgroundColor: 'apos;white'apos;,
-            borderRadius: 'apos;16px'apos;,
+            backgroundColor: 'white',
+            borderRadius: '16px',
             padding: theme.spacing.xl,
-            boxShadow: 'apos;0 4px 6px rgba(0, 0, 0, 0.05)'apos;,
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
             marginBottom: theme.spacing.xl
           }}>
             <h3 style={{
-              fontSize: 'apos;20px'apos;,
-              fontWeight: 'apos;bold'apos;,
+              fontSize: '20px',
+              fontWeight: 'bold',
               color: theme.colors.neutral[900],
               marginBottom: theme.spacing.lg
             }}>
-              💳 Gestion de l'apos;abonnement
+              💳 Gestion de l'abonnement
             </h3>
 
-            <div style={{ display: 'apos;grid'apos;, gap: theme.spacing.lg }}>
+            <div style={{ display: 'grid', gap: theme.spacing.lg }}>
               {/* Statut actuel */}
               <div style={{
-                background: 'apos;#f8fafc'apos;,
-                border: 'apos;1px solid #e2e8f0'apos;,
-                borderRadius: 'apos;12px'apos;,
+                background: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                borderRadius: '12px',
                 padding: theme.spacing.lg
               }}>
                 <h4 style={{
-                  fontSize: 'apos;16px'apos;,
-                  fontWeight: 'apos;600'apos;,
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: theme.colors.neutral[800],
                   marginBottom: theme.spacing.md
                 }}>
                   📊 Statut actuel
                 </h4>
                 
-                <div style={{ display: 'apos;grid'apos;, gridTemplateColumns: 'apos;repeat(auto-fit, minmax(200px, 1fr))'apos;, gap: theme.spacing.md }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: theme.spacing.md }}>
                   <div style={{
-                    background: 'apos;white'apos;,
+                    background: 'white',
                     padding: theme.spacing.md,
-                    borderRadius: 'apos;8px'apos;,
-                    border: 'apos;1px solid #e2e8f0'apos;
+                    borderRadius: '8px',
+                    border: '1px solid #e2e8f0'
                   }}>
-                    <div style={{ fontSize: 'apos;12px'apos;, color: theme.colors.neutral[600], marginBottom: 'apos;4px'apos; }}>
+                    <div style={{ fontSize: '12px', color: theme.colors.neutral[600], marginBottom: '4px' }}>
                       Plan actuel
                     </div>
-                    <div style={{ fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos;, color: theme.colors.neutral[900] }}>
-                      {userStats?.planId === 'apos;free'apos; ? 'apos;Gratuit'apos; : userStats?.planId === 'apos;pro'apos; ? 'apos;Pro'apos; : 'apos;Enterprise'apos;}
+                    <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
+                      {userStats?.planId === 'free' ? 'Gratuit' : userStats?.planId === 'pro' ? 'Pro' : 'Enterprise'}
                     </div>
                   </div>
                   
                   <div style={{
-                    background: 'apos;white'apos;,
+                    background: 'white',
                     padding: theme.spacing.md,
-                    borderRadius: 'apos;8px'apos;,
-                    border: 'apos;1px solid #e2e8f0'apos;
+                    borderRadius: '8px',
+                    border: '1px solid #e2e8f0'
                   }}>
-                    <div style={{ fontSize: 'apos;12px'apos;, color: theme.colors.neutral[600], marginBottom: 'apos;4px'apos; }}>
+                    <div style={{ fontSize: '12px', color: theme.colors.neutral[600], marginBottom: '4px' }}>
                       Statut
                     </div>
-                    <div style={{ fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos;, color: theme.colors.neutral[900] }}>
-                      {userStats?.subscriptionStatus === 'apos;active'apos; ? 'apos;Actif'apos; : 'apos;Essai'apos;}
+                    <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
+                      {userStats?.subscriptionStatus === 'active' ? 'Actif' : 'Essai'}
                     </div>
                   </div>
                   
                   <div style={{
-                    background: 'apos;white'apos;,
+                    background: 'white',
                     padding: theme.spacing.md,
-                    borderRadius: 'apos;8px'apos;,
-                    border: 'apos;1px solid #e2e8f0'apos;
+                    borderRadius: '8px',
+                    border: '1px solid #e2e8f0'
                   }}>
-                    <div style={{ fontSize: 'apos;12px'apos;, color: theme.colors.neutral[600], marginBottom: 'apos;4px'apos; }}>
+                    <div style={{ fontSize: '12px', color: theme.colors.neutral[600], marginBottom: '4px' }}>
                       Membre depuis
                     </div>
-                    <div style={{ fontSize: 'apos;18px'apos;, fontWeight: 'apos;600'apos;, color: theme.colors.neutral[900] }}>
-                      {userStats?.joinDate ? new Date(userStats.joinDate).toLocaleDateString('apos;fr-FR'apos;) : 'apos;N/A'apos;}
+                    <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
+                      {userStats?.joinDate ? new Date(userStats.joinDate).toLocaleDateString('fr-FR') : 'N/A'}
                     </div>
                   </div>
                 </div>
@@ -1330,174 +1330,174 @@ export default function ProfilePage() {
               {/* Plans disponibles */}
               <div>
                 <h4 style={{
-                  fontSize: 'apos;16px'apos;,
-                  fontWeight: 'apos;600'apos;,
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: theme.colors.neutral[800],
                   marginBottom: theme.spacing.md
                 }}>
                   🚀 Plans disponibles
                 </h4>
                 
-                <div style={{ display: 'apos;grid'apos;, gridTemplateColumns: 'apos;repeat(auto-fit, minmax(280px, 1fr))'apos;, gap: theme.spacing.md }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: theme.spacing.md }}>
                   {/* Plan Gratuit */}
                   <div style={{
-                    background: 'apos;white'apos;,
-                    border: 'apos;2px solid #e2e8f0'apos;,
-                    borderRadius: 'apos;12px'apos;,
+                    background: 'white',
+                    border: '2px solid #e2e8f0',
+                    borderRadius: '12px',
                     padding: theme.spacing.lg,
-                    position: 'apos;relative'apos;
+                    position: 'relative'
                   }}>
-                    {userStats?.planId === 'apos;free'apos; && (
+                    {userStats?.planId === 'free' && (
                       <div style={{
-                        position: 'apos;absolute'apos;,
-                        top: 'apos;-8px'apos;,
-                        left: 'apos;50%'apos;,
-                        transform: 'apos;translateX(-50%)'apos;,
+                        position: 'absolute',
+                        top: '-8px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
                         background: theme.colors.primary.main,
-                        color: 'apos;white'apos;,
-                        padding: 'apos;4px 12px'apos;,
-                        borderRadius: 'apos;12px'apos;,
-                        fontSize: 'apos;12px'apos;,
-                        fontWeight: 'apos;600'apos;
+                        color: 'white',
+                        padding: '4px 12px',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        fontWeight: '600'
                       }}>
                         Plan actuel
                       </div>
                     )}
                     
                     <h5 style={{
-                      fontSize: 'apos;20px'apos;,
-                      fontWeight: 'apos;700'apos;,
+                      fontSize: '20px',
+                      fontWeight: '700',
                       color: theme.colors.neutral[900],
                       marginBottom: theme.spacing.sm
                     }}>
                       Gratuit
                     </h5>
                     <div style={{
-                      fontSize: 'apos;32px'apos;,
-                      fontWeight: 'apos;700'apos;,
+                      fontSize: '32px',
+                      fontWeight: '700',
                       color: theme.colors.primary.main,
                       marginBottom: theme.spacing.md
                     }}>
                       $0
-                      <span style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], fontWeight: 'apos;400'apos; }}>/mois</span>
+                      <span style={{ fontSize: '14px', color: theme.colors.neutral[600], fontWeight: '400' }}>/mois</span>
                     </div>
                     
                     <ul style={{
-                      listStyle: 'apos;none'apos;,
+                      listStyle: 'none',
                       padding: 0,
                       margin: 0,
                       marginBottom: theme.spacing.lg
                     }}>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>5 missions par mois</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>5 missions par mois</span>
                       </li>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Agents de base</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>Agents de base</span>
                       </li>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Support communautaire</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>Support communautaire</span>
                       </li>
                     </ul>
                   </div>
 
                   {/* Plan Pro */}
                   <div style={{
-                    background: 'apos;white'apos;,
+                    background: 'white',
                     border: `2px solid ${theme.colors.primary.main}`,
-                    borderRadius: 'apos;12px'apos;,
+                    borderRadius: '12px',
                     padding: theme.spacing.lg,
-                    position: 'apos;relative'apos;
+                    position: 'relative'
                   }}>
-                    {userStats?.planId === 'apos;pro'apos; && (
+                    {userStats?.planId === 'pro' && (
                       <div style={{
-                        position: 'apos;absolute'apos;,
-                        top: 'apos;-8px'apos;,
-                        left: 'apos;50%'apos;,
-                        transform: 'apos;translateX(-50%)'apos;,
+                        position: 'absolute',
+                        top: '-8px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
                         background: theme.colors.primary.main,
-                        color: 'apos;white'apos;,
-                        padding: 'apos;4px 12px'apos;,
-                        borderRadius: 'apos;12px'apos;,
-                        fontSize: 'apos;12px'apos;,
-                        fontWeight: 'apos;600'apos;
+                        color: 'white',
+                        padding: '4px 12px',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        fontWeight: '600'
                       }}>
                         Plan actuel
                       </div>
                     )}
                     
                     <div style={{
-                      position: 'apos;absolute'apos;,
-                      top: 'apos;12px'apos;,
-                      right: 'apos;12px'apos;,
-                      background: 'apos;#fbbf24'apos;,
-                      color: 'apos;white'apos;,
-                      padding: 'apos;2px 8px'apos;,
-                      borderRadius: 'apos;8px'apos;,
-                      fontSize: 'apos;10px'apos;,
-                      fontWeight: 'apos;600'apos;
+                      position: 'absolute',
+                      top: '12px',
+                      right: '12px',
+                      background: '#fbbf24',
+                      color: 'white',
+                      padding: '2px 8px',
+                      borderRadius: '8px',
+                      fontSize: '10px',
+                      fontWeight: '600'
                     }}>
                       POPULAIRE
                     </div>
                     
                     <h5 style={{
-                      fontSize: 'apos;20px'apos;,
-                      fontWeight: 'apos;700'apos;,
+                      fontSize: '20px',
+                      fontWeight: '700',
                       color: theme.colors.neutral[900],
                       marginBottom: theme.spacing.sm
                     }}>
                       Pro
                     </h5>
                     <div style={{
-                      fontSize: 'apos;32px'apos;,
-                      fontWeight: 'apos;700'apos;,
+                      fontSize: '32px',
+                      fontWeight: '700',
                       color: theme.colors.primary.main,
                       marginBottom: theme.spacing.md
                     }}>
                       $29
-                      <span style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], fontWeight: 'apos;400'apos; }}>/mois</span>
+                      <span style={{ fontSize: '14px', color: theme.colors.neutral[600], fontWeight: '400' }}>/mois</span>
                     </div>
                     
                     <ul style={{
-                      listStyle: 'apos;none'apos;,
+                      listStyle: 'none',
                       padding: 0,
                       margin: 0,
                       marginBottom: theme.spacing.lg
                     }}>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Missions illimitées</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>Missions illimitées</span>
                       </li>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Tous les agents</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>Tous les agents</span>
                       </li>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>NovaBot inclus</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>NovaBot inclus</span>
                       </li>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Support prioritaire</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>Support prioritaire</span>
                       </li>
                     </ul>
                     
-                    {userStats?.planId !== 'apos;pro'apos; && (
+                    {userStats?.planId !== 'pro' && (
                       <button
-                        onClick={() => window.location.href = 'apos;/pricing'apos;}
+                        onClick={() => window.location.href = '/pricing'}
                         style={{
-                          width: 'apos;100%'apos;,
-                          padding: 'apos;12px'apos;,
+                          width: '100%',
+                          padding: '12px',
                           background: theme.colors.primary.main,
-                          color: 'apos;white'apos;,
-                          border: 'apos;none'apos;,
-                          borderRadius: 'apos;8px'apos;,
-                          fontSize: 'apos;14px'apos;,
-                          fontWeight: 'apos;600'apos;,
-                          cursor: 'apos;pointer'apos;,
-                          transition: 'apos;background-color 0.2s'apos;
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'background-color 0.2s'
                         }}
                         onMouseOver={(e) => e.currentTarget.style.background = theme.colors.primary.dark}
                         onMouseOut={(e) => e.currentTarget.style.background = theme.colors.primary.main}
@@ -1509,153 +1509,153 @@ export default function ProfilePage() {
 
                   {/* Plan Enterprise */}
                   <div style={{
-                    background: 'apos;white'apos;,
-                    border: 'apos;2px solid #e2e8f0'apos;,
-                    borderRadius: 'apos;12px'apos;,
+                    background: 'white',
+                    border: '2px solid #e2e8f0',
+                    borderRadius: '12px',
                     padding: theme.spacing.lg,
-                    position: 'apos;relative'apos;
+                    position: 'relative'
                   }}>
-                    {userStats?.planId === 'apos;enterprise'apos; && (
+                    {userStats?.planId === 'enterprise' && (
                       <div style={{
-                        position: 'apos;absolute'apos;,
-                        top: 'apos;-8px'apos;,
-                        left: 'apos;50%'apos;,
-                        transform: 'apos;translateX(-50%)'apos;,
+                        position: 'absolute',
+                        top: '-8px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
                         background: theme.colors.primary.main,
-                        color: 'apos;white'apos;,
-                        padding: 'apos;4px 12px'apos;,
-                        borderRadius: 'apos;12px'apos;,
-                        fontSize: 'apos;12px'apos;,
-                        fontWeight: 'apos;600'apos;
+                        color: 'white',
+                        padding: '4px 12px',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        fontWeight: '600'
                       }}>
                         Plan actuel
                       </div>
                     )}
                     
                     <h5 style={{
-                      fontSize: 'apos;20px'apos;,
-                      fontWeight: 'apos;700'apos;,
+                      fontSize: '20px',
+                      fontWeight: '700',
                       color: theme.colors.neutral[900],
                       marginBottom: theme.spacing.sm
                     }}>
                       Enterprise
                     </h5>
                     <div style={{
-                      fontSize: 'apos;32px'apos;,
-                      fontWeight: 'apos;700'apos;,
+                      fontSize: '32px',
+                      fontWeight: '700',
                       color: theme.colors.primary.main,
                       marginBottom: theme.spacing.md
                     }}>
                       $99
-                      <span style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], fontWeight: 'apos;400'apos; }}>/mois</span>
+                      <span style={{ fontSize: '14px', color: theme.colors.neutral[600], fontWeight: '400' }}>/mois</span>
                     </div>
                     
                     <ul style={{
-                      listStyle: 'apos;none'apos;,
+                      listStyle: 'none',
                       padding: 0,
                       margin: 0,
                       marginBottom: theme.spacing.lg
                     }}>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Tout du plan Pro</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>Tout du plan Pro</span>
                       </li>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>APIs intégrées</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>APIs intégrées</span>
                       </li>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Support dédié</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>Support dédié</span>
                       </li>
-                      <li style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: 'apos;8px'apos;, marginBottom: 'apos;8px'apos; }}>
-                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: 'apos;12px'apos; }} />
-                        <span style={{ fontSize: 'apos;14px'apos; }}>Formation personnalisée</span>
+                      <li style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, fontSize: '12px' }} />
+                        <span style={{ fontSize: '14px' }}>Formation personnalisée</span>
                       </li>
                     </ul>
                     
-                    {userStats?.planId !== 'apos;enterprise'apos; && (
+                    {userStats?.planId !== 'enterprise' && (
                       <button
-                        onClick={() => window.location.href = 'apos;/pricing'apos;}
+                        onClick={() => window.location.href = '/pricing'}
                         style={{
-                          width: 'apos;100%'apos;,
-                          padding: 'apos;12px'apos;,
-                          background: 'apos;white'apos;,
+                          width: '100%',
+                          padding: '12px',
+                          background: 'white',
                           color: theme.colors.primary.main,
                           border: `1px solid ${theme.colors.primary.main}`,
-                          borderRadius: 'apos;8px'apos;,
-                          fontSize: 'apos;14px'apos;,
-                          fontWeight: 'apos;600'apos;,
-                          cursor: 'apos;pointer'apos;,
-                          transition: 'apos;all 0.2s'apos;
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s'
                         }}
                         onMouseOver={(e) => {
                           e.currentTarget.style.background = theme.colors.primary.main;
-                          e.currentTarget.style.color = 'apos;white'apos;;
+                          e.currentTarget.style.color = 'white';
                         }}
                         onMouseOut={(e) => {
-                          e.currentTarget.style.background = 'apos;white'apos;;
+                          e.currentTarget.style.background = 'white';
                           e.currentTarget.style.color = theme.colors.primary.main;
                         }}
                       >
-                        Contacter l'apos;équipe
+                        Contacter l'équipe
                       </button>
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* Actions d'apos;abonnement */}
+              {/* Actions d'abonnement */}
               <div style={{
-                background: 'apos;#f8fafc'apos;,
-                border: 'apos;1px solid #e2e8f0'apos;,
-                borderRadius: 'apos;12px'apos;,
+                background: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                borderRadius: '12px',
                 padding: theme.spacing.lg
               }}>
                 <h4 style={{
-                  fontSize: 'apos;16px'apos;,
-                  fontWeight: 'apos;600'apos;,
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: theme.colors.neutral[800],
                   marginBottom: theme.spacing.md
                 }}>
                   ⚙️ Actions
                 </h4>
                 
-                <div style={{ display: 'apos;flex'apos;, gap: theme.spacing.md, flexWrap: 'apos;wrap'apos; }}>
+                <div style={{ display: 'flex', gap: theme.spacing.md, flexWrap: 'wrap' }}>
                   <button
-                    onClick={() => window.location.href = 'apos;/pricing'apos;}
+                    onClick={() => window.location.href = '/pricing'}
                     style={{
-                      padding: 'apos;12px 20px'apos;,
+                      padding: '12px 20px',
                       background: theme.colors.primary.main,
-                      color: 'apos;white'apos;,
-                      border: 'apos;none'apos;,
-                      borderRadius: 'apos;8px'apos;,
-                      fontSize: 'apos;14px'apos;,
-                      fontWeight: 'apos;600'apos;,
-                      cursor: 'apos;pointer'apos;,
-                      display: 'apos;flex'apos;,
-                      alignItems: 'apos;center'apos;,
-                      gap: 'apos;8px'apos;
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
                     }}
                   >
                     <FontAwesomeIcon icon="credit-card" />
-                    Gérer l'apos;abonnement
+                    Gérer l'abonnement
                   </button>
                   
                   <button
-                    onClick={() => window.location.href = 'apos;/coupon'apos;}
+                    onClick={() => window.location.href = '/coupon'}
                     style={{
-                      padding: 'apos;12px 20px'apos;,
-                      background: 'apos;white'apos;,
+                      padding: '12px 20px',
+                      background: 'white',
                       color: theme.colors.primary.main,
                       border: `1px solid ${theme.colors.primary.main}`,
-                      borderRadius: 'apos;8px'apos;,
-                      fontSize: 'apos;14px'apos;,
-                      fontWeight: 'apos;600'apos;,
-                      cursor: 'apos;pointer'apos;,
-                      display: 'apos;flex'apos;,
-                      alignItems: 'apos;center'apos;,
-                      gap: 'apos;8px'apos;
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
                     }}
                   >
                     <FontAwesomeIcon icon="gift" />
@@ -1669,66 +1669,66 @@ export default function ProfilePage() {
 
         {/* Actions */}
         <div style={{
-          backgroundColor: 'apos;white'apos;,
-          borderRadius: 'apos;12px'apos;,
+          backgroundColor: 'white',
+          borderRadius: '12px',
           padding: theme.spacing.xl,
-          boxShadow: 'apos;0 2px 4px rgba(0, 0, 0, 0.05)'apos;
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
         }}>
           <h3 style={{ 
-            fontSize: 'apos;18px'apos;,
-            fontWeight: 'apos;bold'apos;,
+            fontSize: '18px',
+            fontWeight: 'bold',
             color: theme.colors.neutral[900],
             marginBottom: theme.spacing.lg
           }}>
             Actions du compte
           </h3>
 
-          <div style={{ display: 'apos;flex'apos;, flexDirection: 'apos;column'apos;, gap: theme.spacing.md }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing.md }}>
             <button
-              onClick={() => window.location.href = 'apos;/pricing'apos;}
+              onClick={() => window.location.href = '/pricing'}
               style={{
-                display: 'apos;flex'apos;,
-                alignItems: 'apos;center'apos;,
+                display: 'flex',
+                alignItems: 'center',
                 gap: theme.spacing.sm,
                 padding: theme.spacing.md,
                 backgroundColor: theme.colors.primary.light,
                 border: `1px solid ${theme.colors.primary.main}`,
-                borderRadius: 'apos;8px'apos;,
+                borderRadius: '8px',
                 color: theme.colors.primary.dark,
-                cursor: 'apos;pointer'apos;,
-                textAlign: 'apos;left'apos;,
-                width: 'apos;100%'apos;
+                cursor: 'pointer',
+                textAlign: 'left',
+                width: '100%'
               }}
             >
               <FontAwesomeIcon icon="credit-card" />
               <div>
-                <div style={{ fontWeight: 'apos;bold'apos; }}>Gérer mon abonnement</div>
-                <div style={{ fontSize: 'apos;14px'apos;, opacity: 0.8 }}>
+                <div style={{ fontWeight: 'bold' }}>Gérer mon abonnement</div>
+                <div style={{ fontSize: '14px', opacity: 0.8 }}>
                   Voir les plans et gérer la facturation
                 </div>
               </div>
             </button>
 
             <button
-              onClick={() => signOut({ callbackUrl: 'apos;/'apos; })}
+              onClick={() => signOut({ callbackUrl: '/' })}
               style={{
-                display: 'apos;flex'apos;,
-                alignItems: 'apos;center'apos;,
+                display: 'flex',
+                alignItems: 'center',
                 gap: theme.spacing.sm,
                 padding: theme.spacing.md,
-                backgroundColor: 'apos;white'apos;,
+                backgroundColor: 'white',
                 border: `1px solid ${theme.colors.error}40`,
-                borderRadius: 'apos;8px'apos;,
+                borderRadius: '8px',
                 color: theme.colors.error,
-                cursor: 'apos;pointer'apos;,
-                textAlign: 'apos;left'apos;,
-                width: 'apos;100%'apos;
+                cursor: 'pointer',
+                textAlign: 'left',
+                width: '100%'
               }}
             >
               <FontAwesomeIcon icon="sign-out-alt" />
               <div>
-                <div style={{ fontWeight: 'apos;bold'apos; }}>Se déconnecter</div>
-                <div style={{ fontSize: 'apos;14px'apos;, opacity: 0.8 }}>
+                <div style={{ fontWeight: 'bold' }}>Se déconnecter</div>
+                <div style={{ fontSize: '14px', opacity: 0.8 }}>
                   Fermer la session actuelle
                 </div>
               </div>

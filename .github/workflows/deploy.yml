@@ -8,8 +8,6 @@ on:
 
 env:
   NODE_VERSION: '20'
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
   # 🔍 Tests et Validation
@@ -105,8 +103,6 @@ jobs:
         env:
           NEXTAUTH_URL: https://test.vercel.app
           NEXTAUTH_SECRET: test-secret
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: 📦 Bundle analysis
         uses: relative-ci/bundle-stats-action@v2
@@ -139,9 +135,6 @@ jobs:
       - name: 🚀 Deploy to Vercel (Staging)
         run: |
           vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
-        env:
-          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
 
       - name: 🧪 Run E2E tests
         run: |

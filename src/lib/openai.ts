@@ -2,10 +2,10 @@ import OpenAI from "openai";
 import { logger } from "@/lib/logger";
 import { jsonrepair } from "jsonrepair";
 
-// S'apos;assurer que la clé API est disponible
+// S'assurer que la clé API est disponible
 const apiKey = process.env.OPENAI_API_KEY;
 
-// Ne pas lancer d'apos;erreur pendant le build, seulement en runtime
+// Ne pas lancer d'erreur pendant le build, seulement en runtime
 export const openai = apiKey ? new OpenAI({ apiKey }) : null;
 
 // Fonction helper pour vérifier si OpenAI est configuré

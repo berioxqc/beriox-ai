@@ -1,9 +1,9 @@
-import React from 'apos;react'apos;;
-import { designTokens } from 'apos;../../tokens'apos;;
+import React from 'react';
+import { designTokens } from '../../tokens';
 
 export interface CardProps {
-  variant?: 'apos;default'apos; | 'apos;elevated'apos; | 'apos;outlined'apos; | 'apos;interactive'apos;;
-  padding?: 'apos;none'apos; | 'apos;sm'apos; | 'apos;md'apos; | 'apos;lg'apos;;
+  variant?: 'default' | 'elevated' | 'outlined' | 'interactive';
+  padding?: 'none' | 'sm' | 'md' | 'lg';
   children: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -12,10 +12,10 @@ export interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({
-  variant = 'apos;default'apos;,
-  padding = 'apos;md'apos;,
+  variant = 'default',
+  padding = 'md',
   children,
-  className = 'apos;'apos;,
+  className = '',
   style,
   onClick,
   hover = false,
@@ -24,7 +24,7 @@ const Card: React.FC<CardProps> = ({
     background: designTokens.colors.background.primary,
     borderRadius: designTokens.borderRadius.lg,
     fontFamily: designTokens.typography.fontFamily,
-    transition: 'apos;all 0.2s ease-in-out'apos;,
+    transition: 'all 0.2s ease-in-out',
     ...style,
   };
 
@@ -34,22 +34,22 @@ const Card: React.FC<CardProps> = ({
       boxShadow: designTokens.shadows.sm,
     },
     elevated: {
-      border: 'apos;none'apos;,
+      border: 'none',
       boxShadow: designTokens.shadows.lg,
     },
     outlined: {
       border: `2px solid ${designTokens.colors.border.medium}`,
-      boxShadow: 'apos;none'apos;,
+      boxShadow: 'none',
     },
     interactive: {
       border: `1px solid ${designTokens.colors.border.light}`,
       boxShadow: designTokens.shadows.sm,
-      cursor: 'apos;pointer'apos;,
+      cursor: 'pointer',
     },
   };
 
   const paddingStyles = {
-    none: { padding: 'apos;0'apos; },
+    none: { padding: '0' },
     sm: { padding: designTokens.spacing[4] },
     md: { padding: designTokens.spacing[6] },
     lg: { padding: designTokens.spacing[8] },
@@ -62,15 +62,15 @@ const Card: React.FC<CardProps> = ({
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (hover || variant === 'apos;interactive'apos;) {
-      e.currentTarget.style.transform = 'apos;translateY(-2px)'apos;;
+    if (hover || variant === 'interactive') {
+      e.currentTarget.style.transform = 'translateY(-2px)';
       e.currentTarget.style.boxShadow = designTokens.shadows.xl;
     }
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (hover || variant === 'apos;interactive'apos;) {
-      e.currentTarget.style.transform = 'apos;translateY(0)'apos;;
+    if (hover || variant === 'interactive') {
+      e.currentTarget.style.transform = 'translateY(0)';
       e.currentTarget.style.boxShadow = variantStyles[variant].boxShadow;
     }
   };

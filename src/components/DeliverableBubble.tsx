@@ -1,6 +1,6 @@
 "use client";
-import React from 'apos;react'apos;;
-import Icon from 'apos;@/components/ui/Icon'apos;;
+import React from 'react';
+import Icon from '@/components/ui/Icon';
 
 interface DeliverableBubbleProps {
   deliverable: {
@@ -21,13 +21,13 @@ interface DeliverableBubbleProps {
 export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverable, agentInfo }) => {
   // Fonction pour formater le contenu
   const formatContent = (content: any): string => {
-    if (typeof content === 'apos;string'apos;) {
+    if (typeof content === 'string') {
       return content;
     }
-    if (typeof content === 'apos;object'apos; && content.content) {
+    if (typeof content === 'object' && content.content) {
       return content.content;
     }
-    if (typeof content === 'apos;object'apos; && content.response) {
+    if (typeof content === 'object' && content.response) {
       return content.response;
     }
     return JSON.stringify(content, null, 2);
@@ -35,48 +35,48 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
 
   // Fonction pour formater le contenu en HTML avec style
   const formatAsStyledHtml = (content: string): JSX.Element => {
-    const lines = content.split('apos;\n'apos;);
+    const lines = content.split('\n');
     return (
-      <div style={{ lineHeight: 'apos;1.6'apos; }}>
+      <div style={{ lineHeight: '1.6' }}>
         {lines.map((line, index) => {
           // Titres
-          if (line.startsWith('apos;# 'apos;)) {
+          if (line.startsWith('# ')) {
             return (
               <h3 key={index} style={{ 
-                fontSize: 'apos;18px'apos;, 
-                fontWeight: 'apos;700'apos;, 
-                color: 'apos;#0a2540'apos;, 
-                marginBottom: 'apos;12px'apos;, 
-                marginTop: index > 0 ? 'apos;24px'apos; : 'apos;0'apos;,
+                fontSize: '18px', 
+                fontWeight: '700', 
+                color: '#0a2540', 
+                marginBottom: '12px', 
+                marginTop: index > 0 ? '24px' : '0',
                 borderBottom: `2px solid ${agentInfo.color}`,
-                paddingBottom: 'apos;4px'apos;
+                paddingBottom: '4px'
               }}>
                 {line.substring(2)}
               </h3>
             );
           }
-          if (line.startsWith('apos;## 'apos;)) {
+          if (line.startsWith('## ')) {
             return (
               <h4 key={index} style={{ 
-                fontSize: 'apos;16px'apos;, 
-                fontWeight: 'apos;600'apos;, 
-                color: 'apos;#0a2540'apos;, 
-                marginBottom: 'apos;8px'apos;, 
-                marginTop: 'apos;20px'apos;,
+                fontSize: '16px', 
+                fontWeight: '600', 
+                color: '#0a2540', 
+                marginBottom: '8px', 
+                marginTop: '20px',
                 color: agentInfo.color
               }}>
                 {line.substring(3)}
               </h4>
             );
           }
-          if (line.startsWith('apos;### 'apos;)) {
+          if (line.startsWith('### ')) {
             return (
               <h5 key={index} style={{ 
-                fontSize: 'apos;14px'apos;, 
-                fontWeight: 'apos;600'apos;, 
-                color: 'apos;#425466'apos;, 
-                marginBottom: 'apos;6px'apos;, 
-                marginTop: 'apos;16px'apos; 
+                fontSize: '14px', 
+                fontWeight: '600', 
+                color: '#425466', 
+                marginBottom: '6px', 
+                marginTop: '16px' 
               }}>
                 {line.substring(4)}
               </h5>
@@ -84,19 +84,19 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
           }
           
           // Listes
-          if (line.startsWith('apos;- 'apos;)) {
+          if (line.startsWith('- ')) {
             return (
               <div key={index} style={{ 
-                marginLeft: 'apos;16px'apos;, 
-                marginBottom: 'apos;8px'apos;,
-                display: 'apos;flex'apos;,
-                alignItems: 'apos;flex-start'apos;
+                marginLeft: '16px', 
+                marginBottom: '8px',
+                display: 'flex',
+                alignItems: 'flex-start'
               }}>
                 <span style={{ 
                   color: agentInfo.color, 
-                  marginRight: 'apos;8px'apos;, 
-                  fontSize: 'apos;16px'apos;,
-                  fontWeight: 'apos;bold'apos;
+                  marginRight: '8px', 
+                  fontSize: '16px',
+                  fontWeight: 'bold'
                 }}>•</span>
                 <span>{line.substring(2)}</span>
               </div>
@@ -104,10 +104,10 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
           }
           
           // Gras
-          if (line.includes('apos;**'apos;)) {
-            const parts = line.split('apos;**'apos;);
+          if (line.includes('**')) {
+            const parts = line.split('**');
             return (
-              <div key={index} style={{ marginBottom: 'apos;8px'apos; }}>
+              <div key={index} style={{ marginBottom: '8px' }}>
                 {parts.map((part, i) => 
                   i % 2 === 1 ? 
                     <strong key={i} style={{ color: agentInfo.color }}>{part}</strong> : 
@@ -118,16 +118,16 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
           }
           
           // Ligne vide
-          if (line.trim() === 'apos;'apos;) {
-            return <div key={index} style={{ height: 'apos;12px'apos; }} />;
+          if (line.trim() === '') {
+            return <div key={index} style={{ height: '12px' }} />;
           }
           
           // Texte normal
           return (
             <div key={index} style={{ 
-              marginBottom: 'apos;8px'apos;,
-              fontSize: 'apos;14px'apos;,
-              lineHeight: 'apos;1.6'apos;
+              marginBottom: '8px',
+              fontSize: '14px',
+              lineHeight: '1.6'
             }}>
               {line}
             </div>
@@ -138,59 +138,59 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
   };
 
   const content = formatContent(deliverable.output);
-  const formattedDate = new Date(deliverable.createdAt).toLocaleString('apos;fr-FR'apos;, {
-    day: 'apos;2-digit'apos;,
-    month: 'apos;2-digit'apos;,
-    year: 'apos;numeric'apos;,
-    hour: 'apos;2-digit'apos;,
-    minute: 'apos;2-digit'apos;
+  const formattedDate = new Date(deliverable.createdAt).toLocaleString('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
   });
 
   return (
     <div style={{
-      marginBottom: 'apos;24px'apos;,
-      animation: 'apos;slideIn 0.5s ease-out'apos;
+      marginBottom: '24px',
+      animation: 'slideIn 0.5s ease-out'
     }}>
       {/* En-tête de la bulle */}
       <div style={{
-        display: 'apos;flex'apos;,
-        alignItems: 'apos;center'apos;,
-        marginBottom: 'apos;12px'apos;,
-        gap: 'apos;12px'apos;
+        display: 'flex',
+        alignItems: 'center',
+        marginBottom: '12px',
+        gap: '12px'
       }}>
-        {/* Avatar de l'apos;agent */}
+        {/* Avatar de l'agent */}
         <div style={{
-          width: 'apos;48px'apos;,
-          height: 'apos;48px'apos;,
-          borderRadius: 'apos;50%'apos;,
+          width: '48px',
+          height: '48px',
+          borderRadius: '50%',
           backgroundColor: agentInfo.color,
-          display: 'apos;flex'apos;,
-          alignItems: 'apos;center'apos;,
-          justifyContent: 'apos;center'apos;,
-          color: 'apos;white'apos;,
-          fontSize: 'apos;20px'apos;,
-          fontWeight: 'apos;bold'apos;,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '20px',
+          fontWeight: 'bold',
           boxShadow: `0 4px 12px ${agentInfo.color}40`
         }}>
           <Icon name={agentInfo.icon} size="lg" />
         </div>
         
-        {/* Informations de l'apos;agent */}
+        {/* Informations de l'agent */}
         <div style={{ flex: 1 }}>
           <div style={{
-            fontSize: 'apos;16px'apos;,
-            fontWeight: 'apos;600'apos;,
-            color: 'apos;#0a2540'apos;,
-            marginBottom: 'apos;2px'apos;
+            fontSize: '16px',
+            fontWeight: '600',
+            color: '#0a2540',
+            marginBottom: '2px'
           }}>
             {agentInfo.name}
           </div>
           <div style={{
-            fontSize: 'apos;12px'apos;,
-            color: 'apos;#64748b'apos;,
-            display: 'apos;flex'apos;,
-            alignItems: 'apos;center'apos;,
-            gap: 'apos;8px'apos;
+            fontSize: '12px',
+            color: '#64748b',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
           }}>
             <span>{agentInfo.role}</span>
             <span>•</span>
@@ -202,12 +202,12 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
         
         {/* Indicateur de statut */}
         <div style={{
-          padding: 'apos;4px 12px'apos;,
-          borderRadius: 'apos;20px'apos;,
-          backgroundColor: 'apos;#10b981'apos;,
-          color: 'apos;white'apos;,
-          fontSize: 'apos;12px'apos;,
-          fontWeight: 'apos;500'apos;
+          padding: '4px 12px',
+          borderRadius: '20px',
+          backgroundColor: '#10b981',
+          color: 'white',
+          fontSize: '12px',
+          fontWeight: '500'
         }}>
           Livré
         </div>
@@ -215,42 +215,42 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
       
       {/* Contenu de la bulle */}
       <div style={{
-        backgroundColor: 'apos;white'apos;,
-        borderRadius: 'apos;16px'apos;,
-        padding: 'apos;20px'apos;,
+        backgroundColor: 'white',
+        borderRadius: '16px',
+        padding: '20px',
         border: `2px solid ${agentInfo.color}20`,
-        boxShadow: 'apos;0 4px 20px rgba(0, 0, 0, 0.08)'apos;,
-        position: 'apos;relative'apos;,
-        marginLeft: 'apos;60px'apos;
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+        position: 'relative',
+        marginLeft: '60px'
       }}>
         {/* Pointe de la bulle */}
         <div style={{
-          position: 'apos;absolute'apos;,
-          left: 'apos;-8px'apos;,
-          top: 'apos;20px'apos;,
-          width: 'apos;0'apos;,
-          height: 'apos;0'apos;,
-          borderTop: 'apos;8px solid transparent'apos;,
-          borderBottom: 'apos;8px solid transparent'apos;,
+          position: 'absolute',
+          left: '-8px',
+          top: '20px',
+          width: '0',
+          height: '0',
+          borderTop: '8px solid transparent',
+          borderBottom: '8px solid transparent',
           borderRight: `8px solid ${agentInfo.color}20`
         }} />
         
         {/* Contenu formaté */}
         <div style={{
-          color: 'apos;#374151'apos;,
-          fontSize: 'apos;14px'apos;
+          color: '#374151',
+          fontSize: '14px'
         }}>
           {formatAsStyledHtml(content)}
         </div>
         
-        {/* Signature de l'apos;agent */}
+        {/* Signature de l'agent */}
         <div style={{
-          marginTop: 'apos;16px'apos;,
-          paddingTop: 'apos;12px'apos;,
+          marginTop: '16px',
+          paddingTop: '12px',
           borderTop: `1px solid ${agentInfo.color}20`,
-          fontSize: 'apos;12px'apos;,
-          color: 'apos;#6b7280'apos;,
-          fontStyle: 'apos;italic'apos;
+          fontSize: '12px',
+          color: '#6b7280',
+          fontStyle: 'italic'
         }}>
           Livré par {agentInfo.name} • {formattedDate}
         </div>
@@ -259,7 +259,7 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
   );
 };
 
-// Styles CSS pour l'apos;animation
+// Styles CSS pour l'animation
 const styles = `
   @keyframes slideIn {
     from {
@@ -274,8 +274,8 @@ const styles = `
 `;
 
 // Injecter les styles
-if (typeof document !== 'apos;undefined'apos;) {
-  const styleSheet = document.createElement('apos;style'apos;);
+if (typeof document !== 'undefined') {
+  const styleSheet = document.createElement('style');
   styleSheet.textContent = styles;
   document.head.appendChild(styleSheet);
 }

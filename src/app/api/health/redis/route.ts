@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { redisUtils } from 'apos;@/lib/redis'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { redisUtils } from '@/lib/redis';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   const startTime = Date.now();
@@ -9,9 +9,9 @@ export async function GET(request: NextRequest) {
     // Test de connectivité de base avec redisUtils
     const pingStart = Date.now();
     const testKey = `health_check_${Date.now()}`;
-    const testValue = 'apos;health_check_value'apos;;
+    const testValue = 'health_check_value';
     
-    // Test d'apos;écriture
+    // Test d'écriture
     const writeStart = Date.now();
     await redisUtils.set(testKey, testValue, 60); // Expire dans 60 secondes
     const writeDuration = Date.now() - writeStart;
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 
     // Test du cache intelligent
     const cacheStart = Date.now();
-    const cacheKey = 'apos;health_check_cache'apos;;
+    const cacheKey = 'health_check_cache';
     const cacheValue = { test: true, timestamp: Date.now() };
     await redisUtils.set(cacheKey, JSON.stringify(cacheValue), 30);
     const cacheRead = await redisUtils.get(cacheKey);
@@ -36,27 +36,27 @@ export async function GET(request: NextRequest) {
     const cacheDuration = Date.now() - cacheStart;
 
     const healthCheck = {
-      status: 'apos;healthy'apos;,
+      status: 'healthy',
       timestamp: new Date().toISOString(),
       checks: {
         write: {
-          status: 'apos;healthy'apos;,
+          status: 'healthy',
           duration: writeDuration,
           threshold: 100 // 100ms max
         },
         read: {
-          status: 'apos;healthy'apos;,
+          status: 'healthy',
           duration: readDuration,
           threshold: 100, // 100ms max
           value: readValue === testValue
         },
         delete: {
-          status: 'apos;healthy'apos;,
+          status: 'healthy',
           duration: deleteDuration,
           threshold: 100 // 100ms max
         },
         cache: {
-          status: 'apos;healthy'apos;,
+          status: 'healthy',
           duration: cacheDuration,
           threshold: 150, // 150ms max
           value: cacheRead ? JSON.parse(cacheRead).test : false
@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
       },
       metrics: {
         totalDuration: Date.now() - startTime,
-        redisInfo: 'apos;available'apos;
+        redisInfo: 'available'
       }
     };
 
@@ -75,49 +75,49 @@ export async function GET(request: NextRequest) {
     );
 
     if (!allHealthy) {
-      healthCheck.status = 'apos;degraded'apos;;
+      healthCheck.status = 'degraded';
       Object.values(healthCheck.checks).forEach(check => {
         if (check.duration > check.threshold || 
             (check.value !== undefined && !check.value)) {
-          check.status = 'apos;slow'apos;;
+          check.status = 'slow';
         }
       });
     }
 
-    logger.info('apos;Redis health check completed'apos;, {
-      action: 'apos;health_check_redis'apos;,
+    logger.info('Redis health check completed', {
+      action: 'health_check_redis',
       duration: healthCheck.metrics.totalDuration,
       status: healthCheck.status,
       checks: healthCheck.checks
     });
 
     return NextResponse.json(healthCheck, {
-      status: healthCheck.status === 'apos;healthy'apos; ? 200 : 503,
+      status: healthCheck.status === 'healthy' ? 200 : 503,
       headers: {
-        'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
-        'apos;Pragma'apos;: 'apos;no-cache'apos;,
-        'apos;Expires'apos;: 'apos;0'apos;
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     });
 
   } catch (error) {
-    logger.error('apos;Redis health check failed'apos;, error as Error, {
-      action: 'apos;health_check_redis'apos;,
+    logger.error('Redis health check failed', error as Error, {
+      action: 'health_check_redis',
       duration: Date.now() - startTime
     });
 
     return NextResponse.json({
-      status: 'apos;unhealthy'apos;,
+      status: 'unhealthy',
       timestamp: new Date().toISOString(),
-      error: 'apos;Redis health check failed'apos;,
-      details: error instanceof Error ? error.message : 'apos;Unknown error'apos;,
+      error: 'Redis health check failed',
+      details: error instanceof Error ? error.message : 'Unknown error',
       duration: Date.now() - startTime
     }, {
       status: 503,
       headers: {
-        'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
-        'apos;Pragma'apos;: 'apos;no-cache'apos;,
-        'apos;Expires'apos;: 'apos;0'apos;
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     });
   }

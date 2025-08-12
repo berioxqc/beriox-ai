@@ -11,40 +11,40 @@ export async function POST() {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Vérifier si l'apos;utilisateur est super admin
-    if (session.user.email !== 'apos;info@beriox.ca'apos;) {
+    // Vérifier si l'utilisateur est super admin
+    if (session.user.email !== 'info@beriox.ca') {
       return NextResponse.json({ error: "Accès refusé - Super Admin requis" }, { status: 403 });
     }
 
     console.log(`🗑️ RESET initié par ${session.user.email} à ${new Date().toISOString()}`);
 
-    // Supprimer les données dans l'apos;ordre correct (en respectant les contraintes de clés étrangères)
-    console.log('apos;Suppression des ExecutionLogs...'apos;);
+    // Supprimer les données dans l'ordre correct (en respectant les contraintes de clés étrangères)
+    console.log('Suppression des ExecutionLogs...');
     await prisma.executionLog.deleteMany();
 
-    console.log('apos;Suppression des WebhookEvents...'apos;);
+    console.log('Suppression des WebhookEvents...');
     await prisma.webhookEvent.deleteMany();
 
-    console.log('apos;Suppression des Reports...'apos;);
+    console.log('Suppression des Reports...');
     await prisma.report.deleteMany();
 
-    console.log('apos;Suppression des Deliverables...'apos;);
+    console.log('Suppression des Deliverables...');
     await prisma.deliverable.deleteMany();
 
-    console.log('apos;Suppression des Briefs...'apos;);
+    console.log('Suppression des Briefs...');
     await prisma.brief.deleteMany();
 
-    console.log('apos;Suppression des Missions...'apos;);
+    console.log('Suppression des Missions...');
     await prisma.mission.deleteMany();
 
-    console.log('apos;Suppression des AnalyticsConnections...'apos;);
+    console.log('Suppression des AnalyticsConnections...');
     await prisma.analyticsConnection.deleteMany();
 
     // Optionnel: Reset des AgentPrompts (décommente si nécessaire)
-    // console.log('apos;Suppression des AgentPrompts...'apos;);
+    // console.log('Suppression des AgentPrompts...');
     // await prisma.agentPrompt.deleteMany();
 
-    console.log('apos;✅ RESET terminé avec succès'apos;);
+    console.log('✅ RESET terminé avec succès');
 
     return NextResponse.json({ 
       success: true,
@@ -54,7 +54,7 @@ export async function POST() {
     });
 
   } catch (error) {
-    console.error('apos;❌ Erreur lors du reset de la base de données:'apos;, error);
+    console.error('❌ Erreur lors du reset de la base de données:', error);
     return NextResponse.json(
       { 
         error: "Erreur lors du reset de la base de données",

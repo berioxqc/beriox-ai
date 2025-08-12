@@ -1,85 +1,85 @@
-import { Metadata } from 'apos;next'apos;;
-import Link from 'apos;next/link'apos;;
-import Layout from 'apos;@/components/Layout'apos;;
-import SchemaMarkup from 'apos;@/components/seo/SchemaMarkup'apos;;
+import { Metadata } from 'next';
+import Link from 'next/link';
+import Layout from '@/components/Layout';
+import SchemaMarkup from '@/components/seo/SchemaMarkup';
 
 export const metadata: Metadata = {
-  title: 'apos;Beriox AI vs Concurrents - Comparaison Complète 2024'apos;,
-  description: 'apos;Comparez Beriox AI avec les meilleures plateformes d\'apos;IA. Découvrez pourquoi Beriox AI est la solution la plus avancée pour l\'apos;orchestration d\'apos;agents IA.'apos;,
-  keywords: 'apos;beriox ai vs concurrents, comparaison IA, orchestration agents, plateforme IA'apos;,
+  title: 'Beriox AI vs Concurrents - Comparaison Complète 2024',
+  description: 'Comparez Beriox AI avec les meilleures plateformes d\'IA. Découvrez pourquoi Beriox AI est la solution la plus avancée pour l\'orchestration d\'agents IA.',
+  keywords: 'beriox ai vs concurrents, comparaison IA, orchestration agents, plateforme IA',
   openGraph: {
-    title: 'apos;Beriox AI vs Concurrents - Comparaison Complète 2024'apos;,
-    description: 'apos;Comparez Beriox AI avec les meilleures plateformes d\'apos;IA.'apos;,
-    type: 'apos;website'apos;,
-    url: 'apos;https://beriox-ai.vercel.app/beriox-vs-competitors'apos;,
+    title: 'Beriox AI vs Concurrents - Comparaison Complète 2024',
+    description: 'Comparez Beriox AI avec les meilleures plateformes d\'IA.',
+    type: 'website',
+    url: 'https://beriox-ai.vercel.app/beriox-vs-competitors',
   },
 };
 
 const competitors = [
   {
-    name: 'apos;Zapier'apos;,
-    logo: 'apos;🔗'apos;,
-    pros: ['apos;Intégrations nombreuses'apos;, 'apos;Interface simple'apos;, 'apos;Large communauté'apos;],
-    cons: ['apos;Pas d\'apos;IA native'apos;, 'apos;Workflows statiques'apos;, 'apos;Coût élevé à l\'apos;échelle'apos;],
-    pricing: 'apos;À partir de 20$/mois'apos;,
+    name: 'Zapier',
+    logo: '🔗',
+    pros: ['Intégrations nombreuses', 'Interface simple', 'Large communauté'],
+    cons: ['Pas d\'IA native', 'Workflows statiques', 'Coût élevé à l\'échelle'],
+    pricing: 'À partir de 20$/mois',
     rating: 4.2,
   },
   {
-    name: 'apos;Make (Integromat)'apos;,
-    logo: 'apos;⚙️'apos;,
-    pros: ['apos;Workflows visuels'apos;, 'apos;Fonctionnalités avancées'apos;, 'apos;Bon support'apos;],
-    cons: ['apos;Courbe d\'apos;apprentissage'apos;, 'apos;Pas d\'apos;orchestration IA'apos;, 'apos;Complexe'apos;],
-    pricing: 'apos;À partir de 9$/mois'apos;,
+    name: 'Make (Integromat)',
+    logo: '⚙️',
+    pros: ['Workflows visuels', 'Fonctionnalités avancées', 'Bon support'],
+    cons: ['Courbe d\'apprentissage', 'Pas d\'orchestration IA', 'Complexe'],
+    pricing: 'À partir de 9$/mois',
     rating: 4.0,
   },
   {
-    name: 'apos;n8n'apos;,
-    logo: 'apos;🔄'apos;,
-    pros: ['apos;Open source'apos;, 'apos;Auto-hébergé'apos;, 'apos;Flexible'apos;],
-    cons: ['apos;Technique'apos;, 'apos;Pas d\'apos;IA intégrée'apos;, 'apos;Support limité'apos;],
-    pricing: 'apos;Gratuit (self-hosted)'apos;,
+    name: 'n8n',
+    logo: '🔄',
+    pros: ['Open source', 'Auto-hébergé', 'Flexible'],
+    cons: ['Technique', 'Pas d\'IA intégrée', 'Support limité'],
+    pricing: 'Gratuit (self-hosted)',
     rating: 3.8,
   },
   {
-    name: 'apos;Microsoft Power Automate'apos;,
-    logo: 'apos;🪟'apos;,
-    pros: ['apos;Intégration Microsoft'apos;, 'apos;IA basique'apos;, 'apos;Enterprise'apos;],
-    cons: ['apos;Cher'apos;, 'apos;Complexe'apos;, 'apos;Vendor lock-in'apos;],
-    pricing: 'apos;À partir de 15$/mois'apos;,
+    name: 'Microsoft Power Automate',
+    logo: '🪟',
+    pros: ['Intégration Microsoft', 'IA basique', 'Enterprise'],
+    cons: ['Cher', 'Complexe', 'Vendor lock-in'],
+    pricing: 'À partir de 15$/mois',
     rating: 3.9,
   },
 ];
 
 const berioxFeatures = [
   {
-    feature: 'apos;Orchestration IA Avancée'apos;,
-    beriox: 'apos;✅ Orchestration intelligente multi-agents'apos;,
-    competitors: 'apos;❌ Workflows statiques'apos;,
+    feature: 'Orchestration IA Avancée',
+    beriox: '✅ Orchestration intelligente multi-agents',
+    competitors: '❌ Workflows statiques',
   },
   {
-    feature: 'apos;Agents IA Spécialisés'apos;,
-    beriox: 'apos;✅ KarineAI, HugoAI, JPBot, etc.'apos;,
-    competitors: 'apos;❌ Pas d\'apos;agents IA'apos;,
+    feature: 'Agents IA Spécialisés',
+    beriox: '✅ KarineAI, HugoAI, JPBot, etc.',
+    competitors: '❌ Pas d\'agents IA',
   },
   {
-    feature: 'apos;Apprentissage Automatique'apos;,
-    beriox: 'apos;✅ Amélioration continue des performances'apos;,
-    competitors: 'apos;❌ Pas d\'apos;apprentissage'apos;,
+    feature: 'Apprentissage Automatique',
+    beriox: '✅ Amélioration continue des performances',
+    competitors: '❌ Pas d\'apprentissage',
   },
   {
-    feature: 'apos;Analyse Prédictive'apos;,
-    beriox: 'apos;✅ Prédiction des besoins et optimisation'apos;,
-    competitors: 'apos;❌ Analyses basiques'apos;,
+    feature: 'Analyse Prédictive',
+    beriox: '✅ Prédiction des besoins et optimisation',
+    competitors: '❌ Analyses basiques',
   },
   {
-    feature: 'apos;Personnalisation Avancée'apos;,
-    beriox: 'apos;✅ Adaptation aux besoins spécifiques'apos;,
-    competitors: 'apos;⚠️ Personnalisation limitée'apos;,
+    feature: 'Personnalisation Avancée',
+    beriox: '✅ Adaptation aux besoins spécifiques',
+    competitors: '⚠️ Personnalisation limitée',
   },
   {
-    feature: 'apos;ROI Mesurable'apos;,
-    beriox: 'apos;✅ Métriques détaillées et ROI calculé'apos;,
-    competitors: 'apos;❌ Métriques basiques'apos;,
+    feature: 'ROI Mesurable',
+    beriox: '✅ Métriques détaillées et ROI calculé',
+    competitors: '❌ Métriques basiques',
   },
 ];
 
@@ -89,17 +89,17 @@ export default function BerioxVsCompetitorsPage() {
       <SchemaMarkup
         type="article"
         data={{
-          title: 'apos;Beriox AI vs Concurrents - Comparaison Complète 2024'apos;,
-          excerpt: 'apos;Comparez Beriox AI avec les meilleures plateformes d\'apos;IA.'apos;,
-          image: 'apos;/beriox-vs-competitors-2024.jpg'apos;,
-          publishedAt: 'apos;2024-01-20'apos;,
-          id: 'apos;beriox-vs-competitors'apos;,
+          title: 'Beriox AI vs Concurrents - Comparaison Complète 2024',
+          excerpt: 'Comparez Beriox AI avec les meilleures plateformes d\'IA.',
+          image: '/beriox-vs-competitors-2024.jpg',
+          publishedAt: '2024-01-20',
+          id: 'beriox-vs-competitors',
         }}
       />
       
       <Layout
         title="Beriox AI vs Concurrents"
-        subtitle="Comparaison complète avec les meilleures plateformes d'apos;automatisation"
+        subtitle="Comparaison complète avec les meilleures plateformes d'automatisation"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Hero Section */}
@@ -109,8 +109,8 @@ export default function BerioxVsCompetitorsPage() {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Comparaison objective et détaillée avec les meilleures plateformes 
-              d'apos;automatisation. Découvrez pourquoi Beriox AI révolutionne 
-              l'apos;orchestration d'apos;agents IA.
+              d'automatisation. Découvrez pourquoi Beriox AI révolutionne 
+              l'orchestration d'agents IA.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
@@ -186,7 +186,7 @@ export default function BerioxVsCompetitorsPage() {
                           {[...Array(5)].map((_, i) => (
                             <svg
                               key={i}
-                              className={`w-4 h-4 ${i < Math.floor(competitor.rating) ? 'apos;text-yellow-400'apos; : 'apos;text-gray-300'apos;}`}
+                              className={`w-4 h-4 ${i < Math.floor(competitor.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
                               fill="currentColor"
                               viewBox="0 0 20 20"
                             >
@@ -268,7 +268,7 @@ export default function BerioxVsCompetitorsPage() {
               Prêt à essayer Beriox AI ?
             </h3>
             <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-              Rejoignez des milliers d'apos;entreprises qui ont déjà choisi Beriox AI 
+              Rejoignez des milliers d'entreprises qui ont déjà choisi Beriox AI 
               pour révolutionner leur automatisation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

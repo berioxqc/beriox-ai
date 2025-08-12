@@ -1,42 +1,42 @@
-import React from 'apos;react'apos;;
-import { designTokens } from 'apos;../../tokens'apos;;
+import React from 'react';
+import { designTokens } from '../../tokens';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'apos;primary'apos; | 'apos;secondary'apos; | 'apos;success'apos; | 'apos;warning'apos; | 'apos;error'apos; | 'apos;ghost'apos; | 'apos;outline'apos;;
-  size?: 'apos;sm'apos; | 'apos;md'apos; | 'apos;lg'apos;;
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'ghost' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
   icon?: React.ReactNode;
-  iconPosition?: 'apos;left'apos; | 'apos;right'apos;;
+  iconPosition?: 'left' | 'right';
   fullWidth?: boolean;
   children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  variant = 'apos;primary'apos;,
-  size = 'apos;md'apos;,
+  variant = 'primary',
+  size = 'md',
   loading = false,
   icon,
-  iconPosition = 'apos;left'apos;,
+  iconPosition = 'left',
   fullWidth = false,
   children,
   disabled,
-  className = 'apos;'apos;,
+  className = '',
   style,
   ...props
 }) => {
   const baseStyles: React.CSSProperties = {
-    display: 'apos;inline-flex'apos;,
-    alignItems: 'apos;center'apos;,
-    justifyContent: 'apos;center'apos;,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: designTokens.spacing[2],
     fontFamily: designTokens.typography.fontFamily,
     fontWeight: designTokens.typography.fontWeight.semibold,
-    border: 'apos;none'apos;,
+    border: 'none',
     borderRadius: designTokens.borderRadius.base,
-    cursor: disabled || loading ? 'apos;not-allowed'apos; : 'apos;pointer'apos;,
-    transition: 'apos;all 0.2s ease-in-out'apos;,
-    outline: 'apos;none'apos;,
-    width: fullWidth ? 'apos;100%'apos; : 'apos;auto'apos;,
+    cursor: disabled || loading ? 'not-allowed' : 'pointer',
+    transition: 'all 0.2s ease-in-out',
+    outline: 'none',
+    width: fullWidth ? '100%' : 'auto',
     ...style,
   };
 
@@ -60,52 +60,52 @@ const Button: React.FC<ButtonProps> = ({
       background: designTokens.colors.beriox.gradient,
       color: designTokens.colors.text.inverse,
       boxShadow: designTokens.shadows.beriox,
-      'apos;&:hover'apos;: {
+      '&:hover': {
         boxShadow: designTokens.shadows.berioxHover,
-        transform: 'apos;translateY(-1px)'apos;,
+        transform: 'translateY(-1px)',
       },
     },
     secondary: {
       background: designTokens.colors.neutral[100],
       color: designTokens.colors.text.primary,
       border: `1px solid ${designTokens.colors.border.light}`,
-      'apos;&:hover'apos;: {
+      '&:hover': {
         background: designTokens.colors.neutral[200],
       },
     },
     success: {
       background: designTokens.colors.success[500],
       color: designTokens.colors.text.inverse,
-      'apos;&:hover'apos;: {
+      '&:hover': {
         background: designTokens.colors.success[600],
       },
     },
     warning: {
       background: designTokens.colors.warning[500],
       color: designTokens.colors.text.inverse,
-      'apos;&:hover'apos;: {
+      '&:hover': {
         background: designTokens.colors.warning[600],
       },
     },
     error: {
       background: designTokens.colors.error[500],
       color: designTokens.colors.text.inverse,
-      'apos;&:hover'apos;: {
+      '&:hover': {
         background: designTokens.colors.error[600],
       },
     },
     ghost: {
-      background: 'apos;transparent'apos;,
+      background: 'transparent',
       color: designTokens.colors.text.secondary,
-      'apos;&:hover'apos;: {
+      '&:hover': {
         background: designTokens.colors.neutral[100],
       },
     },
     outline: {
-      background: 'apos;transparent'apos;,
+      background: 'transparent',
       color: designTokens.colors.text.primary,
       border: `1px solid ${designTokens.colors.border.medium}`,
-      'apos;&:hover'apos;: {
+      '&:hover': {
         background: designTokens.colors.neutral[50],
         borderColor: designTokens.colors.border.dark,
       },
@@ -120,16 +120,16 @@ const Button: React.FC<ButtonProps> = ({
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!disabled && !loading && variant === 'apos;primary'apos;) {
+    if (!disabled && !loading && variant === 'primary') {
       e.currentTarget.style.boxShadow = designTokens.shadows.berioxHover;
-      e.currentTarget.style.transform = 'apos;translateY(-1px)'apos;;
+      e.currentTarget.style.transform = 'translateY(-1px)';
     }
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!disabled && !loading && variant === 'apos;primary'apos;) {
+    if (!disabled && !loading && variant === 'primary') {
       e.currentTarget.style.boxShadow = designTokens.shadows.beriox;
-      e.currentTarget.style.transform = 'apos;translateY(0)'apos;;
+      e.currentTarget.style.transform = 'translateY(0)';
     }
   };
 
@@ -143,13 +143,13 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {loading && (
-        <span style={{ animation: 'apos;spin 1s linear infinite'apos; }}>
+        <span style={{ animation: 'spin 1s linear infinite' }}>
           ⟳
         </span>
       )}
-      {!loading && icon && iconPosition === 'apos;left'apos; && icon}
+      {!loading && icon && iconPosition === 'left' && icon}
       {children}
-      {!loading && icon && iconPosition === 'apos;right'apos; && icon}
+      {!loading && icon && iconPosition === 'right' && icon}
     </button>
   );
 };

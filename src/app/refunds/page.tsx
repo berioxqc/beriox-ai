@@ -202,14 +202,14 @@ export default function RefundsPage() {
                   Prochain reset
                 </div>
                 <div style={{ fontSize: "16px", fontWeight: "600", color: theme.colors.neutral[900] }}>
-                  {new Date(userCredits.resetDate).toLocaleDateString('apos;fr-FR'apos;)}
+                  {new Date(userCredits.resetDate).toLocaleDateString('fr-FR')}
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Messages d'apos;erreur/succès */}
+        {/* Messages d'erreur/succès */}
         {error && (
           <div style={{
             background: "#fef2f2",
@@ -491,7 +491,7 @@ export default function RefundsPage() {
                           {getStatusLabel(request.status)}
                         </span>
                         <span style={{ fontSize: "14px", color: theme.colors.neutral[600] }}>
-                          {request.amount} crédit{request.amount > 1 ? 'apos;s'apos; : 'apos;'apos;}
+                          {request.amount} crédit{request.amount > 1 ? 's' : ''}
                         </span>
                       </div>
                       
@@ -501,7 +501,7 @@ export default function RefundsPage() {
                     </div>
                     
                     <div style={{ fontSize: "12px", color: theme.colors.neutral[500] }}>
-                      {new Date(request.createdAt).toLocaleDateString('apos;fr-FR'apos;)}
+                      {new Date(request.createdAt).toLocaleDateString('fr-FR')}
                     </div>
                   </div>
                   

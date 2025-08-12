@@ -19,14 +19,14 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const status = searchParams.get('apos;status'apos;);
-    const page = parseInt(searchParams.get('apos;page'apos;) || 'apos;1'apos;);
-    const limit = parseInt(searchParams.get('apos;limit'apos;) || 'apos;20'apos;);
+    const status = searchParams.get('status');
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '20');
     const offset = (page - 1) * limit;
 
     // Construire les filtres
     const where: any = {};
-    if (status && status !== 'apos;ALL'apos;) {
+    if (status && status !== 'ALL') {
       where.status = status;
     }
 
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
             }
           }
         },
-        orderBy: { createdAt: 'apos;desc'apos; },
+        orderBy: { createdAt: 'desc' },
         skip: offset,
         take: limit
       }),

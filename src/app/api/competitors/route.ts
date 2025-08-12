@@ -10,8 +10,8 @@ const getCompetitorConfig = (): CompetitorMonitoringConfig => {
   return {
     similarWebApiKey: process.env.SIMILARWEB_API_KEY,
     semrushApiKey: process.env.SEMRUSH_API_KEY,
-    domains: process.env.COMPETITOR_DOMAINS?.split('apos;,'apos;) || [],
-    frequency: 'apos;weekly'apos;,
+    domains: process.env.COMPETITOR_DOMAINS?.split(',') || [],
+    frequency: 'weekly',
     enabled: true,
   };
 };
@@ -35,13 +35,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
 
-    // Vérifier l'apos;accès premium pour le monitoring concurrentiel
-    const basePlan = user.planId || 'apos;free'apos;;
+    // Vérifier l'accès premium pour le monitoring concurrentiel
+    const basePlan = user.planId || 'free';
     const hasPremiumAccess = user.premiumAccess && 
       user.premiumAccess.isActive && 
       user.premiumAccess.endDate > new Date();
 
-    if (basePlan === 'apos;free'apos; && !hasPremiumAccess) {
+    if (basePlan === 'free' && !hasPremiumAccess) {
       return NextResponse.json({ 
         error: "Le monitoring concurrentiel est réservé aux plans premium",
         upgradeRequired: true,
@@ -50,16 +50,16 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const domain = searchParams.get('apos;domain'apos;);
-    const action = searchParams.get('apos;action'apos;);
+    const domain = searchParams.get('domain');
+    const action = searchParams.get('action');
 
     const config = getCompetitorConfig();
     const competitorService = new CompetitorMonitoringService(config);
 
     switch (action) {
-      case 'apos;analyze'apos;:
+      case 'analyze':
         if (!domain) {
-          return NextResponse.json({ error: "Le paramètre 'apos;domain'apos; est requis" }, { status: 400 });
+          return NextResponse.json({ error: "Le paramètre 'domain' est requis" }, { status: 400 });
         }
 
         logger.info(`🔍 Analyse concurrentielle demandée pour ${domain}`);
@@ -70,9 +70,9 @@ export async function GET(request: NextRequest) {
           report,
         });
 
-      case 'apos;latest'apos;:
+      case 'latest':
         if (!domain) {
-          return NextResponse.json({ error: "Le paramètre 'apos;domain'apos; est requis" }, { status: 400 });
+          return NextResponse.json({ error: "Le paramètre 'domain' est requis" }, { status: 400 });
         }
 
         const latestReport = await competitorService.getLatestReport(domain);
@@ -82,12 +82,12 @@ export async function GET(request: NextRequest) {
           report: latestReport,
         });
 
-      case 'apos;history'apos;:
+      case 'history':
         if (!domain) {
-          return NextResponse.json({ error: "Le paramètre 'apos;domain'apos; est requis" }, { status: 400 });
+          return NextResponse.json({ error: "Le paramètre 'domain' est requis" }, { status: 400 });
         }
 
-        const limit = parseInt(searchParams.get('apos;limit'apos;) || 'apos;30'apos;);
+        const limit = parseInt(searchParams.get('limit') || '30');
         const history = await competitorService.getReportHistory(domain, limit);
         
         return NextResponse.json({
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
           history,
         });
 
-      case 'apos;config'apos;:
+      case 'config':
         return NextResponse.json({
           success: true,
           config: {
@@ -145,13 +145,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
 
-    // Vérifier l'apos;accès premium
-    const basePlan = user.planId || 'apos;free'apos;;
+    // Vérifier l'accès premium
+    const basePlan = user.planId || 'free';
     const hasPremiumAccess = user.premiumAccess && 
       user.premiumAccess.isActive && 
       user.premiumAccess.endDate > new Date();
 
-    if (basePlan === 'apos;free'apos; && !hasPremiumAccess) {
+    if (basePlan === 'free' && !hasPremiumAccess) {
       return NextResponse.json({ 
         error: "Le monitoring concurrentiel est réservé aux plans premium",
         upgradeRequired: true,
@@ -166,9 +166,9 @@ export async function POST(request: NextRequest) {
     const competitorService = new CompetitorMonitoringService(config);
 
     switch (action) {
-      case 'apos;analyze_multiple'apos;:
+      case 'analyze_multiple':
         if (!domains || !Array.isArray(domains)) {
-          return NextResponse.json({ error: "Le paramètre 'apos;domains'apos; (array) est requis" }, { status: 400 });
+          return NextResponse.json({ error: "Le paramètre 'domains' (array) est requis" }, { status: 400 });
         }
 
         logger.info(`🔍 Analyse concurrentielle multiple demandée pour ${domains.length} domaines`);
@@ -181,8 +181,8 @@ export async function POST(request: NextRequest) {
           total: domains.length,
         });
 
-      case 'apos;setup_monitoring'apos;:
-        // TODO: Sauvegarder la configuration de monitoring pour l'apos;utilisateur
+      case 'setup_monitoring':
+        // TODO: Sauvegarder la configuration de monitoring pour l'utilisateur
         return NextResponse.json({
           success: true,
           message: "Configuration de monitoring sauvegardée",

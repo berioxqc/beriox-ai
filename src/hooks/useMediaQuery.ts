@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'apos;react'apos;;
+import { useState, useEffect } from 'react';
 
 export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(false);
@@ -9,21 +9,21 @@ export function useMediaQuery(query: string): boolean {
       setMatches(media.matches);
     }
     const listener = () => setMatches(media.matches);
-    window.addEventListener('apos;resize'apos;, listener);
-    return () => window.removeEventListener('apos;resize'apos;, listener);
+    window.addEventListener('resize', listener);
+    return () => window.removeEventListener('resize', listener);
   }, [matches, query]);
 
   return matches;
 }
 
 export function useIsMobile(): boolean {
-  return useMediaQuery('apos;(max-width: 767px)'apos;);
+  return useMediaQuery('(max-width: 767px)');
 }
 
 export function useIsTablet(): boolean {
-  return useMediaQuery('apos;(min-width: 768px) and (max-width: 1023px)'apos;);
+  return useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
 }
 
 export function useIsDesktop(): boolean {
-  return useMediaQuery('apos;(min-width: 1024px)'apos;);
+  return useMediaQuery('(min-width: 1024px)');
 }

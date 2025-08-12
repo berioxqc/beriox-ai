@@ -1,5 +1,5 @@
-// Système d'apos;icônes dynamique pour optimiser les imports FontAwesome
-import { IconDefinition } from 'apos;@fortawesome/fontawesome-svg-core'apos;;
+// Système d'icônes dynamique pour optimiser les imports FontAwesome
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 // Cache pour les icônes déjà chargées
 const iconCache = new Map<string, IconDefinition>();
@@ -7,149 +7,149 @@ const iconCache = new Map<string, IconDefinition>();
 // Mapping des icônes avec leurs imports dynamiques
 const iconImports: Record<string, () => Promise<{ [key: string]: IconDefinition }>> = {
   // Navigation
-  home: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ home: m.faHome })),
-  tasks: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ tasks: m.faTasks })),
-  users: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ users: m.faUsers })),
-  cog: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ cog: m.faCog })),
+  home: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ home: m.faHome })),
+  tasks: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ tasks: m.faTasks })),
+  users: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ users: m.faUsers })),
+  cog: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ cog: m.faCog })),
   
   // Actions
-  plus: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ plus: m.faPlus })),
-  edit: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ edit: m.faEdit })),
-  trash: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ trash: m.faTrash })),
-  save: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ save: m.faSave })),
-  check: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ check: m.faCheck })),
-  times: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ times: m.faTimes })),
+  plus: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ plus: m.faPlus })),
+  edit: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ edit: m.faEdit })),
+  trash: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ trash: m.faTrash })),
+  save: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ save: m.faSave })),
+  check: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ check: m.faCheck })),
+  times: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ times: m.faTimes })),
   
   // Navigation
-  arrowLeft: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ arrowLeft: m.faArrowLeft })),
-  arrowRight: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ arrowRight: m.faArrowRight })),
-  chevronDown: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ chevronDown: m.faChevronDown })),
-  chevronUp: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ chevronUp: m.faChevronUp })),
-  chevronRight: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ chevronRight: m.faChevronRight })),
+  arrowLeft: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ arrowLeft: m.faArrowLeft })),
+  arrowRight: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ arrowRight: m.faArrowRight })),
+  chevronDown: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ chevronDown: m.faChevronDown })),
+  chevronUp: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ chevronUp: m.faChevronUp })),
+  chevronRight: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ chevronRight: m.faChevronRight })),
   
   // États
-  spinner: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ spinner: m.faSpinner })),
-  exclamationTriangle: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ exclamationTriangle: m.faExclamationTriangle })),
-  infoCircle: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ infoCircle: m.faInfoCircle })),
-  checkCircle: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ checkCircle: m.faCheckCircle })),
-  timesCircle: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ timesCircle: m.faTimesCircle })),
+  spinner: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ spinner: m.faSpinner })),
+  exclamationTriangle: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ exclamationTriangle: m.faExclamationTriangle })),
+  infoCircle: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ infoCircle: m.faInfoCircle })),
+  checkCircle: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ checkCircle: m.faCheckCircle })),
+  timesCircle: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ timesCircle: m.faTimesCircle })),
   
   // Temps
-  clock: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ clock: m.faClock })),
-  calendar: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ calendar: m.faCalendar })),
+  clock: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ clock: m.faClock })),
+  calendar: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ calendar: m.faCalendar })),
   
   // Utilisateur
-  user: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ user: m.faUser })),
-  envelope: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ envelope: m.faEnvelope })),
+  user: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ user: m.faUser })),
+  envelope: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ envelope: m.faEnvelope })),
   
   // Analytics
-  chartLine: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ chartLine: m.faChartLine })),
-  bullseye: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ bullseye: m.faBullseye })),
+  chartLine: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ chartLine: m.faChartLine })),
+  bullseye: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ bullseye: m.faBullseye })),
   
   // Actions spéciales
-  rocket: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ rocket: m.faRocket })),
-  lightbulb: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ lightbulb: m.faLightbulb })),
-  palette: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ palette: m.faPalette })),
-  calculator: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ calculator: m.faCalculator })),
-  pen: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ pen: m.faPen })),
+  rocket: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ rocket: m.faRocket })),
+  lightbulb: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ lightbulb: m.faLightbulb })),
+  palette: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ palette: m.faPalette })),
+  calculator: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ calculator: m.faCalculator })),
+  pen: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ pen: m.faPen })),
   
   // Finance
-  dollarSign: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ dollarSign: m.faDollarSign })),
-  creditCard: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ creditCard: m.faCreditCard })),
-  gift: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ gift: m.faGift })),
-  receipt: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ receipt: m.faReceipt })),
+  dollarSign: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ dollarSign: m.faDollarSign })),
+  creditCard: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ creditCard: m.faCreditCard })),
+  gift: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ gift: m.faGift })),
+  receipt: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ receipt: m.faReceipt })),
   
   // Interface
-  eye: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ eye: m.faEye })),
-  search: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ search: m.faSearch })),
-  filter: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ filter: m.faFilter })),
-  bars: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ bars: m.faBars })),
-  ellipsisV: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ ellipsisV: m.faEllipsisV })),
+  eye: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ eye: m.faEye })),
+  search: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ search: m.faSearch })),
+  filter: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ filter: m.faFilter })),
+  bars: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ bars: m.faBars })),
+  ellipsisV: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ ellipsisV: m.faEllipsisV })),
   
   // Fichiers
-  download: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ download: m.faDownload })),
-  upload: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ upload: m.faUpload })),
+  download: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ download: m.faDownload })),
+  upload: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ upload: m.faUpload })),
   
   // Audio
-  microphone: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ microphone: m.faMicrophone })),
-  microphoneSlash: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ microphoneSlash: m.faMicrophoneSlash })),
+  microphone: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ microphone: m.faMicrophone })),
+  microphoneSlash: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ microphoneSlash: m.faMicrophoneSlash })),
   
   // Notifications
-  flag: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ flag: m.faFlag })),
-  exclamation: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ exclamation: m.faExclamation })),
-  bolt: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ bolt: m.faBolt })),
-  bell: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ bell: m.faBell })),
+  flag: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ flag: m.faFlag })),
+  exclamation: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ exclamation: m.faExclamation })),
+  bolt: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ bolt: m.faBolt })),
+  bell: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ bell: m.faBell })),
   
   // IA et Technologie
-  robot: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ robot: m.faRobot })),
-  brain: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ brain: m.faBrain })),
+  robot: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ robot: m.faRobot })),
+  brain: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ brain: m.faBrain })),
   
   // Émotions
-  heart: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ heart: m.faHeart })),
-  star: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ star: m.faStar })),
-  crown: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ crown: m.faCrown })),
+  heart: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ heart: m.faHeart })),
+  star: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ star: m.faStar })),
+  crown: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ crown: m.faCrown })),
   
   // Sécurité
-  shield: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ shield: m.faShield })),
-  shieldAlt: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ shieldAlt: m.faShieldAlt })),
-  lock: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ lock: m.faLock })),
-  key: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ key: m.faKey })),
+  shield: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ shield: m.faShield })),
+  shieldAlt: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ shieldAlt: m.faShieldAlt })),
+  lock: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ lock: m.faLock })),
+  key: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ key: m.faKey })),
   
   // Communication
-  comments: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ comments: m.faComments })),
-  paperPlane: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ paperPlane: m.faPaperPlane })),
+  comments: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ comments: m.faComments })),
+  paperPlane: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ paperPlane: m.faPaperPlane })),
   
   // Interface avancée
-  puzzlePiece: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ puzzlePiece: m.faPuzzlePiece })),
-  desktop: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ desktop: m.faDesktop })),
-  mobile: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ mobile: m.faMobile })),
-  route: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ route: m.faRoute })),
-  layerGroup: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ layerGroup: m.faLayerGroup })),
-  universalAccess: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ universalAccess: m.faUniversalAccess })),
+  puzzlePiece: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ puzzlePiece: m.faPuzzlePiece })),
+  desktop: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ desktop: m.faDesktop })),
+  mobile: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ mobile: m.faMobile })),
+  route: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ route: m.faRoute })),
+  layerGroup: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ layerGroup: m.faLayerGroup })),
+  universalAccess: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ universalAccess: m.faUniversalAccess })),
   
   // Actions avancées
-  backward: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ backward: m.faBackward })),
-  cookieBite: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ cookieBite: m.faCookieBite })),
-  phone: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ phone: m.faPhone })),
-  ban: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ ban: m.faBan })),
-  ticket: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ ticket: m.faTicket })),
-  gem: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ gem: m.faGem })),
+  backward: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ backward: m.faBackward })),
+  cookieBite: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ cookieBite: m.faCookieBite })),
+  phone: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ phone: m.faPhone })),
+  ban: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ ban: m.faBan })),
+  ticket: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ ticket: m.faTicket })),
+  gem: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ gem: m.faGem })),
   
   // Authentification
-  signOutAlt: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ signOutAlt: m.faSignOutAlt })),
-  userCheck: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ userCheck: m.faUserCheck })),
+  signOutAlt: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ signOutAlt: m.faSignOutAlt })),
+  userCheck: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ userCheck: m.faUserCheck })),
   
   // Base de données
-  database: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ database: m.faDatabase })),
-  certificate: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ certificate: m.faCertificate })),
-  server: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ server: m.faServer })),
+  database: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ database: m.faDatabase })),
+  certificate: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ certificate: m.faCertificate })),
+  server: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ server: m.faServer })),
   
   // Arrows
-  arrowUp: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ arrowUp: m.faArrowUp })),
-  arrowDown: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ arrowDown: m.faArrowDown })),
-  minus: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ minus: m.faMinus })),
+  arrowUp: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ arrowUp: m.faArrowUp })),
+  arrowDown: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ arrowDown: m.faArrowDown })),
+  minus: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ minus: m.faMinus })),
   
   // Interface spécialisée
-  th: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ th: m.faTh })),
-  circle: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ circle: m.faCircle })),
-  file: () => import('apos;@fortawesome/free-solid-svg-icons'apos;).then(m => ({ file: m.faFile })),
+  th: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ th: m.faTh })),
+  circle: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ circle: m.faCircle })),
+  file: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ file: m.faFile })),
 };
 
 // Fonction pour charger une icône dynamiquement
 export async function getIconDynamic(name: string): Promise<IconDefinition | null> {
-  // Vérifier le cache d'apos;abord
+  // Vérifier le cache d'abord
   if (iconCache.has(name)) {
     return iconCache.get(name)!;
   }
   
-  // Vérifier si l'apos;icône existe dans nos imports
+  // Vérifier si l'icône existe dans nos imports
   if (!iconImports[name]) {
     console.warn(`Icon "${name}" not found in dynamic imports`);
     return null;
   }
   
   try {
-    // Charger l'apos;icône dynamiquement
+    // Charger l'icône dynamiquement
     const iconModule = await iconImports[name]();
     const icon = iconModule[name];
     
@@ -169,15 +169,15 @@ export async function getIconDynamic(name: string): Promise<IconDefinition | nul
 // Fonction pour précharger les icônes les plus utilisées
 export async function preloadCommonIcons(): Promise<void> {
   const commonIcons = [
-    'apos;home'apos;, 'apos;tasks'apos;, 'apos;users'apos;, 'apos;cog'apos;, 'apos;plus'apos;, 'apos;edit'apos;, 'apos;trash'apos;, 'apos;check'apos;, 'apos;times'apos;,
-    'apos;arrowLeft'apos;, 'apos;arrowRight'apos;, 'apos;chevronDown'apos;, 'apos;chevronUp'apos;, 'apos;spinner'apos;,
-    'apos;user'apos;, 'apos;envelope'apos;, 'apos;chartLine'apos;, 'apos;dollarSign'apos;, 'apos;creditCard'apos;,
-    'apos;eye'apos;, 'apos;search'apos;, 'apos;filter'apos;, 'apos;bars'apos;, 'apos;download'apos;, 'apos;upload'apos;,
-    'apos;microphone'apos;, 'apos;flag'apos;, 'apos;bolt'apos;, 'apos;bell'apos;, 'apos;robot'apos;, 'apos;brain'apos;,
-    'apos;heart'apos;, 'apos;star'apos;, 'apos;shield'apos;, 'apos;lock'apos;, 'apos;comments'apos;
+    'home', 'tasks', 'users', 'cog', 'plus', 'edit', 'trash', 'check', 'times',
+    'arrowLeft', 'arrowRight', 'chevronDown', 'chevronUp', 'spinner',
+    'user', 'envelope', 'chartLine', 'dollarSign', 'creditCard',
+    'eye', 'search', 'filter', 'bars', 'download', 'upload',
+    'microphone', 'flag', 'bolt', 'bell', 'robot', 'brain',
+    'heart', 'star', 'shield', 'lock', 'comments'
   ];
   
-  console.log('apos;🔄 Préchargement des icônes communes...'apos;);
+  console.log('🔄 Préchargement des icônes communes...');
   
   const loadPromises = commonIcons.map(async (iconName) => {
     try {

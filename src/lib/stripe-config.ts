@@ -1,11 +1,11 @@
-import Stripe from 'apos;stripe'apos;;
+import Stripe from 'stripe';
 
 // Configuration Stripe
 export const stripeConfig = {
-  publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || 'apos;'apos;,
-  secretKey: process.env.STRIPE_SECRET_KEY || 'apos;'apos;,
-  currency: 'apos;cad'apos;, // Devise canadienne
-  apiVersion: 'apos;2023-10-16'apos; as const
+  publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
+  secretKey: process.env.STRIPE_SECRET_KEY || '',
+  currency: 'cad', // Devise canadienne
+  apiVersion: '2023-10-16' as const
 };
 
 // Instance Stripe côté serveur
@@ -17,104 +17,104 @@ export const stripe = new Stripe(stripeConfig.secretKey, {
 // Plans de tarification
 export const pricingPlans = {
   basic: {
-    id: 'apos;price_basic'apos;,
-    name: 'apos;Plan Basic'apos;,
+    id: 'price_basic',
+    name: 'Plan Basic',
     price: 29,
-    currency: 'apos;cad'apos;,
-    interval: 'apos;month'apos;,
+    currency: 'cad',
+    interval: 'month',
     features: [
-      'apos;Accès aux agents IA de base'apos;,
-      'apos;5 missions par mois'apos;,
-      'apos;Support par email'apos;,
-      'apos;Mises à jour régulières'apos;
+      'Accès aux agents IA de base',
+      '5 missions par mois',
+      'Support par email',
+      'Mises à jour régulières'
     ]
   },
   professional: {
-    id: 'apos;price_professional'apos;,
-    name: 'apos;Plan Professional'apos;,
+    id: 'price_professional',
+    name: 'Plan Professional',
     price: 79,
-    currency: 'apos;cad'apos;,
-    interval: 'apos;month'apos;,
+    currency: 'cad',
+    interval: 'month',
     features: [
-      'apos;Tous les agents IA'apos;,
-      'apos;Missions illimitées'apos;,
-      'apos;Support prioritaire'apos;,
-      'apos;Analytics avancées'apos;,
-      'apos;Intégrations tierces'apos;,
-      'apos;API access'apos;
+      'Tous les agents IA',
+      'Missions illimitées',
+      'Support prioritaire',
+      'Analytics avancées',
+      'Intégrations tierces',
+      'API access'
     ]
   },
   enterprise: {
-    id: 'apos;price_enterprise'apos;,
-    name: 'apos;Plan Enterprise'apos;,
+    id: 'price_enterprise',
+    name: 'Plan Enterprise',
     price: 199,
-    currency: 'apos;cad'apos;,
-    interval: 'apos;month'apos;,
+    currency: 'cad',
+    interval: 'month',
     features: [
-      'apos;Tout du plan Professional'apos;,
-      'apos;Support dédié'apos;,
-      'apos;Formation personnalisée'apos;,
-      'apos;Intégrations sur mesure'apos;,
-      'apos;SLA garanti'apos;,
-      'apos;Déploiement privé possible'apos;
+      'Tout du plan Professional',
+      'Support dédié',
+      'Formation personnalisée',
+      'Intégrations sur mesure',
+      'SLA garanti',
+      'Déploiement privé possible'
     ]
   }
 };
 
 // Webhook events à gérer
 export const webhookEvents = [
-  'apos;payment_intent.succeeded'apos;,
-  'apos;payment_intent.payment_failed'apos;,
-  'apos;customer.subscription.created'apos;,
-  'apos;customer.subscription.updated'apos;,
-  'apos;customer.subscription.deleted'apos;,
-  'apos;invoice.payment_succeeded'apos;,
-  'apos;invoice.payment_failed'apos;
+  'payment_intent.succeeded',
+  'payment_intent.payment_failed',
+  'customer.subscription.created',
+  'customer.subscription.updated',
+  'customer.subscription.deleted',
+  'invoice.payment_succeeded',
+  'invoice.payment_failed'
 ];
 
 // Configuration des produits Stripe
 export const stripeProducts = {
   basic: {
-    name: 'apos;Beriox AI - Plan Basic'apos;,
-    description: 'apos;Accès aux agents IA de base avec 5 missions par mois'apos;,
+    name: 'Beriox AI - Plan Basic',
+    description: 'Accès aux agents IA de base avec 5 missions par mois',
     metadata: {
-      plan: 'apos;basic'apos;,
-      missions_limit: 'apos;5'apos;,
-      features: 'apos;basic_agents,email_support'apos;
+      plan: 'basic',
+      missions_limit: '5',
+      features: 'basic_agents,email_support'
     }
   },
   professional: {
-    name: 'apos;Beriox AI - Plan Professional'apos;,
-    description: 'apos;Accès complet avec missions illimitées et analytics'apos;,
+    name: 'Beriox AI - Plan Professional',
+    description: 'Accès complet avec missions illimitées et analytics',
     metadata: {
-      plan: 'apos;professional'apos;,
-      missions_limit: 'apos;unlimited'apos;,
-      features: 'apos;all_agents,analytics,integrations,api_access'apos;
+      plan: 'professional',
+      missions_limit: 'unlimited',
+      features: 'all_agents,analytics,integrations,api_access'
     }
   },
   enterprise: {
-    name: 'apos;Beriox AI - Plan Enterprise'apos;,
-    description: 'apos;Solution complète avec support dédié et SLA'apos;,
+    name: 'Beriox AI - Plan Enterprise',
+    description: 'Solution complète avec support dédié et SLA',
     metadata: {
-      plan: 'apos;enterprise'apos;,
-      missions_limit: 'apos;unlimited'apos;,
-      features: 'apos;all_agents,dedicated_support,sla,custom_integrations'apos;
+      plan: 'enterprise',
+      missions_limit: 'unlimited',
+      features: 'all_agents,dedicated_support,sla,custom_integrations'
     }
   }
 };
 
 // Utilitaires pour Stripe
 export const stripeUtils = {
-  // Formater le prix pour l'apos;affichage
-  formatPrice: (amount: number, currency: string = 'apos;cad'apos;) => {
-    return new Intl.NumberFormat('apos;fr-CA'apos;, {
-      style: 'apos;currency'apos;,
+  // Formater le prix pour l'affichage
+  formatPrice: (amount: number, currency: string = 'cad') => {
+    return new Intl.NumberFormat('fr-CA', {
+      style: 'currency',
       currency: currency.toUpperCase()
     }).format(amount / 100);
   },
 
   // Créer un PaymentIntent
-  createPaymentIntent: async (amount: number, currency: string = 'apos;cad'apos;, metadata?: Record<string, string>) => {
+  createPaymentIntent: async (amount: number, currency: string = 'cad', metadata?: Record<string, string>) => {
     return await stripe.paymentIntents.create({
       amount,
       currency,
@@ -140,9 +140,9 @@ export const stripeUtils = {
       customer: customerId,
       items: [{ price: priceId }],
       metadata,
-      payment_behavior: 'apos;default_incomplete'apos;,
-      payment_settings: { save_default_payment_method: 'apos;on_subscription'apos; },
-      expand: ['apos;latest_invoice.payment_intent'apos;],
+      payment_behavior: 'default_incomplete',
+      payment_settings: { save_default_payment_method: 'on_subscription' },
+      expand: ['latest_invoice.payment_intent'],
     });
   },
 
@@ -161,7 +161,7 @@ export const stripeUtils = {
     return await stripe.subscriptions.cancel(subscriptionId);
   },
 
-  // Récupérer les factures d'apos;un client
+  // Récupérer les factures d'un client
   getCustomerInvoices: async (customerId: string, limit: number = 10) => {
     return await stripe.invoices.list({
       customer: customerId,
@@ -207,7 +207,7 @@ export interface PaymentData {
   description?: string;
 }
 
-// Interface pour les données d'apos;abonnement
+// Interface pour les données d'abonnement
 export interface SubscriptionData {
   customerId: string;
   priceId: string;

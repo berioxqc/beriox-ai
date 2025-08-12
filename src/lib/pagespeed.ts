@@ -1,4 +1,4 @@
-// Service d'apos;intégration avec l'apos;API PageSpeed Insights de Google
+// Service d'intégration avec l'API PageSpeed Insights de Google
 
 export interface PageSpeedResult {
   url: string;
@@ -22,37 +22,37 @@ export interface PageSpeedResult {
     title: string;
     description: string;
     savings: number;
-    impact: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
+    impact: 'high' | 'medium' | 'low';
   }>;
   diagnostics: Array<{
     id: string;
     title: string;
     description: string;
-    severity: 'apos;error'apos; | 'apos;warning'apos; | 'apos;info'apos;;
+    severity: 'error' | 'warning' | 'info';
   }>;
   loadingExperience?: {
-    overall_category: 'apos;FAST'apos; | 'apos;AVERAGE'apos; | 'apos;SLOW'apos;;
+    overall_category: 'FAST' | 'AVERAGE' | 'SLOW';
     initial_url: string;
   };
 }
 
 class PageSpeedService {
   private apiKey: string;
-  private baseUrl = 'apos;https://www.googleapis.com/pagespeedonline/v5/runPagespeed'apos;;
+  private baseUrl = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
 
   constructor() {
-    this.apiKey = process.env.GOOGLE_PAGESPEED_API_KEY || 'apos;'apos;;
+    this.apiKey = process.env.GOOGLE_PAGESPEED_API_KEY || '';
     if (!this.apiKey) {
-      console.warn('apos;⚠️ Google PageSpeed API key not configured'apos;);
+      console.warn('⚠️ Google PageSpeed API key not configured');
     }
   }
 
   /**
    * Analyse une URL avec PageSpeed Insights
    */
-  async analyzeUrl(url: string, strategy: 'apos;mobile'apos; | 'apos;desktop'apos; = 'apos;mobile'apos;): Promise<PageSpeedResult | null> {
+  async analyzeUrl(url: string, strategy: 'mobile' | 'desktop' = 'mobile'): Promise<PageSpeedResult | null> {
     if (!this.apiKey) {
-      console.error('apos;❌ PageSpeed API key not configured'apos;);
+      console.error('❌ PageSpeed API key not configured');
       return null;
     }
 
@@ -61,8 +61,8 @@ class PageSpeedService {
         url: url,
         key: this.apiKey,
         strategy: strategy,
-        category: ['apos;PERFORMANCE'apos;, 'apos;ACCESSIBILITY'apos;, 'apos;BEST_PRACTICES'apos;, 'apos;SEO'apos;].join('apos;,'apos;),
-        locale: 'apos;fr'apos;
+        category: ['PERFORMANCE', 'ACCESSIBILITY', 'BEST_PRACTICES', 'SEO'].join(','),
+        locale: 'fr'
       });
 
       const response = await fetch(`${this.baseUrl}?${params}`);
@@ -75,7 +75,7 @@ class PageSpeedService {
       return this.formatResult(data);
 
     } catch (error) {
-      console.error('apos;❌ Error analyzing URL with PageSpeed:'apos;, error);
+      console.error('❌ Error analyzing URL with PageSpeed:', error);
       return null;
     }
   }
@@ -83,20 +83,20 @@ class PageSpeedService {
   /**
    * Analyse multiple URLs en batch
    */
-  async analyzeBatch(urls: string[], strategy: 'apos;mobile'apos; | 'apos;desktop'apos; = 'apos;mobile'apos;): Promise<PageSpeedResult[]> {
+  async analyzeBatch(urls: string[], strategy: 'mobile' | 'desktop' = 'mobile'): Promise<PageSpeedResult[]> {
     const results = await Promise.allSettled(
       urls.map(url => this.analyzeUrl(url, strategy))
     );
 
     return results
       .filter((result): result is PromiseFulfilledResult<PageSpeedResult | null> => 
-        result.status === 'apos;fulfilled'apos; && result.value !== null
+        result.status === 'fulfilled' && result.value !== null
       )
       .map(result => result.value as PageSpeedResult);
   }
 
   /**
-   * Formate les résultats de l'apos;API en structure utilisable
+   * Formate les résultats de l'API en structure utilisable
    */
   private formatResult(data: any): PageSpeedResult {
     const lighthouse = data.lighthouseResult;
@@ -109,16 +109,16 @@ class PageSpeedService {
       scores: {
         performance: Math.round((categories.performance?.score || 0) * 100),
         accessibility: Math.round((categories.accessibility?.score || 0) * 100),
-        bestPractices: Math.round((categories['apos;best-practices'apos;]?.score || 0) * 100),
+        bestPractices: Math.round((categories['best-practices']?.score || 0) * 100),
         seo: Math.round((categories.seo?.score || 0) * 100),
       },
       metrics: {
-        firstContentfulPaint: audits['apos;first-contentful-paint'apos;]?.numericValue || 0,
-        largestContentfulPaint: audits['apos;largest-contentful-paint'apos;]?.numericValue || 0,
-        firstInputDelay: audits['apos;max-potential-fid'apos;]?.numericValue || 0,
-        cumulativeLayoutShift: audits['apos;cumulative-layout-shift'apos;]?.numericValue || 0,
-        speedIndex: audits['apos;speed-index'apos;]?.numericValue || 0,
-        totalBlockingTime: audits['apos;total-blocking-time'apos;]?.numericValue || 0,
+        firstContentfulPaint: audits['first-contentful-paint']?.numericValue || 0,
+        largestContentfulPaint: audits['largest-contentful-paint']?.numericValue || 0,
+        firstInputDelay: audits['max-potential-fid']?.numericValue || 0,
+        cumulativeLayoutShift: audits['cumulative-layout-shift']?.numericValue || 0,
+        speedIndex: audits['speed-index']?.numericValue || 0,
+        totalBlockingTime: audits['total-blocking-time']?.numericValue || 0,
       },
       opportunities: this.extractOpportunities(audits),
       diagnostics: this.extractDiagnostics(audits),
@@ -127,20 +127,20 @@ class PageSpeedService {
   }
 
   /**
-   * Extrait les opportunités d'apos;amélioration
+   * Extrait les opportunités d'amélioration
    */
-  private extractOpportunities(audits: any): Array<{id: string, title: string, description: string, savings: number, impact: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;}> {
+  private extractOpportunities(audits: any): Array<{id: string, title: string, description: string, savings: number, impact: 'high' | 'medium' | 'low'}> {
     const opportunityAudits = [
-      'apos;render-blocking-resources'apos;,
-      'apos;unused-css-rules'apos;,
-      'apos;unused-javascript'apos;,
-      'apos;modern-image-formats'apos;,
-      'apos;offscreen-images'apos;,
-      'apos;minify-css'apos;,
-      'apos;minify-javascript'apos;,
-      'apos;enable-text-compression'apos;,
-      'apos;properly-size-images'apos;,
-      'apos;efficient-animated-content'apos;
+      'render-blocking-resources',
+      'unused-css-rules',
+      'unused-javascript',
+      'modern-image-formats',
+      'offscreen-images',
+      'minify-css',
+      'minify-javascript',
+      'enable-text-compression',
+      'properly-size-images',
+      'efficient-animated-content'
     ];
 
     return opportunityAudits
@@ -153,7 +153,7 @@ class PageSpeedService {
           title: audit.title,
           description: audit.description,
           savings: Math.round(savings),
-          impact: savings > 1000 ? 'apos;high'apos; : savings > 500 ? 'apos;medium'apos; : 'apos;low'apos;
+          impact: savings > 1000 ? 'high' : savings > 500 ? 'medium' : 'low'
         };
       })
       .sort((a, b) => b.savings - a.savings)
@@ -163,18 +163,18 @@ class PageSpeedService {
   /**
    * Extrait les diagnostics et problèmes
    */
-  private extractDiagnostics(audits: any): Array<{id: string, title: string, description: string, severity: 'apos;error'apos; | 'apos;warning'apos; | 'apos;info'apos;}> {
+  private extractDiagnostics(audits: any): Array<{id: string, title: string, description: string, severity: 'error' | 'warning' | 'info'}> {
     const diagnosticAudits = [
-      'apos;uses-long-cache-ttl'apos;,
-      'apos;uses-optimized-images'apos;,
-      'apos;uses-webp-images'apos;,
-      'apos;uses-responsive-images'apos;,
-      'apos;dom-size'apos;,
-      'apos;critical-request-chains'apos;,
-      'apos;user-timings'apos;,
-      'apos;bootup-time'apos;,
-      'apos;mainthread-work-breakdown'apos;,
-      'apos;font-display'apos;
+      'uses-long-cache-ttl',
+      'uses-optimized-images',
+      'uses-webp-images',
+      'uses-responsive-images',
+      'dom-size',
+      'critical-request-chains',
+      'user-timings',
+      'bootup-time',
+      'mainthread-work-breakdown',
+      'font-display'
     ];
 
     return diagnosticAudits
@@ -186,15 +186,15 @@ class PageSpeedService {
           id: auditId,
           title: audit.title,
           description: audit.description,
-          severity: score === null ? 'apos;info'apos; : score < 0.5 ? 'apos;error'apos; : score < 0.9 ? 'apos;warning'apos; : 'apos;info'apos;
+          severity: score === null ? 'info' : score < 0.5 ? 'error' : score < 0.9 ? 'warning' : 'info'
         };
       })
-      .filter(diagnostic => diagnostic.severity !== 'apos;info'apos; || Math.random() < 0.3) // Garder quelques infos
+      .filter(diagnostic => diagnostic.severity !== 'info' || Math.random() < 0.3) // Garder quelques infos
       .slice(0, 8); // Top 8 diagnostics
   }
 
   /**
-   * Génère un rapport d'apos;analyse lisible
+   * Génère un rapport d'analyse lisible
    */
   generateReport(result: PageSpeedResult): string {
     const { scores, metrics, opportunities, diagnostics } = result;
@@ -202,7 +202,7 @@ class PageSpeedService {
 
     return `# 🚀 Rapport PageSpeed - ${result.url}
 
-**Date d'apos;analyse :** ${new Date(result.timestamp).toLocaleDateString('apos;fr-FR'apos;)}
+**Date d'analyse :** ${new Date(result.timestamp).toLocaleDateString('fr-FR')}
 **Score global :** ${overallScore}/100 ${this.getScoreEmoji(overallScore)}
 
 ## 📊 Scores par catégorie
@@ -221,32 +221,32 @@ class PageSpeedService {
 - **Speed Index :** ${Math.round(metrics.speedIndex)}ms
 - **Total Blocking Time :** ${Math.round(metrics.totalBlockingTime)}ms
 
-## 🎯 Opportunités d'apos;amélioration
+## 🎯 Opportunités d'amélioration
 
 ${opportunities.length > 0 ? opportunities.map(opp => 
-  `### ${opp.impact === 'apos;high'apos; ? 'apos;🔴'apos; : opp.impact === 'apos;medium'apos; ? 'apos;🟡'apos; : 'apos;🟢'apos;} ${opp.title}
+  `### ${opp.impact === 'high' ? '🔴' : opp.impact === 'medium' ? '🟡' : '🟢'} ${opp.title}
 **Gain estimé :** ${opp.savings}ms
 ${opp.description}`
-).join('apos;\n\n'apos;) : 'apos;_Aucune opportunité majeure détectée._'apos;}
+).join('\n\n') : '_Aucune opportunité majeure détectée._'}
 
 ## 🔍 Diagnostics
 
 ${diagnostics.length > 0 ? diagnostics.map(diag => 
-  `### ${diag.severity === 'apos;error'apos; ? 'apos;❌'apos; : diag.severity === 'apos;warning'apos; ? 'apos;⚠️'apos; : 'apos;ℹ️'apos;} ${diag.title}
+  `### ${diag.severity === 'error' ? '❌' : diag.severity === 'warning' ? '⚠️' : 'ℹ️'} ${diag.title}
 ${diag.description}`
-).join('apos;\n\n'apos;) : 'apos;_Aucun diagnostic particulier._'apos;}
+).join('\n\n') : '_Aucun diagnostic particulier._'}
 
 ---
 *Analyse générée par SpeedBot - Beriox AI*`;
   }
 
   /**
-   * Retourne l'apos;emoji correspondant au score
+   * Retourne l'emoji correspondant au score
    */
   private getScoreEmoji(score: number): string {
-    if (score >= 90) return 'apos;🟢'apos;;
-    if (score >= 50) return 'apos;🟡'apos;;
-    return 'apos;🔴'apos;;
+    if (score >= 90) return '🟢';
+    if (score >= 50) return '🟡';
+    return '🔴';
   }
 }
 

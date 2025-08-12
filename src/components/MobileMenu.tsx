@@ -21,10 +21,10 @@ export default function MobileMenu() {
     const fetchUserInfo = async () => {
       if (session?.user?.email) {
         try {
-          const response = await fetch('apos;/api/user/profile'apos;);
+          const response = await fetch('/api/user/profile');
           if (response.ok) {
             const data = await response.json();
-            setUserRole(data.user?.role || 'apos;USER'apos;);
+            setUserRole(data.user?.role || 'USER');
             
             // Calculer les infos premium
             if (data.user?.premiumAccess && data.user.premiumAccess.isActive) {
@@ -48,7 +48,7 @@ export default function MobileMenu() {
             }
           }
         } catch (error) {
-          console.error('apos;Erreur lors de la récupération des infos utilisateur:'apos;, error);
+          console.error('Erreur lors de la récupération des infos utilisateur:', error);
         }
       }
     };
@@ -65,7 +65,7 @@ export default function MobileMenu() {
           href: "/", 
           label: "Tableau de bord", 
           icon: "home",
-          description: "Vue d'apos;ensemble de vos activités"
+          description: "Vue d'ensemble de vos activités"
         },
         { 
           href: "/missions", 
@@ -90,7 +90,7 @@ export default function MobileMenu() {
           icon: "brain",
           description: "Assistant conversationnel"
         },
-        ...(premiumInfo?.hasAccess && (premiumInfo.planId === 'apos;competitor-intelligence'apos; || premiumInfo.planId === 'apos;enterprise'apos;) ? [{
+        ...(premiumInfo?.hasAccess && (premiumInfo.planId === 'competitor-intelligence' || premiumInfo.planId === 'enterprise') ? [{
           href: "/competitors",
           label: "Veille Concurrentielle",
           icon: "search",
@@ -130,7 +130,7 @@ export default function MobileMenu() {
           href: "/settings", 
           label: "Paramètres", 
           icon: "cog",
-          description: "Configuration de l'apos;application"
+          description: "Configuration de l'application"
         }
       ]
     }
@@ -141,13 +141,13 @@ export default function MobileMenu() {
   // Empêcher le scroll du body quand le menu est ouvert
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'apos;hidden'apos;;
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'apos;unset'apos;;
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = 'apos;unset'apos;;
+      document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
 
@@ -161,17 +161,17 @@ export default function MobileMenu() {
       >
         <div
           className={`w-4 h-0.5 bg-gray-600 mb-1 transition-all duration-300 ${
-            isOpen ? 'apos;rotate-45 translate-y-1'apos; : 'apos;rotate-0'apos;
+            isOpen ? 'rotate-45 translate-y-1' : 'rotate-0'
           }`}
         />
         <div
           className={`w-4 h-0.5 bg-gray-600 mb-1 transition-all duration-300 ${
-            isOpen ? 'apos;opacity-0'apos; : 'apos;opacity-100'apos;
+            isOpen ? 'opacity-0' : 'opacity-100'
           }`}
         />
         <div
           className={`w-4 h-0.5 bg-gray-600 transition-all duration-300 ${
-            isOpen ? 'apos;-rotate-45 -translate-y-1'apos; : 'apos;rotate-0'apos;
+            isOpen ? '-rotate-45 -translate-y-1' : 'rotate-0'
           }`}
         />
       </button>
@@ -186,7 +186,7 @@ export default function MobileMenu() {
 
       {/* Menu mobile */}
       <div className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white/95 backdrop-blur-xl shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
-        isOpen ? 'apos;translate-x-0'apos; : 'apos;translate-x-full'apos;
+        isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="flex flex-col h-full">
           {/* Header avec gradient */}
@@ -256,12 +256,12 @@ export default function MobileMenu() {
                         onClick={closeMenu}
                         className={`flex items-center gap-4 px-6 py-5 text-sm font-medium transition-all duration-300 border-l-4 hover:bg-white/80 ${
                           isActive
-                            ? 'apos;bg-purple-50/80 text-purple-700 border-purple-500 shadow-sm'apos;
-                            : 'apos;text-gray-700 hover:text-gray-900 border-transparent'apos;
+                            ? 'bg-purple-50/80 text-purple-700 border-purple-500 shadow-sm'
+                            : 'text-gray-700 hover:text-gray-900 border-transparent'
                         }`}
                       >
                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                          isActive ? 'apos;bg-purple-100 text-purple-600 shadow-md'apos; : 'apos;bg-gray-100 text-gray-500 hover:bg-gray-200'apos;
+                          isActive ? 'bg-purple-100 text-purple-600 shadow-md' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                         }`}>
                           <Icon
                             name={item.icon}

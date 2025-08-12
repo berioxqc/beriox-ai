@@ -14,19 +14,19 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const { industry, company, role, experience, goals, preferredAgents } = data;
 
-    // Mettre à jour le profil utilisateur avec les données d'apos;onboarding
+    // Mettre à jour le profil utilisateur avec les données d'onboarding
     const updatedUser = await prisma.user.update({
       where: { email: session.user.email },
       data: {
         // Mettre à jour le nom si la company est fournie
         name: company || session.user.name,
-        // Ajouter les données d'apos;onboarding dans un champ JSON ou des champs séparés
+        // Ajouter les données d'onboarding dans un champ JSON ou des champs séparés
         // Pour cet exemple, on utilise un champ JSON générique
         // En production, vous pourriez vouloir des champs séparés dans le schéma
       }
     });
 
-    // Créer un enregistrement d'apos;onboarding séparé pour tracking
+    // Créer un enregistrement d'onboarding séparé pour tracking
     await prisma.$executeRaw`
       INSERT INTO "OnboardingData" (
         "userId", 
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       ) VALUES (
         ${updatedUser.id},
         ${industry},
-        ${company || 'apos;'apos;},
+        ${company || ''},
         ${role},
         ${experience},
         ${JSON.stringify(goals)},
@@ -55,13 +55,13 @@ export async function POST(request: NextRequest) {
         "preferredAgents" = EXCLUDED."preferredAgents",
         "completedAt" = EXCLUDED."completedAt"
     `.catch(() => {
-      // Si la table n'apos;existe pas, on ignore l'apos;erreur pour le moment
+      // Si la table n'existe pas, on ignore l'erreur pour le moment
       // En production, vous devriez créer cette table dans le schéma Prisma
       console.log("Table OnboardingData non trouvée - données sauvegardées dans les logs");
     });
 
     // Log pour le moment (à remplacer par la vraie sauvegarde)
-    console.log("Données d'apos;onboarding sauvegardées:", {
+    console.log("Données d'onboarding sauvegardées:", {
       userId: updatedUser.id,
       email: session.user.email,
       industry,
@@ -79,9 +79,9 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error("Erreur lors de l'apos;onboarding:", error);
+    console.error("Erreur lors de l'onboarding:", error);
     return NextResponse.json(
-      { error: "Erreur lors de la sauvegarde des données d'apos;onboarding" },
+      { error: "Erreur lors de la sauvegarde des données d'onboarding" },
       { status: 500 }
     );
   }
@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Récupérer les données d'apos;onboarding de l'apos;utilisateur
+    // Récupérer les données d'onboarding de l'utilisateur
     // Pour le moment, on retourne un statut basique
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
@@ -110,10 +110,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
 
-    // Vérifier si c'apos;est un nouvel utilisateur (créé il y a moins de 5 minutes)
+    // Vérifier si c'est un nouvel utilisateur (créé il y a moins de 5 minutes)
     const isNewUser = new Date().getTime() - new Date(user.createdAt).getTime() < 5 * 60 * 1000;
     
-    // Vérifier si l'apos;onboarding a été complété (via localStorage côté client pour le moment)
+    // Vérifier si l'onboarding a été complété (via localStorage côté client pour le moment)
     return NextResponse.json({
       isNewUser,
       hasCompletedOnboarding: false, // À implémenter avec la vraie DB
@@ -125,7 +125,7 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error("Erreur lors de la récupération des données d'apos;onboarding:", error);
+    console.error("Erreur lors de la récupération des données d'onboarding:", error);
     return NextResponse.json(
       { error: "Erreur lors de la récupération des données" },
       { status: 500 }

@@ -1,18 +1,18 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { logger } from 'apos;@/lib/logger'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
   const startTime = Date.now();
   
   try {
     const healthCheck = {
-      status: 'apos;healthy'apos;,
+      status: 'healthy',
       timestamp: new Date().toISOString(),
       checks: {
-        internet: { status: 'apos;unknown'apos;, duration: 0 },
-        openai: { status: 'apos;unknown'apos;, duration: 0 },
-        stripe: { status: 'apos;unknown'apos;, duration: 0 },
-        google: { status: 'apos;unknown'apos;, duration: 0 }
+        internet: { status: 'unknown', duration: 0 },
+        openai: { status: 'unknown', duration: 0 },
+        stripe: { status: 'unknown', duration: 0 },
+        google: { status: 'unknown', duration: 0 }
       },
       metrics: {
         totalDuration: 0
@@ -22,18 +22,18 @@ export async function GET(request: NextRequest) {
     // Test de connectivité internet générale
     const internetStart = Date.now();
     try {
-      const response = await fetch('apos;https://httpbin.org/get'apos;, {
-        method: 'apos;GET'apos;,
+      const response = await fetch('https://httpbin.org/get', {
+        method: 'GET',
         timeout: 5000
       });
       
       if (response.ok) {
         healthCheck.checks.internet = {
-          status: 'apos;healthy'apos;,
+          status: 'healthy',
           duration: Date.now() - internetStart
         };
-        logger.info('apos;External health check: Internet connectivity successful'apos;, {
-          action: 'apos;health_check_external'apos;,
+        logger.info('External health check: Internet connectivity successful', {
+          action: 'health_check_external',
           duration: healthCheck.checks.internet.duration
         });
       } else {
@@ -41,35 +41,35 @@ export async function GET(request: NextRequest) {
       }
     } catch (error) {
       healthCheck.checks.internet = {
-        status: 'apos;unhealthy'apos;,
+        status: 'unhealthy',
         duration: Date.now() - internetStart
       };
-      logger.error('apos;External health check: Internet connectivity failed'apos;, error as Error, {
-        action: 'apos;health_check_external'apos;,
+      logger.error('External health check: Internet connectivity failed', error as Error, {
+        action: 'health_check_external',
         duration: healthCheck.checks.internet.duration
       });
     }
 
-    // Test de l'apos;API OpenAI (si configurée)
+    // Test de l'API OpenAI (si configurée)
     const openaiStart = Date.now();
     try {
       if (process.env.OPENAI_API_KEY) {
-        const response = await fetch('apos;https://api.openai.com/v1/models'apos;, {
-          method: 'apos;GET'apos;,
+        const response = await fetch('https://api.openai.com/v1/models', {
+          method: 'GET',
           headers: {
-            'apos;Authorization'apos;: `Bearer ${process.env.OPENAI_API_KEY}`,
-            'apos;Content-Type'apos;: 'apos;application/json'apos;
+            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+            'Content-Type': 'application/json'
           },
           timeout: 10000
         });
         
         if (response.ok) {
           healthCheck.checks.openai = {
-            status: 'apos;healthy'apos;,
+            status: 'healthy',
             duration: Date.now() - openaiStart
           };
-          logger.info('apos;External health check: OpenAI API successful'apos;, {
-            action: 'apos;health_check_external'apos;,
+          logger.info('External health check: OpenAI API successful', {
+            action: 'health_check_external',
             duration: healthCheck.checks.openai.duration
           });
         } else {
@@ -77,44 +77,44 @@ export async function GET(request: NextRequest) {
         }
       } else {
         healthCheck.checks.openai = {
-          status: 'apos;not_configured'apos;,
+          status: 'not_configured',
           duration: Date.now() - openaiStart
         };
-        logger.info('apos;External health check: OpenAI API not configured'apos;, {
-          action: 'apos;health_check_external'apos;
+        logger.info('External health check: OpenAI API not configured', {
+          action: 'health_check_external'
         });
       }
     } catch (error) {
       healthCheck.checks.openai = {
-        status: 'apos;unhealthy'apos;,
+        status: 'unhealthy',
         duration: Date.now() - openaiStart
       };
-      logger.error('apos;External health check: OpenAI API failed'apos;, error as Error, {
-        action: 'apos;health_check_external'apos;,
+      logger.error('External health check: OpenAI API failed', error as Error, {
+        action: 'health_check_external',
         duration: healthCheck.checks.openai.duration
       });
     }
 
-    // Test de l'apos;API Stripe (si configurée)
+    // Test de l'API Stripe (si configurée)
     const stripeStart = Date.now();
     try {
       if (process.env.STRIPE_SECRET_KEY) {
-        const response = await fetch('apos;https://api.stripe.com/v1/account'apos;, {
-          method: 'apos;GET'apos;,
+        const response = await fetch('https://api.stripe.com/v1/account', {
+          method: 'GET',
           headers: {
-            'apos;Authorization'apos;: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
-            'apos;Content-Type'apos;: 'apos;application/x-www-form-urlencoded'apos;
+            'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
           },
           timeout: 10000
         });
         
         if (response.ok) {
           healthCheck.checks.stripe = {
-            status: 'apos;healthy'apos;,
+            status: 'healthy',
             duration: Date.now() - stripeStart
           };
-          logger.info('apos;External health check: Stripe API successful'apos;, {
-            action: 'apos;health_check_external'apos;,
+          logger.info('External health check: Stripe API successful', {
+            action: 'health_check_external',
             duration: healthCheck.checks.stripe.duration
           });
         } else {
@@ -122,40 +122,40 @@ export async function GET(request: NextRequest) {
         }
       } else {
         healthCheck.checks.stripe = {
-          status: 'apos;not_configured'apos;,
+          status: 'not_configured',
           duration: Date.now() - stripeStart
         };
-        logger.info('apos;External health check: Stripe API not configured'apos;, {
-          action: 'apos;health_check_external'apos;
+        logger.info('External health check: Stripe API not configured', {
+          action: 'health_check_external'
         });
       }
     } catch (error) {
       healthCheck.checks.stripe = {
-        status: 'apos;unhealthy'apos;,
+        status: 'unhealthy',
         duration: Date.now() - stripeStart
       };
-      logger.error('apos;External health check: Stripe API failed'apos;, error as Error, {
-        action: 'apos;health_check_external'apos;,
+      logger.error('External health check: Stripe API failed', error as Error, {
+        action: 'health_check_external',
         duration: healthCheck.checks.stripe.duration
       });
     }
 
-    // Test de l'apos;API Google (si configurée)
+    // Test de l'API Google (si configurée)
     const googleStart = Date.now();
     try {
       if (process.env.GOOGLE_CLIENT_ID) {
-        const response = await fetch('apos;https://www.googleapis.com/oauth2/v1/userinfo'apos;, {
-          method: 'apos;GET'apos;,
+        const response = await fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
+          method: 'GET',
           timeout: 5000
         });
         
         if (response.ok || response.status === 401) { // 401 est normal sans token
           healthCheck.checks.google = {
-            status: 'apos;healthy'apos;,
+            status: 'healthy',
             duration: Date.now() - googleStart
           };
-          logger.info('apos;External health check: Google API successful'apos;, {
-            action: 'apos;health_check_external'apos;,
+          logger.info('External health check: Google API successful', {
+            action: 'health_check_external',
             duration: healthCheck.checks.google.duration
           });
         } else {
@@ -163,77 +163,77 @@ export async function GET(request: NextRequest) {
         }
       } else {
         healthCheck.checks.google = {
-          status: 'apos;not_configured'apos;,
+          status: 'not_configured',
           duration: Date.now() - googleStart
         };
-        logger.info('apos;External health check: Google API not configured'apos;, {
-          action: 'apos;health_check_external'apos;
+        logger.info('External health check: Google API not configured', {
+          action: 'health_check_external'
         });
       }
     } catch (error) {
       healthCheck.checks.google = {
-        status: 'apos;unhealthy'apos;,
+        status: 'unhealthy',
         duration: Date.now() - googleStart
       };
-      logger.error('apos;External health check: Google API failed'apos;, error as Error, {
-        action: 'apos;health_check_external'apos;,
+      logger.error('External health check: Google API failed', error as Error, {
+        action: 'health_check_external',
         duration: healthCheck.checks.google.duration
       });
     }
 
     // Déterminer le statut global
-    const criticalServices = ['apos;internet'apos;];
+    const criticalServices = ['internet'];
     const criticalHealthy = criticalServices.every(
-      service => healthCheck.checks[service as keyof typeof healthCheck.checks].status === 'apos;healthy'apos;
+      service => healthCheck.checks[service as keyof typeof healthCheck.checks].status === 'healthy'
     );
 
     const allHealthy = Object.values(healthCheck.checks).every(
-      check => check.status === 'apos;healthy'apos; || check.status === 'apos;not_configured'apos;
+      check => check.status === 'healthy' || check.status === 'not_configured'
     );
 
     if (!criticalHealthy) {
-      healthCheck.status = 'apos;unhealthy'apos;;
+      healthCheck.status = 'unhealthy';
     } else if (!allHealthy) {
-      healthCheck.status = 'apos;degraded'apos;;
+      healthCheck.status = 'degraded';
     }
 
     healthCheck.metrics.totalDuration = Date.now() - startTime;
 
-    logger.info('apos;External health check completed'apos;, {
-      action: 'apos;health_check_external'apos;,
+    logger.info('External health check completed', {
+      action: 'health_check_external',
       duration: healthCheck.metrics.totalDuration,
       status: healthCheck.status,
       checks: healthCheck.checks
     });
 
     return NextResponse.json(healthCheck, {
-      status: healthCheck.status === 'apos;healthy'apos; ? 200 : 
-              healthCheck.status === 'apos;degraded'apos; ? 503 : 503,
+      status: healthCheck.status === 'healthy' ? 200 : 
+              healthCheck.status === 'degraded' ? 503 : 503,
       headers: {
-        'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
-        'apos;Pragma'apos;: 'apos;no-cache'apos;,
-        'apos;Expires'apos;: 'apos;0'apos;
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     });
 
   } catch (error) {
-    logger.error('apos;External health check failed'apos;, error as Error, {
-      action: 'apos;health_check_external'apos;,
+    logger.error('External health check failed', error as Error, {
+      action: 'health_check_external',
       duration: Date.now() - startTime
     });
 
     return NextResponse.json({
-      status: 'apos;unhealthy'apos;,
+      status: 'unhealthy',
       timestamp: new Date().toISOString(),
-      error: 'apos;External health check failed'apos;,
-      details: error instanceof Error ? error.message : 'apos;Unknown error'apos;,
+      error: 'External health check failed',
+      details: error instanceof Error ? error.message : 'Unknown error',
       duration: Date.now() - startTime
     }, {
       status: 503,
       headers: {
-        'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
-        'apos;Pragma'apos;: 'apos;no-cache'apos;,
-        'apos;Expires'apos;: 'apos;0'apos;
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     });
   }

@@ -49,7 +49,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
     } catch (error) {
       // Fallback vers des agents par défaut
       setRecommendedAgents(["KarineAI", "HugoAI", "JPBot", "ElodieAI"]);
-      setAgentReasoning("Erreur d'apos;analyse, utilisation des agents par défaut");
+      setAgentReasoning("Erreur d'analyse, utilisation des agents par défaut");
     } finally {
       setAnalyzing(false);
     }
@@ -131,7 +131,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
               fontWeight: "700",
               color: "#0a2540",
               margin: "0 0 8px 0",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
               🚀 Nouvelle Mission Rapide
             </h2>
@@ -139,7 +139,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
               fontSize: "14px",
               color: "#6b7280",
               margin: 0,
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
               Créez une mission en quelques secondes
             </p>
@@ -192,7 +192,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                 color: "#0a2540",
                 outline: "none",
                 transition: "border-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onFocus={(e) => e.target.style.borderColor = "#635bff"}
               onBlur={(e) => e.target.style.borderColor = "#e3e8ee"}
@@ -226,7 +226,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                 color: "#0a2540",
                 outline: "none",
                 transition: "border-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                 resize: "vertical"
               }}
               onFocus={(e) => e.target.style.borderColor = "#635bff"}
@@ -235,7 +235,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
             />
           </div>
 
-          {/* Analyse et recommandations d'apos;agents */}
+          {/* Analyse et recommandations d'agents */}
           {prompt.trim() && (
             <div>
               <div style={{
@@ -263,7 +263,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                     fontSize: "12px",
                     fontWeight: "500",
                     cursor: analyzing ? "not-allowed" : "pointer",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                     display: "flex",
                     alignItems: "center",
                     gap: "6px"
@@ -334,13 +334,13 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                   color: "#6b7280",
                   fontSize: "14px"
                 }}>
-                  Cliquez sur "Analyser" pour obtenir des recommandations d'apos;agents optimisées
+                  Cliquez sur "Analyser" pour obtenir des recommandations d'agents optimisées
                 </div>
               )}
             </div>
           )}
 
-          {/* Message d'apos;erreur */}
+          {/* Message d'erreur */}
           {error && (
             <div style={{
               background: "#fef2f2",
@@ -378,7 +378,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                 fontWeight: "600",
                 cursor: creating ? "not-allowed" : "pointer",
                 transition: "all 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onMouseOver={(e) => {
                 if (!creating) {
@@ -406,7 +406,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                 fontWeight: "600",
                 cursor: creating || !prompt.trim() ? "not-allowed" : "pointer",
                 transition: "background-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px"

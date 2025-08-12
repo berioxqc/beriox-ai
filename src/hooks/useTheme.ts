@@ -1,5 +1,5 @@
-import { useMemo } from 'apos;react'apos;;
-import theme, { createStyles } from 'apos;@/styles/theme'apos;;
+import { useMemo } from 'react';
+import theme, { createStyles } from '@/styles/theme';
 
 export const useTheme = () => {
   return useMemo(() => ({
@@ -15,26 +15,26 @@ export const useStyles = () => {
   return {
     // Layouts
     container: {
-      maxWidth: 'apos;1200px'apos;,
-      margin: 'apos;0 auto'apos;,
+      maxWidth: '1200px',
+      margin: '0 auto',
       padding: `0 ${t.spacing.lg}`
     },
     
     flexCenter: {
-      display: 'apos;flex'apos;,
-      alignItems: 'apos;center'apos;,
-      justifyContent: 'apos;center'apos;
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
     
     flexBetween: {
-      display: 'apos;flex'apos;,
-      alignItems: 'apos;center'apos;,
-      justifyContent: 'apos;space-between'apos;
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between'
     },
     
     // Textes
     title: {
-      fontSize: t.typography.fontSize['apos;2xl'apos;],
+      fontSize: t.typography.fontSize['2xl'],
       fontWeight: t.typography.fontWeight.bold,
       color: t.colors.text.primary,
       fontFamily: t.typography.fontFamily.primary,
@@ -68,7 +68,7 @@ export const useStyles = () => {
     
     // Composants communs
     page: {
-      minHeight: 'apos;100vh'apos;,
+      minHeight: '100vh',
       background: t.colors.background.secondary,
       fontFamily: t.typography.fontFamily.primary
     },
@@ -76,7 +76,7 @@ export const useStyles = () => {
     content: {
       marginLeft: t.components.sidebar.width,
       padding: t.spacing.xl,
-      minHeight: 'apos;100vh'apos;
+      minHeight: '100vh'
     },
     
     section: {
@@ -88,10 +88,10 @@ export const useStyles = () => {
     },
     
     // Status badges
-    statusBadge: (status: 'apos;pending'apos; | 'apos;progress'apos; | 'apos;completed'apos; | 'apos;error'apos;) => ({
-      display: 'apos;inline-flex'apos;,
-      alignItems: 'apos;center'apos;,
-      padding: 'apos;4px 12px'apos;,
+    statusBadge: (status: 'pending' | 'progress' | 'completed' | 'error') => ({
+      display: 'inline-flex',
+      alignItems: 'center',
+      padding: '4px 12px',
       borderRadius: t.borderRadius.full,
       fontSize: t.typography.fontSize.xs,
       fontWeight: t.typography.fontWeight.medium,
@@ -103,20 +103,20 @@ export const useStyles = () => {
     
     // Grilles
     grid: {
-      display: 'apos;grid'apos;,
+      display: 'grid',
       gap: t.spacing.lg
     },
     
     gridCols2: {
-      gridTemplateColumns: 'apos;repeat(2, 1fr)'apos;
+      gridTemplateColumns: 'repeat(2, 1fr)'
     },
     
     gridCols3: {
-      gridTemplateColumns: 'apos;repeat(3, 1fr)'apos;
+      gridTemplateColumns: 'repeat(3, 1fr)'
     },
     
     gridCols4: {
-      gridTemplateColumns: 'apos;repeat(4, 1fr)'apos;
+      gridTemplateColumns: 'repeat(4, 1fr)'
     }
   };
 };

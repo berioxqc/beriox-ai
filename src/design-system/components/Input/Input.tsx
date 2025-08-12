@@ -1,12 +1,12 @@
-import React from 'apos;react'apos;;
-import { designTokens } from 'apos;../../tokens'apos;;
+import React from 'react';
+import { designTokens } from '../../tokens';
 
-export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'apos;size'apos;> {
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
   helperText?: string;
-  size?: 'apos;sm'apos; | 'apos;md'apos; | 'apos;lg'apos;;
-  variant?: 'apos;default'apos; | 'apos;outlined'apos; | 'apos;filled'apos;;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'outlined' | 'filled';
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   fullWidth?: boolean;
@@ -16,12 +16,12 @@ const Input: React.FC<InputProps> = ({
   label,
   error,
   helperText,
-  size = 'apos;md'apos;,
-  variant = 'apos;default'apos;,
+  size = 'md',
+  variant = 'default',
   leftIcon,
   rightIcon,
   fullWidth = false,
-  className = 'apos;'apos;,
+  className = '',
   style,
   disabled,
   ...props
@@ -33,9 +33,9 @@ const Input: React.FC<InputProps> = ({
     borderRadius: designTokens.borderRadius.base,
     background: designTokens.colors.background.primary,
     color: designTokens.colors.text.primary,
-    outline: 'apos;none'apos;,
-    transition: 'apos;all 0.2s ease-in-out'apos;,
-    width: fullWidth ? 'apos;100%'apos; : 'apos;auto'apos;,
+    outline: 'none',
+    transition: 'all 0.2s ease-in-out',
+    width: fullWidth ? '100%' : 'auto',
     ...style,
   };
 
@@ -57,23 +57,23 @@ const Input: React.FC<InputProps> = ({
   const variantStyles = {
     default: {
       background: designTokens.colors.background.primary,
-      'apos;&:focus'apos;: {
+      '&:focus': {
         borderColor: designTokens.colors.primary[500],
         boxShadow: `0 0 0 3px ${designTokens.colors.primary[100]}`,
       },
     },
     outlined: {
-      background: 'apos;transparent'apos;,
-      borderWidth: 'apos;2px'apos;,
-      'apos;&:focus'apos;: {
+      background: 'transparent',
+      borderWidth: '2px',
+      '&:focus': {
         borderColor: designTokens.colors.primary[500],
         boxShadow: `0 0 0 3px ${designTokens.colors.primary[100]}`,
       },
     },
     filled: {
       background: designTokens.colors.neutral[50],
-      borderColor: 'apos;transparent'apos;,
-      'apos;&:focus'apos;: {
+      borderColor: 'transparent',
+      '&:focus': {
         background: designTokens.colors.background.primary,
         borderColor: designTokens.colors.primary[500],
         boxShadow: `0 0 0 3px ${designTokens.colors.primary[100]}`,
@@ -86,14 +86,14 @@ const Input: React.FC<InputProps> = ({
     ...sizeStyles[size],
     ...variantStyles[variant],
     opacity: disabled ? 0.6 : 1,
-    cursor: disabled ? 'apos;not-allowed'apos; : 'apos;text'apos;,
+    cursor: disabled ? 'not-allowed' : 'text',
   };
 
   const containerStyles: React.CSSProperties = {
-    display: 'apos;flex'apos;,
-    flexDirection: 'apos;column'apos;,
+    display: 'flex',
+    flexDirection: 'column',
     gap: designTokens.spacing[1],
-    width: fullWidth ? 'apos;100%'apos; : 'apos;auto'apos;,
+    width: fullWidth ? '100%' : 'auto',
   };
 
   const labelStyles: React.CSSProperties = {
@@ -110,16 +110,16 @@ const Input: React.FC<InputProps> = ({
   };
 
   const inputContainerStyles: React.CSSProperties = {
-    position: 'apos;relative'apos;,
-    display: 'apos;flex'apos;,
-    alignItems: 'apos;center'apos;,
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
   };
 
   const iconStyles: React.CSSProperties = {
-    position: 'apos;absolute'apos;,
-    display: 'apos;flex'apos;,
-    alignItems: 'apos;center'apos;,
-    justifyContent: 'apos;center'apos;,
+    position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     color: designTokens.colors.text.tertiary,
     zIndex: 1,
   };
@@ -141,7 +141,7 @@ const Input: React.FC<InputProps> = ({
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.style.borderColor = error ? designTokens.colors.error[500] : designTokens.colors.border.light;
-    e.currentTarget.style.boxShadow = 'apos;none'apos;;
+    e.currentTarget.style.boxShadow = 'none';
   };
 
   return (

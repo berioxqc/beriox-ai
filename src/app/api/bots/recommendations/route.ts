@@ -1,23 +1,23 @@
-import { NextRequest, NextResponse } from 'apos;next/server'apos;;
-import { getServerSession } from 'apos;next-auth'apos;;
-import { authOptions } from 'apos;@/app/api/auth/[...nextauth]/route'apos;;
-import { prisma } from 'apos;@/lib/prisma'apos;;
-import { BotRecommendationEngine } from 'apos;@/lib/bot-recommendations'apos;;
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { prisma } from '@/lib/prisma';
+import { BotRecommendationEngine } from '@/lib/bot-recommendations';
 
 export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'apos;Non autorisé'apos; }, { status: 401 });
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get('apos;type'apos;);
-    const priority = searchParams.get('apos;priority'apos;);
-    const status = searchParams.get('apos;status'apos;);
-    const limit = parseInt(searchParams.get('apos;limit'apos;) || 'apos;50'apos;);
-    const offset = parseInt(searchParams.get('apos;offset'apos;) || 'apos;0'apos;);
+    const type = searchParams.get('type');
+    const priority = searchParams.get('priority');
+    const status = searchParams.get('status');
+    const limit = parseInt(searchParams.get('limit') || '50');
+    const offset = parseInt(searchParams.get('offset') || '0');
 
     // Construire les filtres
     const where: unknown = {
@@ -31,8 +31,8 @@ export async function GET(request: NextRequest) {
     const recommendations = await prisma.botRecommendation.findMany({
       where,
       orderBy: [
-        { priority: 'apos;desc'apos; },
-        { createdAt: 'apos;desc'apos; }
+        { priority: 'desc' },
+        { createdAt: 'desc' }
       ],
       take: limit,
       skip: offset,
@@ -66,9 +66,9 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('apos;Erreur lors de la récupération des recommandations:'apos;, error);
+    console.error('Erreur lors de la récupération des recommandations:', error);
     return NextResponse.json(
-      { error: 'apos;Erreur interne du serveur'apos; },
+      { error: 'Erreur interne du serveur' },
       { status: 500 }
     );
   }
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'apos;Non autorisé'apos; }, { status: 401 });
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
     }
 
     const body = await request.json();
@@ -117,9 +117,9 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('apos;Erreur lors de la génération des recommandations:'apos;, error);
+    console.error('Erreur lors de la génération des recommandations:', error);
     return NextResponse.json(
-      { error: 'apos;Erreur interne du serveur'apos; },
+      { error: 'Erreur interne du serveur' },
       { status: 500 }
     );
   }

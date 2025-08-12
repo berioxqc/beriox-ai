@@ -1,13 +1,13 @@
-import { logger } from 'apos;@/lib/logger'apos;;
-import * as fs from 'apos;fs'apos;;
-import * as path from 'apos;path'apos;;
+import { logger } from '@/lib/logger';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export interface LinterFixResult {
   filePath: string;
   originalContent: string;
   fixedContent: string;
   changes: Array<{
-    type: 'apos;unused_variable'apos; | 'apos;any_type'apos; | 'apos;missing_deps'apos; | 'apos;unused_import'apos; | 'apos;unescaped_entity'apos;;
+    type: 'unused_variable' | 'any_type' | 'missing_deps' | 'unused_import' | 'unescaped_entity';
     line: number;
     description: string;
     fix: string;
@@ -32,14 +32,14 @@ export interface LinterFixReport {
 }
 
 export class LinterFixerBotService {
-  private fileExtensions = ['apos;.tsx'apos;, 'apos;.ts'apos;, 'apos;.jsx'apos;, 'apos;.js'apos;];
-  private excludeDirs = ['apos;node_modules'apos;, 'apos;.git'apos;, 'apos;.next'apos;, 'apos;dist'apos;, 'apos;build'apos;];
+  private fileExtensions = ['.tsx', '.ts', '.jsx', '.js'];
+  private excludeDirs = ['node_modules', '.git', '.next', 'dist', 'build'];
 
   /**
    * Analyse et corrige les erreurs de linter dans le projet
    */
   async fixLinterErrors(projectRoot: string = process.cwd(), dryRun: boolean = true): Promise<LinterFixReport> {
-    logger.info('apos;🧹 LinterFixerBot: Début de l\'apos;analyse des erreurs de linter'apos;, { projectRoot, dryRun });
+    logger.info('🧹 LinterFixerBot: Début de l\'analyse des erreurs de linter', { projectRoot, dryRun });
 
     const report: LinterFixReport = {
       totalFiles: 0,
@@ -76,19 +76,19 @@ export class LinterFixerBotService {
             // Mettre à jour le résumé
             result.changes.forEach(change => {
               switch (change.type) {
-                case 'apos;unused_variable'apos;:
+                case 'unused_variable':
                   report.summary.unusedVariables++;
                   break;
-                case 'apos;any_type'apos;:
+                case 'any_type':
                   report.summary.anyTypes++;
                   break;
-                case 'apos;missing_deps'apos;:
+                case 'missing_deps':
                   report.summary.missingDeps++;
                   break;
-                case 'apos;unused_import'apos;:
+                case 'unused_import':
                   report.summary.unusedImports++;
                   break;
-                case 'apos;unescaped_entity'apos;:
+                case 'unescaped_entity':
                   report.summary.unescapedEntities++;
                   break;
               }
@@ -101,7 +101,7 @@ export class LinterFixerBotService {
         }
       }
 
-      logger.info('apos;✅ LinterFixerBot: Analyse terminée'apos;, {
+      logger.info('✅ LinterFixerBot: Analyse terminée', {
         totalFiles: report.totalFiles,
         fixedFiles: report.fixedFiles,
         totalChanges: report.totalChanges
@@ -134,7 +134,7 @@ export class LinterFixerBotService {
           files.push(...this.getAllFiles(fullPath));
         }
       } else if (stat.isFile()) {
-        // Vérifier l'apos;extension
+        // Vérifier l'extension
         const ext = path.extname(item);
         if (this.fileExtensions.includes(ext)) {
           files.push(fullPath);
@@ -151,15 +151,15 @@ export class LinterFixerBotService {
   private async fixFile(filePath: string, dryRun: boolean): Promise<LinterFixResult> {
     const result: LinterFixResult = {
       filePath,
-      originalContent: 'apos;'apos;,
-      fixedContent: 'apos;'apos;,
+      originalContent: '',
+      fixedContent: '',
       changes: [],
       isValid: true
     };
 
     try {
       // Lire le contenu du fichier
-      result.originalContent = fs.readFileSync(filePath, 'apos;utf-8'apos;);
+      result.originalContent = fs.readFileSync(filePath, 'utf-8');
       result.fixedContent = result.originalContent;
 
       // Appliquer les corrections
@@ -169,7 +169,7 @@ export class LinterFixerBotService {
       await this.fixUnusedImports(result);
       await this.fixUnescapedEntities(result);
 
-      // Valider la syntaxe si ce n'apos;est pas un dry run
+      // Valider la syntaxe si ce n'est pas un dry run
       if (!dryRun && result.changes.length > 0) {
         result.isValid = await this.validateSyntax(result.fixedContent, filePath);
         
@@ -183,7 +183,7 @@ export class LinterFixerBotService {
           fs.writeFileSync(filePath, result.fixedContent);
           logger.info(`✅ Fichier corrigé: ${filePath}`);
         } else {
-          result.error = 'apos;Syntaxe invalide après correction'apos;;
+          result.error = 'Syntaxe invalide après correction';
           logger.warn(`⚠️ Syntaxe invalide dans ${filePath}`);
         }
       }
@@ -201,7 +201,7 @@ export class LinterFixerBotService {
    * Corrige les variables non utilisées
    */
   private async fixUnusedVariables(result: LinterFixResult): Promise<void> {
-    const lines = result.fixedContent.split('apos;\n'apos;);
+    const lines = result.fixedContent.split('\n');
     const changes: Array<{ line: number; original: string; fixed: string }> = [];
 
     for (let i = 0; i < lines.length; i++) {
@@ -226,9 +226,9 @@ export class LinterFixerBotService {
           const isUsed = this.isVariableUsed(result.fixedContent, varName, i);
           
           if (!isUsed && !this.isSpecialVariable(varName)) {
-            // Ajouter un underscore pour indiquer que c'apos;est intentionnel
+            // Ajouter un underscore pour indiquer que c'est intentionnel
             const fixedLine = line.replace(
-              new RegExp(`\\b${varName}\\b`, 'apos;g'apos;),
+              new RegExp(`\\b${varName}\\b`, 'g'),
               `_${varName}`
             );
             
@@ -246,7 +246,7 @@ export class LinterFixerBotService {
     changes.forEach(change => {
       result.fixedContent = result.fixedContent.replace(change.original, change.fixed);
       result.changes.push({
-        type: 'apos;unused_variable'apos;,
+        type: 'unused_variable',
         line: change.line,
         description: `Variable non utilisée corrigée: ${change.original.trim()}`,
         fix: change.fixed.trim()
@@ -258,7 +258,7 @@ export class LinterFixerBotService {
    * Corrige les types `any`
    */
   private async fixAnyTypes(result: LinterFixResult): Promise<void> {
-    const lines = result.fixedContent.split('apos;\n'apos;);
+    const lines = result.fixedContent.split('\n');
     const changes: Array<{ line: number; original: string; fixed: string }> = [];
 
     for (let i = 0; i < lines.length; i++) {
@@ -268,7 +268,7 @@ export class LinterFixerBotService {
       const anyPattern = /:\s*any\b/g;
       
       if (anyPattern.test(line)) {
-        // Essayer d'apos;inférer un type plus spécifique
+        // Essayer d'inférer un type plus spécifique
         const inferredType = this.inferTypeFromContext(line);
         
         if (inferredType) {
@@ -287,9 +287,9 @@ export class LinterFixerBotService {
     changes.forEach(change => {
       result.fixedContent = result.fixedContent.replace(change.original, change.fixed);
       result.changes.push({
-        type: 'apos;any_type'apos;,
+        type: 'any_type',
         line: change.line,
-        description: `Type 'apos;any'apos; remplacé par un type plus spécifique`,
+        description: `Type 'any' remplacé par un type plus spécifique`,
         fix: change.fixed.trim()
       });
     });
@@ -299,7 +299,7 @@ export class LinterFixerBotService {
    * Corrige les dépendances manquantes dans useEffect
    */
   private async fixMissingDependencies(result: LinterFixResult): Promise<void> {
-    const lines = result.fixedContent.split('apos;\n'apos;);
+    const lines = result.fixedContent.split('\n');
     const changes: Array<{ line: number; original: string; fixed: string }> = [];
 
     for (let i = 0; i < lines.length; i++) {
@@ -324,13 +324,13 @@ export class LinterFixerBotService {
             const beforeEnd = result.fixedContent.substring(0, endIndex);
             const afterEnd = result.fixedContent.substring(endIndex);
             
-            result.fixedContent = beforeEnd + `}, [${dependencies.join('apos;, 'apos;)}])` + afterEnd;
+            result.fixedContent = beforeEnd + `}, [${dependencies.join(', ')}])` + afterEnd;
             
             result.changes.push({
-              type: 'apos;missing_deps'apos;,
+              type: 'missing_deps',
               line: i + 1,
-              description: `Dépendances manquantes ajoutées: [${dependencies.join('apos;, 'apos;)}]`,
-              fix: `useEffect(() => { ... }, [${dependencies.join('apos;, 'apos;)}])`
+              description: `Dépendances manquantes ajoutées: [${dependencies.join(', ')}]`,
+              fix: `useEffect(() => { ... }, [${dependencies.join(', ')}])`
             });
           }
         }
@@ -342,27 +342,27 @@ export class LinterFixerBotService {
    * Corrige les imports non utilisés
    */
   private async fixUnusedImports(result: LinterFixResult): Promise<void> {
-    const lines = result.fixedContent.split('apos;\n'apos;);
+    const lines = result.fixedContent.split('\n');
     const changes: Array<{ line: number; original: string; fixed: string }> = [];
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       
       // Pattern pour détecter les imports
-      const importPattern = /import\s+{([^}]+)}\s+from\s+['apos;"][^'apos;"]+['apos;"]/;
+      const importPattern = /import\s+{([^}]+)}\s+from\s+['"][^'"]+['"]/;
       
       if (importPattern.test(line)) {
         const match = line.match(importPattern);
         if (match) {
-          const imports = match[1].split('apos;,'apos;).map(imp => imp.trim());
+          const imports = match[1].split(',').map(imp => imp.trim());
           const usedImports = imports.filter(imp => this.isImportUsed(result.fixedContent, imp));
           const unusedImports = imports.filter(imp => !this.isImportUsed(result.fixedContent, imp));
           
           if (unusedImports.length > 0) {
             if (usedImports.length > 0) {
               const fixedLine = line.replace(
-                `{${imports.join('apos;, 'apos;)}}`,
-                `{${usedImports.join('apos;, 'apos;)}}`
+                `{${imports.join(', ')}}`,
+                `{${usedImports.join(', ')}}`
               );
               
               changes.push({
@@ -371,11 +371,11 @@ export class LinterFixerBotService {
                 fixed: fixedLine
               });
             } else {
-              // Supprimer complètement l'apos;import s'apos;il n'apos;y a plus d'apos;imports utilisés
+              // Supprimer complètement l'import s'il n'y a plus d'imports utilisés
               changes.push({
                 line: i + 1,
                 original: line,
-                fixed: 'apos;'apos;
+                fixed: ''
               });
             }
           }
@@ -385,18 +385,18 @@ export class LinterFixerBotService {
 
     // Appliquer les changements
     changes.forEach(change => {
-      if (change.fixed === 'apos;'apos;) {
+      if (change.fixed === '') {
         // Supprimer la ligne
-        result.fixedContent = result.fixedContent.replace(change.original + 'apos;\n'apos;, 'apos;'apos;);
+        result.fixedContent = result.fixedContent.replace(change.original + '\n', '');
       } else {
         result.fixedContent = result.fixedContent.replace(change.original, change.fixed);
       }
       
       result.changes.push({
-        type: 'apos;unused_import'apos;,
+        type: 'unused_import',
         line: change.line,
         description: `Import non utilisé supprimé`,
-        fix: change.fixed || 'apos;(ligne supprimée)'apos;
+        fix: change.fixed || '(ligne supprimée)'
       });
     });
   }
@@ -405,7 +405,7 @@ export class LinterFixerBotService {
    * Corrige les entités non échappées
    */
   private async fixUnescapedEntities(result: LinterFixResult): Promise<void> {
-    const lines = result.fixedContent.split('apos;\n'apos;);
+    const lines = result.fixedContent.split('\n');
     const changes: Array<{ line: number; original: string; fixed: string }> = [];
 
     for (let i = 0; i < lines.length; i++) {
@@ -413,7 +413,7 @@ export class LinterFixerBotService {
       
       // Pattern pour détecter les apostrophes et guillemets non échappés dans JSX
       const unescapedPatterns = [
-        { pattern: /'apos;([^'apos;]*)'apos;/g, replacement: "'$1'" },
+        { pattern: /'([^']*)'/g, replacement: "'$1'" },
         { pattern: /"([^"]*)"/g, replacement: "&quot;$1&quot;" }
       ];
       
@@ -436,7 +436,7 @@ export class LinterFixerBotService {
     changes.forEach(change => {
       result.fixedContent = result.fixedContent.replace(change.original, change.fixed);
       result.changes.push({
-        type: 'apos;unescaped_entity'apos;,
+        type: 'unescaped_entity',
         line: change.line,
         description: `Entité non échappée corrigée`,
         fix: change.fixed.trim()
@@ -448,13 +448,13 @@ export class LinterFixerBotService {
    * Vérifie si une variable est utilisée dans le fichier
    */
   private isVariableUsed(content: string, varName: string, startLine: number): boolean {
-    const lines = content.split('apos;\n'apos;);
+    const lines = content.split('\n');
     
     for (let i = startLine + 1; i < lines.length; i++) {
       const line = lines[i];
       
-      // Pattern pour détecter l'apos;utilisation de la variable
-      const usagePattern = new RegExp(`\\b${varName}\\b`, 'apos;g'apos;);
+      // Pattern pour détecter l'utilisation de la variable
+      const usagePattern = new RegExp(`\\b${varName}\\b`, 'g');
       
       if (usagePattern.test(line)) {
         return true;
@@ -468,31 +468,31 @@ export class LinterFixerBotService {
    * Vérifie si une variable est spéciale (ne doit pas être préfixée)
    */
   private isSpecialVariable(varName: string): boolean {
-    const specialVars = ['apos;React'apos;, 'apos;useState'apos;, 'apos;useEffect'apos;, 'apos;useCallback'apos;, 'apos;useMemo'apos;, 'apos;props'apos;, 'apos;state'apos;];
-    return specialVars.includes(varName) || varName.startsWith('apos;_'apos;);
+    const specialVars = ['React', 'useState', 'useEffect', 'useCallback', 'useMemo', 'props', 'state'];
+    return specialVars.includes(varName) || varName.startsWith('_');
   }
 
   /**
    * Infère un type à partir du contexte
    */
   private inferTypeFromContext(line: string): string | null {
-    // Logique simple d'apos;inférence de type
-    if (line.includes('apos;[]'apos;)) return 'apos;any[]'apos;;
-    if (line.includes('apos;{}'apos;)) return 'apos;Record<string, any>'apos;;
-    if (line.includes('apos;string'apos;)) return 'apos;string'apos;;
-    if (line.includes('apos;number'apos;)) return 'apos;number'apos;;
-    if (line.includes('apos;boolean'apos;)) return 'apos;boolean'apos;;
-    if (line.includes('apos;Date'apos;)) return 'apos;Date'apos;;
-    if (line.includes('apos;Promise'apos;)) return 'apos;Promise<any>'apos;;
+    // Logique simple d'inférence de type
+    if (line.includes('[]')) return 'any[]';
+    if (line.includes('{}')) return 'Record<string, any>';
+    if (line.includes('string')) return 'string';
+    if (line.includes('number')) return 'number';
+    if (line.includes('boolean')) return 'boolean';
+    if (line.includes('Date')) return 'Date';
+    if (line.includes('Promise')) return 'Promise<any>';
     
-    return 'apos;unknown'apos;;
+    return 'unknown';
   }
 
   /**
    * Trouve les dépendances manquantes dans un useEffect
    */
   private findMissingDependencies(content: string, startLine: number): string[] {
-    const lines = content.split('apos;\n'apos;);
+    const lines = content.split('\n');
     const dependencies: string[] = [];
     
     // Logique simplifiée pour trouver les dépendances
@@ -512,21 +512,21 @@ export class LinterFixerBotService {
       }
       
       // Arrêter à la fin du useEffect
-      if (line.includes('apos;}, ['apos;)) break;
+      if (line.includes('}, [')) break;
     }
     
     return dependencies;
   }
 
   /**
-   * Trouve la fin d'apos;un useEffect
+   * Trouve la fin d'un useEffect
    */
   private findUseEffectEnd(content: string, startLine: number): number {
-    const lines = content.split('apos;\n'apos;);
+    const lines = content.split('\n');
     
     for (let i = startLine; i < lines.length; i++) {
       const line = lines[i];
-      if (line.includes('apos;}, ['apos;)) {
+      if (line.includes('}, [')) {
         return content.indexOf(line) + line.length;
       }
     }
@@ -538,7 +538,7 @@ export class LinterFixerBotService {
    * Vérifie si un import est utilisé dans le fichier
    */
   private isImportUsed(content: string, importName: string): boolean {
-    const usagePattern = new RegExp(`\\b${importName}\\b`, 'apos;g'apos;);
+    const usagePattern = new RegExp(`\\b${importName}\\b`, 'g');
     return usagePattern.test(content);
   }
 
@@ -549,9 +549,9 @@ export class LinterFixerBotService {
     try {
       const ext = path.extname(filePath);
 
-      if (ext === 'apos;.ts'apos; || ext === 'apos;.tsx'apos;) {
+      if (ext === '.ts' || ext === '.tsx') {
         return this.validateTypeScript(content);
-      } else if (ext === 'apos;.js'apos; || ext === 'apos;.jsx'apos;) {
+      } else if (ext === '.js' || ext === '.jsx') {
         return this.validateJavaScript(content);
       }
 
@@ -571,7 +571,7 @@ export class LinterFixerBotService {
       const checks = [
         // Vérifier les guillemets non fermés
         () => {
-          const singleQuotes = (content.match(/'apos;/g) || []).length;
+          const singleQuotes = (content.match(/'/g) || []).length;
           const doubleQuotes = (content.match(/"/g) || []).length;
           return singleQuotes % 2 === 0 && doubleQuotes % 2 === 0;
         },
@@ -606,10 +606,10 @@ export class LinterFixerBotService {
    * Génère un rapport détaillé
    */
   generateDetailedReport(report: LinterFixReport): string {
-    let output = 'apos;'apos;;
+    let output = '';
 
-    output += 'apos;🧹 RAPPORT LinterFixerBot\n'apos;;
-    output += 'apos;='apos;.repeat(50) + 'apos;\n\n'apos;;
+    output += '🧹 RAPPORT LinterFixerBot\n';
+    output += '='.repeat(50) + '\n\n';
 
     output += `📊 RÉSUMÉ GÉNÉRAL\n`;
     output += `- Fichiers analysés: ${report.totalFiles}\n`;
@@ -619,7 +619,7 @@ export class LinterFixerBotService {
 
     output += `📈 DÉTAIL DES CORRECTIONS\n`;
     output += `- Variables non utilisées: ${report.summary.unusedVariables}\n`;
-    output += `- Types 'apos;any'apos;: ${report.summary.anyTypes}\n`;
+    output += `- Types 'any': ${report.summary.anyTypes}\n`;
     output += `- Dépendances manquantes: ${report.summary.missingDeps}\n`;
     output += `- Imports non utilisés: ${report.summary.unusedImports}\n`;
     output += `- Entités non échappées: ${report.summary.unescapedEntities}\n\n`;

@@ -12,7 +12,7 @@ import {
 
 interface AccessGuardProps {
   children: React.ReactNode;
-  requiredRole?: 'apos;USER'apos; | 'apos;ADMIN'apos; | 'apos;SUPER_ADMIN'apos;;
+  requiredRole?: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
   requiredPlan?: string[];
   premiumOnly?: boolean;
   superAdminOnly?: boolean;
@@ -52,27 +52,27 @@ export default function AccessGuard({
       
       // Récupérer les informations utilisateur
       const [profileRes, premiumRes] = await Promise.all([
-        fetch('apos;/api/user/profile'apos;),
-        fetch('apos;/api/user/premium-info'apos;)
+        fetch('/api/user/profile'),
+        fetch('/api/user/premium-info')
       ]);
 
       const profile = profileRes.ok ? await profileRes.json() : null;
       const premiumInfo = premiumRes.ok ? await premiumRes.json() : null;
 
       const permissions: UserPermissions = {
-        role: profile?.user?.role || 'apos;USER'apos;,
+        role: profile?.user?.role || 'USER',
         plan: premiumInfo?.planId,
         hasAccess: premiumInfo?.hasAccess || false
       };
 
       setUserPermissions(permissions);
 
-      // Vérifier l'apos;accès
+      // Vérifier l'accès
       const access = hasRouteAccess(window.location.pathname, permissions);
       setHasAccess(access);
 
     } catch (error) {
-      console.error('apos;Erreur lors de la vérification des permissions:'apos;, error);
+      console.error('Erreur lors de la vérification des permissions:', error);
       setHasAccess(false);
     } finally {
       setLoading(false);
@@ -83,34 +83,34 @@ export default function AccessGuard({
   if (status === "loading" || loading) {
     return (
       <div style={{
-        display: 'apos;flex'apos;,
-        flexDirection: 'apos;column'apos;,
-        alignItems: 'apos;center'apos;,
-        justifyContent: 'apos;center'apos;,
-        minHeight: 'apos;100vh'apos;,
-        backgroundColor: 'apos;#f8fafc'apos;,
-        gap: 'apos;20px'apos;
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#f8fafc',
+        gap: '20px'
       }}>
         <div style={{
-          width: 'apos;48px'apos;,
-          height: 'apos;48px'apos;,
-          border: 'apos;4px solid #e3e8ee'apos;,
-          borderTop: 'apos;4px solid #635bff'apos;,
-          borderRadius: 'apos;50%'apos;,
-          animation: 'apos;spin 1s linear infinite'apos;
+          width: '48px',
+          height: '48px',
+          border: '4px solid #e3e8ee',
+          borderTop: '4px solid #635bff',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
         }}></div>
-        <div style={{ textAlign: 'apos;center'apos; }}>
+        <div style={{ textAlign: 'center' }}>
           <h2 style={{
-            fontSize: 'apos;18px'apos;,
-            fontWeight: 'apos;600'apos;,
-            color: 'apos;#0a2540'apos;,
-            margin: 'apos;0 0 8px 0'apos;
+            fontSize: '18px',
+            fontWeight: '600',
+            color: '#0a2540',
+            margin: '0 0 8px 0'
           }}>
             Vérification des permissions
           </h2>
           <p style={{
-            color: 'apos;#6b7280'apos;,
-            fontSize: 'apos;14px'apos;,
+            color: '#6b7280',
+            fontSize: '14px',
             margin: 0
           }}>
             Validation de votre accès...
@@ -130,114 +130,114 @@ export default function AccessGuard({
 
     return (
       <div style={{
-        display: 'apos;flex'apos;,
-        flexDirection: 'apos;column'apos;,
-        alignItems: 'apos;center'apos;,
-        justifyContent: 'apos;center'apos;,
-        minHeight: 'apos;100vh'apos;,
-        backgroundColor: 'apos;#f8fafc'apos;,
-        gap: 'apos;24px'apos;,
-        padding: 'apos;24px'apos;
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        backgroundColor: '#f8fafc',
+        gap: '24px',
+        padding: '24px'
       }}>
         <div style={{
-          width: 'apos;80px'apos;,
-          height: 'apos;80px'apos;,
-          borderRadius: 'apos;50%'apos;,
-          backgroundColor: 'apos;#fee2e2'apos;,
-          display: 'apos;flex'apos;,
-          alignItems: 'apos;center'apos;,
-          justifyContent: 'apos;center'apos;,
-          fontSize: 'apos;32px'apos;
+          width: '80px',
+          height: '80px',
+          borderRadius: '50%',
+          backgroundColor: '#fee2e2',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '32px'
         }}>
           🚫
         </div>
         
-        <div style={{ textAlign: 'apos;center'apos;, maxWidth: 'apos;500px'apos; }}>
+        <div style={{ textAlign: 'center', maxWidth: '500px' }}>
           <h1 style={{
-            fontSize: 'apos;24px'apos;,
-            fontWeight: 'apos;700'apos;,
-            color: 'apos;#dc2626'apos;,
-            margin: 'apos;0 0 12px 0'apos;
+            fontSize: '24px',
+            fontWeight: '700',
+            color: '#dc2626',
+            margin: '0 0 12px 0'
           }}>
             Accès Refusé
           </h1>
           
           <p style={{
-            color: 'apos;#6b7280'apos;,
-            fontSize: 'apos;16px'apos;,
-            margin: 'apos;0 0 32px 0'apos;,
-            lineHeight: 'apos;1.5'apos;
+            color: '#6b7280',
+            fontSize: '16px',
+            margin: '0 0 32px 0',
+            lineHeight: '1.5'
           }}>
             {errorMessage}
           </p>
 
           <div style={{
-            display: 'apos;flex'apos;,
-            gap: 'apos;12px'apos;,
-            justifyContent: 'apos;center'apos;,
-            flexWrap: 'apos;wrap'apos;
+            display: 'flex',
+            gap: '12px',
+            justifyContent: 'center',
+            flexWrap: 'wrap'
           }}>
             <button
-              onClick={() => router.push('apos;/'apos;)}
+              onClick={() => router.push('/')}
               style={{
                 ...styles.button,
                 backgroundColor: theme.primary,
-                color: 'apos;white'apos;
+                color: 'white'
               }}
             >
-              <Icon name="home" style={{ marginRight: 'apos;8px'apos; }} />
-              Retour à l'apos;accueil
+              <Icon name="home" style={{ marginRight: '8px' }} />
+              Retour à l'accueil
             </button>
             
             <button
-              onClick={() => router.push('apos;/pricing'apos;)}
+              onClick={() => router.push('/pricing')}
               style={{
                 ...styles.button,
                 backgroundColor: theme.border,
                 color: theme.text
               }}
             >
-              <Icon name="dollar-sign" style={{ marginRight: 'apos;8px'apos; }} />
+              <Icon name="dollar-sign" style={{ marginRight: '8px' }} />
               Voir les abonnements
             </button>
           </div>
         </div>
 
-        {/* Informations supplémentaires selon le type d'apos;accès refusé */}
-        {userPermissions.role === 'apos;USER'apos; && (
+        {/* Informations supplémentaires selon le type d'accès refusé */}
+        {userPermissions.role === 'USER' && (
           <div style={{
-            backgroundColor: 'apos;white'apos;,
-            border: 'apos;1px solid #e5e7eb'apos;,
-            borderRadius: 'apos;12px'apos;,
-            padding: 'apos;20px'apos;,
-            maxWidth: 'apos;500px'apos;,
-            textAlign: 'apos;center'apos;
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: '12px',
+            padding: '20px',
+            maxWidth: '500px',
+            textAlign: 'center'
           }}>
             <h3 style={{
-              fontSize: 'apos;16px'apos;,
-              fontWeight: 'apos;600'apos;,
-              margin: 'apos;0 0 12px 0'apos;,
+              fontSize: '16px',
+              fontWeight: '600',
+              margin: '0 0 12px 0',
               color: theme.text
             }}>
-              Besoin d'apos;un accès premium ?
+              Besoin d'un accès premium ?
             </h3>
             <p style={{
               color: theme.textSecondary,
-              fontSize: 'apos;14px'apos;,
-              margin: 'apos;0 0 16px 0'apos;
+              fontSize: '14px',
+              margin: '0 0 16px 0'
             }}>
               Contactez votre administrateur ou passez à un plan supérieur pour accéder à cette fonctionnalité.
             </p>
             <button
-              onClick={() => router.push('apos;/profile'apos;)}
+              onClick={() => router.push('/profile')}
               style={{
                 ...styles.button,
                 backgroundColor: theme.primary,
-                color: 'apos;white'apos;,
-                fontSize: 'apos;14px'apos;
+                color: 'white',
+                fontSize: '14px'
               }}
             >
-              <Icon name="user" style={{ marginRight: 'apos;8px'apos; }} />
+              <Icon name="user" style={{ marginRight: '8px' }} />
               Mon profil
             </button>
           </div>

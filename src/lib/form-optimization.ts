@@ -1,33 +1,33 @@
-import { logger } from 'apos;./logger'apos;;
-import { metrics } from 'apos;./metrics'apos;;
+import { logger } from './logger';
+import { metrics } from './metrics';
 
 export enum FormFieldType {
-  TEXT = 'apos;text'apos;,
-  EMAIL = 'apos;email'apos;,
-  PASSWORD = 'apos;password'apos;,
-  NUMBER = 'apos;number'apos;,
-  SELECT = 'apos;select'apos;,
-  MULTISELECT = 'apos;multiselect'apos;,
-  CHECKBOX = 'apos;checkbox'apos;,
-  RADIO = 'apos;radio'apos;,
-  TEXTAREA = 'apos;textarea'apos;,
-  DATE = 'apos;date'apos;,
-  DATETIME = 'apos;datetime'apos;,
-  FILE = 'apos;file'apos;,
-  URL = 'apos;url'apos;,
-  PHONE = 'apos;phone'apos;,
-  CURRENCY = 'apos;currency'apos;
+  TEXT = 'text',
+  EMAIL = 'email',
+  PASSWORD = 'password',
+  NUMBER = 'number',
+  SELECT = 'select',
+  MULTISELECT = 'multiselect',
+  CHECKBOX = 'checkbox',
+  RADIO = 'radio',
+  TEXTAREA = 'textarea',
+  DATE = 'date',
+  DATETIME = 'datetime',
+  FILE = 'file',
+  URL = 'url',
+  PHONE = 'phone',
+  CURRENCY = 'currency'
 }
 
 export enum ValidationRule {
-  REQUIRED = 'apos;required'apos;,
-  EMAIL = 'apos;email'apos;,
-  MIN_LENGTH = 'apos;min_length'apos;,
-  MAX_LENGTH = 'apos;max_length'apos;,
-  PATTERN = 'apos;pattern'apos;,
-  MIN_VALUE = 'apos;min_value'apos;,
-  MAX_VALUE = 'apos;max_value'apos;,
-  CUSTOM = 'apos;custom'apos;
+  REQUIRED = 'required',
+  EMAIL = 'email',
+  MIN_LENGTH = 'min_length',
+  MAX_LENGTH = 'max_length',
+  PATTERN = 'pattern',
+  MIN_VALUE = 'min_value',
+  MAX_VALUE = 'max_value',
+  CUSTOM = 'custom'
 }
 
 export interface FormField {
@@ -59,7 +59,7 @@ export interface FormConfig {
   cancelButtonText?: string;
   autoSave?: boolean;
   autoSaveInterval?: number; // en millisecondes
-  validationMode?: 'apos;onBlur'apos; | 'apos;onChange'apos; | 'apos;onSubmit'apos;;
+  validationMode?: 'onBlur' | 'onChange' | 'onSubmit';
   showProgress?: boolean;
   allowDraft?: boolean;
   maxRetries?: number;
@@ -107,8 +107,8 @@ export interface FormAnalytics {
 export interface FormOptimization {
   formId: string;
   suggestions: Array<{
-    type: 'apos;field_order'apos; | 'apos;field_removal'apos; | 'apos;field_addition'apos; | 'apos;validation'apos; | 'apos;ui_improvement'apos;;
-    priority: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
+    type: 'field_order' | 'field_removal' | 'field_addition' | 'validation' | 'ui_improvement';
+    priority: 'low' | 'medium' | 'high';
     description: string;
     impact: number; // 0-100
     implementation: string;
@@ -138,60 +138,60 @@ class FormOptimizer {
   private initializeDefaultForms() {
     // Formulaire de contact optimisé
     this.addForm({
-      id: 'apos;contact-form'apos;,
-      name: 'apos;Formulaire de Contact'apos;,
-      description: 'apos;Formulaire de contact optimisé pour la conversion'apos;,
+      id: 'contact-form',
+      name: 'Formulaire de Contact',
+      description: 'Formulaire de contact optimisé pour la conversion',
       fields: [
         {
-          id: 'apos;name'apos;,
-          name: 'apos;name'apos;,
+          id: 'name',
+          name: 'name',
           type: FormFieldType.TEXT,
-          label: 'apos;Nom complet'apos;,
-          placeholder: 'apos;Votre nom complet'apos;,
+          label: 'Nom complet',
+          placeholder: 'Votre nom complet',
           required: true,
           validation: [ValidationRule.REQUIRED, ValidationRule.MIN_LENGTH],
           validationConfig: { min_length: 2 },
           order: 1
         },
         {
-          id: 'apos;email'apos;,
-          name: 'apos;email'apos;,
+          id: 'email',
+          name: 'email',
           type: FormFieldType.EMAIL,
-          label: 'apos;Email'apos;,
-          placeholder: 'apos;votre@email.com'apos;,
+          label: 'Email',
+          placeholder: 'votre@email.com',
           required: true,
           validation: [ValidationRule.REQUIRED, ValidationRule.EMAIL],
           order: 2
         },
         {
-          id: 'apos;company'apos;,
-          name: 'apos;company'apos;,
+          id: 'company',
+          name: 'company',
           type: FormFieldType.TEXT,
-          label: 'apos;Entreprise'apos;,
-          placeholder: 'apos;Nom de votre entreprise'apos;,
+          label: 'Entreprise',
+          placeholder: 'Nom de votre entreprise',
           required: false,
           order: 3
         },
         {
-          id: 'apos;message'apos;,
-          name: 'apos;message'apos;,
+          id: 'message',
+          name: 'message',
           type: FormFieldType.TEXTAREA,
-          label: 'apos;Message'apos;,
-          placeholder: 'apos;Décrivez votre projet...'apos;,
+          label: 'Message',
+          placeholder: 'Décrivez votre projet...',
           required: true,
           validation: [ValidationRule.REQUIRED, ValidationRule.MIN_LENGTH],
           validationConfig: { min_length: 10 },
           order: 4
         }
       ],
-      submitButtonText: 'apos;Envoyer le message'apos;,
+      submitButtonText: 'Envoyer le message',
       autoSave: true,
       autoSaveInterval: 30000, // 30 secondes
-      validationMode: 'apos;onBlur'apos;,
+      validationMode: 'onBlur',
       showProgress: true,
       allowDraft: true,
       maxRetries: 3,
-      successMessage: 'apos;Message envoyé avec succès !'apos;,
+      successMessage: 'Message envoyé avec succès !',
       analytics: {
         trackAbandonment: true,
         trackTimeSpent: true,
@@ -199,86 +199,86 @@ class FormOptimizer {
       }
     });
 
-    // Formulaire d'apos;inscription optimisé
+    // Formulaire d'inscription optimisé
     this.addForm({
-      id: 'apos;signup-form'apos;,
-      name: 'apos;Inscription'apos;,
-      description: 'apos;Formulaire d\'apos;inscription avec validation progressive'apos;,
+      id: 'signup-form',
+      name: 'Inscription',
+      description: 'Formulaire d\'inscription avec validation progressive',
       fields: [
         {
-          id: 'apos;firstName'apos;,
-          name: 'apos;firstName'apos;,
+          id: 'firstName',
+          name: 'firstName',
           type: FormFieldType.TEXT,
-          label: 'apos;Prénom'apos;,
-          placeholder: 'apos;Votre prénom'apos;,
+          label: 'Prénom',
+          placeholder: 'Votre prénom',
           required: true,
           validation: [ValidationRule.REQUIRED],
           order: 1
         },
         {
-          id: 'apos;lastName'apos;,
-          name: 'apos;lastName'apos;,
+          id: 'lastName',
+          name: 'lastName',
           type: FormFieldType.TEXT,
-          label: 'apos;Nom'apos;,
-          placeholder: 'apos;Votre nom'apos;,
+          label: 'Nom',
+          placeholder: 'Votre nom',
           required: true,
           validation: [ValidationRule.REQUIRED],
           order: 2
         },
         {
-          id: 'apos;email'apos;,
-          name: 'apos;email'apos;,
+          id: 'email',
+          name: 'email',
           type: FormFieldType.EMAIL,
-          label: 'apos;Email'apos;,
-          placeholder: 'apos;votre@email.com'apos;,
+          label: 'Email',
+          placeholder: 'votre@email.com',
           required: true,
           validation: [ValidationRule.REQUIRED, ValidationRule.EMAIL],
           order: 3
         },
         {
-          id: 'apos;password'apos;,
-          name: 'apos;password'apos;,
+          id: 'password',
+          name: 'password',
           type: FormFieldType.PASSWORD,
-          label: 'apos;Mot de passe'apos;,
-          placeholder: 'apos;Créez un mot de passe sécurisé'apos;,
+          label: 'Mot de passe',
+          placeholder: 'Créez un mot de passe sécurisé',
           required: true,
           validation: [ValidationRule.REQUIRED, ValidationRule.MIN_LENGTH, ValidationRule.PATTERN],
           validationConfig: { 
             min_length: 8,
-            pattern: 'apos;^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'apos;
+            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
           },
-          helpText: 'apos;Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial'apos;,
+          helpText: 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
           order: 4
         },
         {
-          id: 'apos;confirmPassword'apos;,
-          name: 'apos;confirmPassword'apos;,
+          id: 'confirmPassword',
+          name: 'confirmPassword',
           type: FormFieldType.PASSWORD,
-          label: 'apos;Confirmer le mot de passe'apos;,
-          placeholder: 'apos;Confirmez votre mot de passe'apos;,
+          label: 'Confirmer le mot de passe',
+          placeholder: 'Confirmez votre mot de passe',
           required: true,
           validation: [ValidationRule.REQUIRED, ValidationRule.CUSTOM],
           validationConfig: { 
             custom: (value: string, formData: Record<string, any>) => value === formData.password 
           },
-          dependencies: ['apos;password'apos;],
+          dependencies: ['password'],
           order: 5
         },
         {
-          id: 'apos;acceptTerms'apos;,
-          name: 'apos;acceptTerms'apos;,
+          id: 'acceptTerms',
+          name: 'acceptTerms',
           type: FormFieldType.CHECKBOX,
-          label: 'apos;J\'apos;accepte les conditions d\'apos;utilisation'apos;,
+          label: 'J\'accepte les conditions d\'utilisation',
           required: true,
           validation: [ValidationRule.REQUIRED],
           order: 6
         }
       ],
-      submitButtonText: 'apos;Créer mon compte'apos;,
-      validationMode: 'apos;onChange'apos;,
+      submitButtonText: 'Créer mon compte',
+      validationMode: 'onChange',
       showProgress: true,
-      successMessage: 'apos;Compte créé avec succès !'apos;,
-      redirectUrl: 'apos;/dashboard'apos;,
+      successMessage: 'Compte créé avec succès !',
+      redirectUrl: '/dashboard',
       analytics: {
         trackAbandonment: true,
         trackTimeSpent: true,
@@ -308,7 +308,7 @@ class FormOptimizer {
     });
 
     logger.info(`Form added: ${config.name}`, {
-      action: 'apos;form_added'apos;,
+      action: 'form_added',
       metadata: { formId: config.id, fieldCount: config.fields.length }
     });
   }
@@ -352,18 +352,18 @@ class FormOptimizer {
     if (analytics) {
       analytics.totalStarts++;
       analytics.userJourney.push({
-        action: 'apos;form_started'apos;,
+        action: 'form_started',
         timestamp: new Date(),
         data: { userId, sessionId }
       });
     }
 
     logger.info(`Form started: ${formId}`, {
-      action: 'apos;form_started'apos;,
+      action: 'form_started',
       metadata: { formId, userId, sessionId }
     });
 
-    metrics.recordUserAction('apos;form_started'apos;, userId, { formId });
+    metrics.recordUserAction('form_started', userId, { formId });
 
     return formData;
   }
@@ -402,14 +402,14 @@ class FormOptimizer {
     const analytics = this.analytics.get(formData.formId);
     if (analytics) {
       analytics.userJourney.push({
-        action: 'apos;field_updated'apos;,
+        action: 'field_updated',
         timestamp: new Date(),
         data: { fieldId, value, progress: formData.progress }
       });
     }
 
     logger.info(`Form data updated: ${fieldId}`, {
-      action: 'apos;form_data_updated'apos;,
+      action: 'form_data_updated',
       metadata: { formId: formData.formId, fieldId, sessionId, progress: formData.progress }
     });
 
@@ -460,27 +460,27 @@ class FormOptimizer {
     for (const rule of field.validation) {
       switch (rule) {
         case ValidationRule.REQUIRED:
-          if (!value || (typeof value === 'apos;string'apos; && value.trim() === 'apos;'apos;)) {
+          if (!value || (typeof value === 'string' && value.trim() === '')) {
             errors.push(field.errorMessage || `${field.label} est requis`);
           }
           break;
 
         case ValidationRule.EMAIL:
           if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-            errors.push(field.errorMessage || 'apos;Format d\'apos;email invalide'apos;);
+            errors.push(field.errorMessage || 'Format d\'email invalide');
           }
           break;
 
         case ValidationRule.MIN_LENGTH:
           const minLength = field.validationConfig?.min_length || 0;
-          if (value && typeof value === 'apos;string'apos; && value.length < minLength) {
+          if (value && typeof value === 'string' && value.length < minLength) {
             errors.push(field.errorMessage || `${field.label} doit contenir au moins ${minLength} caractères`);
           }
           break;
 
         case ValidationRule.MAX_LENGTH:
           const maxLength = field.validationConfig?.max_length || 0;
-          if (value && typeof value === 'apos;string'apos; && value.length > maxLength) {
+          if (value && typeof value === 'string' && value.length > maxLength) {
             errors.push(field.errorMessage || `${field.label} ne peut pas dépasser ${maxLength} caractères`);
           }
           break;
@@ -508,13 +508,13 @@ class FormOptimizer {
 
         case ValidationRule.CUSTOM:
           const customValidator = field.validationConfig?.custom;
-          if (customValidator && typeof customValidator === 'apos;function'apos;) {
+          if (customValidator && typeof customValidator === 'function') {
             try {
               if (!customValidator(value, formData)) {
-                errors.push(field.errorMessage || `${field.label} n'apos;est pas valide`);
+                errors.push(field.errorMessage || `${field.label} n'est pas valide`);
               }
             } catch (error) {
-              errors.push('apos;Erreur de validation personnalisée'apos;);
+              errors.push('Erreur de validation personnalisée');
             }
           }
           break;
@@ -530,7 +530,7 @@ class FormOptimizer {
 
     const completedFields = requiredFields.filter(field => {
       const value = data[field.id];
-      return value && (typeof value !== 'apos;string'apos; || value.trim() !== 'apos;'apos;);
+      return value && (typeof value !== 'string' || value.trim() !== '');
     });
 
     return Math.round((completedFields.length / requiredFields.length) * 100);
@@ -557,14 +557,14 @@ class FormOptimizer {
       const analytics = this.analytics.get(formData.formId);
       if (analytics) {
         analytics.userJourney.push({
-          action: 'apos;form_submission_failed'apos;,
+          action: 'form_submission_failed',
           timestamp: new Date(),
           data: { errors: validation.errors, retryCount: formData.retryCount }
         });
       }
 
       logger.warn(`Form submission failed: ${formData.formId}`, {
-        action: 'apos;form_submission_failed'apos;,
+        action: 'form_submission_failed',
         metadata: { formId: formData.formId, sessionId, errors: validation.errors }
       });
 
@@ -583,18 +583,18 @@ class FormOptimizer {
       analytics.averageTimeSpent = this.calculateAverageTimeSpent(formData.formId);
       analytics.completionRate = (analytics.totalCompletions / analytics.totalStarts) * 100;
       analytics.userJourney.push({
-        action: 'apos;form_submitted'apos;,
+        action: 'form_submitted',
         timestamp: new Date(),
         data: { timeSpent: (new Date().getTime() - formData.startTime.getTime()) / 1000 }
       });
     }
 
     logger.info(`Form submitted: ${formData.formId}`, {
-      action: 'apos;form_submitted'apos;,
+      action: 'form_submitted',
       metadata: { formId: formData.formId, sessionId, timeSpent: (new Date().getTime() - formData.startTime.getTime()) / 1000 }
     });
 
-    metrics.recordUserAction('apos;form_submitted'apos;, formData.userId, { 
+    metrics.recordUserAction('form_submitted', formData.userId, { 
       formId: formData.formId,
       timeSpent: (new Date().getTime() - formData.startTime.getTime()) / 1000
     });
@@ -611,7 +611,7 @@ class FormOptimizer {
     formData.lastActivity = new Date();
 
     logger.info(`Form draft saved: ${formData.formId}`, {
-      action: 'apos;form_draft_saved'apos;,
+      action: 'form_draft_saved',
       metadata: { formId: formData.formId, sessionId }
     });
 
@@ -629,7 +629,7 @@ class FormOptimizer {
       analytics.totalAbandonments++;
       analytics.abandonmentRate = (analytics.totalAbandonments / analytics.totalStarts) * 100;
       analytics.userJourney.push({
-        action: 'apos;form_abandoned'apos;,
+        action: 'form_abandoned',
         timestamp: new Date(),
         data: { 
           reason,
@@ -638,7 +638,7 @@ class FormOptimizer {
         }
       });
 
-      // Identifier le point d'apos;abandon
+      // Identifier le point d'abandon
       const lastField = this.getLastActiveField(formData);
       if (lastField) {
         const existingPoint = analytics.topAbandonmentPoints.find(p => p.field === lastField);
@@ -652,7 +652,7 @@ class FormOptimizer {
     }
 
     logger.info(`Form abandoned: ${formData.formId}`, {
-      action: 'apos;form_abandoned'apos;,
+      action: 'form_abandoned',
       metadata: { 
         formId: formData.formId, 
         sessionId, 
@@ -661,7 +661,7 @@ class FormOptimizer {
       }
     });
 
-    metrics.recordUserAction('apos;form_abandoned'apos;, formData.userId, { 
+    metrics.recordUserAction('form_abandoned', formData.userId, { 
       formId: formData.formId,
       progress: formData.progress,
       reason
@@ -688,7 +688,7 @@ class FormOptimizer {
 
     // Calculer le temps moyen basé sur les soumissions récentes
     const recentSubmissions = analytics.userJourney
-      .filter(j => j.action === 'apos;form_submitted'apos;)
+      .filter(j => j.action === 'form_submitted')
       .slice(-10); // 10 dernières soumissions
 
     if (recentSubmissions.length === 0) return 0;
@@ -713,39 +713,39 @@ class FormOptimizer {
       return { formId, suggestions: [], aBTestVariants: [] };
     }
 
-    const suggestions: FormOptimization['apos;suggestions'apos;] = [];
+    const suggestions: FormOptimization['suggestions'] = [];
 
-    // Analyser les points d'apos;abandon
+    // Analyser les points d'abandon
     if (analytics.topAbandonmentPoints.length > 0) {
       const topAbandonment = analytics.topAbandonmentPoints[0];
       suggestions.push({
-        type: 'apos;field_order'apos;,
-        priority: 'apos;high'apos;,
+        type: 'field_order',
+        priority: 'high',
         description: `Le champ "${topAbandonment.field}" cause ${topAbandonment.count} abandons. Considérer le déplacer ou le simplifier.`,
         impact: Math.min(90, topAbandonment.count * 10),
-        implementation: 'apos;Réorganiser les champs ou simplifier la validation'apos;
+        implementation: 'Réorganiser les champs ou simplifier la validation'
       });
     }
 
     // Analyser le taux de complétion
     if (analytics.completionRate < 50) {
       suggestions.push({
-        type: 'apos;ui_improvement'apos;,
-        priority: 'apos;high'apos;,
-        description: `Taux de complétion faible (${analytics.completionRate.toFixed(1)}%). Améliorer l\'apos;UX.`,
+        type: 'ui_improvement',
+        priority: 'high',
+        description: `Taux de complétion faible (${analytics.completionRate.toFixed(1)}%). Améliorer l\'UX.`,
         impact: 80,
-        implementation: 'apos;Ajouter des indicateurs de progression, simplifier les champs'apos;
+        implementation: 'Ajouter des indicateurs de progression, simplifier les champs'
       });
     }
 
     // Analyser le temps moyen
     if (analytics.averageTimeSpent > 300) { // Plus de 5 minutes
       suggestions.push({
-        type: 'apos;field_removal'apos;,
-        priority: 'apos;medium'apos;,
+        type: 'field_removal',
+        priority: 'medium',
         description: `Temps moyen élevé (${Math.round(analytics.averageTimeSpent)}s). Considérer supprimer des champs non essentiels.`,
         impact: 60,
-        implementation: 'apos;Identifier et supprimer les champs optionnels'apos;
+        implementation: 'Identifier et supprimer les champs optionnels'
       });
     }
 
@@ -755,19 +755,19 @@ class FormOptimizer {
     
     if (topErrorField) {
       suggestions.push({
-        type: 'apos;validation'apos;,
-        priority: 'apos;medium'apos;,
+        type: 'validation',
+        priority: 'medium',
         description: `Le champ "${topErrorField[0]}" génère ${topErrorField[1]} erreurs. Améliorer la validation.`,
         impact: 50,
-        implementation: 'apos;Clarifier les messages d\'apos;erreur et ajouter des exemples'apos;
+        implementation: 'Clarifier les messages d\'erreur et ajouter des exemples'
       });
     }
 
     // Générer des variantes A/B
     const aBTestVariants = [
       {
-        id: 'apos;variant-1'apos;,
-        name: 'apos;Formulaire simplifié'apos;,
+        id: 'variant-1',
+        name: 'Formulaire simplifié',
         changes: {
           removeOptionalFields: true,
           progressiveValidation: true,
@@ -780,8 +780,8 @@ class FormOptimizer {
         }
       },
       {
-        id: 'apos;variant-2'apos;,
-        name: 'apos;Formulaire en étapes'apos;,
+        id: 'variant-2',
+        name: 'Formulaire en étapes',
         changes: {
           multiStep: true,
           progressIndicator: true,
@@ -804,7 +804,7 @@ class FormOptimizer {
     this.optimizations.set(formId, optimization);
 
     logger.info(`Form optimizations generated: ${formId}`, {
-      action: 'apos;form_optimizations_generated'apos;,
+      action: 'form_optimizations_generated',
       metadata: { 
         formId, 
         suggestionsCount: suggestions.length,
@@ -833,8 +833,8 @@ class FormOptimizer {
       }
     }
 
-    logger.info('apos;Old form data cleaned up'apos;, {
-      action: 'apos;form_data_cleaned'apos;,
+    logger.info('Old form data cleaned up', {
+      action: 'form_data_cleaned',
       metadata: { maxAge, cutoffTime: new Date(cutoffTime) }
     });
   }

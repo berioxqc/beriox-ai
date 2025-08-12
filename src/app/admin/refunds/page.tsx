@@ -137,7 +137,7 @@ export default function AdminRefundsPage() {
   return (
     <Layout title="Gestion des Remboursements" subtitle="Traitez les demandes de remboursement">
       <div style={{ display: "grid", gap: theme.spacing.xl }}>
-        {/* Messages d'apos;erreur/succès */}
+        {/* Messages d'erreur/succès */}
         {error && (
           <div style={{
             background: "#fef2f2",
@@ -311,7 +311,7 @@ export default function AdminRefundsPage() {
                           {getStatusLabel(refund.status)}
                         </span>
                         <span style={{ fontSize: "14px", color: theme.colors.neutral[600] }}>
-                          {refund.amount} crédit{refund.amount > 1 ? 'apos;s'apos; : 'apos;'apos;}
+                          {refund.amount} crédit{refund.amount > 1 ? 's' : ''}
                         </span>
                       </div>
                       
@@ -329,9 +329,9 @@ export default function AdminRefundsPage() {
                     </div>
                     
                     <div style={{ fontSize: "12px", color: theme.colors.neutral[500], textAlign: "right" }}>
-                      {new Date(refund.createdAt).toLocaleDateString('apos;fr-FR'apos;)}
+                      {new Date(refund.createdAt).toLocaleDateString('fr-FR')}
                       <br />
-                      {new Date(refund.createdAt).toLocaleTimeString('apos;fr-FR'apos;)}
+                      {new Date(refund.createdAt).toLocaleTimeString('fr-FR')}
                     </div>
                   </div>
                   

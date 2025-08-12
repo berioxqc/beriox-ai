@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Vérifier si l'apos;utilisateur est super admin
-    if (session.user.email !== 'apos;info@beriox.ca'apos;) {
+    // Vérifier si l'utilisateur est super admin
+    if (session.user.email !== 'info@beriox.ca') {
       return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
     }
 
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       }, { status: 400 });
     }
 
-    // Vérifier que l'apos;utilisateur existe
+    // Vérifier que l'utilisateur existe
     const targetUser = await prisma.user.findUnique({
       where: { email: userEmail },
       include: { premiumAccess: true }
@@ -44,22 +44,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Utilisateur introuvable" }, { status: 404 });
     }
 
-    // Calculer la date d'apos;expiration
+    // Calculer la date d'expiration
     const now = new Date();
     const endDate = new Date(now.getTime() + (duration * 24 * 60 * 60 * 1000));
 
-    // Vérifier si l'apos;utilisateur a déjà un accès premium actif
+    // Vérifier si l'utilisateur a déjà un accès premium actif
     if (targetUser.premiumAccess && 
         targetUser.premiumAccess.isActive && 
         targetUser.premiumAccess.endDate > now) {
       
-      // Étendre l'apos;accès existant
+      // Étendre l'accès existant
       await prisma.premiumAccess.update({
         where: { userId: targetUser.id },
         data: {
           planId,
           endDate,
-          source: 'apos;admin_grant'apos;,
+          source: 'admin_grant',
           sourceId: null,
           createdBy: admin.id,
           notes: notes || `Accès accordé par ${admin.email}`,
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
           startDate: now,
           endDate,
           isActive: true,
-          source: 'apos;admin_grant'apos;,
+          source: 'admin_grant',
           sourceId: null,
           createdBy: admin.id,
           notes: notes || `Accès accordé par ${admin.email}`,
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
           startDate: now,
           endDate,
           isActive: true,
-          source: 'apos;admin_grant'apos;,
+          source: 'admin_grant',
           sourceId: null,
           createdBy: admin.id,
           notes: notes || `Accès accordé par ${admin.email}`
@@ -109,9 +109,9 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('apos;Erreur accord accès premium:'apos;, error);
+    console.error('Erreur accord accès premium:', error);
     return NextResponse.json({ 
-      error: "Erreur lors de l'apos;attribution de l'apos;accès premium" 
+      error: "Erreur lors de l'attribution de l'accès premium" 
     }, { status: 500 });
   }
 }
@@ -121,7 +121,7 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
-    if (!session?.user?.email || session.user.email !== 'apos;info@beriox.ca'apos;) {
+    if (!session?.user?.email || session.user.email !== 'info@beriox.ca') {
       return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
     }
 
@@ -131,7 +131,7 @@ export async function GET(req: NextRequest) {
           select: { id: true, email: true, name: true, image: true }
         }
       },
-      orderBy: { createdAt: 'apos;desc'apos; }
+      orderBy: { createdAt: 'desc' }
     });
 
     // Calculer les statistiques
@@ -141,21 +141,21 @@ export async function GET(req: NextRequest) {
       active: premiumAccesses.filter(p => p.isActive && p.endDate > now).length,
       expired: premiumAccesses.filter(p => p.endDate <= now).length,
       byPlan: {
-        starter: premiumAccesses.filter(p => p.planId === 'apos;starter'apos;).length,
-        pro: premiumAccesses.filter(p => p.planId === 'apos;pro'apos;).length,
-        enterprise: premiumAccesses.filter(p => p.planId === 'apos;enterprise'apos;).length
+        starter: premiumAccesses.filter(p => p.planId === 'starter').length,
+        pro: premiumAccesses.filter(p => p.planId === 'pro').length,
+        enterprise: premiumAccesses.filter(p => p.planId === 'enterprise').length
       },
       bySource: {
-        coupon: premiumAccesses.filter(p => p.source === 'apos;coupon'apos;).length,
-        admin_grant: premiumAccesses.filter(p => p.source === 'apos;admin_grant'apos;).length,
-        stripe: premiumAccesses.filter(p => p.source === 'apos;stripe'apos;).length
+        coupon: premiumAccesses.filter(p => p.source === 'coupon').length,
+        admin_grant: premiumAccesses.filter(p => p.source === 'admin_grant').length,
+        stripe: premiumAccesses.filter(p => p.source === 'stripe').length
       }
     };
 
     return NextResponse.json({ premiumAccesses, stats });
 
   } catch (error) {
-    console.error('apos;Erreur récupération accès premium:'apos;, error);
+    console.error('Erreur récupération accès premium:', error);
     return NextResponse.json({ 
       error: "Erreur lors de la récupération des accès premium" 
     }, { status: 500 });
@@ -167,18 +167,18 @@ export async function DELETE(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
-    if (!session?.user?.email || session.user.email !== 'apos;info@beriox.ca'apos;) {
+    if (!session?.user?.email || session.user.email !== 'info@beriox.ca') {
       return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
     }
 
     const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('apos;userId'apos;);
+    const userId = searchParams.get('userId');
 
     if (!userId) {
       return NextResponse.json({ error: "ID utilisateur requis" }, { status: 400 });
     }
 
-    // Désactiver l'apos;accès premium
+    // Désactiver l'accès premium
     await prisma.premiumAccess.update({
       where: { userId },
       data: {
@@ -192,9 +192,9 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ success: true, message: "Accès premium révoqué" });
 
   } catch (error) {
-    console.error('apos;Erreur révocation accès premium:'apos;, error);
+    console.error('Erreur révocation accès premium:', error);
     return NextResponse.json({ 
-      error: "Erreur lors de la révocation de l'apos;accès premium" 
+      error: "Erreur lors de la révocation de l'accès premium" 
     }, { status: 500 });
   }
 }

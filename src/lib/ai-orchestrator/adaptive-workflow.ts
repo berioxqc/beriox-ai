@@ -1,4 +1,4 @@
-import { AgentScoringEngine, MissionContext } from 'apos;./agent-scoring'apos;;
+import { AgentScoringEngine, MissionContext } from './agent-scoring';
 
 export interface WorkflowStep {
   id: string;
@@ -6,10 +6,10 @@ export interface WorkflowStep {
   description: string;
   agentId: string;
   agentName: string;
-  type: 'apos;analysis'apos; | 'apos;creation'apos; | 'apos;review'apos; | 'apos;optimization'apos; | 'apos;validation'apos;;
+  type: 'analysis' | 'creation' | 'review' | 'optimization' | 'validation';
   dependencies: string[];
   estimatedDuration: number;
-  priority: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
+  priority: 'low' | 'medium' | 'high';
   parameters: Record<string, any>;
 }
 
@@ -19,7 +19,7 @@ export interface AdaptiveWorkflow {
   description: string;
   steps: WorkflowStep[];
   totalEstimatedDuration: number;
-  complexity: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
+  complexity: 'low' | 'medium' | 'high';
   parallelSteps: string[][];
   fallbackSteps: Record<string, string[]>;
 }
@@ -27,92 +27,92 @@ export interface AdaptiveWorkflow {
 export class AdaptiveWorkflowGenerator {
   private static readonly WORKFLOW_TEMPLATES = {
     content: {
-      name: 'apos;Workflow de Création de Contenu'apos;,
-      description: 'apos;Workflow optimisé pour la création de contenu de qualité'apos;,
+      name: 'Workflow de Création de Contenu',
+      description: 'Workflow optimisé pour la création de contenu de qualité',
       steps: [
         {
-          type: 'apos;analysis'apos;,
-          name: 'apos;Analyse des besoins'apos;,
-          description: 'apos;Analyse approfondie des exigences et du contexte'apos;,
-          priority: 'apos;high'apos; as const,
+          type: 'analysis',
+          name: 'Analyse des besoins',
+          description: 'Analyse approfondie des exigences et du contexte',
+          priority: 'high' as const,
         },
         {
-          type: 'apos;creation'apos;,
-          name: 'apos;Création du contenu'apos;,
-          description: 'apos;Création du contenu principal'apos;,
-          priority: 'apos;high'apos; as const,
+          type: 'creation',
+          name: 'Création du contenu',
+          description: 'Création du contenu principal',
+          priority: 'high' as const,
         },
         {
-          type: 'apos;optimization'apos;,
-          name: 'apos;Optimisation SEO'apos;,
-          description: 'apos;Optimisation pour les moteurs de recherche'apos;,
-          priority: 'apos;medium'apos; as const,
+          type: 'optimization',
+          name: 'Optimisation SEO',
+          description: 'Optimisation pour les moteurs de recherche',
+          priority: 'medium' as const,
         },
         {
-          type: 'apos;review'apos;,
-          name: 'apos;Révision et amélioration'apos;,
-          description: 'apos;Révision finale et améliorations'apos;,
-          priority: 'apos;medium'apos; as const,
+          type: 'review',
+          name: 'Révision et amélioration',
+          description: 'Révision finale et améliorations',
+          priority: 'medium' as const,
         },
       ],
     },
     automation: {
-      name: 'apos;Workflow d\'apos;Automatisation'apos;,
-      description: 'apos;Workflow pour l\'apos;automatisation de processus'apos;,
+      name: 'Workflow d\'Automatisation',
+      description: 'Workflow pour l\'automatisation de processus',
       steps: [
         {
-          type: 'apos;analysis'apos;,
-          name: 'apos;Analyse du processus'apos;,
-          description: 'apos;Analyse du processus à automatiser'apos;,
-          priority: 'apos;high'apos; as const,
+          type: 'analysis',
+          name: 'Analyse du processus',
+          description: 'Analyse du processus à automatiser',
+          priority: 'high' as const,
         },
         {
-          type: 'apos;creation'apos;,
-          name: 'apos;Développement de l\'apos;automatisation'apos;,
-          description: 'apos;Création du code et des intégrations'apos;,
-          priority: 'apos;high'apos; as const,
+          type: 'creation',
+          name: 'Développement de l\'automatisation',
+          description: 'Création du code et des intégrations',
+          priority: 'high' as const,
         },
         {
-          type: 'apos;validation'apos;,
-          name: 'apos;Tests et validation'apos;,
-          description: 'apos;Tests complets et validation'apos;,
-          priority: 'apos;high'apos; as const,
+          type: 'validation',
+          name: 'Tests et validation',
+          description: 'Tests complets et validation',
+          priority: 'high' as const,
         },
         {
-          type: 'apos;optimization'apos;,
-          name: 'apos;Optimisation des performances'apos;,
-          description: 'apos;Optimisation et amélioration des performances'apos;,
-          priority: 'apos;medium'apos; as const,
+          type: 'optimization',
+          name: 'Optimisation des performances',
+          description: 'Optimisation et amélioration des performances',
+          priority: 'medium' as const,
         },
       ],
     },
     research: {
-      name: 'apos;Workflow de Recherche'apos;,
-      description: 'apos;Workflow pour la recherche et l\'apos;analyse'apos;,
+      name: 'Workflow de Recherche',
+      description: 'Workflow pour la recherche et l\'analyse',
       steps: [
         {
-          type: 'apos;analysis'apos;,
-          name: 'apos;Définition de la recherche'apos;,
-          description: 'apos;Définition des objectifs et de la méthodologie'apos;,
-          priority: 'apos;high'apos; as const,
+          type: 'analysis',
+          name: 'Définition de la recherche',
+          description: 'Définition des objectifs et de la méthodologie',
+          priority: 'high' as const,
         },
         {
-          type: 'apos;creation'apos;,
-          name: 'apos;Collecte de données'apos;,
-          description: 'apos;Collecte et organisation des données'apos;,
-          priority: 'apos;high'apos; as const,
+          type: 'creation',
+          name: 'Collecte de données',
+          description: 'Collecte et organisation des données',
+          priority: 'high' as const,
         },
         {
-          type: 'apos;analysis'apos;,
-          name: 'apos;Analyse approfondie'apos;,
-          description: 'apos;Analyse détaillée des données collectées'apos;,
-          priority: 'apos;high'apos; as const,
+          type: 'analysis',
+          name: 'Analyse approfondie',
+          description: 'Analyse détaillée des données collectées',
+          priority: 'high' as const,
         },
         {
-          type: 'apos;creation'apos;,
-          name: 'apos;Rédaction du rapport'apos;,
-          description: 'apos;Rédaction du rapport final'apos;,
-          priority: 'apos;medium'apos; as const,
+          type: 'creation',
+          name: 'Rédaction du rapport',
+          description: 'Rédaction du rapport final',
+          priority: 'medium' as const,
         },
       ],
     },
@@ -160,11 +160,11 @@ export class AdaptiveWorkflowGenerator {
    */
   private static selectTemplate(context: MissionContext) {
     // Logique de sélection basée sur le type et les domaines
-    if (context.type === 'apos;content'apos; || context.domain.includes('apos;content'apos;)) {
+    if (context.type === 'content' || context.domain.includes('content')) {
       return this.WORKFLOW_TEMPLATES.content;
-    } else if (context.type === 'apos;automation'apos; || context.domain.includes('apos;automation'apos;)) {
+    } else if (context.type === 'automation' || context.domain.includes('automation')) {
       return this.WORKFLOW_TEMPLATES.automation;
-    } else if (context.type === 'apos;research'apos; || context.domain.includes('apos;research'apos;)) {
+    } else if (context.type === 'research' || context.domain.includes('research')) {
       return this.WORKFLOW_TEMPLATES.research;
     }
     
@@ -185,7 +185,7 @@ export class AdaptiveWorkflowGenerator {
     for (let i = 0; i < templateSteps.length; i++) {
       const templateStep = templateSteps[i];
       
-      // Sélectionner l'apos;agent optimal pour cette étape
+      // Sélectionner l'agent optimal pour cette étape
       const optimalAgent = this.selectOptimalAgent(templateStep, agentScores, context);
       
       // Calculer la durée estimée
@@ -217,41 +217,41 @@ export class AdaptiveWorkflowGenerator {
   }
 
   /**
-   * Sélectionne l'apos;agent optimal pour une étape donnée
+   * Sélectionne l'agent optimal pour une étape donnée
    */
   private static selectOptimalAgent(step: any, agentScores: any[], context: MissionContext) {
-    // Filtrer les agents par type d'apos;étape
+    // Filtrer les agents par type d'étape
     const suitableAgents = agentScores.filter(agent => {
       const agentExpertise = this.getAgentExpertise(agent.agentId);
       
       switch (step.type) {
-        case 'apos;analysis'apos;:
-          return agentExpertise.domains.includes('apos;analysis'apos;) || 
-                 agentExpertise.domains.includes('apos;research'apos;);
-        case 'apos;creation'apos;:
-          return agentExpertise.domains.includes('apos;content'apos;) || 
-                 agentExpertise.domains.includes('apos;creative'apos;) ||
-                 agentExpertise.domains.includes('apos;development'apos;);
-        case 'apos;review'apos;:
-          return agentExpertise.domains.includes('apos;content'apos;) || 
-                 agentExpertise.domains.includes('apos;analysis'apos;);
-        case 'apos;optimization'apos;:
-          return agentExpertise.domains.includes('apos;optimization'apos;) || 
-                 agentExpertise.domains.includes('apos;technical'apos;);
-        case 'apos;validation'apos;:
-          return agentExpertise.domains.includes('apos;analysis'apos;) || 
-                 agentExpertise.domains.includes('apos;technical'apos;);
+        case 'analysis':
+          return agentExpertise.domains.includes('analysis') || 
+                 agentExpertise.domains.includes('research');
+        case 'creation':
+          return agentExpertise.domains.includes('content') || 
+                 agentExpertise.domains.includes('creative') ||
+                 agentExpertise.domains.includes('development');
+        case 'review':
+          return agentExpertise.domains.includes('content') || 
+                 agentExpertise.domains.includes('analysis');
+        case 'optimization':
+          return agentExpertise.domains.includes('optimization') || 
+                 agentExpertise.domains.includes('technical');
+        case 'validation':
+          return agentExpertise.domains.includes('analysis') || 
+                 agentExpertise.domains.includes('technical');
         default:
           return true;
       }
     });
     
-    // Retourner l'apos;agent avec le meilleur score
+    // Retourner l'agent avec le meilleur score
     return suitableAgents.length > 0 ? suitableAgents[0] : agentScores[0];
   }
 
   /**
-   * Calcule la durée estimée d'apos;une étape
+   * Calcule la durée estimée d'une étape
    */
   private static calculateStepDuration(step: any, context: MissionContext): number {
     const baseDuration = this.getBaseDuration(step.type);
@@ -267,28 +267,28 @@ export class AdaptiveWorkflowGenerator {
   private static calculateDependencies(stepIndex: number, steps: any[]): string[] {
     const dependencies: string[] = [];
     
-    // Les étapes de création dépendent généralement de l'apos;analyse
-    if (steps[stepIndex].type === 'apos;creation'apos;) {
+    // Les étapes de création dépendent généralement de l'analyse
+    if (steps[stepIndex].type === 'creation') {
       for (let i = 0; i < stepIndex; i++) {
-        if (steps[i].type === 'apos;analysis'apos;) {
+        if (steps[i].type === 'analysis') {
           dependencies.push(`step-${i + 1}`);
         }
       }
     }
     
     // Les étapes de review dépendent de la création
-    if (steps[stepIndex].type === 'apos;review'apos;) {
+    if (steps[stepIndex].type === 'review') {
       for (let i = 0; i < stepIndex; i++) {
-        if (steps[i].type === 'apos;creation'apos;) {
+        if (steps[i].type === 'creation') {
           dependencies.push(`step-${i + 1}`);
         }
       }
     }
     
-    // Les étapes d'apos;optimisation dépendent de la création
-    if (steps[stepIndex].type === 'apos;optimization'apos;) {
+    // Les étapes d'optimisation dépendent de la création
+    if (steps[stepIndex].type === 'optimization') {
       for (let i = 0; i < stepIndex; i++) {
-        if (steps[i].type === 'apos;creation'apos;) {
+        if (steps[i].type === 'creation') {
           dependencies.push(`step-${i + 1}`);
         }
       }
@@ -310,20 +310,20 @@ export class AdaptiveWorkflowGenerator {
       requirements: context.requirements,
     };
     
-    // Paramètres spécifiques par type d'apos;étape
+    // Paramètres spécifiques par type d'étape
     switch (step.type) {
-      case 'apos;analysis'apos;:
-        parameters.analysisDepth = context.complexity === 'apos;high'apos; ? 'apos;deep'apos; : 'apos;standard'apos;;
+      case 'analysis':
+        parameters.analysisDepth = context.complexity === 'high' ? 'deep' : 'standard';
         parameters.includeMetrics = true;
         break;
-      case 'apos;creation'apos;:
-        parameters.creativeFreedom = context.complexity === 'apos;high'apos; ? 'apos;high'apos; : 'apos;medium'apos;;
+      case 'creation':
+        parameters.creativeFreedom = context.complexity === 'high' ? 'high' : 'medium';
         parameters.includeExamples = true;
         break;
-      case 'apos;optimization'apos;:
-        parameters.optimizationLevel = context.complexity === 'apos;high'apos; ? 'apos;comprehensive'apos; : 'apos;standard'apos;;
+      case 'optimization':
+        parameters.optimizationLevel = context.complexity === 'high' ? 'comprehensive' : 'standard';
         break;
-      case 'apos;validation'apos;:
+      case 'validation':
         parameters.validationCriteria = context.requirements;
         break;
     }
@@ -348,7 +348,7 @@ export class AdaptiveWorkflowGenerator {
       for (const otherStep of steps) {
         if (visited.has(otherStep.id)) continue;
         
-        // Vérifier s'apos;il n'apos;y a pas de dépendances entre les étapes
+        // Vérifier s'il n'y a pas de dépendances entre les étapes
         const canRunInParallel = !step.dependencies.includes(otherStep.id) &&
                                 !otherStep.dependencies.includes(step.id);
         
@@ -393,12 +393,12 @@ export class AdaptiveWorkflowGenerator {
   // Méthodes utilitaires
   private static getAgentExpertise(agentId: string) {
     const expertiseMap: Record<string, any> = {
-      'apos;karine-ai'apos;: { domains: ['apos;content'apos;, 'apos;writing'apos;, 'apos;seo'apos;, 'apos;marketing'apos;] },
-      'apos;hugo-ai'apos;: { domains: ['apos;technical'apos;, 'apos;development'apos;, 'apos;automation'apos;] },
-      'apos;jp-bot'apos;: { domains: ['apos;business'apos;, 'apos;strategy'apos;, 'apos;analysis'apos;] },
-      'apos;elodie-ai'apos;: { domains: ['apos;design'apos;, 'apos;creative'apos;, 'apos;visual'apos;] },
-      'apos;clara-la-closeuse'apos;: { domains: ['apos;research'apos;, 'apos;investigation'apos;, 'apos;analysis'apos;] },
-      'apos;faucon-le-maitre-focus'apos;: { domains: ['apos;focus'apos;, 'apos;productivity'apos;, 'apos;optimization'apos;] },
+      'karine-ai': { domains: ['content', 'writing', 'seo', 'marketing'] },
+      'hugo-ai': { domains: ['technical', 'development', 'automation'] },
+      'jp-bot': { domains: ['business', 'strategy', 'analysis'] },
+      'elodie-ai': { domains: ['design', 'creative', 'visual'] },
+      'clara-la-closeuse': { domains: ['research', 'investigation', 'analysis'] },
+      'faucon-le-maitre-focus': { domains: ['focus', 'productivity', 'optimization'] },
     };
     
     return expertiseMap[agentId] || { domains: [] };

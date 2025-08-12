@@ -1,4 +1,4 @@
-// Charger les variables d'apos;environnement
+// Charger les variables d'environnement
 import { config } from "dotenv";
 config();
 
