@@ -54,9 +54,13 @@ class GooglePlacesService {
 
   constructor() {
     this.apiKey = process.env.GOOGLE_PLACES_API_KEY || '';
-    if (!this.apiKey) {
-      throw new Error('GOOGLE_PLACES_API_KEY is required');
-    }
+  }
+
+  /**
+   * Vérifier si l'API est configurée
+   */
+  isConfigured(): boolean {
+    return !!this.apiKey;
   }
 
   /**
@@ -64,6 +68,12 @@ class GooglePlacesService {
    */
   async searchCompanies(params: z.infer<typeof CompanySearchSchema>): Promise<Company[]> {
     const { query, location, radius, type, hasWebsite, limit, offset } = params;
+
+    // Vérifier si l'API est configurée
+    if (!this.isConfigured()) {
+      console.warn('Google Places API not configured, returning empty results');
+      return [];
+    }
 
     try {
       // Recherche de base avec Google Places
@@ -98,17 +108,17 @@ class GooglePlacesService {
           }
 
           companies.push(details);
-                 } catch (error) {
-           console.warn(`Failed to get details for place ${result.place_id}:`, error);
-         }
+        } catch (error) {
+          console.warn(`Failed to get details for place ${result.place_id}:`, error);
+        }
       }
 
       return companies;
 
-         } catch (error) {
-       console.error('Google Places search failed:', error);
-       throw error;
-     }
+    } catch (error) {
+      console.error('Google Places search failed:', error);
+      throw error;
+    }
   }
 
   /**

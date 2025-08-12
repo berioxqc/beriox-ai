@@ -553,6 +553,11 @@ class PerformanceOptimizer {
 - ✅ `src/components/bots/BotRecommendations.tsx` : Caractères HTML corrigés
 - ✅ `src/components/ui/OptimizedImage.tsx` : Caractères HTML corrigés
 
+**✅ APIs Conditionnelles CORRIGÉES**
+- ✅ `Google Places API` : Connexion conditionnelle implémentée
+- ✅ Build fonctionnel : Plus d'échec de build dû aux APIs manquantes
+- ✅ Fallback automatique : Retour de résultats vides si API non configurée
+
 **🟡 Erreurs de Linter (Non critiques)**
 - Variables non utilisées : ~50 warnings
 - Types `any` : ~20 warnings
@@ -656,6 +661,77 @@ class PerformanceOptimizer {
 - [ ] **Migration automatique** : Application des changements de manière sûre
 - [ ] **Validation post-migration** : Vérification que tout fonctionne
 - [ ] **API endpoint** : `/api/bots/migration-fixer`
+
+**🔌 APIConditionalBot - Connexions API conditionnelles**
+- ✅ **Correction manuelle appliquée** : Google Places API rendue conditionnelle
+- ✅ **Build fonctionnel** : Plus d'échec de build dû aux APIs manquantes
+- [ ] **Créer le bot `APIConditionalBot`** : Agent spécialisé dans la gestion des connexions API
+- [ ] **Détection automatique des APIs critiques** : Identification des services externes requis
+- [ ] **Rendre les connexions conditionnelles** : Vérification de la présence des clés API
+- [ ] **Fallback automatique** : Retour de données mockées ou vides si API non configurée
+- [ ] **Validation des variables d'environnement** : Vérification de la configuration
+- [ ] **Documentation des dépendances** : Liste des APIs requises et optionnelles
+- [ ] **API endpoint** : `/api/bots/api-conditional`
+
+**📋 APIs critiques à rendre conditionnelles :**
+```typescript
+// APIs critiques pour le build (celles qui causent des échecs)
+const criticalAPIs = {
+  "Google Places API": {
+    env: "GOOGLE_PLACES_API_KEY",
+    service: "company-targeting",
+    fallback: "empty results",
+    required: false,
+    issue: "Échec de build si non configurée"
+  },
+  "OpenAI API": {
+    env: "OPENAI_API_KEY", 
+    service: "ai-orchestration",
+    fallback: "mock responses",
+    required: true,
+    issue: "Fonctionnalité IA non disponible"
+  },
+  "Stripe API": {
+    env: "STRIPE_SECRET_KEY",
+    service: "payments",
+    fallback: "test mode",
+    required: false,
+    issue: "Paiements en mode test"
+  }
+};
+```
+
+**🔧 Pattern de correction automatique :**
+```typescript
+// Avant (problématique)
+class GooglePlacesService {
+  constructor() {
+    this.apiKey = process.env.GOOGLE_PLACES_API_KEY || '';
+    if (!this.apiKey) {
+      throw new Error('GOOGLE_PLACES_API_KEY is required'); // ❌ Échec de build
+    }
+  }
+}
+
+// Après (conditionnel)
+class GooglePlacesService {
+  constructor() {
+    this.apiKey = process.env.GOOGLE_PLACES_API_KEY || '';
+  }
+
+  isConfigured(): boolean {
+    return !!this.apiKey;
+  }
+
+  async searchCompanies(params: SearchParams): Promise<Company[]> {
+    if (!this.isConfigured()) {
+      console.warn('Google Places API not configured, returning empty results');
+      return []; // ✅ Build réussi
+    }
+    // ... logique API
+  }
+}
+```
 
 **🎯 Orchestrateur de Bots - Coordination intelligente**
 - [ ] **Créer le `BotOrchestrator`** : Coordinateur intelligent de tous les bots de correction
