@@ -23,7 +23,7 @@ export interface Plan {
 export const PLANS: Record<string, Plan> = {
   FREE: {
     id: 'free',
-    name: 'Gratuit',
+    name: '🧪 Apprenti',
     price: 0,
     currency: 'CAD',
     interval: 'month',
@@ -46,8 +46,8 @@ export const PLANS: Record<string, Plan> = {
 
   STARTER: {
     id: 'starter',
-    name: 'Starter',
-    price: 39,
+    name: '⚗️ Alchimiste',
+    price: 49,
     currency: 'CAD',
     interval: 'month',
     stripePriceId: process.env.STRIPE_STARTER_PRICE_ID,
@@ -74,8 +74,8 @@ export const PLANS: Record<string, Plan> = {
 
   PRO: {
     id: 'pro',
-    name: 'Professionnel',
-    price: 129,
+    name: '🔮 Mage',
+    price: 149,
     currency: 'CAD',
     interval: 'month',
     stripePriceId: process.env.STRIPE_PRO_PRICE_ID,
@@ -103,8 +103,8 @@ export const PLANS: Record<string, Plan> = {
 
   ENTERPRISE: {
     id: 'enterprise',
-    name: 'Enterprise',
-    price: 399,
+    name: '👑 Archimage',
+    price: 449,
     currency: 'CAD',
     interval: 'month',
     stripePriceId: process.env.STRIPE_ENTERPRISE_PRICE_ID,
@@ -299,6 +299,57 @@ export class PlanService {
    */
   static getAnnualPrice(plan: Plan): number {
     return Math.round(plan.price * 12 * 0.83); // 17% de réduction
+  }
+
+  /**
+   * Calcule les taxes canadiennes (TPS 5% + TVQ 9.975%)
+   */
+  static getCanadianTaxes(price: number): { tps: number; tvq: number; total: number } {
+    const tps = price * 0.05; // TPS 5%
+    const tvq = (price + tps) * 0.09975; // TVQ 9.975% sur le montant + TPS
+    const total = price + tps + tvq;
+    
+    return {
+      tps: Math.round(tps * 100) / 100,
+      tvq: Math.round(tvq * 100) / 100,
+      total: Math.round(total * 100) / 100
+    };
+  }
+
+  /**
+   * Formate le prix avec taxes pour l'affichage
+   */
+  static formatPriceWithTaxes(plan: Plan): {
+    basePrice: string;
+    tps: string;
+    tvq: string;
+    totalPrice: string;
+    monthlyTotal: string;
+    annualTotal: string;
+  } {
+    if (plan.price === 0) {
+      return {
+        basePrice: 'Gratuit',
+        tps: '0,00 $',
+        tvq: '0,00 $',
+        totalPrice: '0,00 $',
+        monthlyTotal: 'Gratuit',
+        annualTotal: 'Gratuit'
+      };
+    }
+
+    const taxes = this.getCanadianTaxes(plan.price);
+    const annualPrice = this.getAnnualPrice(plan);
+    const annualTaxes = this.getCanadianTaxes(annualPrice / 12);
+
+    return {
+      basePrice: `${plan.price.toFixed(2)} $`,
+      tps: `${taxes.tps.toFixed(2)} $`,
+      tvq: `${taxes.tvq.toFixed(2)} $`,
+      totalPrice: `${taxes.total.toFixed(2)} $`,
+      monthlyTotal: `${taxes.total.toFixed(2)} $/mois`,
+      annualTotal: `${(annualPrice + annualTaxes.total * 12).toFixed(2)} $/an`
+    };
   }
 
   /**
