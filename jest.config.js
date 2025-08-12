@@ -7,7 +7,7 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['@testing-library/jest-dom'],
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
   collectCoverageFrom: [
@@ -97,17 +97,15 @@ const customJestConfig = {
   onlyChanged: false,
   onlyFailures: false,
   passWithNoTests: true,
-  preset: undefined,
-  prettierPath: undefined,
-  projects: undefined,
+
   reporters: [
     'default'
   ],
-  rootDir: undefined,
+
   roots: ['<rootDir>/src'],
   runTestsByPath: false,
   runner: 'jest-runner',
-  setupFiles: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   skipFilter: false,
   slowTestThreshold: 5,
   snapshotSerializers: [],
@@ -129,7 +127,7 @@ const customJestConfig = {
   transformIgnorePatterns: [
     'node_modules/(?!(next|@next|react|@react|@testing-library|jest-axe)/)',
   ],
-  unmockedModulePathPatterns: undefined,
+
   updateSnapshot: false,
   useStderr: false,
   watch: false,

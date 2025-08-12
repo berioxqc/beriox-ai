@@ -1,5 +1,4 @@
 import '@testing-library/jest-dom';
-import 'jest-axe/extend-expect';
 
 // Mock Next.js Image component
 jest.mock('next/image', () => ({
