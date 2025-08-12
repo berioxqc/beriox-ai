@@ -7,6 +7,7 @@ import { rateLimitMiddleware } from './lib/rate-limit-advanced'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  
   // Pages publiques qui ne nécessitent pas d'authentification
   const publicPages = [
     '/',
@@ -23,23 +24,33 @@ export async function middleware(request: NextRequest) {
     '/api/auth',
     '/api/health',
     '/api/monitoring/health',
-    '/api/csrf'
+    '/api/csrf',
+    '/api/webhooks',
+    '/robots.txt',
+    '/sitemap.xml'
   ]
-  // Pages qui nécessitent une authentification stricte (redirection)
-  const strictAuthPages = [
+  
+  // Pages qui nécessitent une authentification
+  const protectedPages = [
     '/admin',
     '/api/admin',
     '/api/missions',
     '/api/user',
     '/api/stripe',
-    '/api/bots'
+    '/api/bots',
+    '/missions',
+    '/dashboard',
+    '/profile'
   ]
+  
   // Vérifier si la page actuelle est publique
   const isPublicPage = publicPages.some(page => pathname.startsWith(page))
-  // Vérifier si la page nécessite une authentification stricte
-  const isStrictAuthPage = strictAuthPages.some(page => pathname.startsWith(page))
-  // Si c'est une page d'authentification stricte, vérifier l'authentification
-  if (isStrictAuthPage) {
+  
+  // Vérifier si la page nécessite une authentification
+  const isProtectedPage = protectedPages.some(page => pathname.startsWith(page))
+  
+  // Si c'est une page protégée, vérifier l'authentification
+  if (isProtectedPage) {
     try {
       // Vérifier la session via l'API NextAuth
       const sessionResponse = await fetch(`${request.nextUrl.origin}/api/auth/session`, {
@@ -47,6 +58,7 @@ export async function middleware(request: NextRequest) {
           cookie: request.headers.get('cookie') || '',
         },
       })
+      
       if (!sessionResponse.ok) {
         console.log(`🔒 Session invalide pour ${pathname} - Redirection vers /auth/signin`)
         const signInUrl = new URL('/auth/signin', request.url)
@@ -55,6 +67,7 @@ export async function middleware(request: NextRequest) {
       }
 
       const session = await sessionResponse.json()
+      
       // Si pas de session valide, rediriger vers la connexion
       if (!session || !session.user) {
         console.log(`🔒 Utilisateur non authentifié pour ${pathname} - Redirection vers /auth/signin`)
@@ -69,10 +82,6 @@ export async function middleware(request: NextRequest) {
       signInUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(signInUrl)
     }
-  } else if (!isPublicPage) {
-    // Pour les pages non-publiques mais non-strictes, permettre l'accès sans redirection
-    // Les pages géreront elles-mêmes l'affichage du contenu selon l'état d'authentification
-    console.log(`📄 Accès public autorisé à ${pathname} - Contenu limité`)
   }
 
   // Appliquer le rate limiting uniquement sur les routes API
