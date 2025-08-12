@@ -372,7 +372,7 @@ export class LinterFixerBotService {
       // Pattern pour détecter les apostrophes et guillemets non échappés dans JSX
       const unescapedPatterns = [
         { pattern: /'([^']*)'/g, replacement: "'$1'" },
-        { pattern: /"([^"]*)"/g, replacement: ""$1"" }
+        { pattern: /"([^"]*)"/g, replacement: '"$1"' }
       ]
       for (const { pattern, replacement } of unescapedPatterns) {
         if (pattern.test(line)) {

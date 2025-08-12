@@ -1,3 +1,5 @@
+import React from 'react'
+
 // 🎨 Système d'Icônes Sécurisé - Beriox AI
 // Évite les problèmes d'encodage et de corruption
 

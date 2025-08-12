@@ -92,7 +92,7 @@ export class HTMLFixerBotService {
             result.changes.forEach(change => {
               if (change.pattern === "'") {
                 report.summary.apostrophes += change.count
-              } else if (change.pattern === """) {
+              } else if (change.pattern === '"') {
                 report.summary.quotes += change.count
               } else if (change.pattern === "&") {
                 report.summary.ampersands += change.count

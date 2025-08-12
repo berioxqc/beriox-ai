@@ -85,7 +85,7 @@
   - [ ] Désactiver l'authentification SSO si nécessaire
   - [ ] Configurer l'accès public aux endpoints de santé
 - [ ] **Tests finaux** :
-  - [ ] Tests de charge
+- [ ] Tests de charge
   - [ ] Tests de sécurité
   - [ ] Validation des fonctionnalités critiques
 

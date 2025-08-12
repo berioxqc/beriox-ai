@@ -34,7 +34,7 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  
   @@index([userId])
   @@index([expires])
 }
@@ -70,7 +70,7 @@ model User {
   supportTickets       SupportTicket[]
   targetedCompanies    TargetedCompany[]
   userCredits          UserCredits?
-
+  
   @@index([role])
   @@index([email])
   @@index([createdAt])
@@ -101,7 +101,7 @@ model AgentPrompt {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   createdBy    String?
-
+  
   @@index([agentId])
   @@index([isActive])
   @@index([createdAt])
@@ -130,7 +130,7 @@ model Mission {
   user              User?               @relation(fields: [userId], references: [id])
   orchestrationPlan OrchestrationPlan?
   report            Report?
-
+  
   @@index([userId])
   @@index([botId])
   @@index([status])
@@ -154,7 +154,7 @@ model Brief {
   status      String       @default("queued")
   mission     Mission      @relation(fields: [missionId], references: [id])
   deliverable Deliverable?
-
+  
   @@index([missionId])
   @@index([agent])
   @@index([status])
@@ -173,7 +173,7 @@ model Deliverable {
   output    Json
   brief     Brief?   @relation(fields: [briefId], references: [id])
   mission   Mission  @relation(fields: [missionId], references: [id])
-
+  
   @@index([missionId])
   @@index([agent])
   @@index([createdAt])
@@ -190,7 +190,7 @@ model Report {
   cautions  String?
   nextSteps String?
   mission   Mission  @relation(fields: [missionId], references: [id])
-
+  
   @@index([createdAt])
 }
 
@@ -229,7 +229,7 @@ model AnalyticsConnection {
   refreshToken String
   lastSync     DateTime?
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  
   @@unique([userId, propertyId])
   @@index([userId])
   @@index([propertyId])
@@ -246,7 +246,7 @@ model ExecutionLog {
   level     String
   message   String
   meta      Json?
-
+  
   @@index([missionId])
   @@index([briefId])
   @@index([stage])
@@ -265,7 +265,7 @@ model WebhookEvent {
   processedAt   DateTime?
   missionId     String?
   processingErr String?
-
+  
   @@index([source])
   @@index([missionId])
   @@index([createdAt])
@@ -292,7 +292,7 @@ model Coupon {
   createdBy   String
   notes       String?
   redemptions CouponRedemption[]
-
+  
   @@index([type])
   @@index([status])
   @@index([planId])
@@ -335,7 +335,7 @@ model PremiumAccess {
   createdBy String?
   notes     String?
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  
   @@index([planId])
   @@index([isActive])
   @@index([startDate])
@@ -357,7 +357,7 @@ model UserCredits {
   updatedAt      DateTime        @updatedAt
   refundRequests RefundRequest[]
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  
   @@index([planId])
   @@index([resetDate])
   @@index([creditsUsed])
@@ -380,7 +380,7 @@ model RefundRequest {
   userCreditsId String
   userCredits   UserCredits  @relation(fields: [userCreditsId], references: [id], onDelete: Cascade)
   user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  
   @@index([userId])
   @@index([missionId])
   @@index([status])
@@ -408,7 +408,7 @@ model Payment {
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
   user                 User      @relation(fields: [stripeCustomerId], references: [stripeCustomerId])
-
+  
   @@index([stripeCustomerId])
   @@index([stripeSubscriptionId])
   @@index([status])
@@ -436,7 +436,7 @@ model Bot {
   recommendations BotRecommendation[]
   messages        Message[]
   missions        Mission[]
-
+  
   @@index([userId])
   @@index([type])
   @@index([isActive])
@@ -466,7 +466,7 @@ model BotRecommendation {
   bot                 Bot?     @relation(fields: [botId], references: [id])
   mission             Mission? @relation(fields: [missionId], references: [id])
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  
   @@index([userId])
   @@index([botId])
   @@index([missionId])
