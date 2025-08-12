@@ -11,11 +11,17 @@ export async function middleware(request: NextRequest) {
 
   // Pages publiques qui ne nécessitent pas d'authentification
   const publicPages = [
+    '/',
     '/auth/signin',
+    '/auth/signup',
+    '/auth/forgot-password',
+    '/auth/reset-password',
+    '/auth/verify',
     '/auth/error',
     '/consent',
     '/privacy',
     '/cookies',
+    '/pricing',
     '/api/auth',
     '/api/health',
     '/api/csrf'

@@ -46,6 +46,7 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  password      String?   // Mot de passe hashé pour l'authentification par email
   image         String?
   role          UserRole  @default(USER)
   accounts      Account[]

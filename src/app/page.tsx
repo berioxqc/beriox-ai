@@ -1,315 +1,178 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Icon from "@/components/ui/Icon";
 import Link from "next/link";
+import Icon from "@/components/ui/Icon";
 
-export default function HomeSimple() {
-  const { data: session } = useSession();
-  const [missions, setMissions] = useState([]);
+export default function HomePage() {
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
 
-  // CSS pour l'animation de spin
   useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
-
-  useEffect(() => {
-    // Simuler le chargement des missions
+    // Simuler le chargement
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+          <p className="mt-4 text-white">Chargement...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <AuthGuard>
-      <Layout 
-        title="Accueil" 
-        subtitle="Vue d'ensemble de vos missions et de votre équipe IA"
-      >
-        <div style={{
-          background: "white",
-          borderRadius: "16px",
-          padding: "32px",
-          border: "1px solid #e5e7eb",
-          boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)"
-        }}>
-          <h2 style={{
-            fontSize: "24px",
-            fontWeight: "700",
-            color: "#0a2540",
-            marginBottom: "16px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px"
-          }}>
-            <Icon name="check" style={{ color: "#10b981" }} size={24} />
-            Bienvenue sur Beriox AI
-          </h2>
-          
-          <p style={{
-            fontSize: "16px",
-            color: "#6b7280",
-            lineHeight: "1.6",
-            marginBottom: "24px"
-          }}>
-            Votre plateforme d'intelligence artificielle pour la gestion de missions et d'équipes.
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+      {/* Header */}
+      <header className="bg-white/10 backdrop-blur-lg border-b border-white/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center">
+              <h1 className="text-2xl font-bold text-white">Beriox AI</h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              {session ? (
+                <>
+                  <Link 
+                    href="/missions"
+                    className="text-white hover:text-purple-200 transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link 
+                    href="/profile"
+                    className="text-white hover:text-purple-200 transition-colors"
+                  >
+                    Profil
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href="/auth/signin"
+                    className="text-white hover:text-purple-200 transition-colors"
+                  >
+                    Connexion
+                  </Link>
+                  <Link 
+                    href="/auth/signup"
+                    className="bg-white text-purple-900 px-4 py-2 rounded-lg font-medium hover:bg-purple-100 transition-colors"
+                  >
+                    Inscription
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
+            Votre équipe d'agents IA
+          </h1>
+          <p className="text-xl text-purple-200 mb-8 max-w-3xl mx-auto">
+            Automatisez et optimisez vos processus business avec l'intelligence artificielle avancée
           </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            {session ? (
+              <Link 
+                href="/missions"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105"
+              >
+                Accéder au Dashboard
+              </Link>
+            ) : (
+              <>
+                <Link 
+                  href="/auth/signup"
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105"
+                >
+                  Commencer gratuitement
+                </Link>
+                <Link 
+                  href="/auth/signin"
+                  className="bg-white/10 backdrop-blur-lg text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/20 transition-all border border-white/20"
+                >
+                  Se connecter
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "20px"
-          }}>
-            {/* Tuile Créer une Mission */}
-            <Link href="/missions" style={{ textDecoration: "none" }}>
-              <div style={{
-                padding: "24px",
-                background: "linear-gradient(135deg, rgba(99, 91, 255, 0.05) 0%, rgba(99, 91, 255, 0.1) 100%)",
-                borderRadius: "16px",
-                border: "1px solid rgba(99, 91, 255, 0.2)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                position: "relative",
-                overflow: "hidden"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 8px 25px rgba(99, 91, 255, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}>
-                <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "12px"
-                }}>
-                  <div style={{
-                    fontSize: "16px",
-                    fontWeight: "700",
-                    color: "#635bff",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px"
-                  }}>
-                    <Icon name="rocket" size={20} />
-                    Créer une Mission
-                  </div>
-                  <Icon name="arrow-right" size={16} style={{ color: "#635bff" }} />
-                </div>
-                <div style={{ 
-                  fontSize: "14px", 
-                  color: "#6b7280",
-                  marginBottom: "16px",
-                  lineHeight: "1.5"
-                }}>
-                  Lancez une nouvelle mission avec votre équipe IA et obtenez des résultats exceptionnels
-                </div>
-                <div style={{
-                  background: "linear-gradient(135deg, #635bff, #8b5cf6)",
-                  color: "white",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: "600",
-                  textAlign: "center",
-                  transition: "all 0.2s ease"
-                }}>
-                  Commencer maintenant →
-                </div>
-              </div>
-            </Link>
-
-            {/* Tuile Équipe IA */}
-            <Link href="/agents" style={{ textDecoration: "none" }}>
-              <div style={{
-                padding: "24px",
-                background: "linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.1) 100%)",
-                borderRadius: "16px",
-                border: "1px solid rgba(34, 197, 94, 0.2)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                position: "relative",
-                overflow: "hidden"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 8px 25px rgba(34, 197, 94, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}>
-                <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "12px"
-                }}>
-                  <div style={{
-                    fontSize: "16px",
-                    fontWeight: "700",
-                    color: "#16a34a",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px"
-                  }}>
-                    <Icon name="users" size={20} />
-                    Équipe IA
-                  </div>
-                  <Icon name="arrow-right" size={16} style={{ color: "#16a34a" }} />
-                </div>
-                <div style={{ 
-                  fontSize: "14px", 
-                  color: "#6b7280",
-                  marginBottom: "16px",
-                  lineHeight: "1.5"
-                }}>
-                  Gérez vos agents intelligents et optimisez leurs performances
-                </div>
-                <div style={{
-                  background: "linear-gradient(135deg, #16a34a, #22c55e)",
-                  color: "white",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: "600",
-                  textAlign: "center",
-                  transition: "all 0.2s ease"
-                }}>
-                  Gérer l'équipe →
-                </div>
-              </div>
-            </Link>
-
-            {/* Tuile NovaBot */}
-            <Link href="/novabot" style={{ textDecoration: "none" }}>
-              <div style={{
-                padding: "24px",
-                background: "linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.1) 100%)",
-                borderRadius: "16px",
-                border: "1px solid rgba(245, 158, 11, 0.2)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                position: "relative",
-                overflow: "hidden"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 8px 25px rgba(245, 158, 11, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}>
-                <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "12px"
-                }}>
-                  <div style={{
-                    fontSize: "16px",
-                    fontWeight: "700",
-                    color: "#f59e0b",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px"
-                  }}>
-                    <Icon name="brain" size={20} />
-                    NovaBot
-                  </div>
-                  <Icon name="arrow-right" size={16} style={{ color: "#f59e0b" }} />
-                </div>
-                <div style={{ 
-                  fontSize: "14px", 
-                  color: "#6b7280",
-                  marginBottom: "16px",
-                  lineHeight: "1.5"
-                }}>
-                  Assistant conversationnel intelligent pour toutes vos questions
-                </div>
-                <div style={{
-                  background: "linear-gradient(135deg, #f59e0b, #f97316)",
-                  color: "white",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: "600",
-                  textAlign: "center",
-                  transition: "all 0.2s ease"
-                }}>
-                  Discuter avec NovaBot →
-                </div>
-              </div>
-            </Link>
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mt-20">
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+            <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center mb-4">
+              <Icon name="zap" className="text-white" size={24} />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-3">Automatisation IA</h3>
+            <p className="text-purple-200">
+              Automatisez vos tâches répétitives avec nos agents IA spécialisés
+            </p>
           </div>
 
-          {loading ? (
-            <div style={{
-              textAlign: "center",
-              padding: "40px",
-              color: "#6b7280"
-            }}>
-              <div style={{
-                display: "inline-block",
-                width: "24px",
-                height: "24px",
-                border: "2px solid #e5e7eb",
-                borderTop: "2px solid #635bff",
-                borderRadius: "50%",
-                animation: "spin 1s linear infinite",
-                marginBottom: "16px"
-              }} />
-              <div>Chargement...</div>
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+            <div className="w-12 h-12 bg-gradient-to-r from-green-600 to-teal-600 rounded-lg flex items-center justify-center mb-4">
+              <Icon name="users" className="text-white" size={24} />
             </div>
-          ) : (
-            <div style={{
-              marginTop: "32px",
-              padding: "20px",
-              background: "#f9fafb",
-              borderRadius: "12px",
-              border: "1px solid #e5e7eb"
-            }}>
-              <div style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                color: "#374151",
-                marginBottom: "12px"
-              }}>
-                Statut du système
-              </div>
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                color: "#10b981"
-              }}>
-                <div style={{
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  background: "#10b981"
-                }} />
-                <span style={{ fontSize: "14px" }}>Tous les systèmes opérationnels</span>
-              </div>
+            <h3 className="text-xl font-semibold text-white mb-3">Équipe IA</h3>
+            <p className="text-purple-200">
+              Une équipe d'agents IA spécialisés pour chaque domaine d'expertise
+            </p>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+            <div className="w-12 h-12 bg-gradient-to-r from-orange-600 to-red-600 rounded-lg flex items-center justify-center mb-4">
+              <Icon name="trending-up" className="text-white" size={24} />
             </div>
-          )}
+            <h3 className="text-xl font-semibold text-white mb-3">Optimisation</h3>
+            <p className="text-purple-200">
+              Optimisez vos processus et augmentez votre productivité
+            </p>
+          </div>
         </div>
-      </Layout>
-    </AuthGuard>
+
+        {/* Pricing Section */}
+        <div className="mt-20 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">Plans d'abonnement</h2>
+          <p className="text-purple-200 mb-8">
+            Choisissez le plan qui correspond à vos besoins
+          </p>
+          <Link 
+            href="/pricing"
+            className="bg-white/10 backdrop-blur-lg text-white px-6 py-3 rounded-lg font-medium hover:bg-white/20 transition-all border border-white/20"
+          >
+            Voir les prix
+          </Link>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-black/20 border-t border-white/20 mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="text-center text-purple-200">
+            <p>&copy; 2024 Beriox AI. Tous droits réservés.</p>
+            <div className="mt-4 space-x-4">
+              <Link href="/privacy" className="hover:text-white transition-colors">
+                Confidentialité
+              </Link>
+              <Link href="/cookies" className="hover:text-white transition-colors">
+                Cookies
+              </Link>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }

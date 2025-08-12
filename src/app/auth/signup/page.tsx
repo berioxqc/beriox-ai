@@ -1,19 +1,24 @@
 "use client";
 
 import { useState } from 'react';
-import { signIn, getSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Icon from '@/components/ui/Icon';
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [success, setSuccess] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
   const router = useRouter();
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignUp = async () => {
     setIsLoading(true);
     setError('');
     
@@ -24,39 +29,69 @@ export default function SignInPage() {
       });
       
       if (result?.error) {
-        setError('Erreur lors de la connexion avec Google');
+        setError('Erreur lors de l\'inscription avec Google');
       } else if (result?.ok) {
         router.push('/missions');
       }
     } catch (error) {
-      setError('Erreur lors de la connexion');
+      setError('Erreur lors de l\'inscription');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleEmailSignIn = async (e: React.FormEvent) => {
+  const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
+    setSuccess('');
+
+    // Validation
+    if (formData.password !== formData.confirmPassword) {
+      setError('Les mots de passe ne correspondent pas');
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setError('Le mot de passe doit contenir au moins 8 caractères');
+      setIsLoading(false);
+      return;
+    }
 
     try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
-      if (result?.error) {
-        setError(result.error);
-      } else if (result?.ok) {
-        router.push('/missions');
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Erreur lors de l\'inscription');
+      } else {
+        setSuccess(data.message);
+        setFormData({ name: '', email: '', password: '', confirmPassword: '' });
       }
     } catch (error) {
-      setError('Erreur lors de la connexion');
+      setError('Erreur lors de l\'inscription');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   return (
@@ -64,7 +99,7 @@ export default function SignInPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white mb-2">Beriox AI</h1>
-          <p className="text-gray-300">Connectez-vous à votre compte</p>
+          <p className="text-gray-300">Créez votre compte</p>
         </div>
 
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
@@ -74,9 +109,15 @@ export default function SignInPage() {
             </div>
           )}
 
-          {/* Connexion Google */}
+          {success && (
+            <div className="mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-lg text-green-200 text-sm">
+              {success}
+            </div>
+          )}
+
+          {/* Inscription Google */}
           <button
-            onClick={handleGoogleSignIn}
+            onClick={handleGoogleSignUp}
             disabled={isLoading}
             className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 py-3 px-4 rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-6"
           >
@@ -93,17 +134,34 @@ export default function SignInPage() {
             </div>
           </div>
 
-          {/* Connexion par email */}
-          <form onSubmit={handleEmailSignIn} className="space-y-4">
+          {/* Inscription par email */}
+          <form onSubmit={handleEmailSignUp} className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                Nom complet
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+                className="w-full px-3 py-2 bg-white/10 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="Votre nom complet"
+              />
+            </div>
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
                 Email
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleInputChange}
                 required
                 className="w-full px-3 py-2 bg-white/10 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="votre@email.com"
@@ -116,9 +174,26 @@ export default function SignInPage() {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleInputChange}
+                required
+                className="w-full px-3 py-2 bg-white/10 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
+                Confirmer le mot de passe
+              </label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
                 required
                 className="w-full px-3 py-2 bg-white/10 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="••••••••"
@@ -130,25 +205,18 @@ export default function SignInPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Connexion...' : 'Se connecter'}
+              {isLoading ? 'Création du compte...' : 'Créer mon compte'}
             </button>
           </form>
 
-          <div className="mt-6 text-center space-y-2">
-            <Link 
-              href="/auth/forgot-password"
-              className="text-sm text-purple-300 hover:text-purple-200 transition-colors"
-            >
-              Mot de passe oublié ?
-            </Link>
-            
+          <div className="mt-6 text-center">
             <div className="text-sm text-gray-400">
-              Pas encore de compte ?{' '}
+              Déjà un compte ?{' '}
               <Link 
-                href="/auth/signup"
+                href="/auth/signin"
                 className="text-purple-300 hover:text-purple-200 transition-colors"
               >
-                Créer un compte
+                Se connecter
               </Link>
             </div>
           </div>
