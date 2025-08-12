@@ -1,4 +1,12 @@
-import { ApiResponse, CompetitorData } from './types';
+import { 
+  ApiResponse, 
+  CompetitorData, 
+  OrganicTrafficData, 
+  OrganicKeywordsData, 
+  BacklinksData, 
+  DomainOverviewData,
+  ApiError 
+} from './types';
 
 export class SEMrushAPI {
   private baseUrl = 'https://api.semrush.com/analytics/ta.php';
@@ -11,7 +19,7 @@ export class SEMrushAPI {
   /**
    * Analyse du trafic organique d'un domaine
    */
-  async getOrganicTraffic(domain: string, database: string = 'fr'): Promise<ApiResponse<any>> {
+  async getOrganicTraffic(domain: string, database: string = 'fr'): Promise<ApiResponse<OrganicTrafficData>> {
     try {
       const params = new URLSearchParams({
         key: this.apiKey,
@@ -53,10 +61,11 @@ export class SEMrushAPI {
           lastUpdated: new Date(),
         },
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
       return {
         success: false,
-        error: error.message,
+        error: apiError.message,
       };
     }
   }
@@ -64,7 +73,7 @@ export class SEMrushAPI {
   /**
    * Analyse des mots-clés organiques
    */
-  async getOrganicKeywords(domain: string, database: string = 'fr'): Promise<ApiResponse<any>> {
+  async getOrganicKeywords(domain: string, database: string = 'fr'): Promise<ApiResponse<OrganicKeywordsData>> {
     try {
       const params = new URLSearchParams({
         key: this.apiKey,

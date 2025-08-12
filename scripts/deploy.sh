@@ -323,27 +323,74 @@ deploy() {
     fi
 }
 
-# Vérification de santé
+# Vérification de santé avec diagnostic détaillé
 health_check() {
     local url=$1
     local attempt=1
+    local health_log="health-check.log"
     
-    log_info "Vérification de santé du déploiement..."
+    log_step "Vérification de santé du déploiement avec diagnostic détaillé"
     
     while [[ $attempt -le $MAX_HEALTH_CHECK_ATTEMPTS ]]; do
         log_info "Tentative $attempt/$MAX_HEALTH_CHECK_ATTEMPTS..."
         
-        # Vérification de base
-        if curl -f -s "$url/api/health" > /dev/null; then
+        # Vérification de base avec capture détaillée
+        local start_time=$(date +%s)
+        local response=$(curl -f -s -w "%{http_code}|%{time_total}|%{size_download}" "$url/api/health" 2>&1)
+        local end_time=$(date +%s)
+        local response_time=$((end_time - start_time))
+        
+        if [[ $? -eq 0 ]]; then
+            local http_code=$(echo "$response" | tail -1 | cut -d'|' -f1)
+            local time_total=$(echo "$response" | tail -1 | cut -d'|' -f2)
+            local size=$(echo "$response" | tail -1 | cut -d'|' -f3)
+            
             log_success "Health check réussi"
+            log_debug "HTTP: $http_code, Temps: ${time_total}s, Taille: ${size} bytes"
+            
+            # Analyse des performances
+            if (( $(echo "$time_total > 2" | bc -l) )); then
+                log_warning "Temps de réponse élevé: ${time_total}s"
+                log_diagnostic "Considérez optimiser les performances de l'API"
+            fi
+            
             return 0
         fi
         
         # Vérification détaillée si la base échoue
-        if curl -f -s "$url/api/health/advanced" > /dev/null; then
+        log_info "Tentative avec endpoint avancé..."
+        if curl -f -s "$url/api/health/advanced" > /dev/null 2>&1; then
             log_success "Health check avancé réussi"
             return 0
         fi
+        
+        # Diagnostic des erreurs
+        local error_code=$(curl -s -o /dev/null -w "%{http_code}" "$url/api/health" 2>/dev/null)
+        case $error_code in
+            401)
+                log_diagnostic "Erreur 401: Problème d'authentification"
+                log_fix "Vérifiez la configuration du middleware d'authentification"
+                ;;
+            403)
+                log_diagnostic "Erreur 403: Accès interdit"
+                log_fix "Vérifiez les permissions et la configuration CORS"
+                ;;
+            404)
+                log_diagnostic "Erreur 404: Endpoint non trouvé"
+                log_fix "Vérifiez que l'API /api/health existe"
+                ;;
+            500)
+                log_diagnostic "Erreur 500: Erreur serveur interne"
+                log_fix "Vérifiez les logs du serveur et la configuration"
+                ;;
+            502|503|504)
+                log_diagnostic "Erreur $error_code: Service temporairement indisponible"
+                log_fix "Le service démarre encore, attendez quelques secondes"
+                ;;
+            *)
+                log_diagnostic "Erreur $error_code: Problème inconnu"
+                ;;
+        esac
         
         log_warning "Health check échoué, nouvelle tentative dans $HEALTH_CHECK_INTERVAL secondes..."
         sleep $HEALTH_CHECK_INTERVAL
@@ -351,6 +398,8 @@ health_check() {
     done
     
     log_error "Health check échoué après $MAX_HEALTH_CHECK_ATTEMPTS tentatives"
+    log_diagnostic "Le déploiement semble avoir des problèmes de santé"
+    log_fix "Vérifiez les logs Vercel: vercel logs $url"
     return 1
 }
 
@@ -419,29 +468,89 @@ start_monitoring() {
     log_success "Monitoring terminé"
 }
 
-# Nettoyage
+# Nettoyage avec préservation des logs
 cleanup() {
-    log_info "Nettoyage..."
+    log_step "Nettoyage avec préservation des logs de diagnostic"
+    
+    # Créer un dossier de logs avec timestamp
+    local log_dir="deployment-logs-$(date +%Y%m%d-%H%M%S)"
+    mkdir -p "$log_dir"
+    
+    # Déplacer tous les logs de diagnostic
+    local log_files=("test-output.log" "lint-output.log" "build-output.log" "deployment.log" "health-check.log")
+    for log_file in "${log_files[@]}"; do
+        if [[ -f "$log_file" ]]; then
+            mv "$log_file" "$log_dir/"
+            log_debug "Log préservé: $log_file → $log_dir/"
+        fi
+    done
     
     # Supprimer le fichier temporaire
     if [[ -f .deployment_url ]]; then
         rm .deployment_url
     fi
     
+    # Rapport de nettoyage
+    if [[ -d "$log_dir" ]]; then
+        log_success "Logs de diagnostic préservés dans: $log_dir"
+        log_info "Consultez ces logs pour diagnostiquer les problèmes futurs"
+    fi
+    
     log_success "Nettoyage terminé"
 }
 
-# Gestion des erreurs
+# Gestion des erreurs avec diagnostic avancé
 error_handler() {
     local exit_code=$?
-    log_error "Erreur détectée (code: $exit_code)"
+    local error_line=${BASH_LINENO[0]}
+    local error_command=${BASH_COMMAND}
+    
+    log_error "🚨 ERREUR CRITIQUE DÉTECTÉE"
+    log_error "Code d'erreur: $exit_code"
+    log_error "Ligne: $error_line"
+    log_error "Commande: $error_command"
+    
+    # Diagnostic automatique basé sur le code d'erreur
+    case $exit_code in
+        1)
+            log_diagnostic "Erreur générale - probablement un problème de configuration"
+            log_fix "Vérifiez les logs de diagnostic ci-dessus"
+            ;;
+        2)
+            log_diagnostic "Erreur de syntaxe dans le script"
+            log_fix "Vérifiez la syntaxe du script deploy.sh"
+            ;;
+        126)
+            log_diagnostic "Commande non exécutable"
+            log_fix "Vérifiez les permissions: chmod +x scripts/deploy.sh"
+            ;;
+        127)
+            log_diagnostic "Commande non trouvée"
+            log_fix "Vérifiez que tous les outils sont installés"
+            ;;
+        128)
+            log_diagnostic "Signal d'interruption"
+            log_fix "Le déploiement a été interrompu manuellement"
+            ;;
+        *)
+            log_diagnostic "Erreur inconnue - code $exit_code"
+            log_fix "Consultez les logs de diagnostic pour plus d'informations"
+            ;;
+    esac
     
     # Tentative de rollback si nécessaire
     if [[ -f .deployment_url ]]; then
         local deployment_url=$(cat .deployment_url)
         log_warning "Tentative de rollback vers la version précédente..."
+        log_info "URL de déploiement problématique: $deployment_url"
         # Ici vous pouvez ajouter la logique de rollback
     fi
+    
+    # Capture de l'état du système
+    log_info "État du système au moment de l'erreur:"
+    log_debug "Répertoire: $(pwd)"
+    log_debug "Utilisateur: $(whoami)"
+    log_debug "Timestamp: $(date)"
     
     cleanup
     exit $exit_code
@@ -451,9 +560,12 @@ error_handler() {
 trap error_handler ERR
 trap cleanup EXIT
 
-# Fonction principale
+# Fonction principale avec diagnostic automatique
 main() {
-    log_info "🚀 Démarrage du déploiement Beriox AI"
+    log_info "🚀 Démarrage du déploiement Beriox AI avec diagnostic intelligent"
+    
+    # Diagnostic automatique du système
+    auto_diagnose
     
     # Vérifications préliminaires
     check_prerequisites
@@ -492,6 +604,47 @@ main() {
     log_info "URL: $deployment_url"
     log_info "Health check: $deployment_url/api/health"
     log_info "Monitoring: $deployment_url/api/monitoring/health"
+    
+    # Rapport final de diagnostic
+    log_step "📊 Rapport final de diagnostic"
+    log_info "Tous les logs de diagnostic ont été préservés"
+    log_info "Consultez le dossier deployment-logs-* pour analyser les performances"
+}
+
+# Fonction de diagnostic automatique
+auto_diagnose() {
+    log_step "🔬 Diagnostic automatique du système"
+    
+    # Vérification de l'espace disque
+    local disk_usage=$(df -h . | tail -1 | awk '{print $5}' | sed 's/%//')
+    if [[ $disk_usage -gt 90 ]]; then
+        log_warning "Espace disque faible: ${disk_usage}%"
+        log_fix "Libérez de l'espace disque avant le déploiement"
+    fi
+    
+    # Vérification de la mémoire
+    if command -v free &> /dev/null; then
+        local mem_usage=$(free | grep Mem | awk '{printf "%.0f", $3/$2 * 100.0}')
+        if [[ $mem_usage -gt 80 ]]; then
+            log_warning "Utilisation mémoire élevée: ${mem_usage}%"
+            log_fix "Fermez les applications inutiles"
+        fi
+    fi
+    
+    # Vérification de la connectivité réseau
+    if ! ping -c 1 vercel.com &> /dev/null; then
+        log_warning "Problème de connectivité réseau"
+        log_fix "Vérifiez votre connexion internet"
+    fi
+    
+    # Vérification des permissions
+    if [[ ! -w . ]]; then
+        log_error "Permissions d'écriture manquantes"
+        log_fix "Vérifiez les permissions du répertoire"
+        exit 1
+    fi
+    
+    log_success "Diagnostic système terminé"
 }
 
 # Exécution du script

@@ -54,7 +54,9 @@
     "health:monitor": "curl -f $VERCEL_URL/api/monitoring/health || exit 1",
     "test:e2e:deployment": "playwright test tests/e2e/deployment.spec.ts",
     "monitor:start": "node scripts/monitor.js",
-    "rollback": "vercel rollback"
+    "rollback": "vercel rollback",
+    "fix:lint": "./scripts/fix-lint.sh",
+    "fix:lint:manual": "npm run lint -- --fix"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",

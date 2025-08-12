@@ -248,7 +248,7 @@ export default function CompanyTargetingPage() {
       <div className={styles.header}>
         <h1 className={styles.title}>
           <Icon name="target" className={styles.titleIcon} />
-          Ciblage d'Entreprises
+          Ciblage d&apos;Entreprises
         </h1>
         <p className={styles.subtitle}>
           Recherchez et ciblez des entreprises avec Google Places API
