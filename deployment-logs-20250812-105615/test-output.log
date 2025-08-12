@@ -1,0 +1,21 @@
+
+> beriox-ai@0.1.0 test
+> jest --detectOpenHandles
+
+PASS src/components/ui/Button.test.tsx
+  Button Component
+    ✓ renders with default props (51 ms)
+    ✓ renders with different variants (45 ms)
+    ✓ renders with different sizes (11 ms)
+    ✓ handles click events (5 ms)
+    ✓ can be disabled (4 ms)
+    ✓ renders with loading state (5 ms)
+    ✓ renders with icon (5 ms)
+    ✓ applies custom className (5 ms)
+    ✓ renders with full width (3 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        0.865 s
+Ran all test suites.
