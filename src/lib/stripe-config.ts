@@ -5,7 +5,7 @@ export const stripeConfig = {
   publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
   secretKey: process.env.STRIPE_SECRET_KEY || '',
   currency: 'cad',
-  apiVersion: '2023-10-16' as const
+  apiVersion: '2025-07-30.basil' as const
 };
 
 // Instance Stripe côté serveur
