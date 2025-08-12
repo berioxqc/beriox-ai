@@ -1,315 +1,211 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Icon from "@/components/ui/Icon";
+import { useState } from "react";
 import Link from "next/link";
 
-export default function HomeSimple() {
-  const { data: session } = useSession();
-  const [missions, setMissions] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // CSS pour l'animation de spin
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    `;
-    document.head.appendChild(style);
-    return () => document.head.removeChild(style);
-  }, []);
-
-  useEffect(() => {
-    // Simuler le chargement des missions
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+export default function Home() {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <AuthGuard>
-      <Layout 
-        title="Accueil" 
-        subtitle="Vue d'ensemble de vos missions et de votre équipe IA"
-      >
-        <div style={{
-          background: "white",
-          borderRadius: "16px",
-          padding: "32px",
-          border: "1px solid #e5e7eb",
-          boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)"
+    <div style={{ 
+      minHeight: '100vh', 
+      backgroundColor: '#0a0a0a',
+      color: 'white',
+      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
+    }}>
+      {/* Header */}
+      <header style={{
+        padding: '2rem',
+        borderBottom: '1px solid #333',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#00ff88' }}>
+          Beriox AI
+        </h1>
+        <nav style={{ display: 'flex', gap: '1rem' }}>
+          <Link href="/auth/signin" style={{
+            backgroundColor: 'transparent',
+            color: '#00ff88',
+            border: '2px solid #00ff88',
+            padding: '10px 20px',
+            borderRadius: '6px',
+            fontWeight: 'bold',
+            textDecoration: 'none',
+            cursor: 'pointer'
+          }}>
+            Se connecter
+          </Link>
+          <Link href="/pricing" style={{
+            backgroundColor: '#00ff88',
+            color: '#0a0a0a',
+            border: 'none',
+            padding: '10px 20px',
+            borderRadius: '6px',
+            fontWeight: 'bold',
+            textDecoration: 'none',
+            cursor: 'pointer'
+          }}>
+            Tarifs
+          </Link>
+        </nav>
+      </header>
+
+      {/* Hero Section */}
+      <main>
+        <section style={{
+          padding: '4rem 2rem',
+          textAlign: 'center',
+          maxWidth: '1200px',
+          margin: '0 auto'
         }}>
           <h2 style={{
-            fontSize: "24px",
-            fontWeight: "700",
-            color: "#0a2540",
-            marginBottom: "16px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px"
+            fontSize: '3.5rem',
+            fontWeight: 'bold',
+            marginBottom: '1.5rem',
+            background: 'linear-gradient(45deg, #00ff88, #00ccff)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
           }}>
-            <Icon name="check" style={{ color: "#10b981" }} size={24} />
-            Bienvenue sur Beriox AI
+            Intelligence Artificielle Avancée
           </h2>
-          
           <p style={{
-            fontSize: "16px",
-            color: "#6b7280",
-            lineHeight: "1.6",
-            marginBottom: "24px"
+            fontSize: '1.3rem',
+            color: '#cccccc',
+            marginBottom: '2rem',
+            maxWidth: '600px',
+            marginLeft: 'auto',
+            marginRight: 'auto'
           }}>
-            Votre plateforme d'intelligence artificielle pour la gestion de missions et d'équipes.
+            Découvrez nos agents IA spécialisés pour automatiser vos tâches, analyser vos données et transformer votre productivité.
           </p>
-
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "20px"
-          }}>
-            {/* Tuile Créer une Mission */}
-            <Link href="/missions" style={{ textDecoration: "none" }}>
-              <div style={{
-                padding: "24px",
-                background: "linear-gradient(135deg, rgba(99, 91, 255, 0.05) 0%, rgba(99, 91, 255, 0.1) 100%)",
-                borderRadius: "16px",
-                border: "1px solid rgba(99, 91, 255, 0.2)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                position: "relative",
-                overflow: "hidden"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 8px 25px rgba(99, 91, 255, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}>
-                <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "12px"
-                }}>
-                  <div style={{
-                    fontSize: "16px",
-                    fontWeight: "700",
-                    color: "#635bff",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px"
-                  }}>
-                    <Icon name="rocket" size={20} />
-                    Créer une Mission
-                  </div>
-                  <Icon name="arrow-right" size={16} style={{ color: "#635bff" }} />
-                </div>
-                <div style={{ 
-                  fontSize: "14px", 
-                  color: "#6b7280",
-                  marginBottom: "16px",
-                  lineHeight: "1.5"
-                }}>
-                  Lancez une nouvelle mission avec votre équipe IA et obtenez des résultats exceptionnels
-                </div>
-                <div style={{
-                  background: "linear-gradient(135deg, #635bff, #8b5cf6)",
-                  color: "white",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: "600",
-                  textAlign: "center",
-                  transition: "all 0.2s ease"
-                }}>
-                  Commencer maintenant →
-                </div>
-              </div>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/auth/signin" style={{
+              backgroundColor: '#00ff88',
+              color: '#0a0a0a',
+              border: 'none',
+              padding: '15px 30px',
+              fontSize: '1.1rem',
+              borderRadius: '8px',
+              fontWeight: 'bold',
+              textDecoration: 'none',
+              cursor: 'pointer'
+            }}>
+              Commencer gratuitement
             </Link>
-
-            {/* Tuile Équipe IA */}
-            <Link href="/agents" style={{ textDecoration: "none" }}>
-              <div style={{
-                padding: "24px",
-                background: "linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(34, 197, 94, 0.1) 100%)",
-                borderRadius: "16px",
-                border: "1px solid rgba(34, 197, 94, 0.2)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                position: "relative",
-                overflow: "hidden"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 8px 25px rgba(34, 197, 94, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}>
-                <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "12px"
-                }}>
-                  <div style={{
-                    fontSize: "16px",
-                    fontWeight: "700",
-                    color: "#16a34a",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px"
-                  }}>
-                    <Icon name="users" size={20} />
-                    Équipe IA
-                  </div>
-                  <Icon name="arrow-right" size={16} style={{ color: "#16a34a" }} />
-                </div>
-                <div style={{ 
-                  fontSize: "14px", 
-                  color: "#6b7280",
-                  marginBottom: "16px",
-                  lineHeight: "1.5"
-                }}>
-                  Gérez vos agents intelligents et optimisez leurs performances
-                </div>
-                <div style={{
-                  background: "linear-gradient(135deg, #16a34a, #22c55e)",
-                  color: "white",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: "600",
-                  textAlign: "center",
-                  transition: "all 0.2s ease"
-                }}>
-                  Gérer l'équipe →
-                </div>
-              </div>
-            </Link>
-
-            {/* Tuile NovaBot */}
-            <Link href="/novabot" style={{ textDecoration: "none" }}>
-              <div style={{
-                padding: "24px",
-                background: "linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.1) 100%)",
-                borderRadius: "16px",
-                border: "1px solid rgba(245, 158, 11, 0.2)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                position: "relative",
-                overflow: "hidden"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-4px)";
-                e.currentTarget.style.boxShadow = "0 8px 25px rgba(245, 158, 11, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
-              }}>
-                <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "12px"
-                }}>
-                  <div style={{
-                    fontSize: "16px",
-                    fontWeight: "700",
-                    color: "#f59e0b",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px"
-                  }}>
-                    <Icon name="brain" size={20} />
-                    NovaBot
-                  </div>
-                  <Icon name="arrow-right" size={16} style={{ color: "#f59e0b" }} />
-                </div>
-                <div style={{ 
-                  fontSize: "14px", 
-                  color: "#6b7280",
-                  marginBottom: "16px",
-                  lineHeight: "1.5"
-                }}>
-                  Assistant conversationnel intelligent pour toutes vos questions
-                </div>
-                <div style={{
-                  background: "linear-gradient(135deg, #f59e0b, #f97316)",
-                  color: "white",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: "600",
-                  textAlign: "center",
-                  transition: "all 0.2s ease"
-                }}>
-                  Discuter avec NovaBot →
-                </div>
-              </div>
+            <Link href="/agents" style={{
+              backgroundColor: 'transparent',
+              color: '#00ff88',
+              border: '2px solid #00ff88',
+              padding: '15px 30px',
+              fontSize: '1.1rem',
+              borderRadius: '8px',
+              fontWeight: 'bold',
+              textDecoration: 'none',
+              cursor: 'pointer'
+            }}>
+              Voir nos agents
             </Link>
           </div>
+        </section>
 
-          {loading ? (
+        {/* Features Section */}
+        <section style={{
+          padding: '4rem 2rem',
+          backgroundColor: '#111',
+          maxWidth: '1200px',
+          margin: '0 auto'
+        }}>
+          <h3 style={{
+            fontSize: '2.5rem',
+            textAlign: 'center',
+            marginBottom: '3rem',
+            color: '#00ff88'
+          }}>
+            Fonctionnalités
+          </h3>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem'
+          }}>
             <div style={{
-              textAlign: "center",
-              padding: "40px",
-              color: "#6b7280"
+              padding: '2rem',
+              backgroundColor: '#1a1a1a',
+              borderRadius: '12px',
+              border: '1px solid #333'
             }}>
-              <div style={{
-                display: "inline-block",
-                width: "24px",
-                height: "24px",
-                border: "2px solid #e5e7eb",
-                borderTop: "2px solid #635bff",
-                borderRadius: "50%",
-                animation: "spin 1s linear infinite",
-                marginBottom: "16px"
-              }} />
-              <div>Chargement...</div>
+              <h4 style={{ color: '#00ff88', marginBottom: '1rem' }}>🤖 Agents IA Spécialisés</h4>
+              <p>Nos agents IA sont conçus pour des tâches spécifiques : analyse de données, automatisation, support client.</p>
             </div>
-          ) : (
             <div style={{
-              marginTop: "32px",
-              padding: "20px",
-              background: "#f9fafb",
-              borderRadius: "12px",
-              border: "1px solid #e5e7eb"
+              padding: '2rem',
+              backgroundColor: '#1a1a1a',
+              borderRadius: '12px',
+              border: '1px solid #333'
             }}>
-              <div style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                color: "#374151",
-                marginBottom: "12px"
-              }}>
-                Statut du système
-              </div>
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                color: "#10b981"
-              }}>
-                <div style={{
-                  width: "8px",
-                  height: "8px",
-                  borderRadius: "50%",
-                  background: "#10b981"
-                }} />
-                <span style={{ fontSize: "14px" }}>Tous les systèmes opérationnels</span>
-              </div>
+              <h4 style={{ color: '#00ff88', marginBottom: '1rem' }}>📊 Analytics Avancées</h4>
+              <p>Suivez vos performances avec des tableaux de bord détaillés et des insights en temps réel.</p>
             </div>
-          )}
-        </div>
-      </Layout>
-    </AuthGuard>
+            <div style={{
+              padding: '2rem',
+              backgroundColor: '#1a1a1a',
+              borderRadius: '12px',
+              border: '1px solid #333'
+            }}>
+              <h4 style={{ color: '#00ff88', marginBottom: '1rem' }}>🔗 Intégrations</h4>
+              <p>Connectez Beriox AI à vos outils existants pour une intégration transparente.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section style={{
+          padding: '4rem 2rem',
+          textAlign: 'center',
+          maxWidth: '1200px',
+          margin: '0 auto'
+        }}>
+          <h3 style={{
+            fontSize: '2.5rem',
+            marginBottom: '1rem',
+            color: '#00ff88'
+          }}>
+            Prêt à commencer ?
+          </h3>
+          <p style={{
+            fontSize: '1.2rem',
+            color: '#cccccc',
+            marginBottom: '2rem'
+          }}>
+            Rejoignez des milliers d'utilisateurs qui utilisent déjà Beriox AI
+          </p>
+          <Link href="/auth/signin" style={{
+            backgroundColor: '#00ff88',
+            color: '#0a0a0a',
+            border: 'none',
+            padding: '15px 30px',
+            fontSize: '1.1rem',
+            borderRadius: '8px',
+            fontWeight: 'bold',
+            textDecoration: 'none',
+            cursor: 'pointer',
+            display: 'inline-block'
+          }}>
+            Créer un compte gratuit
+          </Link>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer style={{
+        padding: '2rem',
+        borderTop: '1px solid #333',
+        textAlign: 'center',
+        color: '#666'
+      }}>
+        <p>&copy; 2024 Beriox AI. Tous droits réservés.</p>
+      </footer>
+    </div>
   );
 }

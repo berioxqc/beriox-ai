@@ -8,16 +8,23 @@ if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
     const IORedis = require("ioredis");
     const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
     
-    redis = new IORedis(redisUrl, {
-      maxRetriesPerRequest: null, // Required for BullMQ
-      retryDelayOnFailover: 100,
-      enableReadyCheck: false,
-      lazyConnect: true
-    });
-    
-    bullConnection = redis; // BullMQ accepts an ioredis instance
+    // Vérifier si l'URL Redis est valide
+    if (redisUrl && redisUrl !== "redis://localhost:6379") {
+      redis = new IORedis(redisUrl, {
+        maxRetriesPerRequest: null, // Required for BullMQ
+        retryDelayOnFailover: 100,
+        enableReadyCheck: false,
+        lazyConnect: true,
+        connectTimeout: 5000,
+        commandTimeout: 5000
+      });
+      
+      bullConnection = redis; // BullMQ accepts an ioredis instance
+    } else {
+      console.log('Redis URL not configured, using in-memory fallback');
+    }
   } catch (error) {
-    console.warn('Redis not available:', error.message);
+    console.log('Redis not available, using in-memory fallback:', error.message);
   }
 }
 
