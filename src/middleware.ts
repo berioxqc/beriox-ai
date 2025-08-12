@@ -24,6 +24,7 @@ export async function middleware(request: NextRequest) {
     '/pricing',
     '/api/auth',
     '/api/health',
+    '/api/monitoring/health',
     '/api/csrf'
   ];
 
@@ -86,6 +87,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/api/')) {
     // Ignorer les routes de santé, monitoring et auth
     if (pathname === '/api/health' || 
+        pathname.startsWith('/api/monitoring/health') ||
         pathname.startsWith('/api/admin/stats') ||
         pathname.startsWith('/api/auth')) {
       return NextResponse.next();
