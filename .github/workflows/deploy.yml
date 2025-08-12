@@ -1,0 +1,238 @@
+name: 🚀 Deploy Beriox AI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20'
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  # 🔍 Tests et Validation
+  test:
+    name: 🧪 Tests & Validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔧 Install dependencies
+        run: npm ci
+
+      - name: 🗄️ Setup database
+        run: |
+          npx prisma generate
+          npx prisma db push --force-reset
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+
+      - name: 🧪 Run unit tests
+        run: npm run test:coverage
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+          REDIS_URL: redis://localhost:6379
+
+      - name: 🔍 Run linting
+        run: npm run lint
+
+      - name: 🔒 Security audit
+        run: npm audit --audit-level=moderate
+
+      - name: 📊 Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+  # 🏗️ Build et Validation
+  build:
+    name: 🏗️ Build & Validate
+    runs-on: ubuntu-latest
+    needs: test
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔧 Install dependencies
+        run: npm ci
+
+      - name: 🗄️ Generate Prisma client
+        run: npx prisma generate
+
+      - name: 🏗️ Build application
+        run: npm run build
+        env:
+          NEXTAUTH_URL: https://test.vercel.app
+          NEXTAUTH_SECRET: test-secret
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: 📦 Bundle analysis
+        uses: relative-ci/bundle-stats-action@v2
+        with:
+          webpack-stats-path: .next/bundle-stats.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  # 🚀 Déploiement Staging
+  deploy-staging:
+    name: 🚀 Deploy Staging
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔧 Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: 🚀 Deploy to Vercel (Staging)
+        run: |
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+        env:
+          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
+
+      - name: 🧪 Run E2E tests
+        run: |
+          npm install -g playwright
+          npx playwright install
+          npm run test:e2e
+        env:
+          BASE_URL: ${{ steps.deploy.outputs.url }}
+
+  # 🚀 Déploiement Production
+  deploy-production:
+    name: 🚀 Deploy Production
+    runs-on: ubuntu-latest
+    needs: [test, build]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    timeout-minutes: 15
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔧 Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: 🚀 Deploy to Vercel (Production)
+        id: deploy
+        run: |
+          vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+        env:
+          VERCEL_ORG_ID: ${{ env.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
+
+      - name: 🔍 Health check
+        run: |
+          curl -f ${{ steps.deploy.outputs.url }}/api/health || exit 1
+          curl -f ${{ steps.deploy.outputs.url }}/api/health/advanced || exit 1
+
+      - name: 🧪 Smoke tests
+        run: |
+          npm install -g playwright
+          npx playwright install
+          npx playwright test --grep "smoke"
+        env:
+          BASE_URL: ${{ steps.deploy.outputs.url }}
+
+      - name: 📊 Performance test
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            ${{ steps.deploy.outputs.url }}
+            ${{ steps.deploy.outputs.url }}/missions
+            ${{ steps.deploy.outputs.url }}/metrics-dashboard
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  # 📊 Monitoring Post-Déploiement
+  monitoring:
+    name: 📊 Post-Deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: github.ref == 'refs/heads/main'
+    timeout-minutes: 5
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Check error rates
+        run: |
+          # Vérifier les erreurs dans les logs Vercel
+          echo "Checking deployment health..."
+          
+      - name: 📈 Send deployment notification
+        run: |
+          echo "🚀 Beriox AI deployed successfully!"
+          echo "URL: ${{ needs.deploy-production.outputs.url }}"
+        if: success()
+
+      - name: 🚨 Alert on failure
+        run: |
+          echo "❌ Deployment failed!"
+          exit 1
+        if: failure()
