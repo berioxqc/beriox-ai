@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage() {
             fontWeight: '600',
             marginTop: '16px'
           }}>
-            ✅ Dernière mise à jour : {new Date().toLocaleDateString('fr-CA')}
+            ✅ Dernière mise à jour : {new Date().toLocaleDateString(&apos;fr-CA&apos;)}
           </div>
         </div>
 
@@ -71,7 +71,7 @@ export default function PrivacyPolicyPage() {
               1. Qui sommes-nous ?
             </h2>
             <p>
-              Beriox AI est une plateforme d'intelligence artificielle qui vous aide dans vos tâches quotidiennes 
+              Beriox AI est une plateforme d&apos;intelligence artificielle qui vous aide dans vos tâches quotidiennes 
               de marketing, développement web et création de contenu. Nous sommes situés au Québec, Canada, et 
               nous nous engageons à respecter la Loi 25 sur la protection des renseignements personnels.
             </p>
@@ -104,7 +104,7 @@ export default function PrivacyPolicyPage() {
             </h2>
             
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0a2540', marginTop: '24px' }}>
-              Données d'identification
+              Données d&apos;identification
             </h3>
             <ul>
               <li>Nom complet</li>
@@ -113,13 +113,13 @@ export default function PrivacyPolicyPage() {
             </ul>
 
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0a2540', marginTop: '24px' }}>
-              Données d'utilisation
+              Données d&apos;utilisation
             </h3>
             <ul>
               <li>Missions créées et leurs contenus</li>
               <li>Interactions avec les agents IA</li>
-              <li>Préférences d'utilisation</li>
-              <li>Statistiques d'usage (anonymisées)</li>
+              <li>Préférences d&apos;utilisation</li>
+              <li>Statistiques d&apos;usage (anonymisées)</li>
             </ul>
 
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0a2540', marginTop: '24px' }}>
@@ -127,7 +127,7 @@ export default function PrivacyPolicyPage() {
             </h3>
             <ul>
               <li>Adresse IP (anonymisée après 30 jours)</li>
-              <li>Type de navigateur et système d'exploitation</li>
+              <li>Type de navigateur et système d&apos;exploitation</li>
               <li>Pages visitées et temps passé</li>
               <li>Cookies de session (essentiels uniquement)</li>
             </ul>
@@ -159,7 +159,7 @@ export default function PrivacyPolicyPage() {
               }}>
                 <h4 style={{ margin: '0 0 8px 0', color: '#0a2540' }}>✅ Finalités légitimes :</h4>
                 <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                  <li>Fournir nos services d'IA personnalisés</li>
+                  <li>Fournir nos services d&apos;IA personnalisés</li>
                   <li>Améliorer votre expérience utilisateur</li>
                   <li>Assurer la sécurité de la plateforme</li>
                   <li>Respecter nos obligations légales</li>
@@ -466,7 +466,7 @@ export default function PrivacyPolicyPage() {
             }}>
               <h4 style={{ margin: '0 0 8px 0', color: '#7c3aed' }}>Cookies essentiels uniquement :</h4>
               <ul style={{ margin: 0, paddingLeft: '20px', color: '#7c3aed' }}>
-                <li>Session d'authentification (next-auth)</li>
+                <li>Session d&apos;authentification (next-auth)</li>
                 <li>Préférences de langue</li>
                 <li>Protection CSRF</li>
               </ul>

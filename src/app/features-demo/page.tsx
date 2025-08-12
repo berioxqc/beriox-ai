@@ -36,7 +36,7 @@ export default function FeaturesDemoPage() {
               <Icon name="download" size="2x" />
             </div>
             <div className="feature-info">
-              <h2>Système d'Export Avancé</h2>
+              <h2>Système d&apos;Export Avancé</h2>
               <p>Exportez vos données en PDF, Excel ou CSV avec des graphiques personnalisés</p>
             </div>
           </div>
@@ -53,7 +53,7 @@ export default function FeaturesDemoPage() {
             </div>
             <div className="feature-info">
               <h2>Notifications Intelligentes</h2>
-              <p>Système d'alertes en temps réel avec filtres et actions rapides</p>
+              <p>Système d&apos;alertes en temps réel avec filtres et actions rapides</p>
             </div>
           </div>
           <div className="feature-demo">
@@ -68,7 +68,7 @@ export default function FeaturesDemoPage() {
                   Votre concurrent a baissé ses prix de 15%. Action recommandée.
                 </div>
                 <div className="notification-actions">
-                  <button className="action-btn">Voir l'analyse</button>
+                  <button className="action-btn">Voir l&apos;analyse</button>
                   <button className="action-btn secondary">Ignorer</button>
                 </div>
               </div>
@@ -94,7 +94,7 @@ export default function FeaturesDemoPage() {
                   <span className="notification-time">Il y a 4h</span>
                 </div>
                 <div className="notification-content">
-                  L'analyse SEO Amazon a été complétée avec succès.
+                  L&apos;analyse SEO Amazon a été complétée avec succès.
                 </div>
               </div>
             </div>
@@ -108,7 +108,7 @@ export default function FeaturesDemoPage() {
               <Icon name="puzzle-piece" size="2x" />
             </div>
             <div className="feature-info">
-              <h2>Système d'Icônes Centralisé</h2>
+              <h2>Système d&apos;Icônes Centralisé</h2>
               <p>Plus de 80 icônes FontAwesome organisées et optimisées</p>
             </div>
           </div>

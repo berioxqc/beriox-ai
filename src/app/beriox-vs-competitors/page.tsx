@@ -99,7 +99,7 @@ export default function BerioxVsCompetitorsPage() {
       
       <Layout
         title="Beriox AI vs Concurrents"
-        subtitle="Comparaison complète avec les meilleures plateformes d'automatisation"
+        subtitle="Comparaison complète avec les meilleures plateformes d&apos;automatisation"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Hero Section */}
@@ -109,8 +109,8 @@ export default function BerioxVsCompetitorsPage() {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Comparaison objective et détaillée avec les meilleures plateformes 
-              d'automatisation. Découvrez pourquoi Beriox AI révolutionne 
-              l'orchestration d'agents IA.
+              d&apos;automatisation. Découvrez pourquoi Beriox AI révolutionne 
+              l&apos;orchestration d&apos;agents IA.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
@@ -268,7 +268,7 @@ export default function BerioxVsCompetitorsPage() {
               Prêt à essayer Beriox AI ?
             </h3>
             <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-              Rejoignez des milliers d'entreprises qui ont déjà choisi Beriox AI 
+              Rejoignez des milliers d&apos;entreprises qui ont déjà choisi Beriox AI 
               pour révolutionner leur automatisation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

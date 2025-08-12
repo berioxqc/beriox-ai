@@ -90,7 +90,7 @@ export default function PricingPage() {
             maxWidth: '600px',
             margin: '0 auto'
           }}>
-            Libérez le potentiel de l'IA collaborative pour vos projets. 
+            Libérez le potentiel de l&apos;IA collaborative pour vos projets. 
             Nos agents spécialisés travaillent ensemble pour des résultats exceptionnels.
           </p>
         </div>
@@ -264,9 +264,9 @@ export default function PricingPage() {
                   <span style={{ color: theme.colors.neutral[600] }}> CAD/mois</span>
                 </div>
                 <p style={{ color: theme.colors.neutral[600] }}>
-                  {plan.id === 'pro' 
-                    ? 'Idéal pour les professionnels' 
-                    : 'Pour les équipes et entreprises'
+                  {plan.id === &apos;pro&apos; 
+                    ? &apos;Idéal pour les professionnels&apos; 
+                    : &apos;Pour les équipes et entreprises&apos;
                   }
                 </p>
               </div>
@@ -315,7 +315,7 @@ export default function PricingPage() {
                     Redirection...
                   </>
                 ) : (
-                  'Souscrire maintenant'
+                  &apos;Souscrire maintenant&apos;
                 )}
               </button>
             </div>

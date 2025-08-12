@@ -99,26 +99,26 @@ export default function CompetitorsDemoPage() {
             Découvrez comment notre IA surveille vos concurrents en temps réel
           </p>
           <button
-            onClick={() => router.push('/pricing')}
+            onClick={() => router.push(&apos;/pricing&apos;)}
             style={{
               padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-              backgroundColor: 'white',
-              color: '#10b981',
-              border: 'none',
-              borderRadius: '12px',
-              fontWeight: '700',
-              fontSize: '18px',
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+              backgroundColor: &apos;white&apos;,
+              color: &apos;#10b981&apos;,
+              border: &apos;none&apos;,
+              borderRadius: &apos;12px&apos;,
+              fontWeight: &apos;700&apos;,
+              fontSize: &apos;18px&apos;,
+              cursor: &apos;pointer&apos;,
+              transition: &apos;all 0.3s&apos;,
+              boxShadow: &apos;0 4px 16px rgba(0, 0, 0, 0.2)&apos;
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.3)';
+              e.currentTarget.style.transform = &apos;translateY(-2px)&apos;;
+              e.currentTarget.style.boxShadow = &apos;0 8px 24px rgba(0, 0, 0, 0.3)&apos;;
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)';
+              e.currentTarget.style.transform = &apos;translateY(0)&apos;;
+              e.currentTarget.style.boxShadow = &apos;0 4px 16px rgba(0, 0, 0, 0.2)&apos;;
             }}
           >
             🚀 Commencer maintenant
@@ -144,13 +144,13 @@ export default function CompetitorsDemoPage() {
               onClick={() => setActiveTab(tab.id)}
               style={{
                 padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-                background: activeTab === tab.id ? theme.colors.primary.main : 'transparent',
-                color: activeTab === tab.id ? 'white' : theme.colors.neutral[600],
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontWeight: activeTab === tab.id ? '600' : '500',
-                transition: 'all 0.2s'
+                background: activeTab === tab.id ? theme.colors.primary.main : &apos;transparent&apos;,
+                color: activeTab === tab.id ? &apos;white&apos; : theme.colors.neutral[600],
+                border: &apos;none&apos;,
+                borderRadius: &apos;8px&apos;,
+                cursor: &apos;pointer&apos;,
+                fontWeight: activeTab === tab.id ? &apos;600&apos; : &apos;500&apos;,
+                transition: &apos;all 0.2s&apos;
               }}
             >
               {tab.icon} {tab.label}
@@ -228,7 +228,7 @@ export default function CompetitorsDemoPage() {
                   <div style={{ fontSize: '2rem', marginRight: theme.spacing.sm }}>⚡</div>
                   <div>
                     <h3 style={{ fontSize: '1.1rem', fontWeight: '600', color: theme.colors.neutral[900] }}>
-                      Alertes Aujourd'hui
+                      Alertes Aujourd&apos;hui
                     </h3>
                     <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#f59e0b' }}>
                       12
@@ -542,29 +542,29 @@ export default function CompetitorsDemoPage() {
             opacity: 0.95,
             marginBottom: theme.spacing.lg
           }}>
-            Rejoignez des centaines d'entreprises qui utilisent notre veille concurrentielle
+            Rejoignez des centaines d&apos;entreprises qui utilisent notre veille concurrentielle
           </p>
           <button
-            onClick={() => router.push('/pricing')}
+            onClick={() => router.push(&apos;/pricing&apos;)}
             style={{
               padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-              backgroundColor: 'white',
-              color: '#10b981',
-              border: 'none',
-              borderRadius: '12px',
-              fontWeight: '700',
-              fontSize: '18px',
-              cursor: 'pointer',
-              transition: 'all 0.3s',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+              backgroundColor: &apos;white&apos;,
+              color: &apos;#10b981&apos;,
+              border: &apos;none&apos;,
+              borderRadius: &apos;12px&apos;,
+              fontWeight: &apos;700&apos;,
+              fontSize: &apos;18px&apos;,
+              cursor: &apos;pointer&apos;,
+              transition: &apos;all 0.3s&apos;,
+              boxShadow: &apos;0 4px 16px rgba(0, 0, 0, 0.2)&apos;
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.3)';
+              e.currentTarget.style.transform = &apos;translateY(-2px)&apos;;
+              e.currentTarget.style.boxShadow = &apos;0 8px 24px rgba(0, 0, 0, 0.3)&apos;;
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)';
+              e.currentTarget.style.transform = &apos;translateY(0)&apos;;
+              e.currentTarget.style.boxShadow = &apos;0 4px 16px rgba(0, 0, 0, 0.2)&apos;;
             }}
           >
             🚀 Commencer maintenant

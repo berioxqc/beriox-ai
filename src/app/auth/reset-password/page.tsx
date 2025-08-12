@@ -131,7 +131,7 @@ function ResetPasswordForm() {
             disabled={isLoading}
             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Mise à jour...' : 'Mettre à jour le mot de passe'}
+            {isLoading ? &apos;Mise à jour...&apos; : &apos;Mettre à jour le mot de passe&apos;}
           </button>
         </form>
       )}

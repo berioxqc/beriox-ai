@@ -192,7 +192,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                 color: "#0a2540",
                 outline: "none",
                 transition: "border-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
               }}
               onFocus={(e) => e.target.style.borderColor = "#635bff"}
               onBlur={(e) => e.target.style.borderColor = "#e3e8ee"}
@@ -226,7 +226,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                 color: "#0a2540",
                 outline: "none",
                 transition: "border-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif",
                 resize: "vertical"
               }}
               onFocus={(e) => e.target.style.borderColor = "#635bff"}
@@ -334,7 +334,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                   color: "#6b7280",
                   fontSize: "14px"
                 }}>
-                  Cliquez sur "Analyser" pour obtenir des recommandations d'agents optimisées
+                  Cliquez sur "Analyser" pour obtenir des recommandations d&apos;agents optimisées
                 </div>
               )}
             </div>

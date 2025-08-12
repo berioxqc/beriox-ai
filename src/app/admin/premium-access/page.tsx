@@ -387,7 +387,7 @@ export default function AdminPremiumAccessPage() {
                               fontSize: '12px',
                               fontWeight: '600'
                             }}>
-                              {expired ? 'Expiré' : access.isActive ? 'Actif' : 'Inactif'}
+                              {expired ? &apos;Expiré&apos; : access.isActive ? &apos;Actif&apos; : &apos;Inactif&apos;}
                             </div>
                             
                             <div style={{
@@ -421,7 +421,7 @@ export default function AdminPremiumAccessPage() {
                             <strong>Fin:</strong> {new Date(access.endDate).toLocaleDateString()}
                           </div>
                           <div>
-                            <strong>Reste:</strong> {expired ? '0 jours' : `${daysLeft} jours`}
+                            <strong>Reste:</strong> {expired ? &apos;0 jours&apos; : `${daysLeft} jours`}
                           </div>
                         </div>
                         
@@ -529,11 +529,11 @@ export default function AdminPremiumAccessPage() {
                       onChange={(e) => setFormData({ ...formData, userEmail: e.target.value })}
                       placeholder="utilisateur@exemple.com"
                       style={{
-                        width: '100%',
-                        padding: '12px',
-                        border: '1px solid #d1d5db',
-                        borderRadius: '6px',
-                        fontSize: '14px'
+                        width: &apos;100%&apos;,
+                        padding: &apos;12px&apos;,
+                        border: &apos;1px solid #d1d5db&apos;,
+                        borderRadius: &apos;6px&apos;,
+                        fontSize: &apos;14px&apos;
                       }}
                     />
                   </div>
@@ -607,15 +607,15 @@ export default function AdminPremiumAccessPage() {
                     <textarea
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="Raison de l'attribution, contexte..."
+                      placeholder="Raison de l&apos;attribution, contexte..."
                       style={{
-                        width: '100%',
-                        padding: '12px',
-                        border: '1px solid #d1d5db',
-                        borderRadius: '6px',
-                        fontSize: '14px',
-                        minHeight: '80px',
-                        resize: 'vertical'
+                        width: &apos;100%&apos;,
+                        padding: &apos;12px&apos;,
+                        border: &apos;1px solid #d1d5db&apos;,
+                        borderRadius: &apos;6px&apos;,
+                        fontSize: &apos;14px&apos;,
+                        minHeight: &apos;80px&apos;,
+                        resize: &apos;vertical&apos;
                       }}
                     />
                   </div>
@@ -633,14 +633,14 @@ export default function AdminPremiumAccessPage() {
                   onClick={() => setShowGrantModal(false)}
                   disabled={granting}
                   style={{
-                    background: '#f3f4f6',
-                    color: '#374151',
-                    border: 'none',
-                    borderRadius: '6px',
-                    padding: '12px 20px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: granting ? 'not-allowed' : 'pointer'
+                    background: &apos;#f3f4f6&apos;,
+                    color: &apos;#374151&apos;,
+                    border: &apos;none&apos;,
+                    borderRadius: &apos;6px&apos;,
+                    padding: &apos;12px 20px&apos;,
+                    fontSize: &apos;14px&apos;,
+                    fontWeight: &apos;600&apos;,
+                    cursor: granting ? &apos;not-allowed&apos; : &apos;pointer&apos;
                   }}
                 >
                   Annuler
@@ -670,7 +670,7 @@ export default function AdminPremiumAccessPage() {
                   ) : (
                     <>
                       <Icon name="crown" />
-                      Accorder l'accès
+                      Accorder l&apos;accès
                     </>
                   )}
                 </button>

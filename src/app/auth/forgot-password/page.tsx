@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Envoi...' : 'Envoyer le lien de réinitialisation'}
+              {isLoading ? &apos;Envoi...&apos; : &apos;Envoyer le lien de réinitialisation&apos;}
             </button>
           </form>
 

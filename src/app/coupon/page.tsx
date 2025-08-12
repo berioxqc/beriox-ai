@@ -136,26 +136,26 @@ export default function CouponPage() {
                   onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                   placeholder="Ex: PREMIUM3MOIS, STARTER2024..."
                   style={{
-                    width: '100%',
-                    padding: '16px 20px',
-                    border: '2px solid #e3e8ee',
-                    borderRadius: '12px',
-                    fontSize: '16px',
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                    outline: 'none',
-                    transition: 'border-color 0.2s',
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    fontWeight: '500'
+                    width: &apos;100%&apos;,
+                    padding: &apos;16px 20px&apos;,
+                    border: &apos;2px solid #e3e8ee&apos;,
+                    borderRadius: &apos;12px&apos;,
+                    fontSize: &apos;16px&apos;,
+                    fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif",
+                    outline: &apos;none&apos;,
+                    transition: &apos;border-color 0.2s&apos;,
+                    textTransform: &apos;uppercase&apos;,
+                    letterSpacing: &apos;1px&apos;,
+                    fontWeight: &apos;500&apos;
                   }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = theme.colors.primary;
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.borderColor = '#e3e8ee';
+                    e.currentTarget.style.borderColor = &apos;#e3e8ee&apos;;
                   }}
                   onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
+                    if (e.key === &apos;Enter&apos;) {
                       handleRedeemCoupon();
                     }
                   }}

@@ -315,16 +315,16 @@ export default function OnboardingPage() {
                     onChange={(e) => setData({...data, company: e.target.value})}
                     placeholder="Ex: Ma Super Entreprise Inc."
                     style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      border: '1px solid #e3e8ee',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      outline: 'none',
-                      transition: 'border-color 0.2s'
+                      width: &apos;100%&apos;,
+                      padding: &apos;12px 16px&apos;,
+                      border: &apos;1px solid #e3e8ee&apos;,
+                      borderRadius: &apos;8px&apos;,
+                      fontSize: &apos;14px&apos;,
+                      outline: &apos;none&apos;,
+                      transition: &apos;border-color 0.2s&apos;
                     }}
-                    onFocus={(e) => e.target.style.borderColor = '#635bff'}
-                    onBlur={(e) => e.target.style.borderColor = '#e3e8ee'}
+                    onFocus={(e) => e.target.style.borderColor = &apos;#635bff&apos;}
+                    onBlur={(e) => e.target.style.borderColor = &apos;#e3e8ee&apos;}
                   />
                 </div>
 
@@ -345,16 +345,16 @@ export default function OnboardingPage() {
                     onChange={(e) => setData({...data, role: e.target.value})}
                     placeholder="Ex: Directeur marketing, Développeur web, Entrepreneur..."
                     style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      border: '1px solid #e3e8ee',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      outline: 'none',
-                      transition: 'border-color 0.2s'
+                      width: &apos;100%&apos;,
+                      padding: &apos;12px 16px&apos;,
+                      border: &apos;1px solid #e3e8ee&apos;,
+                      borderRadius: &apos;8px&apos;,
+                      fontSize: &apos;14px&apos;,
+                      outline: &apos;none&apos;,
+                      transition: &apos;border-color 0.2s&apos;
                     }}
-                    onFocus={(e) => e.target.style.borderColor = '#635bff'}
-                    onBlur={(e) => e.target.style.borderColor = '#e3e8ee'}
+                    onFocus={(e) => e.target.style.borderColor = &apos;#635bff&apos;}
+                    onBlur={(e) => e.target.style.borderColor = &apos;#e3e8ee&apos;}
                   />
                 </div>
               </div>
@@ -371,7 +371,7 @@ export default function OnboardingPage() {
                 marginBottom: '8px',
                 textAlign: 'center'
               }}>
-                Quel est votre niveau d'expérience ?
+                Quel est votre niveau d&apos;expérience ?
               </h2>
               <p style={{
                 fontSize: '14px',

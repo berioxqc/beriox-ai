@@ -218,7 +218,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Chargement de l'onboarding...</p>
+            <p className="text-gray-600">Chargement de l&apos;onboarding...</p>
           </div>
         </div>
       </div>
@@ -259,7 +259,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
               <button
                 onClick={onSkip}
                 className="text-gray-400 hover:text-gray-600"
-                title="Passer l'onboarding"
+                title="Passer l&apos;onboarding"
               >
                 <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
               </button>
@@ -486,7 +486,7 @@ function WelcomeStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? 'Chargement...' : 'Commencer'}
+        {loading ? &apos;Chargement...&apos; : &apos;Commencer&apos;}
       </button>
     </div>
   );
@@ -503,7 +503,7 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           <input
             type="text"
             value={stepData.name || ''}
-            onChange={(e) => onUpdateData('name', e.target.value)}
+            onChange={(e) => onUpdateData(&apos;name&apos;, e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Votre nom complet"
           />
@@ -515,7 +515,7 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           <input
             type="text"
             value={stepData.company || ''}
-            onChange={(e) => onUpdateData('company', e.target.value)}
+            onChange={(e) => onUpdateData(&apos;company&apos;, e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Nom de votre entreprise"
           />
@@ -527,7 +527,7 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           <input
             type="text"
             value={stepData.role || ''}
-            onChange={(e) => onUpdateData('role', e.target.value)}
+            onChange={(e) => onUpdateData(&apos;role&apos;, e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Votre poste"
           />
@@ -567,7 +567,7 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Sauvegarde...' : 'Sauvegarder et continuer'}
+          {loading ? &apos;Sauvegarde...&apos; : &apos;Sauvegarder et continuer&apos;}
         </button>
       </div>
     </div>
@@ -581,7 +581,7 @@ function PreferencesStep({ step, stepData, onUpdateData, onNext, onSkip, loading
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">
-          Sélectionnez vos domaines d'intérêt
+          Sélectionnez vos domaines d&apos;intérêt
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {categories.map((category) => (
@@ -616,7 +616,7 @@ function PreferencesStep({ step, stepData, onUpdateData, onNext, onSkip, loading
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Sauvegarde...' : 'Sauvegarder les préférences'}
+          {loading ? &apos;Sauvegarde...&apos; : &apos;Sauvegarder les préférences&apos;}
         </button>
       </div>
     </div>
@@ -638,10 +638,10 @@ function FirstMissionStep({ step, onNext, loading }: any) {
         {['seo_audit', 'content_analysis', 'competitor_research'].map((template) => (
           <div key={template} className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer">
             <div className="text-2xl mb-2">
-              {template === 'seo_audit' ? '🔍' : template === 'content_analysis' ? '📝' : '📊'}
+              {template === &apos;seo_audit&apos; ? &apos;🔍&apos; : template === &apos;content_analysis&apos; ? &apos;📝&apos; : &apos;📊&apos;}
             </div>
             <h4 className="font-medium text-gray-900 capitalize">
-              {template.replace('_', ' ')}
+              {template.replace(&apos;_&apos;, &apos; &apos;)}
             </h4>
           </div>
         ))}
@@ -652,7 +652,7 @@ function FirstMissionStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? 'Création...' : 'Créer ma première mission'}
+        {loading ? &apos;Création...&apos; : &apos;Créer ma première mission&apos;}
       </button>
     </div>
   );
@@ -676,14 +676,14 @@ function FeaturesTourStep({ step, onNext, onSkip, loading }: any) {
           <div key={feature} className="p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center">
               <div className="text-2xl mr-3">
-                {feature === 'dashboard' ? '📊' : feature === 'missions' ? '🎯' : feature === 'analytics' ? '📈' : '🔗'}
+                {feature === &apos;dashboard&apos; ? &apos;📊&apos; : feature === &apos;missions&apos; ? &apos;🎯&apos; : feature === &apos;analytics&apos; ? &apos;📈&apos; : &apos;🔗&apos;}
               </div>
               <div>
                 <h4 className="font-medium text-gray-900 capitalize">{feature}</h4>
                 <p className="text-sm text-gray-600">
-                  {feature === 'dashboard' ? 'Vue d\'ensemble de vos données' :
-                   feature === 'missions' ? 'Gérez vos missions IA' :
-                   feature === 'analytics' ? 'Analysez vos performances' : 'Connectez vos outils'}
+                  {feature === &apos;dashboard&apos; ? &apos;Vue d\&apos;ensemble de vos données&apos; :
+                   feature === &apos;missions&apos; ? &apos;Gérez vos missions IA&apos; :
+                   feature === &apos;analytics&apos; ? &apos;Analysez vos performances&apos; : &apos;Connectez vos outils&apos;}
                 </p>
               </div>
             </div>
@@ -703,7 +703,7 @@ function FeaturesTourStep({ step, onNext, onSkip, loading }: any) {
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Terminaison...' : 'Terminer le tour'}
+          {loading ? &apos;Terminaison...&apos; : &apos;Terminer le tour&apos;}
         </button>
       </div>
     </div>
@@ -764,7 +764,7 @@ function IntegrationsStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Connexion...' : 'Connecter mes outils'}
+          {loading ? &apos;Connexion...&apos; : &apos;Connecter mes outils&apos;}
         </button>
       </div>
     </div>
@@ -789,11 +789,11 @@ function BillingStep({ step, onNext, onSkip, loading }: any) {
           <div key={plan} className="p-4 border border-gray-200 rounded-lg text-center">
             <h4 className="font-semibold text-gray-900 mb-2">{plan}</h4>
             <div className="text-2xl font-bold text-blue-600 mb-2">
-              {plan === 'Starter' ? 'Gratuit' : plan === 'Professional' ? '$29/mois' : 'Sur mesure'}
+              {plan === &apos;Starter&apos; ? &apos;Gratuit&apos; : plan === &apos;Professional&apos; ? &apos;$29/mois&apos; : &apos;Sur mesure&apos;}
             </div>
             <p className="text-sm text-gray-600 mb-4">
-              {plan === 'Starter' ? 'Pour commencer' : 
-               plan === 'Professional' ? 'Pour les équipes' : 'Pour les entreprises'}
+              {plan === &apos;Starter&apos; ? &apos;Pour commencer&apos; : 
+               plan === &apos;Professional&apos; ? &apos;Pour les équipes&apos; : &apos;Pour les entreprises&apos;}
             </p>
           </div>
         ))}
@@ -804,14 +804,14 @@ function BillingStep({ step, onNext, onSkip, loading }: any) {
           onClick={onSkip}
           className="px-4 py-2 text-gray-600 hover:text-gray-800"
         >
-          Continuer l'essai gratuit
+          Continuer l&apos;essai gratuit
         </button>
         <button
           onClick={onNext}
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Configuration...' : 'Choisir un plan'}
+          {loading ? &apos;Configuration...&apos; : &apos;Choisir un plan&apos;}
         </button>
       </div>
     </div>
@@ -841,7 +841,7 @@ function CompletionStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? 'Redirection...' : 'Aller au dashboard'}
+        {loading ? &apos;Redirection...&apos; : &apos;Aller au dashboard&apos;}
       </button>
     </div>
   );

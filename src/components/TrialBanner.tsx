@@ -84,7 +84,7 @@ export default function TrialBanner() {
           transition: "all 0.2s",
           position: "relative",
           zIndex: 1,
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
         }}
         onMouseOver={(e) => {
           e.currentTarget.style.background = "rgba(255, 255, 255, 0.3)";

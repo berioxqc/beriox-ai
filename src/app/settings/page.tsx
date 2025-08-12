@@ -274,7 +274,7 @@ export default function SettingsPage() {
                   color: "#333",
                   marginBottom: 8
                 }}>
-                  Token d'intégration Notion
+                  Token d&apos;intégration Notion
                 </label>
                 <input
                   type="password"

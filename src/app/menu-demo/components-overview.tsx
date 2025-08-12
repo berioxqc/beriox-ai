@@ -92,7 +92,7 @@ export default function ComponentsOverview() {
         marginBottom: "24px",
         textAlign: "center"
       }}>
-        Vue d'Ensemble des Composants
+        Vue d&apos;Ensemble des Composants
       </h3>
 
       <div style={{

@@ -40,7 +40,7 @@ export async function sendVerificationEmail(
         </div>
         
         <div style="padding: 30px; background: #f9f9f9;">
-          <h2 style="color: #333; margin-bottom: 20px;">Bonjour ${name || 'utilisateur'} !</h2>
+          <h2 style="color: #333; margin-bottom: 20px;">Bonjour ${name || &apos;utilisateur&apos;} !</h2>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
             Merci de vous être inscrit sur Beriox AI. Pour activer votre compte et commencer à utiliser nos agents IA, 
@@ -75,7 +75,7 @@ export async function sendVerificationEmail(
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           
           <p style="color: #999; font-size: 14px; text-align: center;">
-            Si vous n'avez pas créé de compte sur Beriox AI, vous pouvez ignorer cet email.
+            Si vous n&apos;avez pas créé de compte sur Beriox AI, vous pouvez ignorer cet email.
           </p>
         </div>
         
@@ -122,7 +122,7 @@ export async function sendPasswordResetEmail(
         </div>
         
         <div style="padding: 30px; background: #f9f9f9;">
-          <h2 style="color: #333; margin-bottom: 20px;">Bonjour ${name || 'utilisateur'} !</h2>
+          <h2 style="color: #333; margin-bottom: 20px;">Bonjour ${name || &apos;utilisateur&apos;} !</h2>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
             Nous avons reçu une demande de réinitialisation de mot de passe pour votre compte Beriox AI. 
@@ -155,13 +155,13 @@ export async function sendPasswordResetEmail(
           </p>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
-            Si vous n'avez pas demandé cette réinitialisation, vous pouvez ignorer cet email en toute sécurité.
+            Si vous n&apos;avez pas demandé cette réinitialisation, vous pouvez ignorer cet email en toute sécurité.
           </p>
           
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
           
           <p style="color: #999; font-size: 14px; text-align: center;">
-            Pour des raisons de sécurité, ce lien ne peut être utilisé qu'une seule fois.
+            Pour des raisons de sécurité, ce lien ne peut être utilisé qu&apos;une seule fois.
           </p>
         </div>
         
@@ -205,11 +205,11 @@ export async function sendWelcomeEmail(
         </div>
         
         <div style="padding: 30px; background: #f9f9f9;">
-          <h2 style="color: #333; margin-bottom: 20px;">Bienvenue ${name || 'utilisateur'} ! 🎉</h2>
+          <h2 style="color: #333; margin-bottom: 20px;">Bienvenue ${name || &apos;utilisateur&apos;} ! 🎉</h2>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
             Félicitations ! Votre compte Beriox AI a été confirmé avec succès. 
-            Vous êtes maintenant prêt à découvrir le pouvoir de l'intelligence artificielle.
+            Vous êtes maintenant prêt à découvrir le pouvoir de l&apos;intelligence artificielle.
           </p>
           
           <div style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -235,7 +235,7 @@ export async function sendWelcomeEmail(
           </div>
           
           <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
-            Si vous avez des questions ou besoin d'aide, n'hésitez pas à nous contacter.
+            Si vous avez des questions ou besoin d&apos;aide, n&apos;hésitez pas à nous contacter.
           </p>
           
           <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">

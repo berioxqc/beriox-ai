@@ -173,7 +173,7 @@ export default function PremiumPricingPage() {
             marginBottom: theme.spacing.sm,
             margin: 0
           }}>
-            🚀 Transformez votre stratégie digitale dès aujourd'hui !
+            🚀 Transformez votre stratégie digitale dès aujourd&apos;hui !
           </h2>
           <p style={{
             fontSize: '1.1rem',
@@ -188,26 +188,26 @@ export default function PremiumPricingPage() {
             gap: theme.spacing.md
           }}>
             <button
-              onClick={() => handleSubscribe('pro')}
+              onClick={() => handleSubscribe(&apos;pro&apos;)}
               style={{
                 padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-                backgroundColor: 'white',
+                backgroundColor: &apos;white&apos;,
                 color: theme.colors.primary.main,
-                border: 'none',
-                borderRadius: '8px',
-                fontWeight: '600',
-                fontSize: '16px',
-                cursor: 'pointer',
-                transition: 'all 0.3s',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                border: &apos;none&apos;,
+                borderRadius: &apos;8px&apos;,
+                fontWeight: &apos;600&apos;,
+                fontSize: &apos;16px&apos;,
+                cursor: &apos;pointer&apos;,
+                transition: &apos;all 0.3s&apos;,
+                boxShadow: &apos;0 2px 8px rgba(0, 0, 0, 0.1)&apos;
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.15)';
+                e.currentTarget.style.transform = &apos;translateY(-2px)&apos;;
+                e.currentTarget.style.boxShadow = &apos;0 4px 16px rgba(0, 0, 0, 0.15)&apos;;
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.transform = &apos;translateY(0)&apos;;
+                e.currentTarget.style.boxShadow = &apos;0 2px 8px rgba(0, 0, 0, 0.1)&apos;;
               }}
             >
               Essayer gratuitement
@@ -328,26 +328,26 @@ export default function PremiumPricingPage() {
               </div>
               
               <button
-                onClick={() => handleSubscribe('competitor-intelligence')}
+                onClick={() => handleSubscribe(&apos;competitor-intelligence&apos;)}
                 style={{
                   padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-                  backgroundColor: 'white',
-                  color: '#10b981',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontWeight: '700',
-                  fontSize: '18px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+                  backgroundColor: &apos;white&apos;,
+                  color: &apos;#10b981&apos;,
+                  border: &apos;none&apos;,
+                  borderRadius: &apos;12px&apos;,
+                  fontWeight: &apos;700&apos;,
+                  fontSize: &apos;18px&apos;,
+                  cursor: &apos;pointer&apos;,
+                  transition: &apos;all 0.3s&apos;,
+                  boxShadow: &apos;0 4px 16px rgba(0, 0, 0, 0.2)&apos;
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.transform = &apos;translateY(-2px)&apos;;
+                  e.currentTarget.style.boxShadow = &apos;0 8px 24px rgba(0, 0, 0, 0.3)&apos;;
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)';
+                  e.currentTarget.style.transform = &apos;translateY(0)&apos;;
+                  e.currentTarget.style.boxShadow = &apos;0 4px 16px rgba(0, 0, 0, 0.2)&apos;;
                 }}
               >
                 🚀 Démarrer la veille concurrentielle
@@ -515,7 +515,7 @@ export default function PremiumPricingPage() {
                       fontWeight: 'bold',
                       color: plan.price === 0 ? theme.colors.neutral[600] : theme.colors.primary.main
                     }}>
-                      {plan.price === 0 ? 'Gratuit' : `${plan.price}$`}
+                      {plan.price === 0 ? &apos;Gratuit&apos; : `${plan.price}$`}
                     </span>
                   </div>
                   {plan.price > 0 && (
@@ -669,7 +669,7 @@ export default function PremiumPricingPage() {
           }}>
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Qu'est-ce que le Beriox Performance Index (BPI) ?
+                Qu&apos;est-ce que le Beriox Performance Index (BPI) ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Le BPI est notre score propriétaire qui combine SEO (30%), Performance (25%), Conversion (25%) et Sécurité (20%) 
@@ -679,7 +679,7 @@ export default function PremiumPricingPage() {
 
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Comment fonctionne l'Opportunity Radar ?
+                Comment fonctionne l&apos;Opportunity Radar ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Notre IA analyse vos données et identifie automatiquement les 5 actions prioritaires avec le meilleur ROI 
@@ -701,7 +701,7 @@ export default function PremiumPricingPage() {
                 Les APIs sont-elles incluses dans le prix ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
-                Oui, tous les coûts d'APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
+                Oui, tous les coûts d&apos;APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
                 pour vous offrir le meilleur service au meilleur prix.
               </p>
             </div>
@@ -732,17 +732,17 @@ export default function PremiumPricingPage() {
             Rejoignez les professionnels qui font confiance à Beriox AI pour leurs analyses.
           </p>
           <button
-            onClick={() => handleSubscribe('pro')}
+            onClick={() => handleSubscribe(&apos;pro&apos;)}
             style={{
               padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-              borderRadius: '12px',
-              border: 'none',
+              borderRadius: &apos;12px&apos;,
+              border: &apos;none&apos;,
               backgroundColor: theme.colors.primary.main,
-              color: 'white',
-              fontSize: '18px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(90, 95, 202, 0.3)'
+              color: &apos;white&apos;,
+              fontSize: &apos;18px&apos;,
+              fontWeight: &apos;600&apos;,
+              cursor: &apos;pointer&apos;,
+              boxShadow: &apos;0 4px 12px rgba(90, 95, 202, 0.3)&apos;
             }}
           >
             Commencer avec Pro - 25$/mois

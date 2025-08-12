@@ -104,7 +104,7 @@ function SuccessContent() {
               color: theme.colors.primary.dark
             }}>
               <FontAwesomeIcon icon="bullseye" />
-              Explorez l'Opportunity Radar
+              Explorez l&apos;Opportunity Radar
             </li>
             <li style={{
               display: 'flex',

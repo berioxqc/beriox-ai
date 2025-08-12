@@ -185,7 +185,7 @@ export default function BlogPage() {
             Restez informé des dernières tendances IA
           </h3>
           <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-            Recevez nos articles exclusifs, tutoriels et insights sur l'intelligence 
+            Recevez nos articles exclusifs, tutoriels et insights sur l&apos;intelligence 
             artificielle directement dans votre boîte mail.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
@@ -195,7 +195,7 @@ export default function BlogPage() {
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
             />
             <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-              S'abonner
+              S&apos;abonner
             </button>
           </div>
         </div>

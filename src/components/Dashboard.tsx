@@ -198,10 +198,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </div>
           ) : (
             <>
-              {widget.type === 'metric' && renderMetricWidget(widget)}
-              {widget.type === 'list' && renderListWidget(widget)}
-              {widget.type === 'alert' && renderAlertWidget(widget)}
-              {widget.type === 'chart' && renderChartWidget(widget)}
+              {widget.type === &apos;metric&apos; && renderMetricWidget(widget)}
+              {widget.type === &apos;list&apos; && renderListWidget(widget)}
+              {widget.type === &apos;alert&apos; && renderAlertWidget(widget)}
+              {widget.type === &apos;chart&apos; && renderChartWidget(widget)}
             </>
           )}
         </div>
@@ -219,7 +219,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
             onClick={() => setIsEditing(!isEditing)}
           >
             <Icon name="edit" size="sm" />
-            {isEditing ? 'Terminer' : 'Personnaliser'}
+            {isEditing ? &apos;Terminer&apos; : &apos;Personnaliser&apos;}
           </button>
           {isEditing && (
             <button className="add-widget-button">

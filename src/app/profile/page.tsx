@@ -298,7 +298,7 @@ export default function ProfilePage() {
               fontWeight: 'bold',
               color: 'white'
             }}>
-              {!session.user.image && (session.user.name ? session.user.name.charAt(0).toUpperCase() : 'U')}
+              {!session.user.image && (session.user.name ? session.user.name.charAt(0).toUpperCase() : &apos;U&apos;)}
             </div>
 
             {/* Info utilisateur */}
@@ -357,7 +357,7 @@ export default function ProfilePage() {
                       color: theme.colors.neutral[900],
                       margin: 0
                     }}>
-                      {session.user.name || 'Utilisateur'}
+                      {session.user.name || &apos;Utilisateur&apos;}
                     </h1>
                     <button
                       onClick={() => setEditing(true)}
@@ -465,7 +465,7 @@ export default function ProfilePage() {
                 fontWeight: 'bold', 
                 color: theme.colors.neutral[900] 
               }}>
-                {new Date(userStats.joinDate).toLocaleDateString('fr-FR')}
+                {new Date(userStats.joinDate).toLocaleDateString(&apos;fr-FR&apos;)}
               </div>
               <div style={{ color: theme.colors.neutral[600], fontSize: '14px' }}>
                 Membre depuis
@@ -694,7 +694,7 @@ export default function ProfilePage() {
                             fontSize: '12px', 
                             color: theme.colors.neutral[600]
                           }}>
-                            {new Date(alert.timestamp).toLocaleString('fr-FR')}
+                            {new Date(alert.timestamp).toLocaleString(&apos;fr-FR&apos;)}
                           </div>
                         </div>
                       </div>
@@ -747,8 +747,8 @@ export default function ProfilePage() {
                                api.status === 'warning' ? theme.colors.warning :
                                theme.colors.error
                       }}>
-                        {api.status === 'healthy' ? '✓ OK' :
-                         api.status === 'warning' ? '⚠ Attention' : '✗ Erreur'}
+                        {api.status === &apos;healthy&apos; ? &apos;✓ OK&apos; :
+                         api.status === &apos;warning&apos; ? &apos;⚠ Attention&apos; : &apos;✗ Erreur&apos;}
                       </span>
                     </div>
 
@@ -787,7 +787,7 @@ export default function ProfilePage() {
                       fontSize: '12px',
                       color: theme.colors.neutral[600]
                     }}>
-                      Dernière mise à jour: {new Date(api.lastUpdate).toLocaleString('fr-FR')}
+                      Dernière mise à jour: {new Date(api.lastUpdate).toLocaleString(&apos;fr-FR&apos;)}
                     </div>
                   </div>
                 ))}
@@ -806,7 +806,7 @@ export default function ProfilePage() {
                 </h4>
                 <p>
                   Cette section contiendra des graphiques interactifs pour visualiser
-                  l'évolution de vos métriques dans le temps.
+                  l&apos;évolution de vos métriques dans le temps.
                 </p>
               </div>
             )}
@@ -907,11 +907,11 @@ export default function ProfilePage() {
                     value={userProfile?.name || session?.user?.name || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, name: e.target.value } : null)}
                     style={{
-                      width: '100%',
-                      padding: '12px',
-                      border: '1px solid #e3e8ee',
-                      borderRadius: '6px',
-                      fontSize: '14px'
+                      width: &apos;100%&apos;,
+                      padding: &apos;12px&apos;,
+                      border: &apos;1px solid #e3e8ee&apos;,
+                      borderRadius: &apos;6px&apos;,
+                      fontSize: &apos;14px&apos;
                     }}
                   />
                 </div>
@@ -993,11 +993,11 @@ export default function ProfilePage() {
                     value={userProfile?.company || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, company: e.target.value } : null)}
                     style={{
-                      width: '100%',
-                      padding: '12px',
-                      border: '1px solid #e3e8ee',
-                      borderRadius: '6px',
-                      fontSize: '14px'
+                      width: &apos;100%&apos;,
+                      padding: &apos;12px&apos;,
+                      border: &apos;1px solid #e3e8ee&apos;,
+                      borderRadius: &apos;6px&apos;,
+                      fontSize: &apos;14px&apos;
                     }}
                   />
                 </div>
@@ -1057,7 +1057,7 @@ export default function ProfilePage() {
                       fontSize: '14px'
                     }}
                   >
-                    <option value="">Sélectionner l'expérience</option>
+                    <option value="">Sélectionner l&apos;expérience</option>
                     <option value="beginner">Débutant</option>
                     <option value="intermediate">Intermédiaire</option>
                     <option value="advanced">Avancé</option>
@@ -1118,7 +1118,7 @@ export default function ProfilePage() {
                   color: theme.colors.neutral[700],
                   marginBottom: '8px'
                 }}>
-                  Thème d'affichage
+                  Thème d&apos;affichage
                 </label>
                 <select
                   value={userProfile?.preferences?.theme || 'auto'}
@@ -1262,7 +1262,7 @@ export default function ProfilePage() {
               color: theme.colors.neutral[900],
               marginBottom: theme.spacing.lg
             }}>
-              💳 Gestion de l'abonnement
+              💳 Gestion de l&apos;abonnement
             </h3>
 
             <div style={{ display: 'grid', gap: theme.spacing.lg }}>
@@ -1293,7 +1293,7 @@ export default function ProfilePage() {
                       Plan actuel
                     </div>
                     <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
-                      {userStats?.planId === 'free' ? 'Gratuit' : userStats?.planId === 'pro' ? 'Pro' : 'Enterprise'}
+                      {userStats?.planId === &apos;free&apos; ? &apos;Gratuit&apos; : userStats?.planId === &apos;pro&apos; ? &apos;Pro&apos; : &apos;Enterprise&apos;}
                     </div>
                   </div>
                   
@@ -1307,7 +1307,7 @@ export default function ProfilePage() {
                       Statut
                     </div>
                     <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
-                      {userStats?.subscriptionStatus === 'active' ? 'Actif' : 'Essai'}
+                      {userStats?.subscriptionStatus === &apos;active&apos; ? &apos;Actif&apos; : &apos;Essai&apos;}
                     </div>
                   </div>
                   
@@ -1321,7 +1321,7 @@ export default function ProfilePage() {
                       Membre depuis
                     </div>
                     <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
-                      {userStats?.joinDate ? new Date(userStats.joinDate).toLocaleDateString('fr-FR') : 'N/A'}
+                      {userStats?.joinDate ? new Date(userStats.joinDate).toLocaleDateString(&apos;fr-FR&apos;) : &apos;N/A&apos;}
                     </div>
                   </div>
                 </div>
@@ -1486,18 +1486,18 @@ export default function ProfilePage() {
                     
                     {userStats?.planId !== 'pro' && (
                       <button
-                        onClick={() => window.location.href = '/pricing'}
+                        onClick={() => window.location.href = &apos;/pricing&apos;}
                         style={{
-                          width: '100%',
-                          padding: '12px',
+                          width: &apos;100%&apos;,
+                          padding: &apos;12px&apos;,
                           background: theme.colors.primary.main,
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '8px',
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          cursor: 'pointer',
-                          transition: 'background-color 0.2s'
+                          color: &apos;white&apos;,
+                          border: &apos;none&apos;,
+                          borderRadius: &apos;8px&apos;,
+                          fontSize: &apos;14px&apos;,
+                          fontWeight: &apos;600&apos;,
+                          cursor: &apos;pointer&apos;,
+                          transition: &apos;background-color 0.2s&apos;
                         }}
                         onMouseOver={(e) => e.currentTarget.style.background = theme.colors.primary.dark}
                         onMouseOut={(e) => e.currentTarget.style.background = theme.colors.primary.main}
@@ -1576,29 +1576,29 @@ export default function ProfilePage() {
                     
                     {userStats?.planId !== 'enterprise' && (
                       <button
-                        onClick={() => window.location.href = '/pricing'}
+                        onClick={() => window.location.href = &apos;/pricing&apos;}
                         style={{
-                          width: '100%',
-                          padding: '12px',
-                          background: 'white',
+                          width: &apos;100%&apos;,
+                          padding: &apos;12px&apos;,
+                          background: &apos;white&apos;,
                           color: theme.colors.primary.main,
                           border: `1px solid ${theme.colors.primary.main}`,
-                          borderRadius: '8px',
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s'
+                          borderRadius: &apos;8px&apos;,
+                          fontSize: &apos;14px&apos;,
+                          fontWeight: &apos;600&apos;,
+                          cursor: &apos;pointer&apos;,
+                          transition: &apos;all 0.2s&apos;
                         }}
                         onMouseOver={(e) => {
                           e.currentTarget.style.background = theme.colors.primary.main;
-                          e.currentTarget.style.color = 'white';
+                          e.currentTarget.style.color = &apos;white&apos;;
                         }}
                         onMouseOut={(e) => {
-                          e.currentTarget.style.background = 'white';
+                          e.currentTarget.style.background = &apos;white&apos;;
                           e.currentTarget.style.color = theme.colors.primary.main;
                         }}
                       >
-                        Contacter l'équipe
+                        Contacter l&apos;équipe
                       </button>
                     )}
                   </div>
@@ -1639,7 +1639,7 @@ export default function ProfilePage() {
                     }}
                   >
                     <FontAwesomeIcon icon="credit-card" />
-                    Gérer l'abonnement
+                    Gérer l&apos;abonnement
                   </button>
                   
                   <button

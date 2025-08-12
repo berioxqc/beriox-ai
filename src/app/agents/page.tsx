@@ -596,7 +596,7 @@ export default function AgentsPage() {
                           onChange={() => toggleAgent(agent.id)}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&apos;"] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                       </label>
                     </div>
                     
@@ -693,7 +693,7 @@ export default function AgentsPage() {
                               onChange={() => toggleAgent(agent.id)}
                               className="sr-only peer"
                             />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&apos;"] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                           </label>
                         </td>
                       </tr>
@@ -713,8 +713,8 @@ export default function AgentsPage() {
                   <div>
                     <h3 className="font-medium text-blue-900 mb-1">Agents Spécialisés Avancés</h3>
                     <p className="text-sm text-blue-700">
-                      Ces agents utilisent des algorithmes d'IA avancés pour des tâches spécialisées. 
-                      Ils sont disponibles selon votre plan d'abonnement.
+                      Ces agents utilisent des algorithmes d&apos;IA avancés pour des tâches spécialisées. 
+                      Ils sont disponibles selon votre plan d&apos;abonnement.
                     </p>
                   </div>
                 </div>
@@ -774,7 +774,7 @@ export default function AgentsPage() {
                         className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
                         disabled={agent.status === 'enterprise'}
                       >
-                        {agent.status === 'enterprise' ? 'Plan Enterprise requis' : 'Activer l\'agent'}
+                        {agent.status === &apos;enterprise&apos; ? &apos;Plan Enterprise requis&apos; : &apos;Activer l\&apos;agent&apos;}
                       </button>
                     </div>
                   </div>

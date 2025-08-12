@@ -186,7 +186,7 @@ export default function AccessGuard({
               }}
             >
               <Icon name="home" style={{ marginRight: '8px' }} />
-              Retour à l'accueil
+              Retour à l&apos;accueil
             </button>
             
             <button
@@ -219,7 +219,7 @@ export default function AccessGuard({
               margin: '0 0 12px 0',
               color: theme.text
             }}>
-              Besoin d'un accès premium ?
+              Besoin d&apos;un accès premium ?
             </h3>
             <p style={{
               color: theme.textSecondary,

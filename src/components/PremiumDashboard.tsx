@@ -94,13 +94,13 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
           <div style={{
             marginTop: theme.spacing.sm,
             padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-            backgroundColor: kpis.bpi >= 80 ? theme.colors.success + '20' : kpis.bpi >= 60 ? theme.colors.warning + '20' : theme.colors.error + '20',
-            borderRadius: '20px',
-            fontSize: '12px',
+            backgroundColor: kpis.bpi >= 80 ? theme.colors.success + &apos;20&apos; : kpis.bpi >= 60 ? theme.colors.warning + &apos;20&apos; : theme.colors.error + &apos;20&apos;,
+            borderRadius: &apos;20px&apos;,
+            fontSize: &apos;12px&apos;,
             color: kpis.bpi >= 80 ? theme.colors.success : kpis.bpi >= 60 ? theme.colors.warning : theme.colors.error,
-            fontWeight: '500'
+            fontWeight: &apos;500&apos;
           }}>
-            {kpis.bpi >= 80 ? 'Excellent' : kpis.bpi >= 60 ? 'Bon' : 'À améliorer'}
+            {kpis.bpi >= 80 ? &apos;Excellent&apos; : kpis.bpi >= 60 ? &apos;Bon&apos; : &apos;À améliorer&apos;}
           </div>
         </div>
 
@@ -226,7 +226,7 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
               Alertes Actives
             </div>
             <div style={{ fontSize: '12px', color: theme.colors.neutral[600] }}>
-              {kpis.riskAlerts.length === 0 ? 'Tout va bien !' : 'Action requise'}
+              {kpis.riskAlerts.length === 0 ? &apos;Tout va bien !&apos; : &apos;Action requise&apos;}
             </div>
           </div>
         )}
@@ -439,7 +439,7 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
                   color: theme.colors.neutral[500],
                   textAlign: 'right'
                 }}>
-                  Détectée le {alert.detectedAt.toLocaleDateString('fr-FR')}
+                  Détectée le {alert.detectedAt.toLocaleDateString(&apos;fr-FR&apos;)}
                 </div>
               </div>
             ))}
@@ -534,7 +534,7 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
                 Score Risque SEO
               </div>
               <div style={{ fontSize: '12px', color: theme.colors.neutral[600] }}>
-                {kpis.predictiveMetrics.seoRiskScore.score > 50 ? 'Attention requise' : 'Situation stable'}
+                {kpis.predictiveMetrics.seoRiskScore.score > 50 ? &apos;Attention requise&apos; : &apos;Situation stable&apos;}
               </div>
             </div>
           </div>

@@ -72,7 +72,7 @@ export default function RefundNotification({ onClose }: RefundNotificationProps)
             lineHeight: "1.4",
             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
           }}>
-            Pas satisfait d'une réponse ? Demandez un remboursement de vos crédits en quelques clics !
+            Pas satisfait d&apos;une réponse ? Demandez un remboursement de vos crédits en quelques clics !
           </p>
           
           <div style={{
@@ -95,7 +95,7 @@ export default function RefundNotification({ onClose }: RefundNotificationProps)
                 color: "white",
                 cursor: "pointer",
                 transition: "all 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
               }}
               onMouseOver={(e) => {
                 e.currentTarget.style.background = "rgba(255, 255, 255, 0.3)";

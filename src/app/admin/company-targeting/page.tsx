@@ -257,7 +257,7 @@ export default function CompanyTargetingPage() {
 
       {/* Section de recherche */}
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Recherche d'Entreprises</h2>
+        <h2 className={styles.sectionTitle}>Recherche d&apos;Entreprises</h2>
         
         <div className={styles.searchForm}>
           <div className={styles.formGrid}>
@@ -299,7 +299,7 @@ export default function CompanyTargetingPage() {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.label}>Type d'entreprise</label>
+              <label className={styles.label}>Type d&apos;entreprise</label>
               <input
                 type="text"
                 value={searchFilters.type}
@@ -402,7 +402,7 @@ export default function CompanyTargetingPage() {
                 value={filterOptions.industries.join(', ')}
                 onChange={(e) => setFilterOptions(prev => ({ 
                   ...prev, 
-                  industries: e.target.value.split(',').map(s => s.trim()).filter(s => s)
+                  industries: e.target.value.split(&apos;,&apos;).map(s => s.trim()).filter(s => s)
                 }))}
                 placeholder="Ex: restaurant, retail, technology"
                 className={styles.input}
@@ -502,7 +502,7 @@ export default function CompanyTargetingPage() {
                 onClick={toggleAllCompanies}
                 className={styles.secondaryButton}
               >
-                {selectedCompanies.size === filteredCompanies.length ? 'Désélectionner tout' : 'Sélectionner tout'}
+                {selectedCompanies.size === filteredCompanies.length ? &apos;Désélectionner tout&apos; : &apos;Sélectionner tout&apos;}
               </button>
             </div>
           </div>

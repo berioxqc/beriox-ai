@@ -58,7 +58,7 @@ export default function UsersAdminPage() {
                 Accès Refusé
               </h2>
               <p style={{ color: '#6b7280', fontSize: '16px', margin: '0 0 32px 0' }}>
-                Vous n'avez pas les permissions nécessaires pour accéder à cette page.
+                Vous n&apos;avez pas les permissions nécessaires pour accéder à cette page.
               </p>
               <Link
                 href="/"
@@ -71,7 +71,7 @@ export default function UsersAdminPage() {
                   fontWeight: '600'
                 }}
               >
-                Retour à l'accueil
+                Retour à l&apos;accueil
               </Link>
             </div>
           </div>
@@ -400,8 +400,8 @@ export default function UsersAdminPage() {
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <FontAwesomeIcon icon={faCrown} style={{ color: '#f59e0b' }} />
                             <span style={{ fontSize: '14px', fontWeight: '600' }}>
-                              {user.planId === 'enterprise' ? 'Enterprise' : 
-                               user.planId === 'competitor-intelligence' ? 'Competitor Intelligence' : 'Premium'}
+                              {user.planId === &apos;enterprise&apos; ? &apos;Enterprise&apos; : 
+                               user.planId === &apos;competitor-intelligence&apos; ? &apos;Competitor Intelligence&apos; : &apos;Premium&apos;}
                             </span>
                           </div>
                         ) : (

@@ -189,7 +189,7 @@ export const IconCacheStats: React.FC = () => {
       zIndex: 1000
     }}>
       <div>Cache: {stats.size} icônes</div>
-      <div>Dernières: {stats.keys.slice(-3).join(', ')}</div>
+      <div>Dernières: {stats.keys.slice(-3).join(&apos;, &apos;)}</div>
     </div>
   );
 };

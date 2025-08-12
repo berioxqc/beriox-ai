@@ -75,7 +75,7 @@ export default function UserStatus() {
       {profile?.user?.role && (
         <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${getRoleColor()}`}>
           <Icon name="user" size={12} />
-          <span>{profile.user.role.replace('_', ' ')}</span>
+          <span>{profile.user.role.replace(&apos;_&apos;, &apos; &apos;)}</span>
         </div>
       )}
 

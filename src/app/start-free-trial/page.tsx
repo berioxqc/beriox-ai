@@ -110,7 +110,7 @@ export default function StartFreeTrialPage() {
       
       <Layout
         title="Essai Gratuit Beriox AI"
-        subtitle="Commencez votre transformation digitale aujourd'hui"
+        subtitle="Commencez votre transformation digitale aujourd&apos;hui"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Hero Section */}
@@ -125,7 +125,7 @@ export default function StartFreeTrialPage() {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Essayez Beriox AI pendant 14 jours. Aucune carte de crédit requise. 
-              Transformez votre productivité avec l'orchestration IA la plus avancée.
+              Transformez votre productivité avec l&apos;orchestration IA la plus avancée.
             </p>
             
             {/* Trial Form */}
@@ -161,12 +161,12 @@ export default function StartFreeTrialPage() {
                 />
                 <input
                   type="text"
-                  placeholder="Nom de l'entreprise"
+                  placeholder="Nom de l&apos;entreprise"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   required
                 />
                 <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                  <option value="">Taille de l'entreprise</option>
+                  <option value="">Taille de l&apos;entreprise</option>
                   <option value="1-10">1-10 employés</option>
                   <option value="11-50">11-50 employés</option>
                   <option value="51-200">51-200 employés</option>
@@ -189,7 +189,7 @@ export default function StartFreeTrialPage() {
           {/* Features Grid */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-              Tout ce que vous obtenez pendant l'essai
+              Tout ce que vous obtenez pendant l&apos;essai
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {features.map((feature, index) => (
@@ -291,8 +291,8 @@ export default function StartFreeTrialPage() {
               Prêt à transformer votre productivité ?
             </h3>
             <p className="text-purple-100 mb-6 max-w-2xl mx-auto text-lg">
-              Rejoignez des milliers d'entreprises qui ont déjà choisi Beriox AI. 
-              Commencez votre essai gratuit aujourd'hui.
+              Rejoignez des milliers d&apos;entreprises qui ont déjà choisi Beriox AI. 
+              Commencez votre essai gratuit aujourd&apos;hui.
             </p>
             <Link
               href="#trial-form"

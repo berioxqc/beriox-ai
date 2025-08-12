@@ -179,7 +179,7 @@ export default function UserManagementPage() {
             <div>
               <h1 style={styles.h1}>Gestion des Utilisateurs</h1>
               <p style={styles.subtitle}>
-                Gérez les utilisateurs et assignez les rôles d'administration
+                Gérez les utilisateurs et assignez les rôles d&apos;administration
               </p>
             </div>
             <div style={{
@@ -261,7 +261,7 @@ export default function UserManagementPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
                   ...styles.input,
-                  width: '100%'
+                  width: &apos;100%&apos;
                 }}
               />
             </div>
@@ -366,7 +366,7 @@ export default function UserManagementPage() {
                             fontWeight: '600',
                             color: theme.text
                           }}>
-                            {user.name || 'Sans nom'}
+                            {user.name || &apos;Sans nom&apos;}
                           </div>
                           <div style={{
                             color: theme.textSecondary,
@@ -404,7 +404,7 @@ export default function UserManagementPage() {
                             fontSize: '14px',
                             color: theme.textSecondary
                           }}>
-                            {user.emailVerified ? 'Vérifié' : 'Non vérifié'}
+                            {user.emailVerified ? &apos;Vérifié&apos; : &apos;Non vérifié&apos;}
                           </span>
                         </div>
                       </td>
@@ -419,7 +419,7 @@ export default function UserManagementPage() {
                           color: theme.textSecondary,
                           fontSize: '12px'
                         }}>
-                          {user.plan || 'Gratuit'}
+                          {user.plan || &apos;Gratuit&apos;}
                         </div>
                       </td>
                       <td style={{ padding: '16px' }}>
@@ -427,7 +427,7 @@ export default function UserManagementPage() {
                           color: theme.textSecondary,
                           fontSize: '14px'
                         }}>
-                          {new Date(user.createdAt).toLocaleDateString('fr-FR')}
+                          {new Date(user.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
                         </div>
                       </td>
                       <td style={{ padding: '16px', textAlign: 'center' }}>
@@ -543,7 +543,7 @@ export default function UserManagementPage() {
                       Mise à jour...
                     </>
                   ) : (
-                    'Mettre à jour'
+                    &apos;Mettre à jour&apos;
                   )}
                 </button>
               </div>

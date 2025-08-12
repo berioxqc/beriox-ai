@@ -205,7 +205,7 @@ export default function SignUpPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Création du compte...' : 'Créer mon compte'}
+              {isLoading ? &apos;Création du compte...&apos; : &apos;Créer mon compte&apos;}
             </button>
           </form>
 

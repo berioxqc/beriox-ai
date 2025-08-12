@@ -243,7 +243,7 @@ export default function IntegrationsPage() {
                         color: integration.isFree ? theme.colors.success : theme.colors.warning,
                         fontWeight: '500'
                       }}>
-                        {integration.isFree ? 'Gratuit' : 'Payant'}
+                        {integration.isFree ? &apos;Gratuit&apos; : &apos;Payant&apos;}
                       </span>
                       <span style={{
                         width: '4px',
@@ -463,11 +463,11 @@ export default function IntegrationsPage() {
                   })}
                   placeholder="Entrez votre clé API..."
                   style={{
-                    width: '100%',
+                    width: &apos;100%&apos;,
                     padding: theme.spacing.sm,
                     border: `1px solid ${theme.colors.neutral[300]}`,
-                    borderRadius: '6px',
-                    fontSize: '14px'
+                    borderRadius: &apos;6px&apos;,
+                    fontSize: &apos;14px&apos;
                   }}
                 />
               </div>
@@ -482,10 +482,10 @@ export default function IntegrationsPage() {
                   style={{
                     padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
                     border: `1px solid ${theme.colors.neutral[300]}`,
-                    borderRadius: '6px',
-                    backgroundColor: 'white',
+                    borderRadius: &apos;6px&apos;,
+                    backgroundColor: &apos;white&apos;,
                     color: theme.colors.neutral[700],
-                    cursor: 'pointer'
+                    cursor: &apos;pointer&apos;
                   }}
                 >
                   Annuler

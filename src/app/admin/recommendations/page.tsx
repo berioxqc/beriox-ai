@@ -156,7 +156,7 @@ export default function AdminRecommendationsPage() {
 
   if (loading) {
     return (
-      <Layout title="Recommandations d'Implémentation" subtitle="Stratégies de monétisation et optimisation">
+      <Layout title="Recommandations d&apos;Implémentation" subtitle="Stratégies de monétisation et optimisation">
         <div style={{ textAlign: "center", padding: "40px" }}>
           <FontAwesomeIcon icon="spinner" spin style={{ fontSize: "24px", color: theme.colors.primary.main }} />
           <p style={{ marginTop: "16px", color: theme.colors.neutral[600] }}>Chargement des recommandations...</p>
@@ -166,7 +166,7 @@ export default function AdminRecommendationsPage() {
   }
 
   return (
-    <Layout title="Recommandations d'Implémentation" subtitle="Stratégies de monétisation et optimisation">
+    <Layout title="Recommandations d&apos;Implémentation" subtitle="Stratégies de monétisation et optimisation">
       <div style={{ display: "grid", gap: theme.spacing.xl }}>
         {/* Métriques actuelles */}
         <div style={{
@@ -260,11 +260,11 @@ export default function AdminRecommendationsPage() {
             paddingBottom: theme.spacing.md
           }}>
             <button
-              onClick={() => setActiveTab('monitoring')}
+              onClick={() => setActiveTab(&apos;monitoring&apos;)}
               style={{
                 padding: "8px 16px",
-                background: activeTab === 'monitoring' ? theme.colors.primary.main : "transparent",
-                color: activeTab === 'monitoring' ? "white" : theme.colors.neutral[600],
+                background: activeTab === &apos;monitoring&apos; ? theme.colors.primary.main : "transparent",
+                color: activeTab === &apos;monitoring&apos; ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",
@@ -277,11 +277,11 @@ export default function AdminRecommendationsPage() {
             </button>
             
             <button
-              onClick={() => setActiveTab('limits')}
+              onClick={() => setActiveTab(&apos;limits&apos;)}
               style={{
                 padding: "8px 16px",
-                background: activeTab === 'limits' ? theme.colors.primary.main : "transparent",
-                color: activeTab === 'limits' ? "white" : theme.colors.neutral[600],
+                background: activeTab === &apos;limits&apos; ? theme.colors.primary.main : "transparent",
+                color: activeTab === &apos;limits&apos; ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",
@@ -294,11 +294,11 @@ export default function AdminRecommendationsPage() {
             </button>
             
             <button
-              onClick={() => setActiveTab('billing')}
+              onClick={() => setActiveTab(&apos;billing&apos;)}
               style={{
                 padding: "8px 16px",
-                background: activeTab === 'billing' ? theme.colors.primary.main : "transparent",
-                color: activeTab === 'billing' ? "white" : theme.colors.neutral[600],
+                background: activeTab === &apos;billing&apos; ? theme.colors.primary.main : "transparent",
+                color: activeTab === &apos;billing&apos; ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",

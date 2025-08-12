@@ -147,9 +147,9 @@ const Button: React.FC<ButtonProps> = ({
           ⟳
         </span>
       )}
-      {!loading && icon && iconPosition === 'left' && icon}
+      {!loading && icon && iconPosition === &apos;left&apos; && icon}
       {children}
-      {!loading && icon && iconPosition === 'right' && icon}
+      {!loading && icon && iconPosition === &apos;right&apos; && icon}
     </button>
   );
 };

@@ -78,7 +78,7 @@ export default function AIAutomationGuidePage() {
               Guide Complet IA et Automatisation 2024
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Découvrez comment l'intelligence artificielle révolutionne l'automatisation 
+              Découvrez comment l&apos;intelligence artificielle révolutionne l&apos;automatisation 
               et transforme la productivité des entreprises. Un guide pratique avec 
               des exemples concrets et des stratégies actionnables.
             </p>
@@ -90,7 +90,7 @@ export default function AIAutomationGuidePage() {
                     Guide Gratuit
                   </h3>
                   <p className="text-gray-600 text-sm">
-                    47 pages d'experts • PDF + EPUB • Mise à jour 2024
+                    47 pages d&apos;experts • PDF + EPUB • Mise à jour 2024
                   </p>
                 </div>
                 <form className="space-y-4">

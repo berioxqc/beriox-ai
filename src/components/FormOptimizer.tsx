@@ -401,13 +401,13 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
               placeholder={field.placeholder}
               disabled={field.disabled}
               style={{
-                width: '100%',
-                padding: '12px 12px 12px 40px',
-                border: errors.length > 0 ? '2px solid #ef4444' : '2px solid #e5e7eb',
-                borderRadius: '8px',
-                fontSize: '14px',
-                transition: 'border-color 0.2s ease',
-                backgroundColor: field.disabled ? '#f9fafb' : '#ffffff'
+                width: &apos;100%&apos;,
+                padding: &apos;12px 12px 12px 40px&apos;,
+                border: errors.length > 0 ? &apos;2px solid #ef4444&apos; : &apos;2px solid #e5e7eb&apos;,
+                borderRadius: &apos;8px&apos;,
+                fontSize: &apos;14px&apos;,
+                transition: &apos;border-color 0.2s ease&apos;,
+                backgroundColor: field.disabled ? &apos;#f9fafb&apos; : &apos;#ffffff&apos;
               }}
             />
           )}
@@ -530,7 +530,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
             marginBottom: '8px',
             color: '#374151'
           }}>
-            Points d'abandon principaux
+            Points d&apos;abandon principaux
           </h4>
           {state.analytics.topAbandonmentPoints.length > 0 ? (
             <ul style={{ margin: 0, paddingLeft: '20px' }}>
@@ -542,7 +542,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
             </ul>
           ) : (
             <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>
-              Aucun point d'abandon identifié
+              Aucun point d&apos;abandon identifié
             </p>
           )}
         </div>
@@ -595,7 +595,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           color: '#111827'
         }}>
           <FontAwesomeIcon icon={faLightbulb} style={{ marginRight: '8px', color: '#f59e0b' }} />
-          Suggestions d'Optimisation
+          Suggestions d&apos;Optimisation
         </h3>
 
         {state.optimization.suggestions.length > 0 ? (
@@ -662,7 +662,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           </div>
         ) : (
           <p style={{ fontSize: '14px', color: '#6b7280', fontStyle: 'italic' }}>
-            Aucune suggestion d'optimisation pour le moment
+            Aucune suggestion d&apos;optimisation pour le moment
           </p>
         )}
 
@@ -705,7 +705,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
               }}>
                 {Object.entries(variant.changes).map(([key, value]) => (
                   <li key={key}>
-                    {key}: {typeof value === 'boolean' ? (value ? 'Oui' : 'Non') : value}
+                    {key}: {typeof value === &apos;boolean&apos; ? (value ? &apos;Oui&apos; : &apos;Non&apos;) : value}
                   </li>
                 ))}
               </ul>
@@ -934,7 +934,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
                 ) : (
                   <FontAwesomeIcon icon={faCheck} />
                 )}
-                {state.formData.submitted ? 'Soumis' : state.form.submitButtonText || 'Soumettre'}
+                {state.formData.submitted ? &apos;Soumis&apos; : state.form.submitButtonText || &apos;Soumettre&apos;}
               </button>
             </div>
           </form>
@@ -984,7 +984,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           }}
         >
           <FontAwesomeIcon icon={faChartLine} />
-          {state.showAnalytics ? 'Masquer' : 'Afficher'} Analytics
+          {state.showAnalytics ? &apos;Masquer&apos; : &apos;Afficher&apos;} Analytics
         </button>
 
         <button
@@ -1004,7 +1004,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           }}
         >
           <FontAwesomeIcon icon={faLightbulb} />
-          {state.showOptimization ? 'Masquer' : 'Afficher'} Optimisations
+          {state.showOptimization ? &apos;Masquer&apos; : &apos;Afficher&apos;} Optimisations
         </button>
       </div>
 

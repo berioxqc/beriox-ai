@@ -27,7 +27,7 @@ function formatAsHtml(content: string): JSX.Element {
       {lines.map((line, index) => {
         // Titres
         if (line.startsWith('# ')) {
-          return <h3 key={index} style={{ fontSize: '18px', fontWeight: '700', color: '#0a2540', marginBottom: '12px', marginTop: index > 0 ? '24px' : '0' }}>{line.substring(2)}</h3>;
+          return <h3 key={index} style={{ fontSize: '18px', fontWeight: '700', color: '#0a2540', marginBottom: '12px', marginTop: index > 0 ? &apos;24px&apos; : &apos;0&apos; }}>{line.substring(2)}</h3>;
         }
         if (line.startsWith('## ')) {
           return <h4 key={index} style={{ fontSize: '16px', fontWeight: '600', color: '#0a2540', marginBottom: '8px', marginTop: '20px' }}>{line.substring(3)}</h4>;
@@ -390,7 +390,7 @@ export default function MissionDetailPage() {
               marginBottom: 24,
               fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
-              {error || "Cette mission n'existe pas ou a été supprimée"}
+              {error || "Cette mission n&apos;existe pas ou a été supprimée"}
             </p>
             <Link
               href="/missions"
@@ -551,7 +551,7 @@ export default function MissionDetailPage() {
                   color: '#8898aa',
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  {agentInfo?.role || "Agent"} • {new Date(brief.createdAt).toLocaleDateString('fr-FR')}
+                  {agentInfo?.role || "Agent"} • {new Date(brief.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
                 </div>
               </div>
             </div>
@@ -573,12 +573,12 @@ export default function MissionDetailPage() {
                 transition: 'all 0.2s'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#f6f9fc';
-                e.currentTarget.style.color = '#425466';
+                e.currentTarget.style.background = &apos;#f6f9fc&apos;;
+                e.currentTarget.style.color = &apos;#425466&apos;;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#8898aa';
+                e.currentTarget.style.background = &apos;transparent&apos;;
+                e.currentTarget.style.color = &apos;#8898aa&apos;;
               }}
             >
               ✕
@@ -712,7 +712,7 @@ export default function MissionDetailPage() {
                   color: "#0a2540",
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  {new Date(mission.deadline).toLocaleDateString('fr-FR')}
+                  {new Date(mission.deadline).toLocaleDateString(&apos;fr-FR&apos;)}
                 </div>
               </div>
             )}
@@ -829,7 +829,7 @@ export default function MissionDetailPage() {
                   marginBottom: 24,
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  📋 Vue d'ensemble de la mission
+                  📋 Vue d&apos;ensemble de la mission
                 </h3>
 
                 {/* Statistiques rapides */}
@@ -1237,10 +1237,10 @@ export default function MissionDetailPage() {
                       fontSize: "14px",
                       color: "#8898aa",
                       marginBottom: deliverables.length > 0 ? 24 : 0,
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
                     }}>
                       {deliverables.length > 0 
-                        ? "Des livrables sont disponibles mais le rapport final n'a pas été généré" 
+                        ? "Des livrables sont disponibles mais le rapport final n&apos;a pas été généré" 
                         : "Le rapport final sera disponible une fois tous les agents terminés"
                       }
                     </div>
@@ -1321,7 +1321,7 @@ export default function MissionDetailPage() {
                           color: "#8898aa",
                           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                         }}>
-                          Généré le {new Date(report.createdAt).toLocaleDateString('fr-FR')}
+                          Généré le {new Date(report.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
                         </div>
                       </div>
                     </div>

@@ -176,7 +176,7 @@ export default function AdminGuard({ children, requiredRole = 'SUPER_ADMIN' }: A
             }}
           >
             <Icon name="home" />
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </button>
           
           <button
@@ -230,7 +230,7 @@ export default function AdminGuard({ children, requiredRole = 'SUPER_ADMIN' }: A
                 color: '#92400e',
                 margin: '0 0 4px 0'
               }}>
-                Besoin d'un accès administrateur ?
+                Besoin d&apos;un accès administrateur ?
               </h4>
               <p style={{
                 fontSize: '13px',
@@ -239,7 +239,7 @@ export default function AdminGuard({ children, requiredRole = 'SUPER_ADMIN' }: A
                 lineHeight: '1.4'
               }}>
                 Contactez un super administrateur pour obtenir les permissions nécessaires.
-                Votre rôle actuel : <strong>{userRole || 'Utilisateur'}</strong>
+                Votre rôle actuel : <strong>{userRole || &apos;Utilisateur&apos;}</strong>
               </p>
             </div>
           </div>

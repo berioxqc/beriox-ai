@@ -248,12 +248,12 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
         {/* Options d'export */}
         <div className="export-options">
           <div className="section-header">
-            <h3>Options d'export</h3>
+            <h3>Options d&apos;export</h3>
           </div>
 
           <div className="options-grid">
             <div className="option-group">
-              <label>Format d'export</label>
+              <label>Format d&apos;export</label>
               <div className="format-buttons">
                 <button 
                   className={`format-btn ${exportFormat === 'pdf' ? 'active' : ''}`}
@@ -328,8 +328,8 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
           <div className="export-info">
             <Icon name="info-circle" size="sm" />
             <span>
-              L'export sera généré avec les données les plus récentes et inclura 
-              {includeCharts ? ' des graphiques interactifs' : ' des données tabulaires'}.
+              L&apos;export sera généré avec les données les plus récentes et inclura 
+              {includeCharts ? &apos; des graphiques interactifs&apos; : &apos; des données tabulaires&apos;}.
             </span>
           </div>
         </div>

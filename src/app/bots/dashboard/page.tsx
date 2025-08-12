@@ -209,7 +209,7 @@ export default function BotsDashboardPage() {
                 {bot.lastAnalysis && (
                   <div className="mt-4 pt-4 border-t border-gray-100">
                     <p className="text-xs text-gray-500">
-                      Dernière analyse: {new Date(bot.lastAnalysis).toLocaleDateString('fr-FR')}
+                      Dernière analyse: {new Date(bot.lastAnalysis).toLocaleDateString(&apos;fr-FR&apos;)}
                     </p>
                   </div>
                 )}

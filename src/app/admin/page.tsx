@@ -90,7 +90,7 @@ export default function AdminPage() {
                 Accès refusé
               </h2>
               <p style={{ color: '#6b7280', fontSize: '16px', margin: '0 0 32px 0' }}>
-                Vous n'avez pas les permissions nécessaires pour accéder à cette page.
+                Vous n&apos;avez pas les permissions nécessaires pour accéder à cette page.
               </p>
               <Link
                 href="/"
@@ -103,7 +103,7 @@ export default function AdminPage() {
                   fontWeight: '600'
                 }}
               >
-                Retour à l'accueil
+                Retour à l&apos;accueil
               </Link>
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function AdminPage() {
                   color: '#0a2540',
                   marginBottom: '4px'
                 }}>
-                  {loading ? '...' : stat.value.toLocaleString()}
+                  {loading ? &apos;...&apos; : stat.value.toLocaleString()}
                 </div>
                 <div style={{ color: '#6b7280', fontSize: '14px' }}>
                   {stat.label}
@@ -472,14 +472,14 @@ export default function AdminPage() {
                         onClick={() => setShowResetConfirm(false)}
                         disabled={resetLoading}
                         style={{
-                          padding: '8px 12px',
-                          backgroundColor: '#6b7280',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '6px',
-                          fontWeight: '600',
-                          cursor: resetLoading ? 'not-allowed' : 'pointer',
-                          fontSize: '12px'
+                          padding: &apos;8px 12px&apos;,
+                          backgroundColor: &apos;#6b7280&apos;,
+                          color: &apos;white&apos;,
+                          border: &apos;none&apos;,
+                          borderRadius: &apos;6px&apos;,
+                          fontWeight: &apos;600&apos;,
+                          cursor: resetLoading ? &apos;not-allowed&apos; : &apos;pointer&apos;,
+                          fontSize: &apos;12px&apos;
                         }}
                       >
                         Annuler

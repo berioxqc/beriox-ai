@@ -602,7 +602,7 @@ function EntriesView({ entries, projects, formatDuration }: EntriesViewProps) {
                     {new Date(entry.startTime).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {projects.find(p => p.id === entry.projectId)?.name || 'Projet inconnu'}
+                    {projects.find(p => p.id === entry.projectId)?.name || &apos;Projet inconnu&apos;}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {entry.description}
@@ -663,7 +663,7 @@ function ProjectsView({ projects, clients }: ProjectsViewProps) {
                   {project.name}
                 </h3>
                 <p className="text-sm text-gray-500">
-                  {clients.find(c => c.id === project.clientId)?.name || 'Client inconnu'}
+                  {clients.find(c => c.id === project.clientId)?.name || &apos;Client inconnu&apos;}
                 </p>
               </div>
               <div
@@ -767,7 +767,7 @@ function TasksView({ tasks, projects }: TasksViewProps) {
             </div>
             
             <p className="text-sm text-gray-500 mb-4">
-              {projects.find(p => p.id === task.projectId)?.name || 'Projet inconnu'}
+              {projects.find(p => p.id === task.projectId)?.name || &apos;Projet inconnu&apos;}
             </p>
 
             {task.description && (

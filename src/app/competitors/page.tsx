@@ -142,7 +142,7 @@ export default function CompetitorsPage() {
                     <div style={{ marginRight: '8px' }}>
                       <Icon name="chart-line" />
                     </div>
-                    Configurer l'alerte
+                    Configurer l&apos;alerte
                   </button>
                 </div>
 
@@ -222,7 +222,7 @@ export default function CompetitorsPage() {
                     <div style={{ marginRight: '8px' }}>
                       <Icon name="envelope" />
                     </div>
-                    S'abonner
+                    S&apos;abonner
                   </button>
                 </div>
               </div>

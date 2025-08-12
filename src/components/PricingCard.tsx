@@ -41,9 +41,9 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
       <div className="text-center mb-6">
         <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
         <p className="text-gray-600 text-sm mb-4">
-          {plan.id === 'free' ? 'Parfait pour commencer' : 
-           plan.id === 'starter' ? 'Pour les petites équipes' :
-           plan.id === 'pro' ? 'Pour les professionnels' : 'Pour les grandes entreprises'}
+          {plan.id === &apos;free&apos; ? &apos;Parfait pour commencer&apos; : 
+           plan.id === &apos;starter&apos; ? &apos;Pour les petites équipes&apos; :
+           plan.id === &apos;pro&apos; ? &apos;Pour les professionnels&apos; : &apos;Pour les grandes entreprises&apos;}
         </p>
       </div>
 
@@ -97,7 +97,7 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
             className="w-full text-left text-sm text-gray-600 hover:text-purple-600 transition-colors"
           >
             <Icon name="info-circle" size={16} className="inline mr-1" />
-            {showTaxes ? 'Masquer' : 'Voir'} les taxes (TPS/TVQ)
+            {showTaxes ? &apos;Masquer&apos; : &apos;Voir&apos;} les taxes (TPS/TVQ)
           </button>
           
           {showTaxes && (
@@ -141,13 +141,13 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
         className={`
           w-full py-3 px-6 rounded-xl font-semibold transition-all duration-200
           ${plan.price === 0 
-            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
-            : 'bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg'
+            ? &apos;bg-gray-100 text-gray-700 hover:bg-gray-200&apos; 
+            : &apos;bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg&apos;
           }
         `}
       >
-        {plan.price === 0 ? 'Commencer gratuitement' : 
-         isAnnual ? `S'abonner annuellement` : 'Commencer l\'essai'}
+        {plan.price === 0 ? &apos;Commencer gratuitement&apos; : 
+         isAnnual ? `S&apos;abonner annuellement` : &apos;Commencer l\&apos;essai&apos;}
       </button>
 
       {/* Note sur l'essai */}

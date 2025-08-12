@@ -160,7 +160,7 @@ function AuthErrorContent() {
               e.currentTarget.style.borderColor = "#d1d5db";
             }}
           >
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </button>
         </div>
 
@@ -173,8 +173,8 @@ function AuthErrorContent() {
           fontSize: "14px",
           color: "#4b5563"
         }}>
-          <strong>Besoin d'aide ?</strong><br />
-          Si le problème persiste, veuillez contacter le support technique avec le code d'erreur affiché ci-dessus.
+          <strong>Besoin d&apos;aide ?</strong><br />
+          Si le problème persiste, veuillez contacter le support technique avec le code d&apos;erreur affiché ci-dessus.
         </div>
       </div>
     </div>

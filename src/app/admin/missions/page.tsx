@@ -176,13 +176,13 @@ export default function AdminMissionsPage() {
               <button
                 onClick={() => window.location.reload()}
                 style={{
-                  padding: '12px 24px',
-                  backgroundColor: '#635bff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontWeight: '600',
-                  cursor: 'pointer'
+                  padding: &apos;12px 24px&apos;,
+                  backgroundColor: &apos;#635bff&apos;,
+                  color: &apos;white&apos;,
+                  border: &apos;none&apos;,
+                  borderRadius: &apos;8px&apos;,
+                  fontWeight: &apos;600&apos;,
+                  cursor: &apos;pointer&apos;
                 }}
               >
                 Réessayer
@@ -224,7 +224,7 @@ export default function AdminMissionsPage() {
                 fontSize: '16px',
                 margin: 0
               }}>
-                Vue d'ensemble de toutes les missions créées par les utilisateurs
+                Vue d&apos;ensemble de toutes les missions créées par les utilisateurs
               </p>
             </div>
 
@@ -364,7 +364,7 @@ export default function AdminMissionsPage() {
                 color: '#0a2540',
                 marginBottom: '4px'
               }}>
-                {filteredMissions.filter(m => m.status === 'completed' || m.status === 'notified').length}
+                {filteredMissions.filter(m => m.status === &apos;completed&apos; || m.status === &apos;notified&apos;).length}
               </div>
               <div style={{ color: '#6b7280', fontSize: '14px' }}>
                 Terminées
@@ -536,11 +536,11 @@ export default function AdminMissionsPage() {
                             gap: '4px'
                           }}>
                             <FontAwesomeIcon icon="calendar" />
-                            {new Date(mission.createdAt).toLocaleDateString('fr-FR', {
-                              day: 'numeric',
-                              month: 'short',
-                              hour: '2-digit',
-                              minute: '2-digit'
+                            {new Date(mission.createdAt).toLocaleDateString(&apos;fr-FR&apos;, {
+                              day: &apos;numeric&apos;,
+                              month: &apos;short&apos;,
+                              hour: &apos;2-digit&apos;,
+                              minute: &apos;2-digit&apos;
                             })}
                           </span>
 

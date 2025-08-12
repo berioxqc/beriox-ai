@@ -246,7 +246,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
         <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-            {unreadCount > 99 ? '99+' : unreadCount}
+            {unreadCount > 99 ? &apos;99+&apos; : unreadCount}
           </span>
         )}
       </button>
@@ -354,7 +354,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
           {notifications.length > 0 && (
             <div className="p-3 border-t border-gray-200 text-center">
               <button
-                onClick={() => window.location.href = '/notifications'}
+                onClick={() => window.location.href = &apos;/notifications&apos;}
                 className="text-sm text-blue-600 hover:text-blue-800"
               >
                 Voir toutes les notifications

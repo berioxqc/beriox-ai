@@ -318,7 +318,7 @@ export default function NovaBotPage() {
                   margin: 0,
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  L'architecte d'opportunités basé sur vos données analytiques
+                  L&apos;architecte d&apos;opportunités basé sur vos données analytiques
                 </p>
               </div>
             </div>
@@ -349,17 +349,17 @@ export default function NovaBotPage() {
                 NovaBot analyse vos vraies données pour générer des missions personnalisées
               </p>
               <button
-                onClick={() => window.location.href = '/pricing'}
+                onClick={() => window.location.href = &apos;/pricing&apos;}
                 style={{
-                  background: 'white',
-                  color: '#8b5cf6',
-                  border: 'none',
-                  padding: '12px 24px',
-                  borderRadius: '8px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                  background: &apos;white&apos;,
+                  color: &apos;#8b5cf6&apos;,
+                  border: &apos;none&apos;,
+                  padding: &apos;12px 24px&apos;,
+                  borderRadius: &apos;8px&apos;,
+                  fontSize: &apos;16px&apos;,
+                  fontWeight: &apos;600&apos;,
+                  cursor: &apos;pointer&apos;,
+                  fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
                 }}
               >
                 Voir les Plans Premium
@@ -531,7 +531,7 @@ export default function NovaBotPage() {
                 margin: 0,
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
-                L'architecte d'opportunités basé sur vos données analytiques
+                L&apos;architecte d&apos;opportunités basé sur vos données analytiques
               </p>
             </div>
           </div>
@@ -604,7 +604,7 @@ export default function NovaBotPage() {
                     fontSize: '12px',
                     fontWeight: 'bold'
                   }}>
-                    {enabled && '✓'}
+                    {enabled && &apos;✓&apos;}
                   </div>
                   <div>
                     <div style={{
@@ -621,10 +621,10 @@ export default function NovaBotPage() {
                       color: '#6b7280',
                       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
-                      {key === 'ga4' && 'Google Analytics 4'}
-                      {key === 'gsc' && 'Google Search Console'}
-                      {key === 'ads' && 'Google Ads'}
-                      {key === 'crm' && 'CRM'}
+                      {key === &apos;ga4&apos; && &apos;Google Analytics 4&apos;}
+                      {key === &apos;gsc&apos; && &apos;Google Search Console&apos;}
+                      {key === &apos;ads&apos; && &apos;Google Ads&apos;}
+                      {key === &apos;crm&apos; && &apos;CRM&apos;}
                     </div>
                   </div>
                 </label>
@@ -653,11 +653,11 @@ export default function NovaBotPage() {
                   value={missionCount}
                   onChange={(e) => setMissionCount(Math.min(5, Math.max(1, parseInt(e.target.value) || 1)))}
                   style={{
-                    width: '60px',
-                    padding: '4px 8px',
-                    border: '1px solid #d1d5db',
-                    borderRadius: '4px',
-                    fontSize: '14px'
+                    width: &apos;60px&apos;,
+                    padding: &apos;4px 8px&apos;,
+                    border: &apos;1px solid #d1d5db&apos;,
+                    borderRadius: &apos;4px&apos;,
+                    fontSize: &apos;14px&apos;
                   }}
                 />
               </label>
@@ -938,7 +938,7 @@ export default function NovaBotPage() {
                     fontWeight: '600',
                     marginLeft: '8px'
                   }}>
-                    {validationResult.approved ? '✅ Approuvé' : '❌ Rejeté'}
+                    {validationResult.approved ? &apos;✅ Approuvé&apos; : &apos;❌ Rejeté&apos;}
                   </span>
                 </div>
                 
@@ -953,7 +953,7 @@ export default function NovaBotPage() {
                 
                 {validationResult.suggestions && validationResult.suggestions.length > 0 && (
                   <div>
-                    <strong style={{ color: '#374151' }}>Suggestions d'amélioration :</strong>
+                    <strong style={{ color: '#374151' }}>Suggestions d&apos;amélioration :</strong>
                     <ul style={{ margin: '8px 0', color: '#6b7280', paddingLeft: '20px' }}>
                       {validationResult.suggestions.map((suggestion: string, index: number) => (
                         <li key={index}>{suggestion}</li>

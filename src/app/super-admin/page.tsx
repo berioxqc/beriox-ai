@@ -353,21 +353,21 @@ export default function SuperAdminPage() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 style={{
-                  padding: '12px 24px',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  backgroundColor: activeTab === tab ? '#635bff' : 'transparent',
-                  color: activeTab === tab ? 'white' : '#6b7280',
-                  transition: 'all 0.2s'
+                  padding: &apos;12px 24px&apos;,
+                  border: &apos;none&apos;,
+                  borderRadius: &apos;8px&apos;,
+                  cursor: &apos;pointer&apos;,
+                  fontWeight: &apos;600&apos;,
+                  backgroundColor: activeTab === tab ? &apos;#635bff&apos; : &apos;transparent&apos;,
+                  color: activeTab === tab ? &apos;white&apos; : &apos;#6b7280&apos;,
+                  transition: &apos;all 0.2s&apos;
                 }}
               >
-                {tab === 'overview' && 'Vue d\'ensemble'}
-                {tab === 'actions' && 'Actions Rapides'}
-                {tab === 'system' && 'Système'}
-                {tab === 'analytics' && 'Analytics'}
-                {tab === 'users' && 'Gestion Utilisateurs'}
+                {tab === &apos;overview&apos; && &apos;Vue d\&apos;ensemble&apos;}
+                {tab === &apos;actions&apos; && &apos;Actions Rapides&apos;}
+                {tab === &apos;system&apos; && &apos;Système&apos;}
+                {tab === &apos;analytics&apos; && &apos;Analytics&apos;}
+                {tab === &apos;users&apos; && &apos;Gestion Utilisateurs&apos;}
               </button>
             ))}
           </div>
@@ -643,8 +643,8 @@ export default function SuperAdminPage() {
                         <div style={{ 
                           width: `${stats?.system.cpu}%`, 
                           height: '100%', 
-                          backgroundColor: stats?.system.cpu && stats.system.cpu > 80 ? '#ef4444' : '#10b981',
-                          transition: 'width 0.3s'
+                          backgroundColor: stats?.system.cpu && stats.system.cpu > 80 ? &apos;#ef4444&apos; : &apos;#10b981&apos;,
+                          transition: &apos;width 0.3s&apos;
                         }} />
                       </div>
                     </div>
@@ -664,8 +664,8 @@ export default function SuperAdminPage() {
                         <div style={{ 
                           width: `${stats?.system.memory}%`, 
                           height: '100%', 
-                          backgroundColor: stats?.system.memory && stats.system.memory > 80 ? '#ef4444' : '#10b981',
-                          transition: 'width 0.3s'
+                          backgroundColor: stats?.system.memory && stats.system.memory > 80 ? &apos;#ef4444&apos; : &apos;#10b981&apos;,
+                          transition: &apos;width 0.3s&apos;
                         }} />
                       </div>
                     </div>
@@ -685,8 +685,8 @@ export default function SuperAdminPage() {
                         <div style={{ 
                           width: `${stats?.system.disk}%`, 
                           height: '100%', 
-                          backgroundColor: stats?.system.disk && stats.system.disk > 80 ? '#ef4444' : '#10b981',
-                          transition: 'width 0.3s'
+                          backgroundColor: stats?.system.disk && stats.system.disk > 80 ? &apos;#ef4444&apos; : &apos;#10b981&apos;,
+                          transition: &apos;width 0.3s&apos;
                         }} />
                       </div>
                     </div>
@@ -727,7 +727,7 @@ export default function SuperAdminPage() {
                     </div>
                     
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '14px' }}>Taux d'erreur</span>
+                      <span style={{ fontSize: '14px' }}>Taux d&apos;erreur</span>
                       <span style={{ fontSize: '16px', fontWeight: '600', color: '#ef4444' }}>
                         {stats?.performance.errorRate}%
                       </span>
@@ -960,7 +960,7 @@ export default function SuperAdminPage() {
                   <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}>Gestion des Utilisateurs</h3>
                 </div>
                 <p style={{ color: '#6b7280', margin: '0 0 24px 0' }}>
-                  Gérez les utilisateurs, assignez les rôles et surveillez l'activité.
+                  Gérez les utilisateurs, assignez les rôles et surveillez l&apos;activité.
                 </p>
                 <Link href="/super-admin/users" style={{
                   display: 'inline-flex',

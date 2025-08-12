@@ -295,7 +295,7 @@ export default function BotRecommendations({
             Aucune recommandation
           </h3>
           <p className="text-gray-600 mb-4">
-            Cliquez sur "Générer" pour créer de nouvelles recommandations basées sur l'analyse du système.
+            Cliquez sur "Générer" pour créer de nouvelles recommandations basées sur l&apos;analyse du système.
           </p>
           <button
             onClick={generateRecommendations}
@@ -332,7 +332,7 @@ export default function BotRecommendations({
                   <p className="text-sm text-gray-600">
                     {recommendation.category} • Effort: 
                     <span className={`font-medium ${getEffortColor(recommendation.effort)}`}>
-                      {' '}{recommendation.effort}
+                      {&apos; &apos;}{recommendation.effort}
                     </span>
                     {' '}• Temps estimé: {recommendation.estimatedTime}
                   </p>
@@ -392,7 +392,7 @@ export default function BotRecommendations({
                 {/* Notes d'implémentation */}
                 {recommendation.implementationNotes && (
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-1">Notes d'implémentation</h4>
+                    <h4 className="font-medium text-gray-900 mb-1">Notes d&apos;implémentation</h4>
                     <p className="text-gray-700 text-sm">{recommendation.implementationNotes}</p>
                   </div>
                 )}
@@ -400,7 +400,7 @@ export default function BotRecommendations({
                 {/* Métadonnées */}
                 <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
                   <span>
-                    Créé le {new Date(recommendation.createdAt).toLocaleDateString('fr-FR')}
+                    Créé le {new Date(recommendation.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
                   </span>
                   {recommendation.bot && (
                     <span>Bot: {recommendation.bot.name}</span>

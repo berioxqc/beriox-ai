@@ -43,7 +43,7 @@ L'équipe Beriox AI`,
         
         <p>Bienvenue chez Beriox AI ! Nous sommes ravis de vous compter parmi nos utilisateurs.</p>
         
-        <p>Beriox AI vous offre une équipe d'agents IA spécialisés pour automatiser et optimiser vos processus business :</p>
+        <p>Beriox AI vous offre une équipe d&apos;agents IA spécialisés pour automatiser et optimiser vos processus business :</p>
         
         <h2 style="color: #6366f1;">🤖 Nos Agents IA :</h2>
         <ul>
@@ -64,11 +64,11 @@ L'équipe Beriox AI`,
         <p>Si vous avez des questions, notre équipe support est là pour vous aider.</p>
         
         <p style="text-align: center; font-weight: bold; color: #6366f1;">
-            Bienvenue dans l'avenir de l'automatisation !
+            Bienvenue dans l&apos;avenir de l&apos;automatisation !
         </p>
         
         <p style="text-align: center;">
-            L'équipe Beriox AI
+            L&apos;équipe Beriox AI
         </p>
     </div>
 </body>

@@ -47,9 +47,9 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
                 fontWeight: '700', 
                 color: '#0a2540', 
                 marginBottom: '12px', 
-                marginTop: index > 0 ? '24px' : '0',
+                marginTop: index > 0 ? &apos;24px&apos; : &apos;0&apos;,
                 borderBottom: `2px solid ${agentInfo.color}`,
-                paddingBottom: '4px'
+                paddingBottom: &apos;4px&apos;
               }}>
                 {line.substring(2)}
               </h3>

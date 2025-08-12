@@ -103,14 +103,14 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
                   <div style={{
                     fontSize: "16px"
                   }}>
-                    {benefit.split(' ')[0]}
+                    {benefit.split(&apos; &apos;)[0]}
                   </div>
                   <div style={{
                     fontSize: "14px",
                     color: "#425466",
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                   }}>
-                    {benefit.substring(benefit.indexOf(' ') + 1)}
+                    {benefit.substring(benefit.indexOf(&apos; &apos;) + 1)}
                   </div>
                 </div>
               ))}

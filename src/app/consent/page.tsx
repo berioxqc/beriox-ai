@@ -301,7 +301,7 @@ export default function ConsentPage() {
                     margin: 0,
                     lineHeight: '1.4'
                   }}>
-                    Nouvelles fonctionnalités, conseils d'utilisation, mises à jour importantes. 
+                    Nouvelles fonctionnalités, conseils d&apos;utilisation, mises à jour importantes. 
                     Vous pouvez vous désabonner à tout moment.
                   </p>
                 </div>
@@ -354,7 +354,7 @@ export default function ConsentPage() {
                     margin: 0,
                     lineHeight: '1.4'
                   }}>
-                    Analyse anonymisée d'utilisation pour améliorer nos services. 
+                    Analyse anonymisée d&apos;utilisation pour améliorer nos services. 
                     Aucune donnée personnelle partagée.
                   </p>
                 </div>
@@ -400,7 +400,7 @@ export default function ConsentPage() {
                   margin: 0,
                   lineHeight: '1.4'
                 }}>
-                  <strong>J'ai lu et j'accepte la </strong>
+                  <strong>J&apos;ai lu et j&apos;accepte la </strong>
                   <Link 
                     href="/privacy" 
                     target="_blank"
@@ -425,18 +425,18 @@ export default function ConsentPage() {
             marginBottom: '16px'
           }}>
             <button
-              onClick={() => router.push('/')}
+              onClick={() => router.push(&apos;/&apos;)}
               style={{
                 flex: 1,
-                padding: '12px 20px',
-                backgroundColor: 'white',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                color: '#6b7280',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
+                padding: &apos;12px 20px&apos;,
+                backgroundColor: &apos;white&apos;,
+                border: &apos;1px solid #d1d5db&apos;,
+                borderRadius: &apos;8px&apos;,
+                color: &apos;#6b7280&apos;,
+                fontSize: &apos;14px&apos;,
+                fontWeight: &apos;600&apos;,
+                cursor: &apos;pointer&apos;,
+                transition: &apos;all 0.2s&apos;
               }}
             >
               Annuler
