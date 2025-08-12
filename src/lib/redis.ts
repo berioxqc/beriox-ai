@@ -21,10 +21,16 @@ if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
       
       bullConnection = redis; // BullMQ accepts an ioredis instance
     } else {
-      console.log('Redis URL not configured, using in-memory fallback');
+      // Log silencieux en production
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Redis URL not configured, using in-memory fallback');
+      }
     }
   } catch (error) {
-    console.log('Redis not available, using in-memory fallback:', error.message);
+    // Log silencieux en production
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Redis not available, using in-memory fallback:', error.message);
+    }
   }
 }
 

@@ -86,7 +86,12 @@ class GoogleAnalyticsService {
     this.clientSecret = process.env.GOOGLE_ANALYTICS_CLIENT_SECRET || '';
     this.redirectUri = process.env.GOOGLE_ANALYTICS_REDIRECT_URI || 'http://localhost:4001/api/analytics/callback';
     
-    if (!this.clientId || !this.clientSecret) {
+    // Ne pas afficher d'avertissement lors du build
+    if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
+      if (!this.clientId || !this.clientSecret) {
+        // Log silencieux en production
+      }
+    } else if (!this.clientId || !this.clientSecret) {
       console.warn('⚠️ Google Analytics credentials not configured');
     }
   }
