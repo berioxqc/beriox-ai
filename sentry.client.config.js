@@ -13,32 +13,18 @@ Sentry.init({
   // Environment
   environment: process.env.NODE_ENV,
   
-  // Debug mode (désactivé en production)
+  // Enable debug mode in development
   debug: process.env.NODE_ENV === 'development',
   
-  // Filtrage des erreurs
-  beforeSend(event, hint) {
-    // Ignorer les erreurs de réseau
+  // Ignore specific errors
+  beforeSend(event) {
+    // Ignore specific error types
     if (event.exception) {
       const exception = event.exception.values?.[0];
-      if (exception?.type === 'NetworkError' || exception?.value?.includes('fetch')) {
+      if (exception?.type === 'NetworkError' || exception?.type === 'ChunkLoadError') {
         return null;
       }
     }
-    
-    // Ignorer les erreurs de console
-    if (event.message && event.message.includes('console.error')) {
-      return null;
-    }
-    
     return event;
   },
-  
-  // Configuration des intégrations
-  integrations: [
-    Sentry.replayIntegration({
-      maskAllText: false,
-      blockAllMedia: false,
-    }),
-  ],
 });

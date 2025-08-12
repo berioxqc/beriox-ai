@@ -2,7 +2,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
+import { useAuthGuard, LimitedContentWrapper, LoginPrompt } from "@/hooks/useAuthGuard";
 
 type Mission = {
   id: string;
@@ -16,6 +16,7 @@ type Mission = {
 };
 
 export default function MissionsPage() {
+  const { isAuthenticated, isLoading } = useAuthGuard();
   const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,8 +40,10 @@ export default function MissionsPage() {
   }
 
   useEffect(() => {
-    fetchMissions();
-  }, []);
+    if (isAuthenticated) {
+      fetchMissions();
+    }
+  }, [isAuthenticated]);
 
   async function handleOrchestrateMission(missionId: string) {
     try {
@@ -189,8 +192,30 @@ export default function MissionsPage() {
     </div>
   );
 
+  // Contenu limité pour les utilisateurs non connectés
+  const limitedContent = (
+    <LoginPrompt 
+      message="Connectez-vous pour accéder à vos missions et utiliser l'orchestration IA"
+      showSignUp={true}
+    />
+  );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+          <p className="mt-4 text-white">Chargement...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <AuthGuard>
+    <LimitedContentWrapper 
+      isAuthenticated={isAuthenticated}
+      limitedContent={limitedContent}
+    >
       <Layout
         title="Missions"
         subtitle="Gérez et suivez toutes vos missions Beriox AI"
@@ -559,6 +584,6 @@ export default function MissionsPage() {
         )}
       </div>
       </Layout>
-    </AuthGuard>
+    </LimitedContentWrapper>
   );
 }

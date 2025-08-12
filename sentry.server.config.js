@@ -9,40 +9,24 @@ Sentry.init({
   // Environment
   environment: process.env.NODE_ENV,
   
-  // Debug mode (désactivé en production)
+  // Enable debug mode in development
   debug: process.env.NODE_ENV === 'development',
   
-  // Filtrage des erreurs
-  beforeSend(event, hint) {
-    // Ignorer les erreurs de base de données non critiques
+  // Ignore specific errors
+  beforeSend(event) {
+    // Ignore specific error types
     if (event.exception) {
       const exception = event.exception.values?.[0];
-      if (exception?.type === 'PrismaClientKnownRequestError' && 
-          exception?.value?.includes('Record to update not found')) {
+      if (exception?.type === 'PrismaClientKnownRequestError') {
         return null;
       }
     }
-    
-    // Ignorer les erreurs de validation non critiques
-    if (event.message && event.message.includes('Validation failed')) {
-      return null;
-    }
-    
     return event;
   },
   
-  // Configuration des intégrations
+  // Configure integrations
   integrations: [
     Sentry.integrations.http({ tracing: true }),
     Sentry.integrations.express({ app: undefined }),
-    Sentry.integrations.prisma(),
   ],
-  
-  // Configuration des contextes
-  initialScope: {
-    tags: {
-      service: 'beriox-ai',
-      version: process.env.npm_package_version || '1.0.0',
-    },
-  },
 });

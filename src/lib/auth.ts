@@ -71,7 +71,7 @@ export const authOptions: any = {
       return session;
     },
     async signIn({ user, account, profile }) {
-      // Vérifications de sécurité
+      // Vérifications de sécurité pour Google
       if (account?.provider === "google") {
         // Vérifier que l'email est vérifié
         if (!profile?.email_verified) {
@@ -86,11 +86,10 @@ export const authOptions: any = {
           provider: account.provider,
           timestamp: new Date().toISOString()
         });
-        
-        return true;
       }
       
-      return false;
+      // Autoriser toutes les connexions valides
+      return true;
     },
     async redirect({ url, baseUrl }) {
       // Gestion intelligente des redirections

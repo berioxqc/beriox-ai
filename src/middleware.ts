@@ -27,11 +27,24 @@ export async function middleware(request: NextRequest) {
     '/api/csrf'
   ];
 
+  // Pages qui nécessitent une authentification stricte (redirection)
+  const strictAuthPages = [
+    '/admin',
+    '/api/admin',
+    '/api/missions',
+    '/api/user',
+    '/api/stripe',
+    '/api/bots'
+  ];
+
   // Vérifier si la page actuelle est publique
   const isPublicPage = publicPages.some(page => pathname.startsWith(page));
+  
+  // Vérifier si la page nécessite une authentification stricte
+  const isStrictAuthPage = strictAuthPages.some(page => pathname.startsWith(page));
 
-  // Si ce n'est pas une page publique, vérifier l'authentification
-  if (!isPublicPage) {
+  // Si c'est une page d'authentification stricte, vérifier l'authentification
+  if (isStrictAuthPage) {
     try {
       // Vérifier la session via l'API NextAuth
       const sessionResponse = await fetch(`${request.nextUrl.origin}/api/auth/session`, {
@@ -63,6 +76,10 @@ export async function middleware(request: NextRequest) {
       signInUrl.searchParams.set('callbackUrl', pathname);
       return NextResponse.redirect(signInUrl);
     }
+  } else if (!isPublicPage) {
+    // Pour les pages non-publiques mais non-strictes, permettre l'accès sans redirection
+    // Les pages géreront elles-mêmes l'affichage du contenu selon l'état d'authentification
+    console.log(`📄 Accès public autorisé à ${pathname} - Contenu limité`);
   }
 
   // Appliquer le rate limiting uniquement sur les routes API
