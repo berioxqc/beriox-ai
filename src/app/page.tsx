@@ -3,17 +3,22 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Icon from "@/components/ui/Icon";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function HomePage() {
   const { data: session, status } = useSession();
   const [loading, setLoading] = useState(true);
+  const analytics = useAnalytics();
 
   useEffect(() => {
     // Simuler le chargement
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, []);
+    
+    // Track page view
+    analytics.trackPageView('/');
+  }, [analytics]);
 
   if (loading) {
     return (
@@ -56,12 +61,14 @@ export default function HomePage() {
                   <Link 
                     href="/auth/signin"
                     className="text-white hover:text-purple-200 transition-colors"
+                    onClick={() => analytics.trackButtonClick('login', 'homepage')}
                   >
                     Connexion
                   </Link>
                   <Link 
                     href="/auth/signup"
                     className="bg-white text-purple-900 px-4 py-2 rounded-lg font-medium hover:bg-purple-100 transition-colors"
+                    onClick={() => analytics.trackButtonClick('signup', 'homepage')}
                   >
                     Inscription
                   </Link>
@@ -95,12 +102,14 @@ export default function HomePage() {
                 <Link 
                   href="/auth/signup"
                   className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105"
+                  onClick={() => analytics.trackButtonClick('cta_signup', 'homepage')}
                 >
                   Commencer gratuitement
                 </Link>
                 <Link 
                   href="/auth/signin"
                   className="bg-white/10 backdrop-blur-lg text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white/20 transition-all border border-white/20"
+                  onClick={() => analytics.trackButtonClick('cta_login', 'homepage')}
                 >
                   Se connecter
                 </Link>
@@ -151,6 +160,7 @@ export default function HomePage() {
           <Link 
             href="/pricing"
             className="bg-white/10 backdrop-blur-lg text-white px-6 py-3 rounded-lg font-medium hover:bg-white/20 transition-all border border-white/20"
+            onClick={() => analytics.trackButtonClick('pricing', 'homepage')}
           >
             Voir les prix
           </Link>
