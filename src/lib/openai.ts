@@ -4,15 +4,22 @@ import { jsonrepair } from "jsonrepair";
 
 // S'assurer que la clé API est disponible
 const apiKey = process.env.OPENAI_API_KEY;
-if (!apiKey) {
-  throw new Error("OPENAI_API_KEY environment variable is required");
-}
 
-export const openai = new OpenAI({ apiKey });
+// Ne pas lancer d'erreur pendant le build, seulement en runtime
+export const openai = apiKey ? new OpenAI({ apiKey }) : null;
+
+// Fonction helper pour vérifier si OpenAI est configuré
+export function isOpenAIConfigured() {
+  return !!apiKey;
+}
 
 type Schema = Record<string, unknown>;
 
 export async function callText(system: string, user: string, model = "gpt-4o") {
+  if (!openai) {
+    throw new Error("OpenAI is not configured. Please set OPENAI_API_KEY environment variable.");
+  }
+  
   const res = await openai.chat.completions.create({
     model,
     messages: [
@@ -25,6 +32,10 @@ export async function callText(system: string, user: string, model = "gpt-4o") {
 }
 
 export async function callJson(system: string, user: string, schema?: Schema, model = "gpt-4o-mini") {
+  if (!openai) {
+    throw new Error("OpenAI is not configured. Please set OPENAI_API_KEY environment variable.");
+  }
+  
   const res = await openai.chat.completions.create({
     model,
     messages: [
