@@ -46,7 +46,7 @@ const customJestConfig = {
       statements: 80,
     },
   },
-  moduleNameMapping: {
+  moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
     '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
@@ -101,18 +101,7 @@ const customJestConfig = {
   prettierPath: undefined,
   projects: undefined,
   reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: 'coverage',
-        outputName: 'junit.xml',
-        classNameTemplate: '{classname}',
-        titleTemplate: '{title}',
-        ancestorSeparator: ' › ',
-        usePathForSuiteName: true,
-      },
-    ],
+    'default'
   ],
   rootDir: undefined,
   roots: ['<rootDir>/src'],
@@ -133,8 +122,10 @@ const customJestConfig = {
   ],
   testRunner: 'jest-circus/runner',
   testSequencer: '@jest/test-sequencer',
-  testURL: 'http://localhost',
-  timers: 'real',
+
+  fakeTimers: {
+    enableGlobally: false,
+  },
   transformIgnorePatterns: [
     'node_modules/(?!(next|@next|react|@react|@testing-library|jest-axe)/)',
   ],

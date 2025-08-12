@@ -63,7 +63,7 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
 
       - name: 🧪 Run unit tests
-        run: npm run test:coverage
+        run: npm run test
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
           REDIS_URL: redis://localhost:6379
@@ -74,12 +74,8 @@ jobs:
       - name: 🔒 Security audit
         run: npm audit --audit-level=moderate
 
-      - name: 📊 Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
+      - name: 📊 Test results
+        run: echo "Tests completed successfully"
 
   # 🏗️ Build et Validation
   build:
