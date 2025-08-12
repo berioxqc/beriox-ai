@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { SessionProvider } from "@/components/SessionProvider";
+import SessionProvider from "@/components/SessionProvider";
 import Script from "next/script";
 import CookieConsent from "@/components/CookieConsent";
 
