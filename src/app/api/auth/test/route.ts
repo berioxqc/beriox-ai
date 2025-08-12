@@ -4,57 +4,27 @@ import { authOptions } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 Test d\'authentification...')
-    
-    // Récupérer la session
     const session = await getServerSession(authOptions)
     
-    // Récupérer les cookies
-    const cookies = request.headers.get('cookie') || ''
-    const sessionToken = cookies.match(/next-auth\.session-token=([^;]+)/)?.[1] ||
-                        cookies.match(/__Secure-next-auth\.session-token=([^;]+)/)?.[1]
-    
-    // Vérifier les variables d'environnement
-    const envCheck = {
-      GOOGLE_CLIENT_ID: !!process.env.GOOGLE_CLIENT_ID,
-      GOOGLE_CLIENT_SECRET: !!process.env.GOOGLE_CLIENT_SECRET,
-      NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-      NEXTAUTH_SECRET: !!process.env.NEXTAUTH_SECRET,
-      NODE_ENV: process.env.NODE_ENV,
-    }
-    
-    const result = {
+    return NextResponse.json({
       success: true,
-      timestamp: new Date().toISOString(),
-      session: session ? {
-        user: {
-          id: session.user?.id,
-          email: session.user?.email,
-          name: session.user?.name,
-        },
-        expires: session.expires
+      authenticated: !!session,
+      user: session?.user ? {
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.name
       } : null,
-      cookies: {
-        hasSessionToken: !!sessionToken,
-        sessionTokenLength: sessionToken?.length || 0,
-        allCookies: cookies.split(';').map(c => c.trim()).filter(c => c.includes('auth'))
-      },
-      environment: envCheck,
-      headers: {
-        host: request.headers.get('host'),
-        origin: request.headers.get('origin'),
-        referer: request.headers.get('referer'),
-        userAgent: request.headers.get('user-agent')?.substring(0, 100)
+      timestamp: new Date().toISOString(),
+      environment: {
+        nodeEnv: process.env.NODE_ENV,
+        nextRuntime: process.env.NEXT_RUNTIME,
+        hasGoogleClientId: !!process.env.GOOGLE_CLIENT_ID,
+        hasGoogleClientSecret: !!process.env.GOOGLE_CLIENT_SECRET,
+        baseUrl: process.env.NEXTAUTH_URL || process.env.VERCEL_URL
       }
-    }
-    
-    console.log('✅ Test d\'authentification réussi:', result)
-    
-    return NextResponse.json(result)
-    
+    })
   } catch (error) {
-    console.error('❌ Erreur lors du test d\'authentification:', error)
-    
+    console.error('Erreur test auth:', error)
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Erreur inconnue',

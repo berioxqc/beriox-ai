@@ -5,14 +5,15 @@ let bullConnection: any = null
 // Vérifier si nous sommes dans un environnement compatible avec ioredis
 const isCompatibleEnvironment = () => {
   try {
-    return (
-      typeof window === 'undefined' && 
-      process.env.NODE_ENV !== 'test' &&
-      typeof process !== 'undefined' &&
-      // Éviter d'accéder à process.versions dans l'Edge Runtime
-      process.env.NEXT_RUNTIME !== 'edge' &&
-      process.env.NEXT_RUNTIME !== 'edge-server'
-    )
+    // Vérifications strictes pour éviter l'Edge Runtime
+    if (typeof window !== 'undefined') return false
+    if (process.env.NODE_ENV === 'test') return false
+    if (typeof process === 'undefined') return false
+    if (process.env.NEXT_RUNTIME === 'edge') return false
+    if (process.env.NEXT_RUNTIME === 'edge-server') return false
+    
+    // Vérifier si on est dans un environnement Node.js complet
+    return typeof require !== 'undefined' && typeof module !== 'undefined'
   } catch {
     return false
   }
@@ -21,28 +22,27 @@ const isCompatibleEnvironment = () => {
 // Initialiser Redis seulement dans un environnement compatible
 if (isCompatibleEnvironment()) {
   try {
+    // Import dynamique pour éviter les erreurs Edge Runtime
     const IORedis = require("ioredis")
     const redisUrl = process.env.REDIS_URL || "redis://localhost:6379"
     
     // Vérifier si l'URL Redis est valide
     if (redisUrl && redisUrl !== "redis://localhost:6379") {
       redis = new IORedis(redisUrl, {
-        maxRetriesPerRequest: null, // Required for BullMQ
+        maxRetriesPerRequest: null,
         retryDelayOnFailover: 100,
         enableReadyCheck: false,
         lazyConnect: true,
         connectTimeout: 5000,
         commandTimeout: 5000
       })
-      bullConnection = redis; // BullMQ accepts an ioredis instance
+      bullConnection = redis
     } else {
-      // Log silencieux en production
       if (process.env.NODE_ENV !== 'production') {
         console.log('Redis URL not configured, using in-memory fallback')
       }
     }
   } catch (error) {
-    // Log silencieux en production
     if (process.env.NODE_ENV !== 'production') {
       console.log('Redis not available, using in-memory fallback:', error.message)
     }
