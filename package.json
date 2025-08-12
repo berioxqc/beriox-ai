@@ -37,7 +37,12 @@
     "dev:ignore-lint": "node scripts/dev-ignore-lint.js",
     "test:orchestration": "node scripts/test-orchestration.js",
     "test:orchestration-direct": "node scripts/test-orchestration-direct.js",
-    "test:simple-orchestration": "node scripts/test-simple-orchestration.js"
+    "test:simple-orchestration": "node scripts/test-simple-orchestration.js",
+    "test:bots": "node scripts/test-bots.js",
+    "test:html-fixer": "node scripts/test-bots.js html",
+    "test:linter-fixer": "node scripts/test-bots.js linter",
+    "fix:html": "node scripts/test-bots.js html --apply",
+    "fix:linter": "node scripts/test-bots.js linter --apply"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",

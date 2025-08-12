@@ -1,0 +1,28 @@
+import { Suspense } from 'react&apos;;
+import BotRecommendations from '@/components/bots/BotRecommendations&apos;;
+
+export default function RecommendationsPage() {
+  return (
+    <div className="min-h-screen bg-gray-50&quot;>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8&quot;>
+        <div className="mb-8&quot;>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2&quot;>
+            Recommandations IA
+          </h1>
+          <p className="text-gray-600&quot;>
+            Optimisez votre application avec les recommandations intelligentes de nos bots IA
+          </p>
+        </div>
+
+        <Suspense fallback={
+          <div className="flex items-center justify-center p-8&quot;>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500&quot;></div>
+            <span className="ml-2 text-gray-600&quot;>Chargement...</span>
+          </div>
+        }>
+          <BotRecommendations autoGenerate={true} />
+        </Suspense>
+      </div>
+    </div>
+  );
+}

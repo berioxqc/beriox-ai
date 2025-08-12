@@ -1,0 +1,416 @@
+"use client&quot;;
+
+import { useState, useEffect } from 'react&apos;;
+import { useSession } from 'next-auth/react&apos;;
+import Icon from '@/components/ui/Icon&apos;;
+
+interface BotRecommendation {
+  id: string;
+  type: 'performance&apos; | 'security&apos; | 'ux&apos; | 'business&apos; | 'technical&apos;;
+  priority: 'low&apos; | 'medium&apos; | 'high&apos; | 'critical&apos;;
+  title: string;
+  description: string;
+  impact: string;
+  effort: 'low&apos; | 'medium&apos; | 'high&apos;;
+  estimatedTime: string;
+  category: string;
+  tags: string[];
+  status: 'pending&apos; | 'approved&apos; | 'rejected&apos; | 'implemented&apos;;
+  implementationNotes?: string;
+  createdAt: string;
+  bot?: {
+    id: string;
+    name: string;
+    type: string;
+  };
+  mission?: {
+    id: string;
+    title: string;
+  };
+}
+
+interface BotRecommendationsProps {
+  botId?: string;
+  missionId?: string;
+  autoGenerate?: boolean;
+}
+
+export default function BotRecommendations({ 
+  botId, 
+  missionId, 
+  autoGenerate = false 
+}: BotRecommendationsProps) {
+  const { data: session } = useSession();
+  const [recommendations, setRecommendations] = useState<BotRecommendation[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [filter, setFilter] = useState({
+    type: '',
+    priority: '',
+    status: ''
+  });
+
+  // Charger les recommandations
+  const loadRecommendations = async () => {
+    if (!session?.user?.id) return;
+
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (botId) params.append('botId&apos;, botId);
+      if (missionId) params.append('missionId&apos;, missionId);
+      if (filter.type) params.append('type&apos;, filter.type);
+      if (filter.priority) params.append('priority&apos;, filter.priority);
+      if (filter.status) params.append('status&apos;, filter.status);
+
+      const response = await fetch(`/api/bots/recommendations?${params}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        setRecommendations(data.recommendations);
+      } else {
+        console.error('Erreur lors du chargement des recommandations:', data.error);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des recommandations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Générer de nouvelles recommandations
+  const generateRecommendations = async () => {
+    if (!session?.user?.id) return;
+
+    setGenerating(true);
+    try {
+      const response = await fetch('/api/bots/recommendations&apos;, {
+        method: 'POST&apos;,
+        headers: {
+          'Content-Type&apos;: 'application/json&apos;,
+        },
+        body: JSON.stringify({
+          botId,
+          missionId,
+          forceRegenerate: true
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        await loadRecommendations();
+        // Notification de succès
+        console.log(`${data.recommendations} recommandations générées`);
+      } else {
+        console.error('Erreur lors de la génération:', data.error);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la génération des recommandations:', error);
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  // Mettre à jour le statut d&apos;une recommandation
+  const updateRecommendationStatus = async (id: string, status: string, notes?: string) => {
+    try {
+      const response = await fetch(`/api/bots/recommendations/${id}`, {
+        method: 'PATCH&apos;,
+        headers: {
+          'Content-Type&apos;: 'application/json&apos;,
+        },
+        body: JSON.stringify({
+          status,
+          implementationNotes: notes
+        }),
+      });
+
+      if (response.ok) {
+        await loadRecommendations();
+      } else {
+        console.error('Erreur lors de la mise à jour&apos;);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour:', error);
+    }
+  };
+
+  // Supprimer une recommandation
+  const deleteRecommendation = async (id: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette recommandation ?')) return;
+
+    try {
+      const response = await fetch(`/api/bots/recommendations/${id}`, {
+        method: 'DELETE&apos;,
+      });
+
+      if (response.ok) {
+        await loadRecommendations();
+      } else {
+        console.error('Erreur lors de la suppression&apos;);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+    }
+  };
+
+  // Charger les recommandations au montage et quand les filtres changent
+  useEffect(() => {
+    loadRecommendations();
+  }, [session?.user?.id, botId, missionId, filter]);
+
+  // Génération automatique si activée
+  useEffect(() => {
+    if (autoGenerate && recommendations.length === 0) {
+      generateRecommendations();
+    }
+  }, [autoGenerate, recommendations.length]);
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'critical&apos;: return 'bg-red-500 text-white&apos;;
+      case 'high&apos;: return 'bg-orange-500 text-white&apos;;
+      case 'medium&apos;: return 'bg-yellow-500 text-black&apos;;
+      case 'low&apos;: return 'bg-green-500 text-white&apos;;
+      default: return 'bg-gray-500 text-white&apos;;
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'performance&apos;: return 'bg-blue-500 text-white&apos;;
+      case 'security&apos;: return 'bg-red-500 text-white&apos;;
+      case 'ux&apos;: return 'bg-purple-500 text-white&apos;;
+      case 'business&apos;: return 'bg-green-500 text-white&apos;;
+      case 'technical&apos;: return 'bg-gray-500 text-white&apos;;
+      default: return 'bg-gray-400 text-white&apos;;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'implemented&apos;: return 'bg-green-500 text-white&apos;;
+      case 'approved&apos;: return 'bg-blue-500 text-white&apos;;
+      case 'rejected&apos;: return 'bg-red-500 text-white&apos;;
+      case 'pending&apos;: return 'bg-yellow-500 text-black&apos;;
+      default: return 'bg-gray-400 text-white&apos;;
+    }
+  };
+
+  const getEffortColor = (effort: string) => {
+    switch (effort) {
+      case 'high&apos;: return 'text-red-500&apos;;
+      case 'medium&apos;: return 'text-yellow-500&apos;;
+      case 'low&apos;: return 'text-green-500&apos;;
+      default: return 'text-gray-500&apos;;
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8&quot;>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500&quot;></div>
+        <span className="ml-2 text-gray-600&quot;>Chargement des recommandations...</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6&quot;>
+      {/* Header avec filtres et actions */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4&quot;>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900&quot;>Recommandations IA</h2>
+          <p className="text-gray-600&quot;>
+            {recommendations.length} recommandation(s) trouvée(s)
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-2&quot;>
+          {/* Filtres */}
+          <select
+            value={filter.type}
+            onChange={(e) => setFilter({ ...filter, type: e.target.value })}
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm&quot;
+          >
+            <option value="">Tous les types</option>
+            <option value="performance&quot;>Performance</option>
+            <option value="security&quot;>Sécurité</option>
+            <option value="ux&quot;>UX</option>
+            <option value="business&quot;>Business</option>
+            <option value="technical&quot;>Technique</option>
+          </select>
+
+          <select
+            value={filter.priority}
+            onChange={(e) => setFilter({ ...filter, priority: e.target.value })}
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm&quot;
+          >
+            <option value="">Toutes les priorités</option>
+            <option value="critical&quot;>Critique</option>
+            <option value="high&quot;>Haute</option>
+            <option value="medium&quot;>Moyenne</option>
+            <option value="low&quot;>Basse</option>
+          </select>
+
+          <select
+            value={filter.status}
+            onChange={(e) => setFilter({ ...filter, status: e.target.value })}
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm&quot;
+          >
+            <option value="">Tous les statuts</option>
+            <option value="pending&quot;>En attente</option>
+            <option value="approved&quot;>Approuvé</option>
+            <option value="rejected&quot;>Rejeté</option>
+            <option value="implemented&quot;>Implémenté</option>
+          </select>
+
+          {/* Bouton de génération */}
+          <button
+            onClick={generateRecommendations}
+            disabled={generating}
+            className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2&quot;
+          >
+            {generating ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white&quot;></div>
+                Génération...
+              </>
+            ) : (
+              <>
+                <Icon name="refresh&quot; size={16} />
+                Générer
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Liste des recommandations */}
+      {recommendations.length === 0 ? (
+        <div className="text-center py-12&quot;>
+          <Icon name="lightbulb&quot; size={48} className="text-gray-400 mx-auto mb-4&quot; />
+          <h3 className="text-lg font-medium text-gray-900 mb-2&quot;>
+            Aucune recommandation
+          </h3>
+          <p className="text-gray-600 mb-4&quot;>
+            Cliquez sur "Générer&quot; pour créer de nouvelles recommandations basées sur l&apos;analyse du système.
+          </p>
+          <button
+            onClick={generateRecommendations}
+            disabled={generating}
+            className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50&quot;
+          >
+            Générer des recommandations
+          </button>
+        </div>
+      ) : (
+        <div className="grid gap-4&quot;>
+          {recommendations.map((recommendation) => (
+            <div
+              key={recommendation.id}
+              className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow&quot;
+            >
+              {/* Header de la recommandation */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4&quot;>
+                <div className="flex-1&quot;>
+                  <div className="flex items-center gap-2 mb-2&quot;>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(recommendation.type)}`}>
+                      {recommendation.type}
+                    </span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(recommendation.priority)}`}>
+                      {recommendation.priority}
+                    </span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(recommendation.status)}`}>
+                      {recommendation.status}
+                    </span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1&quot;>
+                    {recommendation.title}
+                  </h3>
+                  <p className="text-sm text-gray-600&quot;>
+                    {recommendation.category} • Effort: 
+                    <span className={`font-medium ${getEffortColor(recommendation.effort)}`}>
+                      {' '}{recommendation.effort}
+                    </span>
+                    {' '}• Temps estimé: {recommendation.estimatedTime}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2&quot;>
+                  <select
+                    value={recommendation.status}
+                    onChange={(e) => updateRecommendationStatus(recommendation.id, e.target.value)}
+                    className="px-3 py-1 border border-gray-300 rounded text-sm&quot;
+                  >
+                    <option value="pending&quot;>En attente</option>
+                    <option value="approved&quot;>Approuvé</option>
+                    <option value="rejected&quot;>Rejeté</option>
+                    <option value="implemented&quot;>Implémenté</option>
+                  </select>
+
+                  <button
+                    onClick={() => deleteRecommendation(recommendation.id)}
+                    className="p-1 text-red-500 hover:text-red-700 transition-colors&quot;
+                    title="Supprimer&quot;
+                  >
+                    <Icon name="trash&quot; size={16} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Contenu de la recommandation */}
+              <div className="space-y-3&quot;>
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-1&quot;>Description</h4>
+                  <p className="text-gray-700 text-sm&quot;>{recommendation.description}</p>
+                </div>
+
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-1&quot;>Impact</h4>
+                  <p className="text-gray-700 text-sm&quot;>{recommendation.impact}</p>
+                </div>
+
+                {/* Tags */}
+                {recommendation.tags.length > 0 && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1&quot;>Tags</h4>
+                    <div className="flex flex-wrap gap-1&quot;>
+                      {recommendation.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded&quot;
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Notes d&apos;implémentation */}
+                {recommendation.implementationNotes && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-1&quot;>Notes d&apos;implémentation</h4>
+                    <p className="text-gray-700 text-sm&quot;>{recommendation.implementationNotes}</p>
+                  </div>
+                )}
+
+                {/* Métadonnées */}
+                <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100&quot;>
+                  <span>
+                    Créé le {new Date(recommendation.createdAt).toLocaleDateString('fr-FR&apos;)}
+                  </span>
+                  {recommendation.bot && (
+                    <span>Bot: {recommendation.bot.name}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
