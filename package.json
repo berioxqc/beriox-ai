@@ -33,7 +33,11 @@
     "test:automated": "npm run test:complete",
     "test:responsive": "node scripts/test-responsive.js",
     "setup-super-admin": "node scripts/setup-super-admin.js",
-    "reset-credits": "node scripts/reset-credits.js"
+    "reset-credits": "node scripts/reset-credits.js",
+    "dev:ignore-lint": "node scripts/dev-ignore-lint.js",
+    "test:orchestration": "node scripts/test-orchestration.js",
+    "test:orchestration-direct": "node scripts/test-orchestration-direct.js",
+    "test:simple-orchestration": "node scripts/test-simple-orchestration.js"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",

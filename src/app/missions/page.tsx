@@ -22,6 +22,7 @@ export default function MissionsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
+  const [orchestrating, setOrchestrating] = useState<string | null>(null);
 
   async function fetchMissions() {
     try {
@@ -40,6 +41,40 @@ export default function MissionsPage() {
   useEffect(() => {
     fetchMissions();
   }, []);
+
+  async function handleOrchestrateMission(missionId: string) {
+    try {
+      setOrchestrating(missionId);
+      
+      const response = await fetch("/api/missions/orchestrate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ missionId }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert("🎯 Orchestration IA lancée avec succès !\n\n" + 
+              `Confiance: ${result.plan.confidence}%\n` +
+              `Durée estimée: ${result.plan.estimatedDuration} minutes\n` +
+              `Agents sélectionnés: ${result.plan.agents.map((a: any) => a.name).join(", ")}\n\n` +
+              "Les agents travaillent maintenant sur votre mission !");
+        
+        // Recharger les missions pour voir les changements
+        await fetchMissions();
+      } else {
+        alert("❌ Erreur lors de l'orchestration: " + (result.error || "Erreur inconnue"));
+      }
+    } catch (error) {
+      console.error("Erreur orchestration:", error);
+      alert("❌ Erreur lors de l'orchestration: " + (error instanceof Error ? error.message : "Erreur inconnue"));
+    } finally {
+      setOrchestrating(null);
+    }
+  }
 
   const filteredMissions = useMemo(() => {
     return missions.filter(mission => {
@@ -377,20 +412,18 @@ export default function MissionsPage() {
         ) : (
           <div>
             {filteredMissions.map((mission, index) => (
-              <Link key={mission.id} href={`/missions/${mission.id}`} style={{ textDecoration: "none" }}>
-                <div style={{
-                  padding: "20px 24px",
-                  borderBottom: index < filteredMissions.length - 1 ? "1px solid #f6f9fc" : "none",
-                  cursor: "pointer",
-                  transition: "background-color 0.2s",
-                  display: "grid",
-                  gridTemplateColumns: "auto 1fr auto auto auto",
-                  gap: 20,
-                  alignItems: "center"
-                }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f7f9fc"}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = "transparent"}
-                >
+              <div key={mission.id} style={{
+                padding: "20px 24px",
+                borderBottom: index < filteredMissions.length - 1 ? "1px solid #f6f9fc" : "none",
+                transition: "background-color 0.2s",
+                display: "grid",
+                gridTemplateColumns: "auto 1fr auto auto auto auto",
+                gap: 20,
+                alignItems: "center"
+              }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f7f9fc"}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+              >
                   {/* Icône */}
                   <div style={{
                     fontSize: "20px",
@@ -452,15 +485,75 @@ export default function MissionsPage() {
                     {getPriorityLabel(mission.priority || "")}
                   </div>
 
-                  {/* Flèche */}
+                  {/* Boutons d'action */}
                   <div style={{
-                    color: "#8898aa",
-                    fontSize: "14px"
+                    display: "flex",
+                    gap: 8,
+                    alignItems: "center"
                   }}>
-                    →
+                    {/* Bouton Orchestration IA */}
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleOrchestrateMission(mission.id);
+                      }}
+                      disabled={orchestrating === mission.id}
+                      style={{
+                        background: orchestrating === mission.id ? "#e5e7eb" : "#8b5cf6",
+                        color: orchestrating === mission.id ? "#6b7280" : "white",
+                        border: "none",
+                        padding: "8px 12px",
+                        borderRadius: 6,
+                        fontSize: "12px",
+                        fontWeight: "500",
+                        cursor: orchestrating === mission.id ? "not-allowed" : "pointer",
+                        transition: "all 0.2s",
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                      }}
+                      onMouseOver={(e) => {
+                        if (orchestrating !== mission.id) {
+                          e.currentTarget.style.background = "#7c3aed";
+                        }
+                      }}
+                      onMouseOut={(e) => {
+                        if (orchestrating !== mission.id) {
+                          e.currentTarget.style.background = "#8b5cf6";
+                        }
+                      }}
+                    >
+                      {orchestrating === mission.id ? "⏳ Orchestration..." : "🤖 Orchestrer"}
+                    </button>
+
+                    {/* Bouton Voir détails */}
+                    <Link href={`/missions/${mission.id}`} style={{ textDecoration: "none" }}>
+                      <button
+                        style={{
+                          background: "transparent",
+                          color: "#8898aa",
+                          border: "1px solid #e3e8ee",
+                          padding: "8px 12px",
+                          borderRadius: 6,
+                          fontSize: "12px",
+                          fontWeight: "500",
+                          cursor: "pointer",
+                          transition: "all 0.2s",
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                        }}
+                        onMouseOver={(e) => {
+                          e.currentTarget.style.background = "#f7f9fc";
+                          e.currentTarget.style.borderColor = "#8898aa";
+                        }}
+                        onMouseOut={(e) => {
+                          e.currentTarget.style.background = "transparent";
+                          e.currentTarget.style.borderColor = "#e3e8ee";
+                        }}
+                      >
+                        Voir
+                      </button>
+                    </Link>
                   </div>
                 </div>
-              </Link>
             ))}
           </div>
         )}

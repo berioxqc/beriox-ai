@@ -25,6 +25,9 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@index([provider])
+  @@index([expires_at])
 }
 
 model Session {
@@ -33,6 +36,9 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([expires])
 }
 
 enum UserRole {
@@ -58,6 +64,12 @@ model User {
   userCredits            UserCredits?
   refundRequests         RefundRequest[]
   payments              Payment[] // Relation avec les paiements
+  botRecommendations     BotRecommendation[] // Recommandations générées par les bots
+  bots                  Bot[] // Bots créés par l'utilisateur
+  messages              Message[] // Messages envoyés/reçus
+  supportTickets        SupportTicket[] // Tickets de support créés
+  assignedTickets       SupportTicket[] @relation("AssignedTickets") // Tickets assignés
+  targetedCompanies     TargetedCompany[] // Entreprises ciblées
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   
@@ -68,6 +80,14 @@ model User {
   subscriptionPlan       String?   // competitor_intelligence, competitor_intelligence_yearly
   subscriptionEndDate    DateTime?
   cancelAtPeriodEnd      Boolean   @default(false)
+  
+  @@index([role])
+  @@index([email])
+  @@index([createdAt])
+  @@index([subscriptionStatus])
+  @@index([subscriptionPlan])
+  @@index([subscriptionEndDate])
+  @@index([stripeCustomerId])
 }
 
 model VerificationToken {
@@ -76,6 +96,7 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+  @@index([expires])
 }
 
 // Modèle pour stocker les prompts des agents
@@ -93,6 +114,9 @@ model AgentPrompt {
   createdBy   String?  // ID de l'utilisateur qui a créé/modifié
   
   @@index([agentId])
+  @@index([isActive])
+  @@index([createdAt])
+  @@index([createdBy])
 }
 
 model Mission {
@@ -112,7 +136,23 @@ model Mission {
   notionPageId   String?
   slackMessageTs String?
   userId         String?       // Utilisateur qui a créé la mission
+  botId          String?       // Bot assigné à la mission
   user           User?         @relation(fields: [userId], references: [id])
+  bot            Bot?          @relation(fields: [botId], references: [id], onDelete: SetNull)
+  recommendations BotRecommendation[] // Recommandations liées à cette mission
+  orchestrationPlan OrchestrationPlan? // Plan d'orchestration IA
+  
+  @@index([userId])
+  @@index([botId])
+  @@index([status])
+  @@index([priority])
+  @@index([source])
+  @@index([createdAt])
+  @@index([deadline])
+  @@index([status, priority])
+  @@index([userId, status])
+  @@index([botId, status])
+  @@index([createdAt, status])
 }
 
 model Brief {
@@ -125,6 +165,13 @@ model Brief {
   status      String      @default("queued")
   mission     Mission     @relation(fields: [missionId], references: [id])
   deliverable Deliverable?
+  
+  @@index([missionId])
+  @@index([agent])
+  @@index([status])
+  @@index([createdAt])
+  @@index([missionId, status])
+  @@index([agent, status])
 }
 
 model Deliverable {
@@ -137,6 +184,11 @@ model Deliverable {
   output     Json
   mission    Mission  @relation(fields: [missionId], references: [id])
   brief      Brief?   @relation(fields: [briefId], references: [id])
+  
+  @@index([missionId])
+  @@index([agent])
+  @@index([createdAt])
+  @@index([missionId, agent])
 }
 
 model Report {
@@ -149,6 +201,34 @@ model Report {
   cautions   String?
   nextSteps  String?
   mission    Mission  @relation(fields: [missionId], references: [id])
+  
+  @@index([createdAt])
+}
+
+// Modèle pour les plans d'orchestration IA
+model OrchestrationPlan {
+  id                String   @id @default(cuid())
+  missionId         String   @unique
+  agents            String[] // IDs des agents sélectionnés
+  workflow          Json     // Workflow d'exécution
+  estimatedDuration Int      // Durée estimée en minutes
+  confidence        Int      // Niveau de confiance (0-100)
+  risks             String[] // Risques identifiés
+  alternatives      Json     // Plans alternatifs
+  status            String   @default("created") // created, executing, completed, failed
+  executedAt        DateTime?
+  completedAt       DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  mission           Mission  @relation(fields: [missionId], references: [id], onDelete: Cascade)
+  
+  @@index([missionId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([confidence])
+  @@index([status, confidence])
 }
 
 model AnalyticsConnection {
@@ -165,6 +245,10 @@ model AnalyticsConnection {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@unique([userId, propertyId])
+  @@index([userId])
+  @@index([propertyId])
+  @@index([lastSync])
+  @@index([userId, lastSync])
 }
 
 model ExecutionLog {
@@ -176,6 +260,14 @@ model ExecutionLog {
   level      String
   message    String
   meta       Json?
+  
+  @@index([missionId])
+  @@index([briefId])
+  @@index([stage])
+  @@index([level])
+  @@index([createdAt])
+  @@index([missionId, stage])
+  @@index([createdAt, level])
 }
 
 model WebhookEvent {
@@ -187,6 +279,13 @@ model WebhookEvent {
   processedAt   DateTime?
   missionId     String?
   processingErr String?
+  
+  @@index([source])
+  @@index([missionId])
+  @@index([createdAt])
+  @@index([processedAt])
+  @@index([source, processedAt])
+  @@index([missionId, processedAt])
 }
 
 // Système de coupons et accès premium temporaires
@@ -231,6 +330,15 @@ model Coupon {
   
   // Relations
   redemptions CouponRedemption[]
+  
+  @@index([type])
+  @@index([status])
+  @@index([planId])
+  @@index([validFrom])
+  @@index([validUntil])
+  @@index([createdBy])
+  @@index([status, validUntil])
+  @@index([type, status])
 }
 
 model CouponRedemption {
@@ -248,6 +356,11 @@ model CouponRedemption {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@unique([couponId, userId]) // Un utilisateur ne peut utiliser qu'une fois le même coupon
+  @@index([couponId])
+  @@index([userId])
+  @@index([redeemedAt])
+  @@index([expiresAt])
+  @@index([planActivated])
 }
 
 // Extension du modèle User pour les accès premium temporaires
@@ -271,6 +384,15 @@ model PremiumAccess {
   
   // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([planId])
+  @@index([isActive])
+  @@index([startDate])
+  @@index([endDate])
+  @@index([source])
+  @@index([createdBy])
+  @@index([isActive, endDate])
+  @@index([planId, isActive])
 }
 
 // Système de crédits et remboursements
@@ -304,6 +426,11 @@ model UserCredits {
   // Relations
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   refundRequests RefundRequest[]
+  
+  @@index([planId])
+  @@index([resetDate])
+  @@index([creditsUsed])
+  @@index([planId, resetDate])
 }
 
 model RefundRequest {
@@ -328,6 +455,16 @@ model RefundRequest {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userCredits UserCredits @relation(fields: [userCreditsId], references: [id], onDelete: Cascade)
   userCreditsId String
+  
+  @@index([userId])
+  @@index([missionId])
+  @@index([status])
+  @@index([reason])
+  @@index([reviewedBy])
+  @@index([createdAt])
+  @@index([reviewedAt])
+  @@index([status, createdAt])
+  @@index([userId, status])
 }
 
 // Modèle pour les paiements Stripe
@@ -351,8 +488,321 @@ model Payment {
   user                  User?    @relation(fields: [stripeCustomerId], references: [stripeCustomerId])
   
   @@index([stripeCustomerId])
+  @@index([stripeSubscriptionId])
   @@index([status])
   @@index([paymentDate])
+  @@index([refunded])
+  @@index([currency])
+  @@index([amount])
+  @@index([status, paymentDate])
+  @@index([stripeCustomerId, status])
+  @@index([refunded, refundDate])
+}
+
+// Modèle pour les bots IA
+model Bot {
+  id          String   @id @default(cuid())
+  name        String
+  type        String   // karine, hugo, jpbot, elodie, etc.
+  description String?  @db.Text
+  isActive    Boolean  @default(true)
+  capabilities String[] // Fonctionnalités du bot
+  settings    Json?    // Configuration spécifique au bot
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  missions    Mission[] // Missions assignées à ce bot
+  recommendations BotRecommendation[] // Recommandations générées par ce bot
+  messages    Message[] // Messages générés par ce bot
+  
+  // Métadonnées
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([type])
+  @@index([isActive])
+  @@index([createdAt])
+  @@index([type, isActive])
+  @@index([userId, isActive])
+}
+
+// Modèle pour les recommandations générées par les bots
+model BotRecommendation {
+  id                  String   @id @default(cuid())
+  type                String   // performance, security, ux, business, technical
+  priority            String   // low, medium, high, critical
+  title               String
+  description         String   @db.Text
+  impact              String   @db.Text
+  effort              String   // low, medium, high
+  estimatedTime       String
+  category            String
+  tags                String[] // Tags pour catégoriser
+  status              String   @default("pending") // pending, approved, rejected, implemented
+  implementationNotes String?  @db.Text
+  
+  // Relations
+  userId              String
+  botId               String?  // Bot qui a généré la recommandation
+  missionId           String?  // Mission concernée (optionnel)
+  
+  // Métadonnées
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  // Relations
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bot                 Bot?     @relation(fields: [botId], references: [id], onDelete: SetNull)
+  mission             Mission? @relation(fields: [missionId], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([botId])
+  @@index([missionId])
+  @@index([type])
+  @@index([priority])
+  @@index([status])
+  @@index([category])
+  @@index([createdAt])
+  @@index([userId, status])
+  @@index([botId, status])
+  @@index([type, priority])
+  @@index([status, priority])
+  @@index([userId, type])
+  @@index([botId, type])
+  @@index([createdAt, status])
+  @@index([userId, createdAt])
+}
+
+// Système de messagerie Beriox
+enum MessageType {
+  INBOUND    // Email reçu
+  OUTBOUND   // Email envoyé
+  INTERNAL   // Message interne
+  SUPPORT    // Ticket de support
+}
+
+enum MessageStatus {
+  DRAFT
+  SENT
+  DELIVERED
+  READ
+  FAILED
+  PENDING
+}
+
+enum MessagePriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_FOR_USER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketCategory {
+  TECHNICAL
+  BILLING
+  FEATURE_REQUEST
+  BUG_REPORT
+  GENERAL
+  FEEDBACK
+}
+
+model Message {
+  id              String        @id @default(cuid())
+  type            MessageType
+  status          MessageStatus @default(PENDING)
+  priority        MessagePriority @default(NORMAL)
+  
+  // Contenu
+  subject         String
+  body            String        @db.Text
+  bodyHtml        String?       @db.Text
+  fromEmail       String
+  fromName        String?
+  toEmail         String
+  toName          String?
+  ccEmails        String[]      // Emails en copie
+  bccEmails       String[]      // Emails en copie cachée
+  
+  // Métadonnées
+  messageId       String?       @unique // ID unique du message
+  threadId        String?       // ID du fil de conversation
+  replyToId       String?       // ID du message auquel on répond
+  templateId      String?       // ID du template utilisé
+  
+  // Headers et métadonnées
+  headers         Json?         // Headers email
+  attachments     Json?         // Informations sur les pièces jointes
+  metadata        Json?         // Métadonnées supplémentaires
+  
+  // Relations
+  userId          String?       // Utilisateur qui a envoyé/reçu
+  ticketId        String?       // Ticket associé
+  botId           String?       // Bot qui a généré le message
+  
+  // Métadonnées
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  sentAt          DateTime?     // Quand le message a été envoyé
+  deliveredAt     DateTime?     // Quand le message a été livré
+  readAt          DateTime?     // Quand le message a été lu
+  
+  // Relations
+  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  ticket          SupportTicket? @relation(fields: [ticketId], references: [id], onDelete: SetNull)
+  bot             Bot?          @relation(fields: [botId], references: [id], onDelete: SetNull)
+  replies         Message[]     @relation("MessageReplies")
+  parentMessage   Message?      @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([priority])
+  @@index([threadId])
+  @@index([createdAt])
+  @@index([sentAt])
+  @@index([ticketId])
+  @@index([botId])
+  @@index([fromEmail])
+  @@index([toEmail])
+  @@index([userId, type])
+  @@index([status, createdAt])
+  @@index([threadId, createdAt])
+  @@index([ticketId, createdAt])
+}
+
+model EmailTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  subject     String
+  body        String   @db.Text
+  bodyHtml    String?  @db.Text
+  
+  // Variables disponibles
+  variables   String[] // Liste des variables disponibles
+  
+  // Catégorisation
+  category    String   // welcome, support, notification, etc.
+  isActive    Boolean  @default(true)
+  
+  // Métadonnées
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String?  // ID de l'utilisateur qui a créé
+  
+  @@index([category])
+  @@index([isActive])
+  @@index([createdBy])
+}
+
+model SupportTicket {
+  id          String         @id @default(cuid())
+  ticketNumber String        @unique // Numéro de ticket unique
+  status      TicketStatus   @default(OPEN)
+  priority    MessagePriority @default(NORMAL)
+  category    TicketCategory
+  
+  // Contenu
+  subject     String
+  description String         @db.Text
+  
+  // Assignation
+  assignedTo  String?        // ID de l'utilisateur assigné
+  assignedAt  DateTime?
+  
+  // Relations
+  userId      String         // Utilisateur qui a créé le ticket
+  messages    Message[]      // Messages associés au ticket
+  
+  // Métadonnées
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  resolvedAt  DateTime?
+  closedAt    DateTime?
+  
+  // Relations
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignee    User?          @relation("AssignedTickets", fields: [assignedTo], references: [id], onDelete: SetNull)
+  
+  @@index([userId])
+  @@index([status])
+  @@index([priority])
+  @@index([category])
+  @@index([assignedTo])
+  @@index([createdAt])
+  @@index([resolvedAt])
+  @@index([status, priority])
+  @@index([userId, status])
+  @@index([assignedTo, status])
+}
+
+model MessageThread {
+  id          String   @id @default(cuid())
+  threadId    String   @unique // ID unique du fil
+  subject     String
+  lastMessageAt DateTime @default(now())
+  
+  // Participants
+  participants String[] // Emails des participants
+  
+  // Métadonnées
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([lastMessageAt])
+  @@index([participants])
+}
+
+// Modèle pour les entreprises ciblées
+model TargetedCompany {
+  id          String   @id @default(cuid())
+  name        String
+  address     String
+  phone       String?
+  website     String?
+  email       String?
+  placeId     String   @unique
+  location    Json     // { lat: number, lng: number }
+  
+  // Métadonnées
+  hasWebsite  Boolean  @default(false)
+  hasEmail    Boolean  @default(false)
+  hasPhone    Boolean  @default(false)
+  
+  // Campagne et statut
+  campaignName String  @default("Default Campaign")
+  notes       String?
+  status      String   @default("pending") // pending, contacted, converted, rejected
+  
+  // Relations
+  addedBy     String
+  user        User     @relation(fields: [addedBy], references: [id], onDelete: Cascade)
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Index
+  @@index([addedBy])
+  @@index([status])
+  @@index([campaignName])
+  @@index([hasWebsite])
+  @@index([hasEmail])
+  @@index([hasPhone])
+  @@index([createdAt])
+  @@index([addedBy, status])
+  @@index([campaignName, status])
+  @@index([hasWebsite, status])
 }
 
 
