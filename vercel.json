@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "beriox-ai",
   "builds": [
     {
       "src": "package.json",
@@ -19,11 +18,6 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "src/app/api/**/*.ts": {
-      "maxDuration": 30
-    }
   },
   "headers": [
     {
