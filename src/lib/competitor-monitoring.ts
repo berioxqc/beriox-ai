@@ -1,14 +1,14 @@
-import { SimilarWebAPI } from './integrations/similarweb';
-import { SEMrushAPI } from './integrations/semrush';
-import { CompetitorData, ApiResponse } from './integrations/types';
-import { prisma } from './prisma';
-import { logger } from './logger';
+import { SimilarWebAPI } from 'apos;./integrations/similarweb'apos;;
+import { SEMrushAPI } from 'apos;./integrations/semrush'apos;;
+import { CompetitorData, ApiResponse } from 'apos;./integrations/types'apos;;
+import { prisma } from 'apos;./prisma'apos;;
+import { logger } from 'apos;./logger'apos;;
 
 export interface CompetitorMonitoringConfig {
   similarWebApiKey?: string;
   semrushApiKey?: string;
   domains: string[];
-  frequency: 'daily' | 'weekly' | 'monthly';
+  frequency: 'apos;daily'apos; | 'apos;weekly'apos; | 'apos;monthly'apos;;
   enabled: boolean;
 }
 
@@ -31,15 +31,15 @@ export interface CompetitorReport {
       organicTraffic: number;
     }>;
     opportunities: Array<{
-      type: 'keyword' | 'backlink' | 'traffic';
+      type: 'apos;keyword'apos; | 'apos;backlink'apos; | 'apos;traffic'apos;;
       description: string;
       potential: number;
-      difficulty: 'low' | 'medium' | 'high';
+      difficulty: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
     }>;
   };
   alerts: Array<{
-    type: 'traffic_drop' | 'competitor_growth' | 'keyword_loss' | 'backlink_loss';
-    severity: 'low' | 'medium' | 'high';
+    type: 'apos;traffic_drop'apos; | 'apos;competitor_growth'apos; | 'apos;keyword_loss'apos; | 'apos;backlink_loss'apos;;
+    severity: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
     message: string;
     data: any;
   }>;
@@ -63,7 +63,7 @@ class CompetitorMonitoringService {
   }
 
   /**
-   * Analyse complète d'un domaine avec toutes les APIs disponibles
+   * Analyse complète d'apos;un domaine avec toutes les APIs disponibles
    */
   async analyzeDomain(domain: string): Promise<CompetitorReport> {
     logger.info(`🔍 Début analyse concurrentielle pour ${domain}`);
@@ -77,8 +77,8 @@ class CompetitorMonitoringService {
       this.semrush?.getCompleteAnalysis(domain),
     ]);
 
-    const similarWebData = similarWebResult.status === 'fulfilled' ? similarWebResult.value : null;
-    const semrushData = semrushResult.status === 'fulfilled' ? semrushResult.value : null;
+    const similarWebData = similarWebResult.status === 'apos;fulfilled'apos; ? similarWebResult.value : null;
+    const semrushData = semrushResult.status === 'apos;fulfilled'apos; ? semrushResult.value : null;
 
     // Combiner et analyser les données
     const combinedAnalysis = this.combineData(domain, similarWebData, semrushData);
@@ -153,7 +153,7 @@ class CompetitorMonitoringService {
   }
 
   /**
-   * Identifier les opportunités d'amélioration
+   * Identifier les opportunités d'apos;amélioration
    */
   private identifyOpportunities(
     domain: string,
@@ -170,10 +170,10 @@ class CompetitorMonitoringService {
 
     if (lowCompetitionKeywords.length > 0) {
       opportunities.push({
-        type: 'keyword' as const,
+        type: 'apos;keyword'apos; as const,
         description: `${lowCompetitionKeywords.length} mots-clés à faible concurrence identifiés`,
         potential: lowCompetitionKeywords.reduce((sum, k) => sum + k.traffic, 0),
-        difficulty: 'low' as const,
+        difficulty: 'apos;low'apos; as const,
       });
     }
 
@@ -185,10 +185,10 @@ class CompetitorMonitoringService {
 
     if (highTrafficCompetitors.length > 0) {
       opportunities.push({
-        type: 'backlink' as const,
+        type: 'apos;backlink'apos; as const,
         description: `Opportunités de backlinks depuis ${highTrafficCompetitors.length} concurrents`,
         potential: highTrafficCompetitors.reduce((sum, c) => sum + (c.trafficShare || 0), 0),
-        difficulty: 'medium' as const,
+        difficulty: 'apos;medium'apos; as const,
       });
     }
 
@@ -200,10 +200,10 @@ class CompetitorMonitoringService {
       
       if (socialTraffic < 1000) {
         opportunities.push({
-          type: 'traffic' as const,
-          description: 'Potentiel d\'amélioration du trafic social',
+          type: 'apos;traffic'apos; as const,
+          description: 'apos;Potentiel d\'apos;amélioration du trafic social'apos;,
           potential: 2000,
-          difficulty: 'medium' as const,
+          difficulty: 'apos;medium'apos; as const,
         });
       }
     }
@@ -214,7 +214,7 @@ class CompetitorMonitoringService {
   /**
    * Générer les alertes basées sur les changements
    */
-  private async generateAlerts(domain: string, analysis: any): Promise<CompetitorReport['alerts']> {
+  private async generateAlerts(domain: string, analysis: any): Promise<CompetitorReport['apos;alerts'apos;]> {
     const alerts = [];
 
     // Récupérer les données précédentes pour comparaison
@@ -229,8 +229,8 @@ class CompetitorMonitoringService {
       // Alerte baisse de trafic
       if (trafficChangePercent < -10) {
         alerts.push({
-          type: 'traffic_drop' as const,
-          severity: trafficChangePercent < -20 ? 'high' : 'medium',
+          type: 'apos;traffic_drop'apos; as const,
+          severity: trafficChangePercent < -20 ? 'apos;high'apos; : 'apos;medium'apos;,
           message: `Baisse de trafic de ${Math.abs(trafficChangePercent).toFixed(1)}%`,
           data: { trafficChange, trafficChangePercent },
         });
@@ -243,8 +243,8 @@ class CompetitorMonitoringService {
 
       if (competitorGrowth > 3) {
         alerts.push({
-          type: 'competitor_growth' as const,
-          severity: 'medium',
+          type: 'apos;competitor_growth'apos; as const,
+          severity: 'apos;medium'apos;,
           message: `${competitorGrowth} concurrents avec un trafic élevé détectés`,
           data: { competitorCount: competitorGrowth },
         });
@@ -279,7 +279,7 @@ class CompetitorMonitoringService {
    */
   async analyzeAllDomains(): Promise<CompetitorReport[]> {
     if (!this.config.enabled) {
-      logger.info('🔇 Monitoring concurrentiel désactivé');
+      logger.info('apos;🔇 Monitoring concurrentiel désactivé'apos;);
       return [];
     }
 
@@ -291,7 +291,7 @@ class CompetitorMonitoringService {
 
     const successfulReports = reports
       .filter((result): result is PromiseFulfilledResult<CompetitorReport> => 
-        result.status === 'fulfilled'
+        result.status === 'apos;fulfilled'apos;
       )
       .map(result => result.value);
 
@@ -313,7 +313,7 @@ class CompetitorMonitoringService {
   }
 
   /**
-   * Obtenir l'historique des rapports pour un domaine
+   * Obtenir l'apos;historique des rapports pour un domaine
    */
   async getReportHistory(domain: string, limit: number = 30): Promise<CompetitorReport[]> {
     // TODO: Implémenter la récupération depuis la base de données

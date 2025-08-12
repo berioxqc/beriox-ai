@@ -33,7 +33,7 @@ export default function WelcomePage() {
           color: "#0a2540",
           margin: 0,
           marginBottom: 16,
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
         }}>
           Bienvenue sur Beriox AI
         </h1>
@@ -44,9 +44,9 @@ export default function WelcomePage() {
           margin: 0,
           marginBottom: 32,
           lineHeight: "1.6",
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
         }}>
-          Votre équipe d'agents IA pour automatiser et optimiser vos processus business. 
+          Votre équipe d'apos;agents IA pour automatiser et optimiser vos processus business. 
           Créez un compte gratuit pour commencer dès maintenant.
         </p>
 
@@ -56,7 +56,7 @@ export default function WelcomePage() {
           marginBottom: 32
         }}>
           {[
-            "🎯 Sophie, Marc, Emma et toute l'équipe à votre service",
+            "🎯 Sophie, Marc, Emma et toute l'apos;équipe à votre service",
             "⚡ Missions illimitées et résultats en temps réel",
             "🔄 Synchronisation automatique avec vos outils",
             "📊 Analyses et rapports détaillés"
@@ -71,14 +71,14 @@ export default function WelcomePage() {
               textAlign: "left"
             }}>
               <div style={{ fontSize: "20px" }}>
-                {feature.split(' ')[0]}
+                {feature.split('apos; 'apos;)[0]}
               </div>
               <div style={{
                 fontSize: "16px",
                 color: "#425466",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}>
-                {feature.substring(feature.indexOf(' ') + 1)}
+                {feature.substring(feature.indexOf('apos; 'apos;) + 1)}
               </div>
             </div>
           ))}
@@ -101,7 +101,7 @@ export default function WelcomePage() {
             justifyContent: "center",
             gap: 12,
             margin: "0 auto",
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
           }}
           onMouseOver={(e) => {
             e.currentTarget.style.background = "#5a51e5";
@@ -127,7 +127,7 @@ export default function WelcomePage() {
           color: "#8898aa",
           margin: 0,
           marginTop: 24,
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
         }}>
           Aucune carte de crédit requise • Accès immédiat • 100% gratuit
         </p>

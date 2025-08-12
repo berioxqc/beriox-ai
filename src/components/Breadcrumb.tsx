@@ -11,57 +11,57 @@ interface BreadcrumbItem {
 }
 
 function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
-  const segments = pathname.split('/').filter(Boolean);
+  const segments = pathname.split('apos;/'apos;).filter(Boolean);
   const breadcrumbs: BreadcrumbItem[] = [];
 
-  // Ajouter l'accueil
+  // Ajouter l'apos;accueil
   breadcrumbs.push({
-    href: '/',
-    label: 'Accueil',
-    icon: 'home',
-    isActive: pathname === '/'
+    href: 'apos;/'apos;,
+    label: 'apos;Accueil'apos;,
+    icon: 'apos;home'apos;,
+    isActive: pathname === 'apos;/'apos;
   });
 
   // Traiter chaque segment
-  let currentPath = '';
+  let currentPath = 'apos;'apos;;
   segments.forEach((segment, index) => {
     currentPath += `/${segment}`;
     
     // Mapping des segments vers des labels lisibles
     const labelMap: Record<string, string> = {
-      'missions': 'Missions',
-      'profile': 'Profil',
-      'settings': 'Paramètres',
-      'pricing': 'Tarifs',
-      'admin': 'Administration',
-      'agents': 'Agents IA',
-      'novabot': 'NovaBot',
-      'competitors': 'Veille Concurrentielle',
-      'coupon': 'Coupons',
-      'refunds': 'Remboursements',
-      'auth': 'Authentification',
-      'signin': 'Connexion',
-      'signout': 'Déconnexion'
+      'apos;missions'apos;: 'apos;Missions'apos;,
+      'apos;profile'apos;: 'apos;Profil'apos;,
+      'apos;settings'apos;: 'apos;Paramètres'apos;,
+      'apos;pricing'apos;: 'apos;Tarifs'apos;,
+      'apos;admin'apos;: 'apos;Administration'apos;,
+      'apos;agents'apos;: 'apos;Agents IA'apos;,
+      'apos;novabot'apos;: 'apos;NovaBot'apos;,
+      'apos;competitors'apos;: 'apos;Veille Concurrentielle'apos;,
+      'apos;coupon'apos;: 'apos;Coupons'apos;,
+      'apos;refunds'apos;: 'apos;Remboursements'apos;,
+      'apos;auth'apos;: 'apos;Authentification'apos;,
+      'apos;signin'apos;: 'apos;Connexion'apos;,
+      'apos;signout'apos;: 'apos;Déconnexion'apos;
     };
 
     const iconMap: Record<string, string> = {
-      'missions': 'tasks',
-      'profile': 'user',
-      'settings': 'cog',
-      'pricing': 'credit-card',
-      'admin': 'crown',
-      'agents': 'users',
-      'novabot': 'brain',
-      'competitors': 'search',
-      'coupon': 'gift',
-      'refunds': 'receipt',
-      'auth': 'lock',
-      'signin': 'user',
-      'signout': 'sign-out-alt'
+      'apos;missions'apos;: 'apos;tasks'apos;,
+      'apos;profile'apos;: 'apos;user'apos;,
+      'apos;settings'apos;: 'apos;cog'apos;,
+      'apos;pricing'apos;: 'apos;credit-card'apos;,
+      'apos;admin'apos;: 'apos;crown'apos;,
+      'apos;agents'apos;: 'apos;users'apos;,
+      'apos;novabot'apos;: 'apos;brain'apos;,
+      'apos;competitors'apos;: 'apos;search'apos;,
+      'apos;coupon'apos;: 'apos;gift'apos;,
+      'apos;refunds'apos;: 'apos;receipt'apos;,
+      'apos;auth'apos;: 'apos;lock'apos;,
+      'apos;signin'apos;: 'apos;user'apos;,
+      'apos;signout'apos;: 'apos;sign-out-alt'apos;
     };
 
     const label = labelMap[segment] || segment.charAt(0).toUpperCase() + segment.slice(1);
-    const icon = iconMap[segment] || 'circle';
+    const icon = iconMap[segment] || 'apos;circle'apos;;
     
     breadcrumbs.push({
       href: currentPath,

@@ -8,8 +8,8 @@ export interface DataInsight {
   value: number;
   previousValue: number;
   change: number;
-  trend: 'up' | 'down' | 'stable';
-  significance: 'high' | 'medium' | 'low';
+  trend: 'apos;up'apos; | 'apos;down'apos; | 'apos;stable'apos;;
+  significance: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
   context: string;
 }
 
@@ -19,8 +19,8 @@ export interface ActionableInsight {
   currentValue: number;
   impact: string;
   action: string;
-  priority: 'critical' | 'high' | 'medium' | 'low';
-  effort: 'low' | 'medium' | 'high';
+  priority: 'apos;critical'apos; | 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
+  effort: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
   timeframe: string;
   expectedOutcome: string;
 }
@@ -84,8 +84,8 @@ export class InsightPulseBot {
 
       const summary = {
         totalInsights: actionableInsights.length,
-        criticalActions: actionableInsights.filter(insight => insight.priority === 'critical').length,
-        highImpactOpportunities: actionableInsights.filter(insight => insight.impact.includes('forte')).length,
+        criticalActions: actionableInsights.filter(insight => insight.priority === 'apos;critical'apos;).length,
+        highImpactOpportunities: actionableInsights.filter(insight => insight.impact.includes('apos;forte'apos;)).length,
         keyMetrics: majorFindings.map(finding => finding.metric)
       };
 
@@ -103,7 +103,7 @@ export class InsightPulseBot {
       
       return report;
     } catch (error) {
-      console.error("💡 InsightPulseBot: Erreur lors de l'analyse:", error);
+      console.error("💡 InsightPulseBot: Erreur lors de l'apos;analyse:", error);
       throw new Error("Impossible de traiter les données et générer des insights");
     }
   }
@@ -114,42 +114,42 @@ export class InsightPulseBot {
   private extractMajorFindings(rawData: any): DataInsight[] {
     const findings: DataInsight[] = [];
 
-    // Simulation d'extraction de données
+    // Simulation d'apos;extraction de données
     const mockData = [
       {
         metric: "Taux de conversion",
         value: 3.2,
         previousValue: 2.8,
         change: 14.3,
-        trend: 'up' as const,
-        significance: 'high' as const,
-        context: "Augmentation significative suite à l'optimisation de la page d'accueil"
+        trend: 'apos;up'apos; as const,
+        significance: 'apos;high'apos; as const,
+        context: "Augmentation significative suite à l'apos;optimisation de la page d'apos;accueil"
       },
       {
         metric: "Temps de chargement",
         value: 2.8,
         previousValue: 3.5,
         change: -20.0,
-        trend: 'down' as const,
-        significance: 'high' as const,
-        context: "Amélioration notable après l'optimisation des images"
+        trend: 'apos;down'apos; as const,
+        significance: 'apos;high'apos; as const,
+        context: "Amélioration notable après l'apos;optimisation des images"
       },
       {
         metric: "Taux de rebond",
         value: 45.2,
         previousValue: 48.1,
         change: -6.0,
-        trend: 'down' as const,
-        significance: 'medium' as const,
-        context: "Légère amélioration de l'engagement utilisateur"
+        trend: 'apos;down'apos; as const,
+        significance: 'apos;medium'apos; as const,
+        context: "Légère amélioration de l'apos;engagement utilisateur"
       },
       {
         metric: "Trafic organique",
         value: 12500,
         previousValue: 11800,
         change: 5.9,
-        trend: 'up' as const,
-        significance: 'medium' as const,
+        trend: 'apos;up'apos; as const,
+        significance: 'apos;medium'apos; as const,
         context: "Croissance stable du référencement naturel"
       }
     ];
@@ -164,49 +164,49 @@ export class InsightPulseBot {
     const insights: ActionableInsight[] = [];
 
     findings.forEach(finding => {
-      if (finding.significance === 'high') {
+      if (finding.significance === 'apos;high'apos;) {
         // Insight sur le taux de conversion
-        if (finding.metric === "Taux de conversion" && finding.trend === 'up') {
+        if (finding.metric === "Taux de conversion" && finding.trend === 'apos;up'apos;) {
           insights.push({
             insight: "Le taux de conversion a augmenté de 14.3%",
             metric: finding.metric,
             currentValue: finding.value,
             impact: "Forte amélioration de la performance commerciale",
-            action: "Analyser les facteurs de succès et les répliquer sur d'autres pages",
-            priority: 'high' as const,
-            effort: 'medium' as const,
+            action: "Analyser les facteurs de succès et les répliquer sur d'apos;autres pages",
+            priority: 'apos;high'apos; as const,
+            effort: 'apos;medium'apos; as const,
             timeframe: "2-3 semaines",
             expectedOutcome: "Augmentation de 10-15% du taux de conversion global"
           });
         }
 
         // Insight sur le temps de chargement
-        if (finding.metric === "Temps de chargement" && finding.trend === 'down') {
+        if (finding.metric === "Temps de chargement" && finding.trend === 'apos;down'apos;) {
           insights.push({
             insight: "Le temps de chargement a diminué de 20%",
             metric: finding.metric,
             currentValue: finding.value,
-            impact: "Amélioration significative de l'expérience utilisateur",
+            impact: "Amélioration significative de l'apos;expérience utilisateur",
             action: "Optimiser davantage les autres pages du site",
-            priority: 'medium' as const,
-            effort: 'high' as const,
+            priority: 'apos;medium'apos; as const,
+            effort: 'apos;high'apos; as const,
             timeframe: "4-6 semaines",
             expectedOutcome: "Réduction de 15-20% du temps de chargement global"
           });
         }
       }
 
-      if (finding.significance === 'medium') {
+      if (finding.significance === 'apos;medium'apos;) {
         // Insight sur le trafic organique
-        if (finding.metric === "Trafic organique" && finding.trend === 'up') {
+        if (finding.metric === "Trafic organique" && finding.trend === 'apos;up'apos;) {
           insights.push({
             insight: "Le trafic organique augmente de 5.9%",
             metric: finding.metric,
             currentValue: finding.value,
             impact: "Croissance stable du référencement",
             action: "Accélérer la production de contenu SEO",
-            priority: 'medium' as const,
-            effort: 'medium' as const,
+            priority: 'apos;medium'apos; as const,
+            effort: 'apos;medium'apos; as const,
             timeframe: "1-2 mois",
             expectedOutcome: "Augmentation de 10-15% du trafic organique"
           });
@@ -226,9 +226,9 @@ export class InsightPulseBot {
     const longTerm: string[] = [];
 
     insights.forEach(insight => {
-      if (insight.priority === 'critical') {
+      if (insight.priority === 'apos;critical'apos;) {
         immediate.push(insight.action);
-      } else if (insight.priority === 'high') {
+      } else if (insight.priority === 'apos;high'apos;) {
         shortTerm.push(insight.action);
       } else {
         longTerm.push(insight.action);
@@ -259,7 +259,7 @@ export class InsightPulseBot {
    */
   generateReport(): string {
     if (!this.lastReport) {
-      return "Aucun rapport disponible. Lancez d'abord une analyse de données.";
+      return "Aucun rapport disponible. Lancez d'apos;abord une analyse de données.";
     }
 
     const { summary, majorFindings, actionableInsights, recommendations, dataQuality } = this.lastReport;
@@ -275,17 +275,17 @@ export class InsightPulseBot {
     // 3 constats majeurs
     report += "## 🎯 3 CONSTATS MAJEURS\n";
     majorFindings.slice(0, 3).forEach((finding, index) => {
-      const emoji = finding.trend === 'up' ? '📈' : finding.trend === 'down' ? '📉' : '➡️';
+      const emoji = finding.trend === 'apos;up'apos; ? 'apos;📈'apos; : finding.trend === 'apos;down'apos; ? 'apos;📉'apos; : 'apos;➡️'apos;;
       report += `### ${index + 1}. ${finding.metric}\n`;
       report += `${emoji} **Valeur actuelle:** ${finding.value}\n`;
-      report += `**Évolution:** ${finding.change > 0 ? '+' : ''}${finding.change.toFixed(1)}%\n`;
+      report += `**Évolution:** ${finding.change > 0 ? 'apos;+'apos; : 'apos;'apos;}${finding.change.toFixed(1)}%\n`;
       report += `**Contexte:** ${finding.context}\n\n`;
     });
 
     // 3 actions à entreprendre
     report += "## ⚡ 3 ACTIONS À ENTREPRENDRE\n";
     actionableInsights.slice(0, 3).forEach((insight, index) => {
-      const priorityEmoji = insight.priority === 'critical' ? '🚨' : insight.priority === 'high' ? '⚡' : '📋';
+      const priorityEmoji = insight.priority === 'apos;critical'apos; ? 'apos;🚨'apos; : insight.priority === 'apos;high'apos; ? 'apos;⚡'apos; : 'apos;📋'apos;;
       report += `### ${index + 1}. ${insight.insight}\n`;
       report += `${priorityEmoji} **Action:** ${insight.action}\n`;
       report += `**Impact:** ${insight.impact}\n`;
@@ -317,14 +317,14 @@ export class InsightPulseBot {
     report += `**Fraîcheur:** ${dataQuality.freshness}%\n\n`;
 
     if (dataQuality.recommendations.length > 0) {
-      report += "**Recommandations d'amélioration:**\n";
+      report += "**Recommandations d'apos;amélioration:**\n";
       dataQuality.recommendations.forEach(rec => {
         report += `• ${rec}\n`;
       });
     }
 
     report += "\n---\n";
-    report += "*Rapport généré par InsightPulseBot - Ce chiffre est intéressant, mais voici ce qu'il faut en faire.*";
+    report += "*Rapport généré par InsightPulseBot - Ce chiffre est intéressant, mais voici ce qu'apos;il faut en faire.*";
 
     return report;
   }
@@ -335,7 +335,7 @@ export class InsightPulseBot {
   detectAnomalies(data: any[]): string[] {
     const anomalies: string[] = [];
     
-    // Simulation de détection d'anomalies
+    // Simulation de détection d'apos;anomalies
     const conversionRate = data.find(d => d.metric === "Taux de conversion");
     if (conversionRate && conversionRate.change > 50) {
       anomalies.push("🚨 Augmentation anormale du taux de conversion (+50%) - Vérifier la source du trafic");
@@ -343,7 +343,7 @@ export class InsightPulseBot {
 
     const bounceRate = data.find(d => d.metric === "Taux de rebond");
     if (bounceRate && bounceRate.change > 30) {
-      anomalies.push("⚠️ Hausse importante du taux de rebond (+30%) - Analyser les pages d'entrée");
+      anomalies.push("⚠️ Hausse importante du taux de rebond (+30%) - Analyser les pages d'apos;entrée");
     }
 
     return anomalies;
@@ -359,7 +359,7 @@ export class InsightPulseBot {
       const target = targets[metric.metric];
       if (target && metric.value < target) {
         const gap = ((target - metric.value) / target * 100).toFixed(1);
-        gaps.push(`📊 ${metric.metric}: ${gap}% en dessous de l'objectif (${metric.value} vs ${target})`);
+        gaps.push(`📊 ${metric.metric}: ${gap}% en dessous de l'apos;objectif (${metric.value} vs ${target})`);
       }
     });
     

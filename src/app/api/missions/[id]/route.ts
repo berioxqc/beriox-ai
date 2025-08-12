@@ -15,7 +15,7 @@ export async function GET(
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Récupérer l'utilisateur pour vérifier son rôle
+    // Récupérer l'apos;utilisateur pour vérifier son rôle
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: { id: true, role: true }
@@ -45,7 +45,7 @@ export async function GET(
     // Vérifier les permissions
     // Les super admins peuvent voir toutes les missions
     // Les utilisateurs normaux ne peuvent voir que leurs propres missions
-    if (user.role !== 'SUPER_ADMIN' && mission.userId !== user.id) {
+    if (user.role !== 'apos;SUPER_ADMIN'apos; && mission.userId !== user.id) {
       return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
     }
 
@@ -53,15 +53,15 @@ export async function GET(
     const [briefs, deliverables, report] = await Promise.all([
       prisma.brief.findMany({
         where: { missionId },
-        orderBy: { createdAt: 'asc' }
+        orderBy: { createdAt: 'apos;asc'apos; }
       }),
       prisma.deliverable.findMany({
         where: { missionId },
-        orderBy: { createdAt: 'asc' }
+        orderBy: { createdAt: 'apos;asc'apos; }
       }),
       prisma.report.findFirst({
         where: { missionId },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'apos;desc'apos; }
       })
     ]);
 

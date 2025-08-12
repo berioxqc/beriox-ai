@@ -5,7 +5,7 @@ export interface Plan {
   name: string;
   price: number;
   currency: string;
-  interval: 'month' | 'year';
+  interval: 'apos;month'apos; | 'apos;year'apos;;
   stripeProductId?: string;
   stripePriceId?: string;
   features: string[];
@@ -13,7 +13,7 @@ export interface Plan {
     missionsPerMonth: number;
     agentsAvailable: string[];
     apiIntegrations: string[];
-    supportLevel: 'community' | 'email' | 'priority' | 'dedicated';
+    supportLevel: 'apos;community'apos; | 'apos;email'apos; | 'apos;priority'apos; | 'apos;dedicated'apos;;
     customIntegrations: boolean;
     whiteLabel: boolean;
   };
@@ -22,50 +22,50 @@ export interface Plan {
 
 export const PLANS: Record<string, Plan> = {
   FREE: {
-    id: 'free',
-    name: '🧪 Apprenti',
+    id: 'apos;free'apos;,
+    name: 'apos;🧪 Apprenti'apos;,
     price: 0,
-    currency: 'CAD',
-    interval: 'month',
+    currency: 'apos;CAD'apos;,
+    interval: 'apos;month'apos;,
     features: [
-      '3 missions par mois',
-      '4 agents IA de base',
-      'Questions d\'alignement standards',
-      'Rapports standards',
-      'Support communautaire'
+      'apos;3 missions par mois'apos;,
+      'apos;4 agents IA de base'apos;,
+      'apos;Questions d\'apos;alignement standards'apos;,
+      'apos;Rapports standards'apos;,
+      'apos;Support communautaire'apos;
     ],
     limits: {
       missionsPerMonth: 3,
-      agentsAvailable: ['karine', 'hugo', 'jpbot', 'elodie'],
+      agentsAvailable: ['apos;karine'apos;, 'apos;hugo'apos;, 'apos;jpbot'apos;, 'apos;elodie'apos;],
       apiIntegrations: [],
-      supportLevel: 'community',
+      supportLevel: 'apos;community'apos;,
       customIntegrations: false,
       whiteLabel: false
     }
   },
 
   STARTER: {
-    id: 'starter',
-    name: '⚗️ Alchimiste',
+    id: 'apos;starter'apos;,
+    name: 'apos;⚗️ Alchimiste'apos;,
     price: 49,
-    currency: 'CAD',
-    interval: 'month',
+    currency: 'apos;CAD'apos;,
+    interval: 'apos;month'apos;,
     stripePriceId: process.env.STRIPE_STARTER_PRICE_ID,
     features: [
-      '25 missions par mois',
-      'Tous les agents IA workflow',
-      '🤖 Questions GPT personnalisées',
-      'Rapports avancés',
-      'Support par email',
-      '3 intégrations API essentielles',
-      'Tableaux de bord basiques',
-      'Export données CSV'
+      'apos;25 missions par mois'apos;,
+      'apos;Tous les agents IA workflow'apos;,
+      'apos;🤖 Questions GPT personnalisées'apos;,
+      'apos;Rapports avancés'apos;,
+      'apos;Support par email'apos;,
+      'apos;3 intégrations API essentielles'apos;,
+      'apos;Tableaux de bord basiques'apos;,
+      'apos;Export données CSV'apos;
     ],
     limits: {
       missionsPerMonth: 25,
-      agentsAvailable: ['karine', 'hugo', 'jpbot', 'elodie', 'clara', 'faucon'],
-      apiIntegrations: ['pagespeed', 'security', 'uptime'],
-      supportLevel: 'email',
+      agentsAvailable: ['apos;karine'apos;, 'apos;hugo'apos;, 'apos;jpbot'apos;, 'apos;elodie'apos;, 'apos;clara'apos;, 'apos;faucon'apos;],
+      apiIntegrations: ['apos;pagespeed'apos;, 'apos;security'apos;, 'apos;uptime'apos;],
+      supportLevel: 'apos;email'apos;,
       customIntegrations: false,
       whiteLabel: false
     },
@@ -73,60 +73,60 @@ export const PLANS: Record<string, Plan> = {
   },
 
   PRO: {
-    id: 'pro',
-    name: '🔮 Mage',
+    id: 'apos;pro'apos;,
+    name: 'apos;🔮 Mage'apos;,
     price: 149,
-    currency: 'CAD',
-    interval: 'month',
+    currency: 'apos;CAD'apos;,
+    interval: 'apos;month'apos;,
     stripePriceId: process.env.STRIPE_PRO_PRICE_ID,
     features: [
-      '100 missions par mois',
-      'Tous les agents + bots spécialisés',
-      '🤖 Questions GPT personnalisées',
-      'Toutes les intégrations API premium',
-      'Analyses automatiques quotidiennes',
-      'Support prioritaire',
-      'Tableaux de bord avancés avec graphiques',
-      'Export PDF/Excel',
-      'Alertes temps réel',
-      'Données historiques 12 mois'
+      'apos;100 missions par mois'apos;,
+      'apos;Tous les agents + bots spécialisés'apos;,
+      'apos;🤖 Questions GPT personnalisées'apos;,
+      'apos;Toutes les intégrations API premium'apos;,
+      'apos;Analyses automatiques quotidiennes'apos;,
+      'apos;Support prioritaire'apos;,
+      'apos;Tableaux de bord avancés avec graphiques'apos;,
+      'apos;Export PDF/Excel'apos;,
+      'apos;Alertes temps réel'apos;,
+      'apos;Données historiques 12 mois'apos;
     ],
     limits: {
       missionsPerMonth: 100,
-      agentsAvailable: ['all'],
-      apiIntegrations: ['all'],
-      supportLevel: 'priority',
+      agentsAvailable: ['apos;all'apos;],
+      apiIntegrations: ['apos;all'apos;],
+      supportLevel: 'apos;priority'apos;,
       customIntegrations: true,
       whiteLabel: false
     }
   },
 
   ENTERPRISE: {
-    id: 'enterprise',
-    name: '👑 Archimage',
+    id: 'apos;enterprise'apos;,
+    name: 'apos;👑 Archimage'apos;,
     price: 449,
-    currency: 'CAD',
-    interval: 'month',
+    currency: 'apos;CAD'apos;,
+    interval: 'apos;month'apos;,
     stripePriceId: process.env.STRIPE_ENTERPRISE_PRICE_ID,
     features: [
-      'Missions illimitées',
-      'Tous les agents + bots custom',
-      '🤖 Questions GPT personnalisées',
-      'Intégrations personnalisées illimitées',
-      'API dédiée avec webhooks',
-      'Support dédié 24/7',
-      'White-label complet',
-      'SLA 99.9%',
-      'Formation équipe',
-      'Tableaux de bord multi-clients',
-      'Données historiques illimitées',
-      'Rapports automatisés personnalisés'
+      'apos;Missions illimitées'apos;,
+      'apos;Tous les agents + bots custom'apos;,
+      'apos;🤖 Questions GPT personnalisées'apos;,
+      'apos;Intégrations personnalisées illimitées'apos;,
+      'apos;API dédiée avec webhooks'apos;,
+      'apos;Support dédié 24/7'apos;,
+      'apos;White-label complet'apos;,
+      'apos;SLA 99.9%'apos;,
+      'apos;Formation équipe'apos;,
+      'apos;Tableaux de bord multi-clients'apos;,
+      'apos;Données historiques illimitées'apos;,
+      'apos;Rapports automatisés personnalisés'apos;
     ],
     limits: {
       missionsPerMonth: -1, // Illimité
-      agentsAvailable: ['all'],
-      apiIntegrations: ['all'],
-      supportLevel: 'dedicated',
+      agentsAvailable: ['apos;all'apos;],
+      apiIntegrations: ['apos;all'apos;],
+      supportLevel: 'apos;dedicated'apos;,
       customIntegrations: true,
       whiteLabel: true
     }
@@ -136,41 +136,41 @@ export const PLANS: Record<string, Plan> = {
 // Bots disponibles par plan
 export const BOT_ACCESS: Record<string, string[]> = {
   free: [],
-  starter: ['speedbot', 'securitybot'],
-  pro: ['speedbot', 'securitybot', 'analyticsbot', 'seobot', 'uptimebot', 'accessibilitybot', 'competitorbot'],
-  enterprise: ['all'] // Tous les bots actuels et futurs
+  starter: ['apos;speedbot'apos;, 'apos;securitybot'apos;],
+  pro: ['apos;speedbot'apos;, 'apos;securitybot'apos;, 'apos;analyticsbot'apos;, 'apos;seobot'apos;, 'apos;uptimebot'apos;, 'apos;accessibilitybot'apos;, 'apos;competitorbot'apos;],
+  enterprise: ['apos;all'apos;] // Tous les bots actuels et futurs
 };
 
 // APIs externes disponibles par plan (avec coûts réels considérés)
 export const API_INTEGRATIONS: Record<string, string[]> = {
   free: [], // Aucune API externe (coûteuse)
-  starter: ['pagespeed', 'security', 'uptime'], // APIs basiques
+  starter: ['apos;pagespeed'apos;, 'apos;security'apos;, 'apos;uptime'apos;], // APIs basiques
   pro: [
-    'pagespeed', 'security', 'analytics', 'searchconsole', 
-    'social', 'ads', 'reviews', 'uptime', 'seo', 'accessibility'
+    'apos;pagespeed'apos;, 'apos;security'apos;, 'apos;analytics'apos;, 'apos;searchconsole'apos;, 
+    'apos;social'apos;, 'apos;ads'apos;, 'apos;reviews'apos;, 'apos;uptime'apos;, 'apos;seo'apos;, 'apos;accessibility'apos;
   ], // APIs premium avec limites
-  enterprise: ['all'] // Toutes les APIs sans limites
+  enterprise: ['apos;all'apos;] // Toutes les APIs sans limites
 };
 
-// Limites d'appels API par plan (par mois)
+// Limites d'apos;appels API par plan (par mois)
 export const API_LIMITS: Record<string, Record<string, number>> = {
   free: {},
   starter: {
-    'pagespeed': 500,
-    'security': 100,
-    'uptime': 1000
+    'apos;pagespeed'apos;: 500,
+    'apos;security'apos;: 100,
+    'apos;uptime'apos;: 1000
   },
   pro: {
-    'pagespeed': 2000,
-    'security': 500,
-    'analytics': 1000,
-    'searchconsole': 1000,
-    'social': 500,
-    'ads': 300,
-    'reviews': 200,
-    'uptime': 5000,
-    'seo': 1000,
-    'accessibility': 200
+    'apos;pagespeed'apos;: 2000,
+    'apos;security'apos;: 500,
+    'apos;analytics'apos;: 1000,
+    'apos;searchconsole'apos;: 1000,
+    'apos;social'apos;: 500,
+    'apos;ads'apos;: 300,
+    'apos;reviews'apos;: 200,
+    'apos;uptime'apos;: 5000,
+    'apos;seo'apos;: 1000,
+    'apos;accessibility'apos;: 200
   },
   enterprise: {} // Illimité
 };
@@ -194,7 +194,7 @@ export class PlanService {
     const plan = PLANS[userPlan.toUpperCase()];
     if (!plan) return false;
     
-    if (plan.limits.agentsAvailable.includes('all')) return true;
+    if (plan.limits.agentsAvailable.includes('apos;all'apos;)) return true;
     return plan.limits.agentsAvailable.includes(agentId);
   }
 
@@ -205,7 +205,7 @@ export class PlanService {
     const plan = PLANS[userPlan.toUpperCase()];
     if (!plan) return false;
     
-    if (plan.limits.apiIntegrations.includes('all')) return true;
+    if (plan.limits.apiIntegrations.includes('apos;all'apos;)) return true;
     return plan.limits.apiIntegrations.includes(integrationId);
   }
 
@@ -216,8 +216,8 @@ export class PlanService {
     const plan = PLANS[userPlan.toUpperCase()];
     if (!plan) return [];
     
-    if (plan.limits.agentsAvailable.includes('all')) {
-      return ['karine', 'hugo', 'jpbot', 'elodie', 'clara', 'faucon', 'speedbot', 'securitybot', 'analyticsbot'];
+    if (plan.limits.agentsAvailable.includes('apos;all'apos;)) {
+      return ['apos;karine'apos;, 'apos;hugo'apos;, 'apos;jpbot'apos;, 'apos;elodie'apos;, 'apos;clara'apos;, 'apos;faucon'apos;, 'apos;speedbot'apos;, 'apos;securitybot'apos;, 'apos;analyticsbot'apos;];
     }
     
     return plan.limits.agentsAvailable;
@@ -228,14 +228,14 @@ export class PlanService {
    */
   static getAvailableBots(userPlan: string): string[] {
     const bots = BOT_ACCESS[userPlan.toLowerCase()] || [];
-    if (bots.includes('all')) {
-      return ['speedbot', 'securitybot', 'analyticsbot', 'seobot', 'uptimebot', 'accessibilitybot'];
+    if (bots.includes('apos;all'apos;)) {
+      return ['apos;speedbot'apos;, 'apos;securitybot'apos;, 'apos;analyticsbot'apos;, 'apos;seobot'apos;, 'apos;uptimebot'apos;, 'apos;accessibilitybot'apos;];
     }
     return bots;
   }
 
   /**
-   * Vérifie si l'utilisateur peut utiliser les questions GPT personnalisées
+   * Vérifie si l'apos;utilisateur peut utiliser les questions GPT personnalisées
    * Fonctionnalité premium réservée aux plans payants
    */
   static canUseGPTQuestions(userPlan: string): boolean {
@@ -243,24 +243,24 @@ export class PlanService {
     if (!plan) return false;
     
     // Questions GPT réservées aux plans payants (pas gratuit)
-    return plan.id !== 'free';
+    return plan.id !== 'apos;free'apos;;
   }
 
   /**
-   * Détermine le plan effectif d'un utilisateur (en tenant compte des accès premium temporaires)
+   * Détermine le plan effectif d'apos;un utilisateur (en tenant compte des accès premium temporaires)
    */
   static getEffectivePlan(userPlan: string, premiumAccess?: {
     planId: string;
     endDate: Date;
     isActive: boolean;
   }): string {
-    // Si l'utilisateur a un accès premium actif et non expiré
+    // Si l'apos;utilisateur a un accès premium actif et non expiré
     if (premiumAccess && premiumAccess.isActive && premiumAccess.endDate > new Date()) {
       return premiumAccess.planId;
     }
     
     // Sinon, retourner le plan de base
-    return userPlan || 'free';
+    return userPlan || 'apos;free'apos;;
   }
 
   /**
@@ -275,7 +275,7 @@ export class PlanService {
   }
 
   /**
-   * Calcule les jours restants d'accès premium
+   * Calcule les jours restants d'apos;accès premium
    */
   static getPremiumDaysLeft(premiumAccess?: {
     endDate: Date;
@@ -317,7 +317,7 @@ export class PlanService {
   }
 
   /**
-   * Formate le prix avec taxes pour l'affichage
+   * Formate le prix avec taxes pour l'apos;affichage
    */
   static formatPriceWithTaxes(plan: Plan): {
     basePrice: string;
@@ -329,12 +329,12 @@ export class PlanService {
   } {
     if (plan.price === 0) {
       return {
-        basePrice: 'Gratuit',
-        tps: '0,00 $',
-        tvq: '0,00 $',
-        totalPrice: '0,00 $',
-        monthlyTotal: 'Gratuit',
-        annualTotal: 'Gratuit'
+        basePrice: 'apos;Gratuit'apos;,
+        tps: 'apos;0,00 $'apos;,
+        tvq: 'apos;0,00 $'apos;,
+        totalPrice: 'apos;0,00 $'apos;,
+        monthlyTotal: 'apos;Gratuit'apos;,
+        annualTotal: 'apos;Gratuit'apos;
       };
     }
 
@@ -359,13 +359,13 @@ export class PlanService {
     return {
       planId,
       userId,
-      product: 'beriox-ai',
-      version: '1.0'
+      product: 'apos;beriox-ai'apos;,
+      version: 'apos;1.0'apos;
     };
   }
 
   /**
-   * Vérifie les limites d'usage
+   * Vérifie les limites d'apos;usage
    */
   static checkLimits(userPlan: string, usage: {
     missionsThisMonth: number;
@@ -382,8 +382,8 @@ export class PlanService {
     if (!plan) {
       return {
         canProceed: false,
-        blockedReasons: ['Plan invalide'],
-        upgradeRequired: 'starter'
+        blockedReasons: ['apos;Plan invalide'apos;],
+        upgradeRequired: 'apos;starter'apos;
       };
     }
 
@@ -397,7 +397,7 @@ export class PlanService {
       !this.canUseAgent(userPlan, agent)
     );
     if (unavailableAgents.length > 0) {
-      blockedReasons.push(`Agents non disponibles: ${unavailableAgents.join(', ')}`);
+      blockedReasons.push(`Agents non disponibles: ${unavailableAgents.join('apos;, 'apos;)}`);
     }
 
     // Vérifier les intégrations
@@ -405,15 +405,15 @@ export class PlanService {
       !this.canUseIntegration(userPlan, integration)
     );
     if (unavailableIntegrations.length > 0) {
-      blockedReasons.push(`Intégrations non disponibles: ${unavailableIntegrations.join(', ')}`);
+      blockedReasons.push(`Intégrations non disponibles: ${unavailableIntegrations.join('apos;, 'apos;)}`);
     }
 
     // Suggérer une mise à niveau
     let upgradeRequired: string | undefined;
     if (blockedReasons.length > 0) {
-      if (userPlan === 'free') upgradeRequired = 'starter';
-      else if (userPlan === 'starter') upgradeRequired = 'pro';
-      else if (userPlan === 'pro') upgradeRequired = 'enterprise';
+      if (userPlan === 'apos;free'apos;) upgradeRequired = 'apos;starter'apos;;
+      else if (userPlan === 'apos;starter'apos;) upgradeRequired = 'apos;pro'apos;;
+      else if (userPlan === 'apos;pro'apos;) upgradeRequired = 'apos;enterprise'apos;;
     }
 
     return {
@@ -424,18 +424,18 @@ export class PlanService {
   }
 }
 
-// Messages d'upgrade personnalisés
+// Messages d'apos;upgrade personnalisés
 export const UPGRADE_MESSAGES = {
   missions: (current: number, limit: number) => 
     `Vous avez utilisé ${current}/${limit} missions ce mois-ci. Passez au plan supérieur pour continuer !`,
   
   agents: (agents: string[]) => 
-    `Les agents ${agents.join(', ')} nécessitent un plan supérieur. Débloquez toute l'équipe !`,
+    `Les agents ${agents.join('apos;, 'apos;)} nécessitent un plan supérieur. Débloquez toute l'apos;équipe !`,
   
   integrations: (integrations: string[]) => 
-    `Les intégrations ${integrations.join(', ')} sont réservées aux plans payants. Accédez à toutes les APIs !`,
+    `Les intégrations ${integrations.join('apos;, 'apos;)} sont réservées aux plans payants. Accédez à toutes les APIs !`,
   
-  general: 'Débloquez tout le potentiel de Beriox AI avec un plan supérieur !'
+  general: 'apos;Débloquez tout le potentiel de Beriox AI avec un plan supérieur !'apos;
 };
 
 export default PlanService;

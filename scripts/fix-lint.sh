@@ -40,15 +40,24 @@ fix_unescaped_entities() {
             # Sauvegarder le fichier original
             cp "$file" "$file.backup"
             
-            # Remplacer les apostrophes dans les chaînes JSX
-            sed -i '' "s/'/&apos;/g" "$file"
+            # Utiliser Node.js pour une correction plus précise
+            node -e "
+            const fs = require('fs');
+            const path = '$file';
+            let content = fs.readFileSync(path, 'utf8');
             
-            # Restaurer les apostrophes dans les commentaires et chaînes non-JSX
-            sed -i '' "s/&apos;/'/g" "$file"
+            // Remplacer les apostrophes dans les chaînes JSX uniquement
+            content = content.replace(/(<[^>]*>)([^<]*'[^<]*)(<\/[^>]*>)/g, (match, openTag, text, closeTag) => {
+                return openTag + text.replace(/'/g, '&apos;') + closeTag;
+            });
             
-            # Corriger spécifiquement dans les balises JSX
-            sed -i '' "s/'>/&apos;>/g" "$file"
-            sed -i '' "s/'>/&apos;>/g" "$file"
+            // Remplacer les apostrophes dans les attributs JSX
+            content = content.replace(/(\s[a-zA-Z-]+=)['\"]([^'\"]*'[^'\"]*)['\"]/g, (match, attr, value) => {
+                return attr + '\"' + value.replace(/'/g, '&apos;') + '\"';
+            });
+            
+            fs.writeFileSync(path, content);
+            "
             
             log_success "Apostrophes corrigées dans $file"
         fi

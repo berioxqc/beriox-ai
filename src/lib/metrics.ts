@@ -18,7 +18,7 @@ export interface PerformanceMetric {
 class MetricsCollector {
   private metrics: MetricData[] = [];
   private performanceMetrics: PerformanceMetric[] = [];
-  private isProduction = process.env.NODE_ENV === 'production';
+  private isProduction = process.env.NODE_ENV === 'apos;production'apos;;
 
   // Métriques de base
   increment(name: string, value: number = 1, tags?: Record<string, string>) {
@@ -36,12 +36,12 @@ class MetricsCollector {
     //   try {
     //     Sentry.metrics.increment(name, value, { tags });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
 
     logger.info(`Metric incremented: ${name}`, {
-      action: 'metric_increment',
+      action: 'apos;metric_increment'apos;,
       metadata: { name, value, tags }
     });
   }
@@ -61,12 +61,12 @@ class MetricsCollector {
     //   try {
     //     Sentry.metrics.gauge(name, value, { tags });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
 
     logger.info(`Metric gauge: ${name} = ${value}`, {
-      action: 'metric_gauge',
+      action: 'apos;metric_gauge'apos;,
       metadata: { name, value, tags }
     });
   }
@@ -86,12 +86,12 @@ class MetricsCollector {
     //   try {
     //     Sentry.metrics.timing(name, duration, { tags });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
 
     logger.info(`Metric timing: ${name} = ${duration}ms`, {
-      action: 'metric_timing',
+      action: 'apos;metric_timing'apos;,
       metadata: { name, duration, tags }
     });
   }
@@ -116,7 +116,7 @@ class MetricsCollector {
     // Alertes si performance dégradée
     if (metric.duration > 5000) { // 5 secondes
       logger.warn(`Performance alert: ${metric.operation} took ${metric.duration}ms`, {
-        action: 'performance_alert',
+        action: 'apos;performance_alert'apos;,
         metadata: { operation: metric.operation, duration: metric.duration }
       });
     }
@@ -126,11 +126,11 @@ class MetricsCollector {
   recordUserAction(action: string, userId?: string, metadata?: Record<string, any>) {
     const tags = {
       action,
-      userId: userId || 'anonymous',
+      userId: userId || 'apos;anonymous'apos;,
       ...metadata
     };
 
-    this.increment('user_action', 1, tags);
+    this.increment('apos;user_action'apos;, 1, tags);
     this.increment(`user_action_${action}`, 1, tags);
   }
 
@@ -140,13 +140,13 @@ class MetricsCollector {
       success: success.toString()
     };
 
-    this.increment('mission_completion', 1, tags);
-    this.timing('mission_duration', duration, tags);
+    this.increment('apos;mission_completion'apos;, 1, tags);
+    this.timing('apos;mission_duration'apos;, duration, tags);
 
     if (success) {
-      this.increment('mission_success', 1, tags);
+      this.increment('apos;mission_success'apos;, 1, tags);
     } else {
-      this.increment('mission_failure', 1, tags);
+      this.increment('apos;mission_failure'apos;, 1, tags);
     }
   }
 
@@ -156,13 +156,13 @@ class MetricsCollector {
       success: success.toString()
     };
 
-    this.increment('agent_usage', 1, tags);
-    this.timing('agent_duration', duration, tags);
+    this.increment('apos;agent_usage'apos;, 1, tags);
+    this.timing('apos;agent_duration'apos;, duration, tags);
 
     if (success) {
-      this.increment('agent_success', 1, tags);
+      this.increment('apos;agent_success'apos;, 1, tags);
     } else {
-      this.increment('agent_failure', 1, tags);
+      this.increment('apos;agent_failure'apos;, 1, tags);
     }
   }
 
@@ -171,14 +171,14 @@ class MetricsCollector {
       endpoint,
       method,
       statusCode: statusCode.toString(),
-      status: statusCode < 400 ? 'success' : 'error'
+      status: statusCode < 400 ? 'apos;success'apos; : 'apos;error'apos;
     };
 
-    this.increment('api_call', 1, tags);
-    this.timing('api_duration', duration, tags);
+    this.increment('apos;api_call'apos;, 1, tags);
+    this.timing('apos;api_duration'apos;, duration, tags);
 
     if (statusCode >= 400) {
-      this.increment('api_error', 1, tags);
+      this.increment('apos;api_error'apos;, 1, tags);
     }
   }
 
@@ -189,11 +189,11 @@ class MetricsCollector {
       success: success.toString()
     };
 
-    this.increment('database_query', 1, tags);
-    this.timing('database_duration', duration, tags);
+    this.increment('apos;database_query'apos;, 1, tags);
+    this.timing('apos;database_duration'apos;, duration, tags);
 
     if (!success) {
-      this.increment('database_error', 1, tags);
+      this.increment('apos;database_error'apos;, 1, tags);
     }
   }
 
@@ -203,12 +203,12 @@ class MetricsCollector {
       hit: hit.toString()
     };
 
-    this.increment('cache_access', 1, tags);
+    this.increment('apos;cache_access'apos;, 1, tags);
 
     if (hit) {
-      this.increment('cache_hit', 1, tags);
+      this.increment('apos;cache_hit'apos;, 1, tags);
     } else {
-      this.increment('cache_miss', 1, tags);
+      this.increment('apos;cache_miss'apos;, 1, tags);
     }
   }
 
@@ -219,13 +219,13 @@ class MetricsCollector {
       success: success.toString()
     };
 
-    this.increment('payment_event', 1, tags);
-    this.gauge('payment_amount', amount, tags);
+    this.increment('apos;payment_event'apos;, 1, tags);
+    this.gauge('apos;payment_amount'apos;, amount, tags);
 
     if (success) {
-      this.increment('payment_success', 1, tags);
+      this.increment('apos;payment_success'apos;, 1, tags);
     } else {
-      this.increment('payment_failure', 1, tags);
+      this.increment('apos;payment_failure'apos;, 1, tags);
     }
   }
 
@@ -235,7 +235,7 @@ class MetricsCollector {
       ...context
     };
 
-    this.increment('error_count', 1, tags);
+    this.increment('apos;error_count'apos;, 1, tags);
     this.increment(`error_${error.constructor.name}`, 1, tags);
   }
 
@@ -244,15 +244,15 @@ class MetricsCollector {
     const memoryUsage = process.memoryUsage();
     const uptime = process.uptime();
 
-    this.gauge('system_memory_rss', memoryUsage.rss);
-    this.gauge('system_memory_heap_used', memoryUsage.heapUsed);
-    this.gauge('system_memory_heap_total', memoryUsage.heapTotal);
-    this.gauge('system_uptime', uptime);
+    this.gauge('apos;system_memory_rss'apos;, memoryUsage.rss);
+    this.gauge('apos;system_memory_heap_used'apos;, memoryUsage.heapUsed);
+    this.gauge('apos;system_memory_heap_total'apos;, memoryUsage.heapTotal);
+    this.gauge('apos;system_uptime'apos;, uptime);
 
     // Métriques CPU (approximatif)
     const cpuUsage = process.cpuUsage();
-    this.gauge('system_cpu_user', cpuUsage.user);
-    this.gauge('system_cpu_system', cpuUsage.system);
+    this.gauge('apos;system_cpu_user'apos;, cpuUsage.user);
+    this.gauge('apos;system_cpu_system'apos;, cpuUsage.system);
   }
 
   // Récupération des métriques
@@ -300,8 +300,8 @@ class MetricsCollector {
       m.timestamp && m.timestamp > cutoff
     );
 
-    logger.info('Metrics cleanup completed', {
-      action: 'metrics_cleanup',
+    logger.info('apos;Metrics cleanup completed'apos;, {
+      action: 'apos;metrics_cleanup'apos;,
       metadata: { maxAge, remainingMetrics: this.metrics.length }
     });
   }

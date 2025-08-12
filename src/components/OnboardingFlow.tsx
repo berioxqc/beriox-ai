@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, ReactNode } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useState, ReactNode } from 'apos;react'apos;;
+import { useSession } from 'apos;next-auth/react'apos;;
+import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
 import {
   faChevronLeft,
   faChevronRight,
@@ -18,12 +18,12 @@ import {
   faLink,
   faCreditCard,
   faTrophy
-} from '@fortawesome/free-solid-svg-icons';
+} from 'apos;@fortawesome/free-solid-svg-icons'apos;;
 import {
   OnboardingProgress,
   OnboardingStep,
   OnboardingStepType
-} from '@/lib/onboarding';
+} from 'apos;@/lib/onboarding'apos;;
 
 interface OnboardingFlowProps {
   onComplete?: () => void;
@@ -39,7 +39,7 @@ interface OnboardingState {
   stepData: Record<string, any>;
 }
 
-export default function OnboardingFlow({ onComplete, onSkip, className = '' }: OnboardingFlowProps) {
+export default function OnboardingFlow({ onComplete, onSkip, className = 'apos;'apos; }: OnboardingFlowProps) {
   const { data: session } = useSession();
   const [state, setState] = useState<OnboardingState>({
     progress: null,
@@ -49,14 +49,14 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
     stepData: {}
   });
 
-  // Charger le progrès d'onboarding
+  // Charger le progrès d'apos;onboarding
   const loadProgress = async () => {
     if (!session?.user?.id) return;
 
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
 
-      const response = await fetch('/api/onboarding?action=progress');
+      const response = await fetch('apos;/api/onboarding?action=progress'apos;);
       if (response.ok) {
         const data = await response.json();
         setState(prev => ({
@@ -66,25 +66,25 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
           loading: false
         }));
       } else {
-        // Si pas de progrès, démarrer l'onboarding
+        // Si pas de progrès, démarrer l'apos;onboarding
         await startOnboarding();
       }
     } catch (error) {
       setState(prev => ({
         ...prev,
         loading: false,
-        error: 'Erreur lors du chargement de l\'onboarding'
+        error: 'apos;Erreur lors du chargement de l\'apos;onboarding'apos;
       }));
     }
   };
 
-  // Démarrer l'onboarding
+  // Démarrer l'apos;onboarding
   const startOnboarding = async () => {
     if (!session?.user?.id) return;
 
     try {
-      const response = await fetch('/api/onboarding?action=start', {
-        method: 'POST'
+      const response = await fetch('apos;/api/onboarding?action=start'apos;, {
+        method: 'apos;POST'apos;
       });
 
       if (response.ok) {
@@ -100,19 +100,19 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
       setState(prev => ({
         ...prev,
         loading: false,
-        error: 'Erreur lors du démarrage de l\'onboarding'
+        error: 'apos;Erreur lors du démarrage de l\'apos;onboarding'apos;
       }));
     }
   };
 
-  // Passer à l'étape suivante
+  // Passer à l'apos;étape suivante
   const nextStep = async (stepData?: Record<string, any>) => {
     if (!session?.user?.id || !state.currentStep) return;
 
     try {
-      const response = await fetch('/api/onboarding?action=next', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch('apos;/api/onboarding?action=next'apos;, {
+        method: 'apos;PUT'apos;,
+        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
         body: JSON.stringify({ stepData })
       });
 
@@ -135,7 +135,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
     } catch (error) {
       setState(prev => ({
         ...prev,
-        error: 'Erreur lors du passage à l\'étape suivante'
+        error: 'apos;Erreur lors du passage à l\'apos;étape suivante'apos;
       }));
     }
   };
@@ -145,8 +145,8 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
     if (!session?.user?.id || !state.currentStep) return;
 
     try {
-      const response = await fetch('/api/onboarding?action=skip', {
-        method: 'PUT'
+      const response = await fetch('apos;/api/onboarding?action=skip'apos;, {
+        method: 'apos;PUT'apos;
       });
 
       if (response.ok) {
@@ -168,7 +168,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
     } catch (error) {
       setState(prev => ({
         ...prev,
-        error: 'Erreur lors du passage de l\'étape'
+        error: 'apos;Erreur lors du passage de l\'apos;étape'apos;
       }));
     }
   };
@@ -178,9 +178,9 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
     if (!session?.user?.id || !state.currentStep) return false;
 
     try {
-      const response = await fetch('/api/onboarding?action=validate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch('apos;/api/onboarding?action=validate'apos;, {
+        method: 'apos;POST'apos;,
+        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
         body: JSON.stringify({ stepData })
       });
 
@@ -189,13 +189,13 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
         return data.isValid;
       }
     } catch (error) {
-      console.error('Validation error:', error);
+      console.error('apos;Validation error:'apos;, error);
     }
 
     return false;
   };
 
-  // Mettre à jour les données d'étape
+  // Mettre à jour les données d'apos;étape
   const updateStepData = (key: string, value: any) => {
     setState(prev => ({
       ...prev,
@@ -218,7 +218,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Chargement de l'onboarding...</p>
+            <p className="text-gray-600">Chargement de l'apos;onboarding...</p>
           </div>
         </div>
       </div>
@@ -259,7 +259,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
               <button
                 onClick={onSkip}
                 className="text-gray-400 hover:text-gray-600"
-                title="Passer l'onboarding"
+                title="Passer l'apos;onboarding"
               >
                 <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
               </button>
@@ -296,7 +296,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
                   {state.currentStep.description}
                 </p>
 
-                {/* Composant spécifique à l'étape */}
+                {/* Composant spécifique à l'apos;étape */}
                 <OnboardingStepComponent
                   step={state.currentStep}
                   stepData={state.stepData}
@@ -373,10 +373,10 @@ function OnboardingStepComponent({
       if (isValid) {
         onNext(stepData);
       } else {
-        setError(step.config.errorMessage || 'Veuillez corriger les erreurs avant de continuer');
+        setError(step.config.errorMessage || 'apos;Veuillez corriger les erreurs avant de continuer'apos;);
       }
     } catch (error) {
-      setError('Erreur lors de la validation');
+      setError('apos;Erreur lors de la validation'apos;);
     } finally {
       setLoading(false);
     }
@@ -388,7 +388,7 @@ function OnboardingStepComponent({
     }
   };
 
-  // Rendu selon le type d'étape
+  // Rendu selon le type d'apos;étape
   switch (step.type) {
     case OnboardingStepType.WELCOME:
       return <WelcomeStep step={step} onNext={handleNext} loading={loading} />;
@@ -473,7 +473,7 @@ function OnboardingStepComponent({
   }
 }
 
-// Composants pour chaque type d'étape
+// Composants pour chaque type d'apos;étape
 function WelcomeStep({ step, onNext, loading }: any) {
   return (
     <div className="text-center">
@@ -486,7 +486,7 @@ function WelcomeStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? 'Chargement...' : 'Commencer'}
+        {loading ? 'apos;Chargement...'apos; : 'apos;Commencer'apos;}
       </button>
     </div>
   );
@@ -502,8 +502,8 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           </label>
           <input
             type="text"
-            value={stepData.name || ''}
-            onChange={(e) => onUpdateData('name', e.target.value)}
+            value={stepData.name || 'apos;'apos;}
+            onChange={(e) => onUpdateData('apos;name'apos;, e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Votre nom complet"
           />
@@ -514,8 +514,8 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           </label>
           <input
             type="text"
-            value={stepData.company || ''}
-            onChange={(e) => onUpdateData('company', e.target.value)}
+            value={stepData.company || 'apos;'apos;}
+            onChange={(e) => onUpdateData('apos;company'apos;, e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Nom de votre entreprise"
           />
@@ -526,8 +526,8 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           </label>
           <input
             type="text"
-            value={stepData.role || ''}
-            onChange={(e) => onUpdateData('role', e.target.value)}
+            value={stepData.role || 'apos;'apos;}
+            onChange={(e) => onUpdateData('apos;role'apos;, e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Votre poste"
           />
@@ -537,8 +537,8 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
             Industrie
           </label>
           <select
-            value={stepData.industry || ''}
-            onChange={(e) => onUpdateData('industry', e.target.value)}
+            value={stepData.industry || 'apos;'apos;}
+            onChange={(e) => onUpdateData('apos;industry'apos;, e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">Sélectionnez une industrie</option>
@@ -567,7 +567,7 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Sauvegarde...' : 'Sauvegarder et continuer'}
+          {loading ? 'apos;Sauvegarde...'apos; : 'apos;Sauvegarder et continuer'apos;}
         </button>
       </div>
     </div>
@@ -575,13 +575,13 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
 }
 
 function PreferencesStep({ step, stepData, onUpdateData, onNext, onSkip, loading }: any) {
-  const categories = ['seo', 'content', 'analytics', 'competitors', 'social'];
+  const categories = ['apos;seo'apos;, 'apos;content'apos;, 'apos;analytics'apos;, 'apos;competitors'apos;, 'apos;social'apos;];
 
   return (
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">
-          Sélectionnez vos domaines d'intérêt
+          Sélectionnez vos domaines d'apos;intérêt
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {categories.map((category) => (
@@ -594,7 +594,7 @@ function PreferencesStep({ step, stepData, onUpdateData, onNext, onSkip, loading
                   const updated = e.target.checked
                     ? [...current, category]
                     : current.filter((c: string) => c !== category);
-                  onUpdateData('categories', updated);
+                  onUpdateData('apos;categories'apos;, updated);
                 }}
                 className="mr-3"
               />
@@ -616,7 +616,7 @@ function PreferencesStep({ step, stepData, onUpdateData, onNext, onSkip, loading
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Sauvegarde...' : 'Sauvegarder les préférences'}
+          {loading ? 'apos;Sauvegarde...'apos; : 'apos;Sauvegarder les préférences'apos;}
         </button>
       </div>
     </div>
@@ -635,13 +635,13 @@ function FirstMissionStep({ step, onNext, loading }: any) {
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-        {['seo_audit', 'content_analysis', 'competitor_research'].map((template) => (
+        {['apos;seo_audit'apos;, 'apos;content_analysis'apos;, 'apos;competitor_research'apos;].map((template) => (
           <div key={template} className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer">
             <div className="text-2xl mb-2">
-              {template === 'seo_audit' ? '🔍' : template === 'content_analysis' ? '📝' : '📊'}
+              {template === 'apos;seo_audit'apos; ? 'apos;🔍'apos; : template === 'apos;content_analysis'apos; ? 'apos;📝'apos; : 'apos;📊'apos;}
             </div>
             <h4 className="font-medium text-gray-900 capitalize">
-              {template.replace('_', ' ')}
+              {template.replace('apos;_'apos;, 'apos; 'apos;)}
             </h4>
           </div>
         ))}
@@ -652,7 +652,7 @@ function FirstMissionStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? 'Création...' : 'Créer ma première mission'}
+        {loading ? 'apos;Création...'apos; : 'apos;Créer ma première mission'apos;}
       </button>
     </div>
   );
@@ -672,18 +672,18 @@ function FeaturesTourStep({ step, onNext, onSkip, loading }: any) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {['dashboard', 'missions', 'analytics', 'integrations'].map((feature) => (
+        {['apos;dashboard'apos;, 'apos;missions'apos;, 'apos;analytics'apos;, 'apos;integrations'apos;].map((feature) => (
           <div key={feature} className="p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center">
               <div className="text-2xl mr-3">
-                {feature === 'dashboard' ? '📊' : feature === 'missions' ? '🎯' : feature === 'analytics' ? '📈' : '🔗'}
+                {feature === 'apos;dashboard'apos; ? 'apos;📊'apos; : feature === 'apos;missions'apos; ? 'apos;🎯'apos; : feature === 'apos;analytics'apos; ? 'apos;📈'apos; : 'apos;🔗'apos;}
               </div>
               <div>
                 <h4 className="font-medium text-gray-900 capitalize">{feature}</h4>
                 <p className="text-sm text-gray-600">
-                  {feature === 'dashboard' ? 'Vue d\'ensemble de vos données' :
-                   feature === 'missions' ? 'Gérez vos missions IA' :
-                   feature === 'analytics' ? 'Analysez vos performances' : 'Connectez vos outils'}
+                  {feature === 'apos;dashboard'apos; ? 'apos;Vue d\'apos;ensemble de vos données'apos; :
+                   feature === 'apos;missions'apos; ? 'apos;Gérez vos missions IA'apos; :
+                   feature === 'apos;analytics'apos; ? 'apos;Analysez vos performances'apos; : 'apos;Connectez vos outils'apos;}
                 </p>
               </div>
             </div>
@@ -703,7 +703,7 @@ function FeaturesTourStep({ step, onNext, onSkip, loading }: any) {
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Terminaison...' : 'Terminer le tour'}
+          {loading ? 'apos;Terminaison...'apos; : 'apos;Terminer le tour'apos;}
         </button>
       </div>
     </div>
@@ -712,10 +712,10 @@ function FeaturesTourStep({ step, onNext, onSkip, loading }: any) {
 
 function IntegrationsStep({ step, stepData, onUpdateData, onNext, onSkip, loading }: any) {
   const integrations = [
-    { id: 'google_analytics', name: 'Google Analytics', icon: '📊' },
-    { id: 'google_search_console', name: 'Google Search Console', icon: '🔍' },
-    { id: 'semrush', name: 'SEMrush', icon: '📈' },
-    { id: 'slack', name: 'Slack', icon: '💬' }
+    { id: 'apos;google_analytics'apos;, name: 'apos;Google Analytics'apos;, icon: 'apos;📊'apos; },
+    { id: 'apos;google_search_console'apos;, name: 'apos;Google Search Console'apos;, icon: 'apos;🔍'apos; },
+    { id: 'apos;semrush'apos;, name: 'apos;SEMrush'apos;, icon: 'apos;📈'apos; },
+    { id: 'apos;slack'apos;, name: 'apos;Slack'apos;, icon: 'apos;💬'apos; }
   ];
 
   return (
@@ -740,7 +740,7 @@ function IntegrationsStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
                 const updated = e.target.checked
                   ? [...current, integration.id]
                   : current.filter((i: string) => i !== integration.id);
-                onUpdateData('integrations', updated);
+                onUpdateData('apos;integrations'apos;, updated);
               }}
               className="mr-3"
             />
@@ -764,7 +764,7 @@ function IntegrationsStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Connexion...' : 'Connecter mes outils'}
+          {loading ? 'apos;Connexion...'apos; : 'apos;Connecter mes outils'apos;}
         </button>
       </div>
     </div>
@@ -785,15 +785,15 @@ function BillingStep({ step, onNext, onSkip, loading }: any) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {['Starter', 'Professional', 'Enterprise'].map((plan) => (
+        {['apos;Starter'apos;, 'apos;Professional'apos;, 'apos;Enterprise'apos;].map((plan) => (
           <div key={plan} className="p-4 border border-gray-200 rounded-lg text-center">
             <h4 className="font-semibold text-gray-900 mb-2">{plan}</h4>
             <div className="text-2xl font-bold text-blue-600 mb-2">
-              {plan === 'Starter' ? 'Gratuit' : plan === 'Professional' ? '$29/mois' : 'Sur mesure'}
+              {plan === 'apos;Starter'apos; ? 'apos;Gratuit'apos; : plan === 'apos;Professional'apos; ? 'apos;$29/mois'apos; : 'apos;Sur mesure'apos;}
             </div>
             <p className="text-sm text-gray-600 mb-4">
-              {plan === 'Starter' ? 'Pour commencer' : 
-               plan === 'Professional' ? 'Pour les équipes' : 'Pour les entreprises'}
+              {plan === 'apos;Starter'apos; ? 'apos;Pour commencer'apos; : 
+               plan === 'apos;Professional'apos; ? 'apos;Pour les équipes'apos; : 'apos;Pour les entreprises'apos;}
             </p>
           </div>
         ))}
@@ -804,14 +804,14 @@ function BillingStep({ step, onNext, onSkip, loading }: any) {
           onClick={onSkip}
           className="px-4 py-2 text-gray-600 hover:text-gray-800"
         >
-          Continuer l'essai gratuit
+          Continuer l'apos;essai gratuit
         </button>
         <button
           onClick={onNext}
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Configuration...' : 'Choisir un plan'}
+          {loading ? 'apos;Configuration...'apos; : 'apos;Choisir un plan'apos;}
         </button>
       </div>
     </div>
@@ -841,7 +841,7 @@ function CompletionStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? 'Redirection...' : 'Aller au dashboard'}
+        {loading ? 'apos;Redirection...'apos; : 'apos;Aller au dashboard'apos;}
       </button>
     </div>
   );

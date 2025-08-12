@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Générer l'URL d'autorisation
+    // Générer l'apos;URL d'apos;autorisation
     const authUrl = googleAnalyticsService.getAuthUrl(session.user.email);
     
     return NextResponse.json({ 

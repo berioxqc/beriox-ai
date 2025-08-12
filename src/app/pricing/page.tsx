@@ -1,29 +1,29 @@
-'use client';
+'apos;use client'apos;;
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import Layout from '@/components/Layout';
+import { useState } from 'apos;react'apos;;
+import { useSession } from 'apos;next-auth/react'apos;;
+import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
+import { useTheme } from 'apos;@/hooks/useTheme'apos;;
+import Layout from 'apos;@/components/Layout'apos;;
 
 export default function PremiumPricingPage() {
   const { data: session } = useSession();
   const theme = useTheme();
   const [loading, setLoading] = useState<string | null>(null);
-  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
+  const [billingPeriod, setBillingPeriod] = useState<'apos;monthly'apos; | 'apos;yearly'apos;>('apos;monthly'apos;);
 
   const handleSubscribe = async (planId: string) => {
     if (!session) {
-      alert('Veuillez vous connecter pour souscrire');
+      alert('apos;Veuillez vous connecter pour souscrire'apos;);
       return;
     }
 
     setLoading(planId);
 
     try {
-      const res = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch('apos;/api/stripe/checkout'apos;, {
+        method: 'apos;POST'apos;,
+        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
         body: JSON.stringify({ planId }),
       });
 
@@ -32,11 +32,11 @@ export default function PremiumPricingPage() {
       if (data.url) {
         window.location.href = data.url;
       } else {
-        throw new Error(data.error || 'Erreur lors de la redirection');
+        throw new Error(data.error || 'apos;Erreur lors de la redirection'apos;);
       }
     } catch (error: any) {
-      console.error('Erreur souscription:', error);
-      alert('Erreur lors de la souscription: ' + error.message);
+      console.error('apos;Erreur souscription:'apos;, error);
+      alert('apos;Erreur lors de la souscription: 'apos; + error.message);
     } finally {
       setLoading(null);
     }
@@ -44,115 +44,115 @@ export default function PremiumPricingPage() {
 
   const plans = [
     {
-      id: 'free',
-      name: 'Gratuit',
-      description: 'Parfait pour découvrir Beriox',
-      price: billingPeriod === 'monthly' ? 0 : 0,
+      id: 'apos;free'apos;,
+      name: 'apos;Gratuit'apos;,
+      description: 'apos;Parfait pour découvrir Beriox'apos;,
+      price: billingPeriod === 'apos;monthly'apos; ? 0 : 0,
       originalPrice: null,
-      period: billingPeriod === 'monthly' ? '/mois' : '/an',
+      period: billingPeriod === 'apos;monthly'apos; ? 'apos;/mois'apos; : 'apos;/an'apos;,
       isPopular: false,
       features: [
-        '10 missions par mois',
-        'Rapports basiques (3 APIs)',
-        'Beriox Performance Index (BPI)',
-        'Beriox Trust Score',
-        'Support communautaire',
-        'Analyses de sécurité de base'
+        'apos;10 missions par mois'apos;,
+        'apos;Rapports basiques (3 APIs)'apos;,
+        'apos;Beriox Performance Index (BPI)'apos;,
+        'apos;Beriox Trust Score'apos;,
+        'apos;Support communautaire'apos;,
+        'apos;Analyses de sécurité de base'apos;
       ],
       limitations: [
-        'Pas de prédictions IA',
-        'Pas d\'Opportunity Radar',
-        'Pas d\'alertes proactives',
-        'Pas de vue 360° multi-sources',
-        'Pas de veille concurrentielle'
+        'apos;Pas de prédictions IA'apos;,
+        'apos;Pas d\'apos;Opportunity Radar'apos;,
+        'apos;Pas d\'apos;alertes proactives'apos;,
+        'apos;Pas de vue 360° multi-sources'apos;,
+        'apos;Pas de veille concurrentielle'apos;
       ],
-      buttonText: 'Commencer gratuitement',
+      buttonText: 'apos;Commencer gratuitement'apos;,
       buttonColor: theme.colors.neutral[600]
     },
     {
-      id: 'pro',
-      name: 'Pro',
-      description: 'Pour les professionnels du marketing',
-      price: billingPeriod === 'monthly' ? 25 : 20,
-      originalPrice: billingPeriod === 'monthly' ? 45 : 36,
-      period: billingPeriod === 'monthly' ? '/mois' : '/mois (facturé annuellement)',
+      id: 'apos;pro'apos;,
+      name: 'apos;Pro'apos;,
+      description: 'apos;Pour les professionnels du marketing'apos;,
+      price: billingPeriod === 'apos;monthly'apos; ? 25 : 20,
+      originalPrice: billingPeriod === 'apos;monthly'apos; ? 45 : 36,
+      period: billingPeriod === 'apos;monthly'apos; ? 'apos;/mois'apos; : 'apos;/mois (facturé annuellement)'apos;,
       isPopular: true,
       features: [
-        '50 missions par mois',
-        'Rapports détaillés (8 APIs)',
-        'Vue 360° multi-sources',
-        'KPIs prévisionnels avec IA',
-        'Opportunity Radar (Top 5 actions)',
-        'Prédictions trafic 30 jours',
-        'Score risque SEO',
-        'Corrélations SEO + Performance',
-        'Support prioritaire'
+        'apos;50 missions par mois'apos;,
+        'apos;Rapports détaillés (8 APIs)'apos;,
+        'apos;Vue 360° multi-sources'apos;,
+        'apos;KPIs prévisionnels avec IA'apos;,
+        'apos;Opportunity Radar (Top 5 actions)'apos;,
+        'apos;Prédictions trafic 30 jours'apos;,
+        'apos;Score risque SEO'apos;,
+        'apos;Corrélations SEO + Performance'apos;,
+        'apos;Support prioritaire'apos;
       ],
       limitations: [
-        'Pas d\'alertes proactives temps réel',
-        'Pas de heatmaps intégrées',
-        'Pas de flux navigation avancé',
-        'Pas de veille concurrentielle avancée'
+        'apos;Pas d\'apos;alertes proactives temps réel'apos;,
+        'apos;Pas de heatmaps intégrées'apos;,
+        'apos;Pas de flux navigation avancé'apos;,
+        'apos;Pas de veille concurrentielle avancée'apos;
       ],
-      buttonText: 'Essayer Pro',
+      buttonText: 'apos;Essayer Pro'apos;,
       buttonColor: theme.colors.primary.main
     },
     {
-      id: 'competitor-intelligence',
-      name: 'Competitor Intelligence',
-      description: 'Veille concurrentielle avancée',
-      price: billingPeriod === 'monthly' ? 45 : 36,
-      originalPrice: billingPeriod === 'monthly' ? 65 : 52,
-      period: billingPeriod === 'monthly' ? '/mois' : '/mois (facturé annuellement)',
+      id: 'apos;competitor-intelligence'apos;,
+      name: 'apos;Competitor Intelligence'apos;,
+      description: 'apos;Veille concurrentielle avancée'apos;,
+      price: billingPeriod === 'apos;monthly'apos; ? 45 : 36,
+      originalPrice: billingPeriod === 'apos;monthly'apos; ? 65 : 52,
+      period: billingPeriod === 'apos;monthly'apos; ? 'apos;/mois'apos; : 'apos;/mois (facturé annuellement)'apos;,
       isPopular: false,
       features: [
-        'Tout du plan Pro',
-        '🔍 Veille concurrentielle complète',
-        '📊 Scraping automatisé multi-sites',
-        '🤖 IA pour détection de promotions',
-        '📈 Analytics et rapports avancés',
-        '⚡ Alertes temps réel',
-        '📋 Comparaison de prix intelligente',
-        '🎯 Détection d\'opportunités',
-        '📧 Notifications par email',
-        '📱 Dashboard responsive',
-        '🔐 Sécurité RGPD complète',
-        '📊 Export Excel/PDF'
+        'apos;Tout du plan Pro'apos;,
+        'apos;🔍 Veille concurrentielle complète'apos;,
+        'apos;📊 Scraping automatisé multi-sites'apos;,
+        'apos;🤖 IA pour détection de promotions'apos;,
+        'apos;📈 Analytics et rapports avancés'apos;,
+        'apos;⚡ Alertes temps réel'apos;,
+        'apos;📋 Comparaison de prix intelligente'apos;,
+        'apos;🎯 Détection d\'apos;opportunités'apos;,
+        'apos;📧 Notifications par email'apos;,
+        'apos;📱 Dashboard responsive'apos;,
+        'apos;🔐 Sécurité RGPD complète'apos;,
+        'apos;📊 Export Excel/PDF'apos;
       ],
       limitations: [
-        'Pas d\'alertes proactives temps réel',
-        'Pas de heatmaps intégrées',
-        'Pas de flux navigation avancé'
+        'apos;Pas d\'apos;alertes proactives temps réel'apos;,
+        'apos;Pas de heatmaps intégrées'apos;,
+        'apos;Pas de flux navigation avancé'apos;
       ],
-      buttonText: 'Démarrer la veille',
-      buttonColor: '#10b981'
+      buttonText: 'apos;Démarrer la veille'apos;,
+      buttonColor: 'apos;#10b981'apos;
     },
     {
-      id: 'enterprise',
-      name: 'Enterprise',
-      description: 'Solution complète pour les experts',
-      price: billingPeriod === 'monthly' ? 65 : 52,
-      originalPrice: billingPeriod === 'monthly' ? 125 : 100,
-      period: billingPeriod === 'monthly' ? '/mois' : '/mois (facturé annuellement)',
+      id: 'apos;enterprise'apos;,
+      name: 'apos;Enterprise'apos;,
+      description: 'apos;Solution complète pour les experts'apos;,
+      price: billingPeriod === 'apos;monthly'apos; ? 65 : 52,
+      originalPrice: billingPeriod === 'apos;monthly'apos; ? 125 : 100,
+      period: billingPeriod === 'apos;monthly'apos; ? 'apos;/mois'apos; : 'apos;/mois (facturé annuellement)'apos;,
       isPopular: false,
       features: [
-        'Tout des plans Pro + Competitor Intelligence',
-        'Missions illimitées',
-        'Rapports ultra-complets (toutes APIs)',
-        'Alertes proactives intelligentes',
-        'Détection chutes de trafic temps réel',
-        'Heatmaps intégrées (Hotjar/Clarity)',
-        'Flux navigation utilisateur',
-        'Données invisibles concurrents',
-        'Beriox Opportunity Radar avancé',
-        'Prédictions IA multi-métriques',
-        'Support dédié + consulting',
-        'Accès API complet',
-        'Rapports personnalisés'
+        'apos;Tout des plans Pro + Competitor Intelligence'apos;,
+        'apos;Missions illimitées'apos;,
+        'apos;Rapports ultra-complets (toutes APIs)'apos;,
+        'apos;Alertes proactives intelligentes'apos;,
+        'apos;Détection chutes de trafic temps réel'apos;,
+        'apos;Heatmaps intégrées (Hotjar/Clarity)'apos;,
+        'apos;Flux navigation utilisateur'apos;,
+        'apos;Données invisibles concurrents'apos;,
+        'apos;Beriox Opportunity Radar avancé'apos;,
+        'apos;Prédictions IA multi-métriques'apos;,
+        'apos;Support dédié + consulting'apos;,
+        'apos;Accès API complet'apos;,
+        'apos;Rapports personnalisés'apos;
       ],
       limitations: [],
-      buttonText: 'Passer à Enterprise',
-      buttonColor: '#8b5cf6'
+      buttonText: 'apos;Passer à Enterprise'apos;,
+      buttonColor: 'apos;#8b5cf6'apos;
     }
   ];
 
@@ -160,60 +160,60 @@ export default function PremiumPricingPage() {
     <Layout>
       {/* Bandeau Call-to-Action */}
       <div style={{
-        background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+        background: 'apos;linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)'apos;,
         padding: theme.spacing.lg,
-        textAlign: 'center',
-        color: 'white',
-        boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)'
+        textAlign: 'apos;center'apos;,
+        color: 'apos;white'apos;,
+        boxShadow: 'apos;0 4px 12px rgba(99, 102, 241, 0.3)'apos;
       }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <div style={{ maxWidth: 'apos;800px'apos;, margin: 'apos;0 auto'apos; }}>
           <h2 style={{
-            fontSize: '1.8rem',
-            fontWeight: 'bold',
+            fontSize: 'apos;1.8rem'apos;,
+            fontWeight: 'apos;bold'apos;,
             marginBottom: theme.spacing.sm,
             margin: 0
           }}>
-            🚀 Transformez votre stratégie digitale dès aujourd'hui !
+            🚀 Transformez votre stratégie digitale dès aujourd'apos;hui !
           </h2>
           <p style={{
-            fontSize: '1.1rem',
+            fontSize: 'apos;1.1rem'apos;,
             opacity: 0.95,
             margin: `${theme.spacing.sm} 0 ${theme.spacing.md} 0`
           }}>
             Rejoignez plus de 500+ professionnels qui utilisent Beriox AI pour optimiser leurs performances
           </p>
           <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
+            display: 'apos;inline-flex'apos;,
+            alignItems: 'apos;center'apos;,
             gap: theme.spacing.md
           }}>
             <button
-              onClick={() => handleSubscribe('pro')}
+              onClick={() => handleSubscribe('apos;pro'apos;)}
               style={{
                 padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-                backgroundColor: 'white',
+                backgroundColor: 'apos;white'apos;,
                 color: theme.colors.primary.main,
-                border: 'none',
-                borderRadius: '8px',
-                fontWeight: '600',
-                fontSize: '16px',
-                cursor: 'pointer',
-                transition: 'all 0.3s',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                border: 'apos;none'apos;,
+                borderRadius: 'apos;8px'apos;,
+                fontWeight: 'apos;600'apos;,
+                fontSize: 'apos;16px'apos;,
+                cursor: 'apos;pointer'apos;,
+                transition: 'apos;all 0.3s'apos;,
+                boxShadow: 'apos;0 2px 8px rgba(0, 0, 0, 0.1)'apos;
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.15)';
+                e.currentTarget.style.transform = 'apos;translateY(-2px)'apos;;
+                e.currentTarget.style.boxShadow = 'apos;0 4px 16px rgba(0, 0, 0, 0.15)'apos;;
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.transform = 'apos;translateY(0)'apos;;
+                e.currentTarget.style.boxShadow = 'apos;0 2px 8px rgba(0, 0, 0, 0.1)'apos;;
               }}
             >
               Essayer gratuitement
             </button>
             <span style={{
-              fontSize: '14px',
+              fontSize: 'apos;14px'apos;,
               opacity: 0.9
             }}>
               ✨ Aucune carte de crédit requise
@@ -222,22 +222,22 @@ export default function PremiumPricingPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: theme.spacing.xl }}>
+      <div style={{ maxWidth: 'apos;1400px'apos;, margin: 'apos;0 auto'apos;, padding: theme.spacing.xl }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: theme.spacing.xl }}>
+        <div style={{ textAlign: 'apos;center'apos;, marginBottom: theme.spacing.xl }}>
           <h1 style={{
-            fontSize: '3rem',
-            fontWeight: 'bold',
+            fontSize: 'apos;3rem'apos;,
+            fontWeight: 'apos;bold'apos;,
             color: theme.colors.neutral[900],
             marginBottom: theme.spacing.md
           }}>
             Tarifs Beriox AI
           </h1>
           <p style={{
-            fontSize: '1.25rem',
+            fontSize: 'apos;1.25rem'apos;,
             color: theme.colors.neutral[600],
             marginBottom: theme.spacing.lg,
-            maxWidth: '600px',
+            maxWidth: 'apos;600px'apos;,
             margin: `0 auto ${theme.spacing.lg} auto`
           }}>
             Choisissez le plan qui correspond à vos besoins. 
@@ -246,13 +246,13 @@ export default function PremiumPricingPage() {
 
           {/* Badge Promo */}
           <div style={{
-            display: 'inline-block',
+            display: 'apos;inline-block'apos;,
             padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-            backgroundColor: theme.colors.success + '20',
+            backgroundColor: theme.colors.success + 'apos;20'apos;,
             color: theme.colors.success,
-            borderRadius: '25px',
-            fontSize: '14px',
-            fontWeight: '600',
+            borderRadius: 'apos;25px'apos;,
+            fontSize: 'apos;14px'apos;,
+            fontWeight: 'apos;600'apos;,
             marginBottom: theme.spacing.lg
           }}>
             🎉 Offre de lancement : -50% sur tous les plans pendant 3 mois !
@@ -260,94 +260,94 @@ export default function PremiumPricingPage() {
 
           {/* Section Veille Concurrentielle */}
           <div style={{
-            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-            borderRadius: '16px',
+            background: 'apos;linear-gradient(135deg, #10b981 0%, #059669 100%)'apos;,
+            borderRadius: 'apos;16px'apos;,
             padding: theme.spacing.xl,
             marginBottom: theme.spacing.xl,
-            color: 'white',
-            textAlign: 'center',
-            boxShadow: '0 8px 32px rgba(16, 185, 129, 0.3)'
+            color: 'apos;white'apos;,
+            textAlign: 'apos;center'apos;,
+            boxShadow: 'apos;0 8px 32px rgba(16, 185, 129, 0.3)'apos;
           }}>
-            <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+            <div style={{ maxWidth: 'apos;800px'apos;, margin: 'apos;0 auto'apos; }}>
               <h2 style={{
-                fontSize: '2.5rem',
-                fontWeight: 'bold',
+                fontSize: 'apos;2.5rem'apos;,
+                fontWeight: 'apos;bold'apos;,
                 marginBottom: theme.spacing.md,
                 margin: 0
               }}>
                 🔍 Nouveau : Veille Concurrentielle Avancée
               </h2>
               <p style={{
-                fontSize: '1.2rem',
+                fontSize: 'apos;1.2rem'apos;,
                 opacity: 0.95,
                 marginBottom: theme.spacing.lg,
-                lineHeight: '1.6'
+                lineHeight: 'apos;1.6'apos;
               }}>
                 Surveillez vos concurrents en temps réel avec notre IA spécialisée. 
                 Détectez automatiquement les promotions, analysez les prix et identifiez les opportunités.
               </p>
               
               <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                display: 'apos;grid'apos;,
+                gridTemplateColumns: 'apos;repeat(auto-fit, minmax(250px, 1fr))'apos;,
                 gap: theme.spacing.lg,
                 marginBottom: theme.spacing.lg
               }}>
                 <div style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
+                  background: 'apos;rgba(255, 255, 255, 0.1)'apos;,
                   padding: theme.spacing.lg,
-                  borderRadius: '12px',
-                  backdropFilter: 'blur(10px)'
+                  borderRadius: 'apos;12px'apos;,
+                  backdropFilter: 'apos;blur(10px)'apos;
                 }}>
-                  <div style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }}>🤖</div>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm }}>IA Intelligente</h3>
-                  <p style={{ fontSize: '0.9rem', opacity: 0.9 }}>Détection automatique des promotions et changements de prix</p>
+                  <div style={{ fontSize: 'apos;2rem'apos;, marginBottom: theme.spacing.sm }}>🤖</div>
+                  <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm }}>IA Intelligente</h3>
+                  <p style={{ fontSize: 'apos;0.9rem'apos;, opacity: 0.9 }}>Détection automatique des promotions et changements de prix</p>
                 </div>
                 
                 <div style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
+                  background: 'apos;rgba(255, 255, 255, 0.1)'apos;,
                   padding: theme.spacing.lg,
-                  borderRadius: '12px',
-                  backdropFilter: 'blur(10px)'
+                  borderRadius: 'apos;12px'apos;,
+                  backdropFilter: 'apos;blur(10px)'apos;
                 }}>
-                  <div style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }}>⚡</div>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm }}>Temps Réel</h3>
-                  <p style={{ fontSize: '0.9rem', opacity: 0.9 }}>Alertes instantanées et monitoring continu</p>
+                  <div style={{ fontSize: 'apos;2rem'apos;, marginBottom: theme.spacing.sm }}>⚡</div>
+                  <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm }}>Temps Réel</h3>
+                  <p style={{ fontSize: 'apos;0.9rem'apos;, opacity: 0.9 }}>Alertes instantanées et monitoring continu</p>
                 </div>
                 
                 <div style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
+                  background: 'apos;rgba(255, 255, 255, 0.1)'apos;,
                   padding: theme.spacing.lg,
-                  borderRadius: '12px',
-                  backdropFilter: 'blur(10px)'
+                  borderRadius: 'apos;12px'apos;,
+                  backdropFilter: 'apos;blur(10px)'apos;
                 }}>
-                  <div style={{ fontSize: '2rem', marginBottom: theme.spacing.sm }}>📊</div>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm }}>Analytics Avancés</h3>
-                  <p style={{ fontSize: '0.9rem', opacity: 0.9 }}>Rapports détaillés et comparaisons intelligentes</p>
+                  <div style={{ fontSize: 'apos;2rem'apos;, marginBottom: theme.spacing.sm }}>📊</div>
+                  <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm }}>Analytics Avancés</h3>
+                  <p style={{ fontSize: 'apos;0.9rem'apos;, opacity: 0.9 }}>Rapports détaillés et comparaisons intelligentes</p>
                 </div>
               </div>
               
               <button
-                onClick={() => handleSubscribe('competitor-intelligence')}
+                onClick={() => handleSubscribe('apos;competitor-intelligence'apos;)}
                 style={{
                   padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-                  backgroundColor: 'white',
-                  color: '#10b981',
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontWeight: '700',
-                  fontSize: '18px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+                  backgroundColor: 'apos;white'apos;,
+                  color: 'apos;#10b981'apos;,
+                  border: 'apos;none'apos;,
+                  borderRadius: 'apos;12px'apos;,
+                  fontWeight: 'apos;700'apos;,
+                  fontSize: 'apos;18px'apos;,
+                  cursor: 'apos;pointer'apos;,
+                  transition: 'apos;all 0.3s'apos;,
+                  boxShadow: 'apos;0 4px 16px rgba(0, 0, 0, 0.2)'apos;
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.3)';
+                  e.currentTarget.style.transform = 'apos;translateY(-2px)'apos;;
+                  e.currentTarget.style.boxShadow = 'apos;0 8px 24px rgba(0, 0, 0, 0.3)'apos;;
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)';
+                  e.currentTarget.style.transform = 'apos;translateY(0)'apos;;
+                  e.currentTarget.style.boxShadow = 'apos;0 4px 16px rgba(0, 0, 0, 0.2)'apos;;
                 }}
               >
                 🚀 Démarrer la veille concurrentielle
@@ -357,56 +357,56 @@ export default function PremiumPricingPage() {
 
           {/* Toggle Billing */}
           <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: 'apos;flex'apos;,
+            alignItems: 'apos;center'apos;,
+            justifyContent: 'apos;center'apos;,
             gap: theme.spacing.md,
             marginBottom: theme.spacing.xl
           }}>
             <span style={{ 
-              color: billingPeriod === 'monthly' ? theme.colors.neutral[900] : theme.colors.neutral[500],
-              fontWeight: '500'
+              color: billingPeriod === 'apos;monthly'apos; ? theme.colors.neutral[900] : theme.colors.neutral[500],
+              fontWeight: 'apos;500'apos;
             }}>
               Mensuel
             </span>
             <button
-              onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly')}
+              onClick={() => setBillingPeriod(billingPeriod === 'apos;monthly'apos; ? 'apos;yearly'apos; : 'apos;monthly'apos;)}
               style={{
-                width: '50px',
-                height: '28px',
-                borderRadius: '14px',
-                border: 'none',
-                backgroundColor: billingPeriod === 'yearly' ? theme.colors.primary.main : theme.colors.neutral[300],
-                position: 'relative',
-                cursor: 'pointer',
-                transition: 'all 0.3s'
+                width: 'apos;50px'apos;,
+                height: 'apos;28px'apos;,
+                borderRadius: 'apos;14px'apos;,
+                border: 'apos;none'apos;,
+                backgroundColor: billingPeriod === 'apos;yearly'apos; ? theme.colors.primary.main : theme.colors.neutral[300],
+                position: 'apos;relative'apos;,
+                cursor: 'apos;pointer'apos;,
+                transition: 'apos;all 0.3s'apos;
               }}
             >
               <div style={{
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
-                backgroundColor: 'white',
-                position: 'absolute',
-                top: '4px',
-                left: billingPeriod === 'yearly' ? '26px' : '4px',
-                transition: 'all 0.3s'
+                width: 'apos;20px'apos;,
+                height: 'apos;20px'apos;,
+                borderRadius: 'apos;50%'apos;,
+                backgroundColor: 'apos;white'apos;,
+                position: 'apos;absolute'apos;,
+                top: 'apos;4px'apos;,
+                left: billingPeriod === 'apos;yearly'apos; ? 'apos;26px'apos; : 'apos;4px'apos;,
+                transition: 'apos;all 0.3s'apos;
               }} />
             </button>
             <span style={{ 
-              color: billingPeriod === 'yearly' ? theme.colors.neutral[900] : theme.colors.neutral[500],
-              fontWeight: '500'
+              color: billingPeriod === 'apos;yearly'apos; ? theme.colors.neutral[900] : theme.colors.neutral[500],
+              fontWeight: 'apos;500'apos;
             }}>
               Annuel
             </span>
-            {billingPeriod === 'yearly' && (
+            {billingPeriod === 'apos;yearly'apos; && (
               <span style={{
-                fontSize: '12px',
+                fontSize: 'apos;12px'apos;,
                 backgroundColor: theme.colors.primary.light,
                 color: theme.colors.primary.dark,
                 padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-                borderRadius: '12px',
-                fontWeight: '500'
+                borderRadius: 'apos;12px'apos;,
+                fontWeight: 'apos;500'apos;
               }}>
                 -20%
               </span>
@@ -416,82 +416,82 @@ export default function PremiumPricingPage() {
 
         {/* Plans Grid - Amélioré pour 3 colonnes */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          display: 'apos;grid'apos;,
+          gridTemplateColumns: 'apos;repeat(3, 1fr)'apos;,
           gap: theme.spacing.lg,
           marginBottom: theme.spacing.xl,
-          '@media (max-width: 1200px)': {
-            gridTemplateColumns: 'repeat(2, 1fr)'
+          'apos;@media (max-width: 1200px)'apos;: {
+            gridTemplateColumns: 'apos;repeat(2, 1fr)'apos;
           },
-          '@media (max-width: 768px)': {
-            gridTemplateColumns: '1fr'
+          'apos;@media (max-width: 768px)'apos;: {
+            gridTemplateColumns: 'apos;1fr'apos;
           }
         }}>
           {plans.map((plan) => (
             <div
               key={plan.id}
               style={{
-                backgroundColor: 'white',
-                borderRadius: '24px',
+                backgroundColor: 'apos;white'apos;,
+                borderRadius: 'apos;24px'apos;,
                 padding: theme.spacing.xl,
                 boxShadow: plan.isPopular 
-                  ? '0 25px 50px rgba(90, 95, 202, 0.2), 0 0 0 1px rgba(90, 95, 202, 0.1)' 
-                  : '0 8px 25px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05)',
-                border: plan.isPopular ? `3px solid ${theme.colors.primary.main}` : 'none',
-                position: 'relative',
-                transform: plan.isPopular ? 'scale(1.08)' : 'scale(1)',
-                transition: 'all 0.3s ease-in-out',
+                  ? 'apos;0 25px 50px rgba(90, 95, 202, 0.2), 0 0 0 1px rgba(90, 95, 202, 0.1)'apos; 
+                  : 'apos;0 8px 25px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05)'apos;,
+                border: plan.isPopular ? `3px solid ${theme.colors.primary.main}` : 'apos;none'apos;,
+                position: 'apos;relative'apos;,
+                transform: plan.isPopular ? 'apos;scale(1.08)'apos; : 'apos;scale(1)'apos;,
+                transition: 'apos;all 0.3s ease-in-out'apos;,
                 background: plan.isPopular 
-                  ? 'linear-gradient(145deg, #ffffff 0%, #f8faff 100%)' 
-                  : 'white',
-                cursor: 'pointer'
+                  ? 'apos;linear-gradient(145deg, #ffffff 0%, #f8faff 100%)'apos; 
+                  : 'apos;white'apos;,
+                cursor: 'apos;pointer'apos;
               }}
               onMouseOver={(e) => {
                 if (!plan.isPopular) {
-                  e.currentTarget.style.transform = 'scale(1.02)';
-                  e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.12)';
+                  e.currentTarget.style.transform = 'apos;scale(1.02)'apos;;
+                  e.currentTarget.style.boxShadow = 'apos;0 15px 35px rgba(0, 0, 0, 0.12)'apos;;
                 }
               }}
               onMouseOut={(e) => {
                 if (!plan.isPopular) {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.transform = 'apos;scale(1)'apos;;
+                  e.currentTarget.style.boxShadow = 'apos;0 8px 25px rgba(0, 0, 0, 0.08)'apos;;
                 }
               }}
             >
               {/* Popular Badge */}
               {plan.isPopular && (
                 <div style={{
-                  position: 'absolute',
-                  top: '-15px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)',
-                  color: 'white',
+                  position: 'apos;absolute'apos;,
+                  top: 'apos;-15px'apos;,
+                  left: 'apos;50%'apos;,
+                  transform: 'apos;translateX(-50%)'apos;,
+                  background: 'apos;linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)'apos;,
+                  color: 'apos;white'apos;,
                   padding: `${theme.spacing.xs} ${theme.spacing.lg}`,
-                  borderRadius: '25px',
-                  fontSize: '13px',
-                  fontWeight: '700',
-                  boxShadow: '0 4px 12px rgba(255, 107, 107, 0.3)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px'
+                  borderRadius: 'apos;25px'apos;,
+                  fontSize: 'apos;13px'apos;,
+                  fontWeight: 'apos;700'apos;,
+                  boxShadow: 'apos;0 4px 12px rgba(255, 107, 107, 0.3)'apos;,
+                  textTransform: 'apos;uppercase'apos;,
+                  letterSpacing: 'apos;0.5px'apos;
                 }}>
                   ⭐ PLUS POPULAIRE
                 </div>
               )}
 
               {/* Plan Header */}
-              <div style={{ textAlign: 'center', marginBottom: theme.spacing.lg }}>
+              <div style={{ textAlign: 'apos;center'apos;, marginBottom: theme.spacing.lg }}>
                 <h3 style={{
-                  fontSize: '1.5rem',
-                  fontWeight: 'bold',
+                  fontSize: 'apos;1.5rem'apos;,
+                  fontWeight: 'apos;bold'apos;,
                   color: theme.colors.neutral[900],
                   marginBottom: theme.spacing.sm
                 }}>
                   {plan.name}
                 </h3>
                 <p style={{
-                  fontSize: '14px',
+                  fontSize: 'apos;14px'apos;,
                   color: theme.colors.neutral[600],
                   marginBottom: theme.spacing.lg
                 }}>
@@ -500,27 +500,27 @@ export default function PremiumPricingPage() {
 
                 {/* Price */}
                 <div style={{ marginBottom: theme.spacing.lg }}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: theme.spacing.sm }}>
+                  <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;baseline'apos;, justifyContent: 'apos;center'apos;, gap: theme.spacing.sm }}>
                     {plan.originalPrice && (
                       <span style={{
-                        fontSize: '1.5rem',
+                        fontSize: 'apos;1.5rem'apos;,
                         color: theme.colors.neutral[400],
-                        textDecoration: 'line-through'
+                        textDecoration: 'apos;line-through'apos;
                       }}>
                         {plan.originalPrice}$
                       </span>
                     )}
                     <span style={{
-                      fontSize: plan.price === 0 ? '2.5rem' : '3rem',
-                      fontWeight: 'bold',
+                      fontSize: plan.price === 0 ? 'apos;2.5rem'apos; : 'apos;3rem'apos;,
+                      fontWeight: 'apos;bold'apos;,
                       color: plan.price === 0 ? theme.colors.neutral[600] : theme.colors.primary.main
                     }}>
-                      {plan.price === 0 ? 'Gratuit' : `${plan.price}$`}
+                      {plan.price === 0 ? 'apos;Gratuit'apos; : `${plan.price}$`}
                     </span>
                   </div>
                   {plan.price > 0 && (
                     <span style={{
-                      fontSize: '14px',
+                      fontSize: 'apos;14px'apos;,
                       color: theme.colors.neutral[500]
                     }}>
                       {plan.period}
@@ -532,24 +532,24 @@ export default function PremiumPricingPage() {
               {/* Features */}
               <div style={{ marginBottom: theme.spacing.lg }}>
                 <h4 style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
+                  fontSize: 'apos;14px'apos;,
+                  fontWeight: 'apos;600'apos;,
                   color: theme.colors.neutral[900],
                   marginBottom: theme.spacing.md
                 }}>
                   ✅ Inclus :
                 </h4>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                <ul style={{ listStyle: 'apos;none'apos;, padding: 0, margin: 0 }}>
                   {plan.features.map((feature, index) => (
                     <li key={index} style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
+                      display: 'apos;flex'apos;,
+                      alignItems: 'apos;flex-start'apos;,
                       gap: theme.spacing.sm,
                       marginBottom: theme.spacing.sm,
-                      fontSize: '14px',
+                      fontSize: 'apos;14px'apos;,
                       color: theme.colors.neutral[700]
                     }}>
-                      <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, marginTop: '2px', fontSize: '12px' }} />
+                      <FontAwesomeIcon icon="check" style={{ color: theme.colors.success, marginTop: 'apos;2px'apos;, fontSize: 'apos;12px'apos; }} />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -560,24 +560,24 @@ export default function PremiumPricingPage() {
               {plan.limitations.length > 0 && (
                 <div style={{ marginBottom: theme.spacing.lg }}>
                   <h4 style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
+                    fontSize: 'apos;14px'apos;,
+                    fontWeight: 'apos;600'apos;,
                     color: theme.colors.neutral[600],
                     marginBottom: theme.spacing.md
                   }}>
                     ⚠️ Limitations :
                   </h4>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  <ul style={{ listStyle: 'apos;none'apos;, padding: 0, margin: 0 }}>
                     {plan.limitations.map((limitation, index) => (
                       <li key={index} style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
+                        display: 'apos;flex'apos;,
+                        alignItems: 'apos;flex-start'apos;,
                         gap: theme.spacing.sm,
                         marginBottom: theme.spacing.sm,
-                        fontSize: '14px',
+                        fontSize: 'apos;14px'apos;,
                         color: theme.colors.neutral[500]
                       }}>
-                        <FontAwesomeIcon icon="times" style={{ color: theme.colors.neutral[400], marginTop: '2px', fontSize: '12px' }} />
+                        <FontAwesomeIcon icon="times" style={{ color: theme.colors.neutral[400], marginTop: 'apos;2px'apos;, fontSize: 'apos;12px'apos; }} />
                         <span>{limitation}</span>
                       </li>
                     ))}
@@ -587,40 +587,40 @@ export default function PremiumPricingPage() {
 
               {/* CTA Button */}
               <button
-                onClick={() => plan.id !== 'free' && handleSubscribe(plan.id)}
+                onClick={() => plan.id !== 'apos;free'apos; && handleSubscribe(plan.id)}
                 disabled={loading === plan.id}
                 style={{
-                  width: '100%',
+                  width: 'apos;100%'apos;,
                   padding: `${theme.spacing.md} ${theme.spacing.lg}`,
-                  borderRadius: '16px',
-                  border: 'none',
-                  background: plan.id === 'free' 
+                  borderRadius: 'apos;16px'apos;,
+                  border: 'apos;none'apos;,
+                  background: plan.id === 'apos;free'apos; 
                     ? theme.colors.neutral[200] 
                     : plan.isPopular 
-                      ? 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)'
+                      ? 'apos;linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)'apos;
                       : plan.buttonColor,
-                  color: plan.id === 'free' ? theme.colors.neutral[600] : 'white',
-                  fontSize: '16px',
-                  fontWeight: '700',
-                  cursor: plan.id === 'free' ? 'default' : 'pointer',
-                  transition: 'all 0.3s ease-in-out',
+                  color: plan.id === 'apos;free'apos; ? theme.colors.neutral[600] : 'apos;white'apos;,
+                  fontSize: 'apos;16px'apos;,
+                  fontWeight: 'apos;700'apos;,
+                  cursor: plan.id === 'apos;free'apos; ? 'apos;default'apos; : 'apos;pointer'apos;,
+                  transition: 'apos;all 0.3s ease-in-out'apos;,
                   opacity: loading === plan.id ? 0.7 : 1,
-                  boxShadow: plan.id !== 'free' 
-                    ? '0 6px 20px rgba(99, 102, 241, 0.25)' 
-                    : 'none',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px'
+                  boxShadow: plan.id !== 'apos;free'apos; 
+                    ? 'apos;0 6px 20px rgba(99, 102, 241, 0.25)'apos; 
+                    : 'apos;none'apos;,
+                  textTransform: 'apos;uppercase'apos;,
+                  letterSpacing: 'apos;0.5px'apos;
                 }}
                 onMouseOver={(e) => {
-                  if (plan.id !== 'free') {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.35)';
+                  if (plan.id !== 'apos;free'apos;) {
+                    e.currentTarget.style.transform = 'apos;translateY(-2px)'apos;;
+                    e.currentTarget.style.boxShadow = 'apos;0 8px 25px rgba(99, 102, 241, 0.35)'apos;;
                   }
                 }}
                 onMouseOut={(e) => {
-                  if (plan.id !== 'free') {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(99, 102, 241, 0.25)';
+                  if (plan.id !== 'apos;free'apos;) {
+                    e.currentTarget.style.transform = 'apos;translateY(0)'apos;;
+                    e.currentTarget.style.boxShadow = 'apos;0 6px 20px rgba(99, 102, 241, 0.25)'apos;;
                   }
                 }}
               >
@@ -631,10 +631,10 @@ export default function PremiumPricingPage() {
                 )}
               </button>
 
-              {plan.id === 'free' && (
+              {plan.id === 'apos;free'apos; && (
                 <p style={{
-                  textAlign: 'center',
-                  fontSize: '12px',
+                  textAlign: 'apos;center'apos;,
+                  fontSize: 'apos;12px'apos;,
                   color: theme.colors.neutral[500],
                   marginTop: theme.spacing.sm
                 }}>
@@ -647,15 +647,15 @@ export default function PremiumPricingPage() {
 
         {/* FAQ */}
         <div style={{
-          backgroundColor: 'white',
-          borderRadius: '16px',
+          backgroundColor: 'apos;white'apos;,
+          borderRadius: 'apos;16px'apos;,
           padding: theme.spacing.xl,
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)'
+          boxShadow: 'apos;0 4px 12px rgba(0, 0, 0, 0.05)'apos;
         }}>
           <h2 style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
-            textAlign: 'center',
+            fontSize: 'apos;2rem'apos;,
+            fontWeight: 'apos;bold'apos;,
+            textAlign: 'apos;center'apos;,
             marginBottom: theme.spacing.xl,
             color: theme.colors.neutral[900]
           }}>
@@ -663,45 +663,45 @@ export default function PremiumPricingPage() {
           </h2>
 
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+            display: 'apos;grid'apos;,
+            gridTemplateColumns: 'apos;repeat(auto-fit, minmax(400px, 1fr))'apos;,
             gap: theme.spacing.lg
           }}>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Qu'est-ce que le Beriox Performance Index (BPI) ?
+              <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
+                Qu'apos;est-ce que le Beriox Performance Index (BPI) ?
               </h3>
-              <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
+              <p style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], lineHeight: 'apos;1.6'apos; }}>
                 Le BPI est notre score propriétaire qui combine SEO (30%), Performance (25%), Conversion (25%) et Sécurité (20%) 
                 pour donner une vision globale de la santé de votre site web.
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Comment fonctionne l'Opportunity Radar ?
+              <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
+                Comment fonctionne l'apos;Opportunity Radar ?
               </h3>
-              <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
+              <p style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], lineHeight: 'apos;1.6'apos; }}>
                 Notre IA analyse vos données et identifie automatiquement les 5 actions prioritaires avec le meilleur ROI 
                 pour améliorer vos performances.
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
+              <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
                 Puis-je changer de plan à tout moment ?
               </h3>
-              <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
+              <p style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], lineHeight: 'apos;1.6'apos; }}>
                 Oui, vous pouvez upgrader ou downgrader votre plan à tout moment. Les changements prennent effet immédiatement.
               </p>
             </div>
 
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
+              <h3 style={{ fontSize: 'apos;1.1rem'apos;, fontWeight: 'apos;600'apos;, marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
                 Les APIs sont-elles incluses dans le prix ?
               </h3>
-              <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
-                Oui, tous les coûts d'APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
+              <p style={{ fontSize: 'apos;14px'apos;, color: theme.colors.neutral[600], lineHeight: 'apos;1.6'apos; }}>
+                Oui, tous les coûts d'apos;APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
                 pour vous offrir le meilleur service au meilleur prix.
               </p>
             </div>
@@ -710,39 +710,39 @@ export default function PremiumPricingPage() {
 
         {/* CTA Final */}
         <div style={{
-          textAlign: 'center',
+          textAlign: 'apos;center'apos;,
           marginTop: theme.spacing.xl,
           padding: theme.spacing.xl,
           backgroundColor: theme.colors.primary.light,
-          borderRadius: '16px'
+          borderRadius: 'apos;16px'apos;
         }}>
           <h2 style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
+            fontSize: 'apos;2rem'apos;,
+            fontWeight: 'apos;bold'apos;,
             color: theme.colors.primary.dark,
             marginBottom: theme.spacing.md
           }}>
             Prêt à optimiser votre présence digitale ?
           </h2>
           <p style={{
-            fontSize: '1.1rem',
+            fontSize: 'apos;1.1rem'apos;,
             color: theme.colors.primary.dark,
             marginBottom: theme.spacing.lg
           }}>
             Rejoignez les professionnels qui font confiance à Beriox AI pour leurs analyses.
           </p>
           <button
-            onClick={() => handleSubscribe('pro')}
+            onClick={() => handleSubscribe('apos;pro'apos;)}
             style={{
               padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-              borderRadius: '12px',
-              border: 'none',
+              borderRadius: 'apos;12px'apos;,
+              border: 'apos;none'apos;,
               backgroundColor: theme.colors.primary.main,
-              color: 'white',
-              fontSize: '18px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(90, 95, 202, 0.3)'
+              color: 'apos;white'apos;,
+              fontSize: 'apos;18px'apos;,
+              fontWeight: 'apos;600'apos;,
+              cursor: 'apos;pointer'apos;,
+              boxShadow: 'apos;0 4px 12px rgba(90, 95, 202, 0.3)'apos;
             }}
           >
             Commencer avec Pro - 25$/mois

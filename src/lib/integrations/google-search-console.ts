@@ -1,8 +1,8 @@
-import { ApiResponse, SeoData } from './types';
+import { ApiResponse, SeoData } from 'apos;./types'apos;;
 
 export class GoogleSearchConsoleAPI {
   private accessToken: string;
-  private baseUrl = 'https://searchconsole.googleapis.com/webmasters/v3';
+  private baseUrl = 'apos;https://searchconsole.googleapis.com/webmasters/v3'apos;;
 
   constructor(accessToken: string) {
     this.accessToken = accessToken;
@@ -13,15 +13,15 @@ export class GoogleSearchConsoleAPI {
       const searchAnalyticsUrl = `${this.baseUrl}/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`;
       
       const response = await fetch(searchAnalyticsUrl, {
-        method: 'POST',
+        method: 'apos;POST'apos;,
         headers: {
-          'Authorization': `Bearer ${this.accessToken}`,
-          'Content-Type': 'application/json',
+          'apos;Authorization'apos;: `Bearer ${this.accessToken}`,
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
         body: JSON.stringify({
           startDate,
           endDate,
-          dimensions: ['query'],
+          dimensions: ['apos;query'apos;],
           rowLimit: 100,
         }),
       });
@@ -40,7 +40,7 @@ export class GoogleSearchConsoleAPI {
         ctr: Math.round(row.ctr * 100 * 100) / 100, // Pourcentage avec 2 décimales
       })) || [];
 
-      // Récupérer les erreurs d'indexation
+      // Récupérer les erreurs d'apos;indexation
       const indexingErrors = await this.getIndexingIssues(siteUrl);
 
       return {
@@ -66,7 +66,7 @@ export class GoogleSearchConsoleAPI {
       
       const response = await fetch(issuesUrl, {
         headers: {
-          'Authorization': `Bearer ${this.accessToken}`,
+          'apos;Authorization'apos;: `Bearer ${this.accessToken}`,
         },
       });
 
@@ -78,8 +78,8 @@ export class GoogleSearchConsoleAPI {
       
       return data.sitemap?.map((sitemap: any) => ({
         url: sitemap.path,
-        error: sitemap.errors?.[0]?.details || 'Unknown error',
-        type: 'sitemap',
+        error: sitemap.errors?.[0]?.details || 'apos;Unknown error'apos;,
+        type: 'apos;sitemap'apos;,
       })) || [];
     } catch {
       return [];
@@ -90,7 +90,7 @@ export class GoogleSearchConsoleAPI {
     try {
       const response = await fetch(`${this.baseUrl}/sites`, {
         headers: {
-          'Authorization': `Bearer ${this.accessToken}`,
+          'apos;Authorization'apos;: `Bearer ${this.accessToken}`,
         },
       });
 

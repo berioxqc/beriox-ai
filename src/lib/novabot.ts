@@ -15,12 +15,12 @@ export interface NovaMission {
   historique: string;
   tags: string[];
   createdAt: Date;
-  status: 'pending' | 'validated' | 'rejected' | 'implemented';
+  status: 'apos;pending'apos; | 'apos;validated'apos; | 'apos;rejected'apos; | 'apos;implemented'apos;;
   jpbFeedback?: string;
 }
 
 export interface DataSource {
-  type: 'ga4' | 'gsc' | 'ads' | 'crm';
+  type: 'apos;ga4'apos; | 'apos;gsc'apos; | 'apos;ads'apos; | 'apos;crm'apos;;
   data: any;
   lastUpdated: Date;
 }
@@ -30,7 +30,7 @@ export interface MissionHistory {
   title: string;
   objectif: string;
   tags: string[];
-  resultat: 'success' | 'failure' | 'partial';
+  resultat: 'apos;success'apos; | 'apos;failure'apos; | 'apos;partial'apos;;
   notes: string;
   createdAt: Date;
 }
@@ -52,7 +52,7 @@ export class NovaBotService {
     // Analyser les données pour identifier les opportunités
     const opportunities = this.analyzeDataSources(dataSources);
     
-    // Vérifier les doublons avec l'historique
+    // Vérifier les doublons avec l'apos;historique
     const uniqueOpportunities = this.filterDuplicates(opportunities, missionHistory);
     
     if (uniqueOpportunities.length === 0) {
@@ -76,16 +76,16 @@ export class NovaBotService {
     
     sources.forEach(source => {
       switch (source.type) {
-        case 'ga4':
+        case 'apos;ga4'apos;:
           opportunities.push(...this.analyzeGA4Data(source.data));
           break;
-        case 'gsc':
+        case 'apos;gsc'apos;:
           opportunities.push(...this.analyzeGSCData(source.data));
           break;
-        case 'ads':
+        case 'apos;ads'apos;:
           opportunities.push(...this.analyzeAdsData(source.data));
           break;
-        case 'crm':
+        case 'apos;crm'apos;:
           opportunities.push(...this.analyzeCRMData(source.data));
           break;
       }
@@ -105,8 +105,8 @@ export class NovaBotService {
       data.pages.forEach((page: any) => {
         if (page.bounceRate > 70 && page.pageViews > 100) {
           opportunities.push({
-            type: 'engagement',
-            metric: 'bounce_rate',
+            type: 'apos;engagement'apos;,
+            metric: 'apos;bounce_rate'apos;,
             value: page.bounceRate,
             page: page.path,
             impact: 4,
@@ -122,8 +122,8 @@ export class NovaBotService {
       const avgConversionRate = data.conversions.total / data.sessions.total;
       if (avgConversionRate < 0.02) {
         opportunities.push({
-          type: 'conversion',
-          metric: 'conversion_rate',
+          type: 'apos;conversion'apos;,
+          metric: 'apos;conversion_rate'apos;,
           value: avgConversionRate,
           impact: 5,
           effort: 3,
@@ -146,8 +146,8 @@ export class NovaBotService {
       data.queries.forEach((query: any) => {
         if (query.impressions > 1000 && query.ctr < 0.02) {
           opportunities.push({
-            type: 'seo',
-            metric: 'ctr',
+            type: 'apos;seo'apos;,
+            metric: 'apos;ctr'apos;,
             value: query.ctr,
             query: query.query,
             impact: 4,
@@ -163,8 +163,8 @@ export class NovaBotService {
       data.pages.forEach((page: any) => {
         if (page.position > 5 && page.position < 20 && page.impressions > 500) {
           opportunities.push({
-            type: 'seo',
-            metric: 'position',
+            type: 'apos;seo'apos;,
+            metric: 'apos;position'apos;,
             value: page.position,
             page: page.page,
             impact: 3,
@@ -189,8 +189,8 @@ export class NovaBotService {
       data.campaigns.forEach((campaign: any) => {
         if (campaign.cpa > campaign.targetCpa * 1.5) {
           opportunities.push({
-            type: 'ads',
-            metric: 'cpa',
+            type: 'apos;ads'apos;,
+            metric: 'apos;cpa'apos;,
             value: campaign.cpa,
             campaign: campaign.name,
             impact: 4,
@@ -215,8 +215,8 @@ export class NovaBotService {
       const conversionRate = data.leads.converted / data.leads.total;
       if (conversionRate < 0.1) {
         opportunities.push({
-          type: 'crm',
-          metric: 'lead_conversion',
+          type: 'apos;crm'apos;,
+          metric: 'apos;lead_conversion'apos;,
           value: conversionRate,
           impact: 5,
           effort: 3,
@@ -229,13 +229,13 @@ export class NovaBotService {
   }
 
   /**
-   * Filtre les doublons en comparant avec l'historique
+   * Filtre les doublons en comparant avec l'apos;historique
    */
   private static filterDuplicates(opportunities: any[], history: MissionHistory[]): any[] {
     return opportunities.filter(opp => {
       // Calculer la similarité avec chaque mission historique
       const maxSimilarity = Math.max(...history.map(mission => 
-        this.calculateSimilarity(opp.description, mission.title + ' ' + mission.objectif)
+        this.calculateSimilarity(opp.description, mission.title + 'apos; 'apos; + mission.objectif)
       ));
       
       // Rejeter si similarité > 70%
@@ -271,7 +271,7 @@ export class NovaBotService {
    * Génère une mission complète avec GPT
    */
   private static async generateMissionWithGPT(opportunity: any, userContext: any): Promise<NovaMission> {
-    const prompt = `Tu es NovaBot, l'architecte d'opportunités. Génère une mission basée sur cette opportunité détectée :
+    const prompt = `Tu es NovaBot, l'apos;architecte d'apos;opportunités. Génère une mission basée sur cette opportunité détectée :
 
 OPPORTUNITÉ:
 ${opportunity.description}
@@ -281,7 +281,7 @@ Effort: ${opportunity.effort}/5
 
 CONTEXTE UTILISATEUR:
 Industrie: ${userContext.industry}
-Objectifs: ${userContext.goals.join(', ')}
+Objectifs: ${userContext.goals.join('apos;, 'apos;)}
 Plan actuel: ${userContext.currentPlan}
 
 Génère une mission structurée selon ce format JSON strict:
@@ -290,7 +290,7 @@ Génère une mission structurée selon ce format JSON strict:
   "title": "Titre clair et orienté action",
   "constat": "Résumé du problème/opportunité avec chiffres précis",
   "sources": ["liste", "des", "sources", "utilisées"],
-  "objectif": "Ce qu'on veut accomplir",
+  "objectif": "Ce qu'apos;on veut accomplir",
   "impactEstime": ${opportunity.impact},
   "effortEstime": ${opportunity.effort},
   "priorite": ${opportunity.impact - opportunity.effort},
@@ -303,8 +303,8 @@ Génère une mission structurée selon ce format JSON strict:
     "Risque 1",
     "Risque 2"
   ],
-  "planB": "Alternative si le résultat n'est pas atteint",
-  "historique": "Lien vers missions similaires ou preuve que c'est nouveau",
+  "planB": "Alternative si le résultat n'apos;est pas atteint",
+  "historique": "Lien vers missions similaires ou preuve que c'apos;est nouveau",
   "tags": ["tag1", "tag2", "tag3"]
 }
 
@@ -326,7 +326,7 @@ La mission doit être:
       id: `nova_${Date.now()}`,
       ...response,
       createdAt: new Date(),
-      status: 'pending'
+      status: 'apos;pending'apos;
     };
   }
 
@@ -338,7 +338,7 @@ La mission doit être:
     feedback: string;
     suggestions: string[];
   }> {
-    const prompt = `Tu es JPBot, l'analyste critique. Évalue cette mission générée par NovaBot :
+    const prompt = `Tu es JPBot, l'apos;analyste critique. Évalue cette mission générée par NovaBot :
 
 MISSION:
 Titre: ${mission.title}
@@ -346,14 +346,14 @@ Constat: ${mission.constat}
 Objectif: ${mission.objectif}
 Impact: ${mission.impactEstime}/5
 Effort: ${mission.effortEstime}/5
-Plan d'action: ${mission.planAction.join(', ')}
+Plan d'apos;action: ${mission.planAction.join('apos;, 'apos;)}
 
-CRITÈRES D'ÉVALUATION:
+CRITÈRES D'apos;ÉVALUATION:
 1. Pertinence par rapport aux objectifs
 2. Clarté des chiffres et données
 3. Originalité (pas de doublon)
-4. Réalisme de l'effort estimé
-5. Qualité du plan d'action
+4. Réalisme de l'apos;effort estimé
+5. Qualité du plan d'apos;action
 
 Réponds en JSON strict:
 {
@@ -373,11 +373,11 @@ Réponds en JSON strict:
   }
 
   /**
-   * Met à jour le statut d'une mission
+   * Met à jour le statut d'apos;une mission
    */
   static async updateMissionStatus(
     missionId: string, 
-    status: 'validated' | 'rejected' | 'implemented',
+    status: 'apos;validated'apos; | 'apos;rejected'apos; | 'apos;implemented'apos;,
     feedback?: string
   ): Promise<void> {
     // Ici on mettrait à jour la base de données

@@ -1,10 +1,10 @@
-import { useEffect, useCallback } from 'react';
-import * as Sentry from '@sentry/nextjs';
+import { useEffect, useCallback } from 'apos;react'apos;;
+import * as Sentry from 'apos;@sentry/nextjs'apos;;
 
 interface MonitoringEvent {
   name: string;
   properties?: Record<string, any>;
-  level?: 'info' | 'warning' | 'error';
+  level?: 'apos;info'apos; | 'apos;warning'apos; | 'apos;error'apos;;
 }
 
 interface PerformanceMetric {
@@ -19,18 +19,18 @@ export function useMonitoring() {
   const trackEvent = useCallback((event: MonitoringEvent) => {
     try {
       Sentry.addBreadcrumb({
-        category: 'user-action',
+        category: 'apos;user-action'apos;,
         message: event.name,
         data: event.properties,
-        level: event.level || 'info',
+        level: event.level || 'apos;info'apos;,
       });
 
       // Log to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('📊 Event tracked:', event);
+      if (process.env.NODE_ENV === 'apos;development'apos;) {
+        console.log('apos;📊 Event tracked:'apos;, event);
       }
     } catch (error) {
-      console.error('Failed to track event:', error);
+      console.error('apos;Failed to track event:'apos;, error);
     }
   }, []);
 
@@ -43,11 +43,11 @@ export function useMonitoring() {
       });
 
       // Log to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('⚡ Performance metric:', metric);
+      if (process.env.NODE_ENV === 'apos;development'apos;) {
+        console.log('apos;⚡ Performance metric:'apos;, metric);
       }
     } catch (error) {
-      console.error('Failed to track performance metric:', error);
+      console.error('apos;Failed to track performance metric:'apos;, error);
     }
   }, []);
 
@@ -60,9 +60,9 @@ export function useMonitoring() {
         },
       });
 
-      console.error('🚨 Error tracked:', error, context);
+      console.error('apos;🚨 Error tracked:'apos;, error, context);
     } catch (err) {
-      console.error('Failed to track error:', err);
+      console.error('apos;Failed to track error:'apos;, err);
     }
   }, []);
 
@@ -70,18 +70,18 @@ export function useMonitoring() {
   const trackPageView = useCallback((page: string, properties?: Record<string, any>) => {
     try {
       Sentry.addBreadcrumb({
-        category: 'navigation',
+        category: 'apos;navigation'apos;,
         message: `Page view: ${page}`,
         data: properties,
-        level: 'info',
+        level: 'apos;info'apos;,
       });
 
       // Log to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('📄 Page view:', page, properties);
+      if (process.env.NODE_ENV === 'apos;development'apos;) {
+        console.log('apos;📄 Page view:'apos;, page, properties);
       }
     } catch (error) {
-      console.error('Failed to track page view:', error);
+      console.error('apos;Failed to track page view:'apos;, error);
     }
   }, []);
 
@@ -90,16 +90,16 @@ export function useMonitoring() {
     trackEvent({
       name: `user_action_${action}`,
       properties,
-      level: 'info',
+      level: 'apos;info'apos;,
     });
   }, [trackEvent]);
 
   // Track API calls
   const trackApiCall = useCallback((endpoint: string, method: string, duration: number, status: number) => {
     trackPerformance({
-      name: 'api_call_duration',
+      name: 'apos;api_call_duration'apos;,
       value: duration,
-      unit: 'ms',
+      unit: 'apos;ms'apos;,
       tags: {
         endpoint,
         method,
@@ -109,21 +109,21 @@ export function useMonitoring() {
 
     if (status >= 400) {
       trackEvent({
-        name: 'api_error',
+        name: 'apos;api_error'apos;,
         properties: {
           endpoint,
           method,
           status,
           duration,
         },
-        level: 'error',
+        level: 'apos;error'apos;,
       });
     }
   }, [trackPerformance, trackEvent]);
 
   // Auto-track performance metrics
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'apos;undefined'apos;) {
       // Track Core Web Vitals
       const trackCoreWebVitals = () => {
         // LCP (Largest Contentful Paint)
@@ -131,23 +131,23 @@ export function useMonitoring() {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
           trackPerformance({
-            name: 'lcp',
+            name: 'apos;lcp'apos;,
             value: lastEntry.startTime,
-            unit: 'ms',
+            unit: 'apos;ms'apos;,
           });
-        }).observe({ entryTypes: ['largest-contentful-paint'] });
+        }).observe({ entryTypes: ['apos;largest-contentful-paint'apos;] });
 
         // FID (First Input Delay)
         new PerformanceObserver((list) => {
           const entries = list.getEntries();
           entries.forEach((entry) => {
             trackPerformance({
-              name: 'fid',
+              name: 'apos;fid'apos;,
               value: entry.processingStart - entry.startTime,
-              unit: 'ms',
+              unit: 'apos;ms'apos;,
             });
           });
-        }).observe({ entryTypes: ['first-input'] });
+        }).observe({ entryTypes: ['apos;first-input'apos;] });
 
         // CLS (Cumulative Layout Shift)
         new PerformanceObserver((list) => {
@@ -159,10 +159,10 @@ export function useMonitoring() {
             }
           });
           trackPerformance({
-            name: 'cls',
+            name: 'apos;cls'apos;,
             value: clsValue,
           });
-        }).observe({ entryTypes: ['layout-shift'] });
+        }).observe({ entryTypes: ['apos;layout-shift'apos;] });
       };
 
       trackCoreWebVitals();

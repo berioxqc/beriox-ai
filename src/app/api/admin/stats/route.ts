@@ -11,8 +11,8 @@ export async function GET() {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Vérifier si l'utilisateur est super admin
-    if (session.user.email !== 'info@beriox.ca') {
+    // Vérifier si l'apos;utilisateur est super admin
+    if (session.user.email !== 'apos;info@beriox.ca'apos;) {
       return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
     }
 
@@ -43,7 +43,7 @@ export async function GET() {
     });
 
   } catch (error) {
-    console.error('Erreur lors de la récupération des statistiques:', error);
+    console.error('apos;Erreur lors de la récupération des statistiques:'apos;, error);
     return NextResponse.json(
       { error: "Erreur interne du serveur" },
       { status: 500 }

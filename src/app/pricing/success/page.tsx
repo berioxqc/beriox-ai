@@ -1,10 +1,10 @@
-'use client';
+'apos;use client'apos;;
 
-import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import Link from 'next/link';
+import { useEffect, useState, Suspense } from 'apos;react'apos;;
+import { useSearchParams } from 'apos;next/navigation'apos;;
+import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
+import { useTheme } from 'apos;@/hooks/useTheme'apos;;
+import Link from 'apos;next/link'apos;;
 
 function SuccessContent() {
   const theme = useTheme();
@@ -12,44 +12,44 @@ function SuccessContent() {
   const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
-    const sessionIdParam = searchParams.get('session_id');
+    const sessionIdParam = searchParams.get('apos;session_id'apos;);
     setSessionId(sessionIdParam);
   }, [searchParams]);
 
   return (
     <div style={{ 
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+      minHeight: 'apos;100vh'apos;,
+      display: 'apos;flex'apos;,
+      alignItems: 'apos;center'apos;,
+      justifyContent: 'apos;center'apos;,
       backgroundColor: theme.colors.neutral[50],
       padding: theme.spacing.lg
     }}>
       <div style={{
-        backgroundColor: 'white',
-        borderRadius: '16px',
+        backgroundColor: 'apos;white'apos;,
+        borderRadius: 'apos;16px'apos;,
         padding: theme.spacing.xl,
-        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-        maxWidth: '500px',
-        width: '100%',
-        textAlign: 'center'
+        boxShadow: 'apos;0 10px 30px rgba(0, 0, 0, 0.1)'apos;,
+        maxWidth: 'apos;500px'apos;,
+        width: 'apos;100%'apos;,
+        textAlign: 'apos;center'apos;
       }}>
         <div style={{
-          width: '80px',
-          height: '80px',
+          width: 'apos;80px'apos;,
+          height: 'apos;80px'apos;,
           backgroundColor: theme.colors.success,
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          borderRadius: 'apos;50%'apos;,
+          display: 'apos;flex'apos;,
+          alignItems: 'apos;center'apos;,
+          justifyContent: 'apos;center'apos;,
           margin: `0 auto ${theme.spacing.lg} auto`
         }}>
-          <FontAwesomeIcon icon="check" style={{ color: 'white', fontSize: '32px' }} />
+          <FontAwesomeIcon icon="check" style={{ color: 'apos;white'apos;, fontSize: 'apos;32px'apos; }} />
         </div>
 
         <h1 style={{
-          fontSize: '2.5rem',
-          fontWeight: 'bold',
+          fontSize: 'apos;2.5rem'apos;,
+          fontWeight: 'apos;bold'apos;,
           color: theme.colors.success,
           marginBottom: theme.spacing.md
         }}>
@@ -57,10 +57,10 @@ function SuccessContent() {
         </h1>
 
         <p style={{
-          fontSize: '1.2rem',
+          fontSize: 'apos;1.2rem'apos;,
           color: theme.colors.neutral[600],
           marginBottom: theme.spacing.xl,
-          lineHeight: '1.6'
+          lineHeight: 'apos;1.6'apos;
         }}>
           Félicitations ! Votre abonnement Beriox AI est maintenant actif.
           Vous avez accès à toutes les fonctionnalités premium.
@@ -68,27 +68,27 @@ function SuccessContent() {
 
         <div style={{
           backgroundColor: theme.colors.primary.light,
-          borderRadius: '12px',
+          borderRadius: 'apos;12px'apos;,
           padding: theme.spacing.lg,
           marginBottom: theme.spacing.xl
         }}>
           <h3 style={{
-            fontSize: '1.3rem',
-            fontWeight: '600',
+            fontSize: 'apos;1.3rem'apos;,
+            fontWeight: 'apos;600'apos;,
             color: theme.colors.primary.dark,
             marginBottom: theme.spacing.sm
           }}>
             Prochaines étapes
           </h3>
           <ul style={{
-            listStyle: 'none',
+            listStyle: 'apos;none'apos;,
             padding: 0,
             margin: 0,
-            textAlign: 'left'
+            textAlign: 'apos;left'apos;
           }}>
             <li style={{
-              display: 'flex',
-              alignItems: 'center',
+              display: 'apos;flex'apos;,
+              alignItems: 'apos;center'apos;,
               gap: theme.spacing.sm,
               marginBottom: theme.spacing.sm,
               color: theme.colors.primary.dark
@@ -97,18 +97,18 @@ function SuccessContent() {
               Créez votre première mission premium
             </li>
             <li style={{
-              display: 'flex',
-              alignItems: 'center',
+              display: 'apos;flex'apos;,
+              alignItems: 'apos;center'apos;,
               gap: theme.spacing.sm,
               marginBottom: theme.spacing.sm,
               color: theme.colors.primary.dark
             }}>
               <FontAwesomeIcon icon="bullseye" />
-              Explorez l'Opportunity Radar
+              Explorez l'apos;Opportunity Radar
             </li>
             <li style={{
-              display: 'flex',
-              alignItems: 'center',
+              display: 'apos;flex'apos;,
+              alignItems: 'apos;center'apos;,
               gap: theme.spacing.sm,
               color: theme.colors.primary.dark
             }}>
@@ -118,30 +118,30 @@ function SuccessContent() {
           </ul>
         </div>
 
-        <div style={{ display: 'flex', gap: theme.spacing.md, justifyContent: 'center' }}>
+        <div style={{ display: 'apos;flex'apos;, gap: theme.spacing.md, justifyContent: 'apos;center'apos; }}>
           <Link href="/" style={{
-            display: 'inline-block',
+            display: 'apos;inline-block'apos;,
             padding: `${theme.spacing.md} ${theme.spacing.xl}`,
             backgroundColor: theme.colors.primary.main,
-            color: 'white',
-            textDecoration: 'none',
-            borderRadius: '12px',
-            fontWeight: '600',
-            fontSize: '16px'
+            color: 'apos;white'apos;,
+            textDecoration: 'apos;none'apos;,
+            borderRadius: 'apos;12px'apos;,
+            fontWeight: 'apos;600'apos;,
+            fontSize: 'apos;16px'apos;
           }}>
             Créer une mission
           </Link>
           
           <Link href="/profile" style={{
-            display: 'inline-block',
+            display: 'apos;inline-block'apos;,
             padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-            backgroundColor: 'white',
+            backgroundColor: 'apos;white'apos;,
             color: theme.colors.primary.main,
-            textDecoration: 'none',
+            textDecoration: 'apos;none'apos;,
             border: `2px solid ${theme.colors.primary.main}`,
-            borderRadius: '12px',
-            fontWeight: '600',
-            fontSize: '16px'
+            borderRadius: 'apos;12px'apos;,
+            fontWeight: 'apos;600'apos;,
+            fontSize: 'apos;16px'apos;
           }}>
             Mon profil
           </Link>
@@ -152,8 +152,8 @@ function SuccessContent() {
             marginTop: theme.spacing.lg,
             padding: theme.spacing.sm,
             backgroundColor: theme.colors.neutral[100],
-            borderRadius: '8px',
-            fontSize: '12px',
+            borderRadius: 'apos;8px'apos;,
+            fontSize: 'apos;12px'apos;,
             color: theme.colors.neutral[500]
           }}>
             ID de session : {sessionId}
@@ -168,12 +168,12 @@ export default function SuccessPage() {
   return (
     <Suspense fallback={
       <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
+        minHeight: 'apos;100vh'apos;,
+        display: 'apos;flex'apos;,
+        alignItems: 'apos;center'apos;,
+        justifyContent: 'apos;center'apos;
       }}>
-        <FontAwesomeIcon icon="spinner" spin style={{ fontSize: '32px' }} />
+        <FontAwesomeIcon icon="spinner" spin style={{ fontSize: 'apos;32px'apos; }} />
       </div>
     }>
       <SuccessContent />

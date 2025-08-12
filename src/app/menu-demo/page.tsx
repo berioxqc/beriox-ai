@@ -29,10 +29,10 @@ export default function MenuDemoPage() {
     >
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         
-        {/* Vue d'ensemble des composants */}
+        {/* Vue d'apos;ensemble des composants */}
         <ComponentsOverview />
         
-        {/* Section 1: Vue d'ensemble */}
+        {/* Section 1: Vue d'apos;ensemble */}
         <div style={{
           background: "white",
           borderRadius: "16px",
@@ -124,7 +124,7 @@ export default function MenuDemoPage() {
                 Breadcrumb
               </div>
               <div style={{ fontSize: "13px", color: "#6b7280" }}>
-                Navigation contextuelle avec fil d'Ariane
+                Navigation contextuelle avec fil d'apos;Ariane
               </div>
             </div>
 
@@ -296,7 +296,7 @@ export default function MenuDemoPage() {
                   Accessibilité
                 </div>
                 <div style={{ fontSize: "13px", color: "#6b7280" }}>
-                  Navigation au clavier et lecteurs d'écran
+                  Navigation au clavier et lecteurs d'apos;écran
                 </div>
               </div>
             </div>
@@ -353,7 +353,7 @@ export default function MenuDemoPage() {
                 Navigation
               </div>
               <div style={{ fontSize: "13px", opacity: 0.9 }}>
-                Utilisez les breadcrumbs pour comprendre votre position dans l'application
+                Utilisez les breadcrumbs pour comprendre votre position dans l'apos;application
               </div>
             </div>
           </div>

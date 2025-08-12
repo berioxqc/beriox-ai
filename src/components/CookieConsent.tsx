@@ -1,47 +1,47 @@
 "use client";
-import { useState, useEffect } from 'react';
-import { useAnalytics } from '@/hooks/useAnalytics';
+import { useState, useEffect } from 'apos;react'apos;;
+import { useAnalytics } from 'apos;@/hooks/useAnalytics'apos;;
 
 export default function CookieConsent() {
   const [showConsent, setShowConsent] = useState(false);
   const analytics = useAnalytics();
 
   useEffect(() => {
-    // Vérifier si l'utilisateur a déjà donné son consentement
-    const consent = localStorage.getItem('cookie-consent');
+    // Vérifier si l'apos;utilisateur a déjà donné son consentement
+    const consent = localStorage.getItem('apos;cookie-consent'apos;);
     if (!consent) {
       setShowConsent(true);
     }
   }, []);
 
   const acceptAll = () => {
-    localStorage.setItem('cookie-consent', 'all');
+    localStorage.setItem('apos;cookie-consent'apos;, 'apos;all'apos;);
     setShowConsent(false);
     
     // Track consent event
-    analytics.trackEvent('cookie_consent', 'engagement', 'accept_all');
+    analytics.trackEvent('apos;cookie_consent'apos;, 'apos;engagement'apos;, 'apos;accept_all'apos;);
     
     // Enable Google Analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('consent', 'update', {
-        analytics_storage: 'granted',
-        ad_storage: 'granted',
+    if (typeof window !== 'apos;undefined'apos; && window.gtag) {
+      window.gtag('apos;consent'apos;, 'apos;update'apos;, {
+        analytics_storage: 'apos;granted'apos;,
+        ad_storage: 'apos;granted'apos;,
       });
     }
   };
 
   const acceptNecessary = () => {
-    localStorage.setItem('cookie-consent', 'necessary');
+    localStorage.setItem('apos;cookie-consent'apos;, 'apos;necessary'apos;);
     setShowConsent(false);
     
     // Track consent event
-    analytics.trackEvent('cookie_consent', 'engagement', 'necessary_only');
+    analytics.trackEvent('apos;cookie_consent'apos;, 'apos;engagement'apos;, 'apos;necessary_only'apos;);
     
     // Disable Google Analytics
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('consent', 'update', {
-        analytics_storage: 'denied',
-        ad_storage: 'denied',
+    if (typeof window !== 'apos;undefined'apos; && window.gtag) {
+      window.gtag('apos;consent'apos;, 'apos;update'apos;, {
+        analytics_storage: 'apos;denied'apos;,
+        ad_storage: 'apos;denied'apos;,
       });
     }
   };

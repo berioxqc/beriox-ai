@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from 'react';
-import { Button, Input } from '@/design-system/components';
-import { designTokens } from '@/design-system/tokens';
+import React, { useState } from 'apos;react'apos;;
+import { Button, Input } from 'apos;@/design-system/components'apos;;
+import { designTokens } from 'apos;@/design-system/tokens'apos;;
 
 export interface MissionFormProps {
   onSubmit: (data: { prompt: string; details: string }) => void;
@@ -14,8 +14,8 @@ const MissionForm: React.FC<MissionFormProps> = ({
   loading = false,
   onCancel,
 }) => {
-  const [prompt, setPrompt] = useState('');
-  const [details, setDetails] = useState('');
+  const [prompt, setPrompt] = useState('apos;'apos;);
+  const [details, setDetails] = useState('apos;'apos;);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +25,7 @@ const MissionForm: React.FC<MissionFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+    <form onSubmit={handleSubmit} style={{ width: 'apos;100%'apos; }}>
       <div style={{ marginBottom: designTokens.spacing[6] }}>
         <Input
           label="🎯 Objectif de votre mission"
@@ -50,9 +50,9 @@ const MissionForm: React.FC<MissionFormProps> = ({
       </div>
 
       <div style={{
-        display: 'flex',
+        display: 'apos;flex'apos;,
         gap: designTokens.spacing[4],
-        justifyContent: 'flex-end',
+        justifyContent: 'apos;flex-end'apos;,
       }}>
         {onCancel && (
           <Button

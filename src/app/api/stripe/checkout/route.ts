@@ -1,24 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { createCheckoutSession, STRIPE_PLANS } from '@/lib/stripe';
-import { prisma } from '@/lib/prisma';
-import { logger } from '@/lib/logger';
-import { withRateLimit } from '@/lib/rate-limit-advanced';
-import { withCSRFProtection } from '@/lib/csrf';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { getServerSession } from 'apos;next-auth'apos;;
+import { authOptions } from 'apos;@/lib/auth'apos;;
+import { createCheckoutSession, STRIPE_PLANS } from 'apos;@/lib/stripe'apos;;
+import { prisma } from 'apos;@/lib/prisma'apos;;
+import { logger } from 'apos;@/lib/logger'apos;;
+import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
+import { withCSRFProtection } from 'apos;@/lib/csrf'apos;;
 
 async function checkoutHandler(request: NextRequest) {
   try {
-    // Vérifier l'authentification
+    // Vérifier l'apos;authentification
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
-      logger.warn('Checkout: Unauthorized access attempt', {
-        action: 'checkout_unauthorized',
-        ip: request.ip || request.headers.get('x-forwarded-for') || 'unknown'
+      logger.warn('apos;Checkout: Unauthorized access attempt'apos;, {
+        action: 'apos;checkout_unauthorized'apos;,
+        ip: request.ip || request.headers.get('apos;x-forwarded-for'apos;) || 'apos;unknown'apos;
       });
       
       return NextResponse.json(
-        { error: 'Non autorisé' },
+        { error: 'apos;Non autorisé'apos; },
         { status: 401 }
       );
     }
@@ -27,8 +27,8 @@ async function checkoutHandler(request: NextRequest) {
     const { priceId, successUrl, cancelUrl } = await request.json();
 
     if (!priceId || !successUrl || !cancelUrl) {
-      logger.warn('Checkout: Missing required parameters', {
-        action: 'checkout_missing_params',
+      logger.warn('apos;Checkout: Missing required parameters'apos;, {
+        action: 'apos;checkout_missing_params'apos;,
         userId: session.user.email,
         hasPriceId: !!priceId,
         hasSuccessUrl: !!successUrl,
@@ -36,7 +36,7 @@ async function checkoutHandler(request: NextRequest) {
       });
       
       return NextResponse.json(
-        { error: 'Paramètres manquants' },
+        { error: 'apos;Paramètres manquants'apos; },
         { status: 400 }
       );
     }
@@ -44,19 +44,19 @@ async function checkoutHandler(request: NextRequest) {
     // Vérifier que le priceId est valide
     const validPriceIds = Object.values(STRIPE_PLANS).map(plan => plan.id);
     if (!validPriceIds.includes(priceId)) {
-      logger.warn('Checkout: Invalid price ID', {
-        action: 'checkout_invalid_price',
+      logger.warn('apos;Checkout: Invalid price ID'apos;, {
+        action: 'apos;checkout_invalid_price'apos;,
         userId: session.user.email,
         priceId
       });
       
       return NextResponse.json(
-        { error: 'Plan de facturation invalide' },
+        { error: 'apos;Plan de facturation invalide'apos; },
         { status: 400 }
       );
     }
 
-    // Récupérer l'utilisateur depuis la base de données
+    // Récupérer l'apos;utilisateur depuis la base de données
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: {
@@ -69,29 +69,29 @@ async function checkoutHandler(request: NextRequest) {
     });
 
     if (!user) {
-      logger.error('Checkout: User not found', {
-        action: 'checkout_user_not_found',
+      logger.error('apos;Checkout: User not found'apos;, {
+        action: 'apos;checkout_user_not_found'apos;,
         email: session.user.email
       });
       
       return NextResponse.json(
-        { error: 'Utilisateur non trouvé' },
+        { error: 'apos;Utilisateur non trouvé'apos; },
         { status: 404 }
       );
     }
 
-    // Vérifier si l'utilisateur a déjà un abonnement actif
-    if (user.subscriptionStatus === 'active') {
-      logger.info('Checkout: User already has active subscription', {
-        action: 'checkout_already_subscribed',
+    // Vérifier si l'apos;utilisateur a déjà un abonnement actif
+    if (user.subscriptionStatus === 'apos;active'apos;) {
+      logger.info('apos;Checkout: User already has active subscription'apos;, {
+        action: 'apos;checkout_already_subscribed'apos;,
         userId: user.id,
         subscriptionStatus: user.subscriptionStatus
       });
       
       return NextResponse.json(
         { 
-          error: 'Vous avez déjà un abonnement actif',
-          redirectTo: '/profile'
+          error: 'apos;Vous avez déjà un abonnement actif'apos;,
+          redirectTo: 'apos;/profile'apos;
         },
         { status: 400 }
       );
@@ -106,17 +106,17 @@ async function checkoutHandler(request: NextRequest) {
       metadata: {
         userId: user.id,
         email: user.email,
-        plan: priceId.includes('yearly') ? 'competitor_intelligence_yearly' : 'competitor_intelligence'
+        plan: priceId.includes('apos;yearly'apos;) ? 'apos;competitor_intelligence_yearly'apos; : 'apos;competitor_intelligence'apos;
       }
     });
 
-    // Logger l'événement
-    logger.businessEvent('checkout_session_created', {
+    // Logger l'apos;événement
+    logger.businessEvent('apos;checkout_session_created'apos;, {
       userId: user.id,
       email: user.email,
       priceId,
       sessionId: checkoutSession.id,
-      plan: priceId.includes('yearly') ? 'competitor_intelligence_yearly' : 'competitor_intelligence'
+      plan: priceId.includes('apos;yearly'apos;) ? 'apos;competitor_intelligence_yearly'apos; : 'apos;competitor_intelligence'apos;
     });
 
     return NextResponse.json({
@@ -125,13 +125,13 @@ async function checkoutHandler(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('Checkout: Error creating session', error as Error, {
-      action: 'checkout_session_error',
+    logger.error('apos;Checkout: Error creating session'apos;, error as Error, {
+      action: 'apos;checkout_session_error'apos;,
       userId: session?.user?.email
     });
 
     return NextResponse.json(
-      { error: 'Erreur lors de la création de la session de paiement' },
+      { error: 'apos;Erreur lors de la création de la session de paiement'apos; },
       { status: 500 }
     );
   }
@@ -140,5 +140,5 @@ async function checkoutHandler(request: NextRequest) {
 // Appliquer le rate limiting et la protection CSRF
 export const POST = withRateLimit(
   withCSRFProtection(checkoutHandler),
-  'api'
+  'apos;api'apos;
 );

@@ -26,7 +26,7 @@ export default function AdminRecommendationsPage() {
   const [costMetrics, setCostMetrics] = useState<CostMetrics | null>(null);
   const [usageMetrics, setUsageMetrics] = useState<UsageMetrics | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'monitoring' | 'limits' | 'billing'>('monitoring');
+  const [activeTab, setActiveTab] = useState<'apos;monitoring'apos; | 'apos;limits'apos; | 'apos;billing'apos;>('apos;monitoring'apos;);
   
   const theme = useTheme();
 
@@ -66,7 +66,7 @@ export default function AdminRecommendationsPage() {
         status: "À implémenter"
       },
       {
-        title: "Système d'Alertes Automatiques",
+        title: "Système d'apos;Alertes Automatiques",
         description: "Notifications quand un utilisateur dépasse ses limites",
         priority: "Haute",
         effort: "1-2 jours",
@@ -74,7 +74,7 @@ export default function AdminRecommendationsPage() {
         status: "À implémenter"
       },
       {
-        title: "Suggestions d'Optimisation",
+        title: "Suggestions d'apos;Optimisation",
         description: "Recommandations automatiques pour réduire les coûts",
         priority: "Moyenne",
         effort: "3-4 jours",
@@ -93,15 +93,15 @@ export default function AdminRecommendationsPage() {
       },
       {
         title: "Gestion Dynamique des Quotas",
-        description: "Ajuster automatiquement les limites selon l'usage",
+        description: "Ajuster automatiquement les limites selon l'apos;usage",
         priority: "Moyenne",
         effort: "3 jours",
         impact: "Moyen",
         status: "Planifié"
       },
       {
-        title: "Prompts d'Upgrade Contextuels",
-        description: "Suggérer l'amélioration de plan au bon moment",
+        title: "Prompts d'apos;Upgrade Contextuels",
+        description: "Suggérer l'apos;amélioration de plan au bon moment",
         priority: "Basse",
         effort: "1 jour",
         impact: "Faible",
@@ -118,8 +118,8 @@ export default function AdminRecommendationsPage() {
         status: "À implémenter"
       },
       {
-        title: "Historique d'Évolution des Coûts",
-        description: "Graphiques montrant l'évolution des coûts dans le temps",
+        title: "Historique d'apos;Évolution des Coûts",
+        description: "Graphiques montrant l'apos;évolution des coûts dans le temps",
         priority: "Moyenne",
         effort: "2 jours",
         impact: "Moyen",
@@ -156,7 +156,7 @@ export default function AdminRecommendationsPage() {
 
   if (loading) {
     return (
-      <Layout title="Recommandations d'Implémentation" subtitle="Stratégies de monétisation et optimisation">
+      <Layout title="Recommandations d'apos;Implémentation" subtitle="Stratégies de monétisation et optimisation">
         <div style={{ textAlign: "center", padding: "40px" }}>
           <FontAwesomeIcon icon="spinner" spin style={{ fontSize: "24px", color: theme.colors.primary.main }} />
           <p style={{ marginTop: "16px", color: theme.colors.neutral[600] }}>Chargement des recommandations...</p>
@@ -166,7 +166,7 @@ export default function AdminRecommendationsPage() {
   }
 
   return (
-    <Layout title="Recommandations d'Implémentation" subtitle="Stratégies de monétisation et optimisation">
+    <Layout title="Recommandations d'apos;Implémentation" subtitle="Stratégies de monétisation et optimisation">
       <div style={{ display: "grid", gap: theme.spacing.xl }}>
         {/* Métriques actuelles */}
         <div style={{
@@ -260,11 +260,11 @@ export default function AdminRecommendationsPage() {
             paddingBottom: theme.spacing.md
           }}>
             <button
-              onClick={() => setActiveTab('monitoring')}
+              onClick={() => setActiveTab('apos;monitoring'apos;)}
               style={{
                 padding: "8px 16px",
-                background: activeTab === 'monitoring' ? theme.colors.primary.main : "transparent",
-                color: activeTab === 'monitoring' ? "white" : theme.colors.neutral[600],
+                background: activeTab === 'apos;monitoring'apos; ? theme.colors.primary.main : "transparent",
+                color: activeTab === 'apos;monitoring'apos; ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",
@@ -277,11 +277,11 @@ export default function AdminRecommendationsPage() {
             </button>
             
             <button
-              onClick={() => setActiveTab('limits')}
+              onClick={() => setActiveTab('apos;limits'apos;)}
               style={{
                 padding: "8px 16px",
-                background: activeTab === 'limits' ? theme.colors.primary.main : "transparent",
-                color: activeTab === 'limits' ? "white" : theme.colors.neutral[600],
+                background: activeTab === 'apos;limits'apos; ? theme.colors.primary.main : "transparent",
+                color: activeTab === 'apos;limits'apos; ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",
@@ -294,11 +294,11 @@ export default function AdminRecommendationsPage() {
             </button>
             
             <button
-              onClick={() => setActiveTab('billing')}
+              onClick={() => setActiveTab('apos;billing'apos;)}
               style={{
                 padding: "8px 16px",
-                background: activeTab === 'billing' ? theme.colors.primary.main : "transparent",
-                color: activeTab === 'billing' ? "white" : theme.colors.neutral[600],
+                background: activeTab === 'apos;billing'apos; ? theme.colors.primary.main : "transparent",
+                color: activeTab === 'apos;billing'apos; ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",
@@ -313,7 +313,7 @@ export default function AdminRecommendationsPage() {
 
           {/* Contenu des onglets */}
           <div>
-            {activeTab === 'monitoring' && (
+            {activeTab === 'apos;monitoring'apos; && (
               <div>
                 <h4 style={{
                   fontSize: "16px",
@@ -397,7 +397,7 @@ export default function AdminRecommendationsPage() {
               </div>
             )}
 
-            {activeTab === 'limits' && (
+            {activeTab === 'apos;limits'apos; && (
               <div>
                 <h4 style={{
                   fontSize: "16px",
@@ -481,7 +481,7 @@ export default function AdminRecommendationsPage() {
               </div>
             )}
 
-            {activeTab === 'billing' && (
+            {activeTab === 'apos;billing'apos; && (
               <div>
                 <h4 style={{
                   fontSize: "16px",

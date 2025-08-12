@@ -1,5 +1,5 @@
 /**
- * Configuration d'authentification pour Beriox AI
+ * Configuration d'apos;authentification pour Beriox AI
  * Export de la configuration NextAuth
  */
 
@@ -44,7 +44,7 @@ export const authOptions: any = {
           return null;
         }
 
-        // Vérifier que l'email est vérifié
+        // Vérifier que l'apos;email est vérifié
         if (!user.emailVerified) {
           throw new Error("Veuillez vérifier votre email avant de vous connecter");
         }
@@ -64,7 +64,7 @@ export const authOptions: any = {
   },
   callbacks: {
     async session({ session, user }) {
-      // Ajouter l'ID utilisateur à la session
+      // Ajouter l'apos;ID utilisateur à la session
       if (session.user && user) {
         session.user.id = user.id;
       }
@@ -73,7 +73,7 @@ export const authOptions: any = {
     async signIn({ user, account, profile }) {
       // Vérifications de sécurité pour Google
       if (account?.provider === "google") {
-        // Vérifier que l'email est vérifié
+        // Vérifier que l'apos;email est vérifié
         if (!profile?.email_verified) {
           console.warn("Tentative de connexion avec email non vérifié:", profile?.email);
           return false;
@@ -95,12 +95,12 @@ export const authOptions: any = {
       // Gestion intelligente des redirections
       console.log("🔄 Redirection:", { url, baseUrl });
       
-      // Si l'URL est relative, la construire avec baseUrl
+      // Si l'apos;URL est relative, la construire avec baseUrl
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       }
       
-      // Si l'URL appartient au même domaine
+      // Si l'apos;URL appartient au même domaine
       if (new URL(url).origin === baseUrl) {
         return url;
       }

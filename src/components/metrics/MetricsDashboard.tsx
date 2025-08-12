@@ -1,7 +1,7 @@
-'use client';
+'apos;use client'apos;;
 
-import { useState, useEffect } from 'react';
-import { MetricsCalculator, SystemMetrics, AgentMetrics } from '@/lib/ai-orchestrator/metrics-calculator';
+import { useState, useEffect } from 'apos;react'apos;;
+import { MetricsCalculator, SystemMetrics, AgentMetrics } from 'apos;@/lib/ai-orchestrator/metrics-calculator'apos;;
 
 export default function MetricsDashboard() {
   const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(null);
@@ -21,12 +21,12 @@ export default function MetricsDashboard() {
       const [system, agents] = await Promise.all([
         MetricsCalculator.calculateSystemMetrics(),
         Promise.all([
-          'karine-ai',
-          'hugo-ai', 
-          'jp-bot',
-          'elodie-ai',
-          'clara-la-closeuse',
-          'faucon-le-maitre-focus'
+          'apos;karine-ai'apos;,
+          'apos;hugo-ai'apos;, 
+          'apos;jp-bot'apos;,
+          'apos;elodie-ai'apos;,
+          'apos;clara-la-closeuse'apos;,
+          'apos;faucon-le-maitre-focus'apos;
         ].map(id => MetricsCalculator.calculateAgentMetrics(id)))
       ]);
       
@@ -34,8 +34,8 @@ export default function MetricsDashboard() {
       setAgentMetrics(agents);
       setError(null);
     } catch (err) {
-      setError('Erreur lors du chargement des métriques');
-      console.error('Erreur métriques:', err);
+      setError('apos;Erreur lors du chargement des métriques'apos;);
+      console.error('apos;Erreur métriques:'apos;, err);
     } finally {
       setLoading(false);
     }
@@ -164,15 +164,15 @@ function AgentMetricsSection({ agents }: { agents: AgentMetrics[] }) {
 
 function AgentCard({ agent }: { agent: AgentMetrics }) {
   const getPerformanceColor = (quality: number) => {
-    if (quality >= 0.8) return 'text-green-600';
-    if (quality >= 0.6) return 'text-yellow-600';
-    return 'text-red-600';
+    if (quality >= 0.8) return 'apos;text-green-600'apos;;
+    if (quality >= 0.6) return 'apos;text-yellow-600'apos;;
+    return 'apos;text-red-600'apos;;
   };
 
   const getTrendIcon = (trend: number) => {
-    if (trend > 0.1) return '📈';
-    if (trend < -0.1) return '📉';
-    return '➡️';
+    if (trend > 0.1) return 'apos;📈'apos;;
+    if (trend < -0.1) return 'apos;📉'apos;;
+    return 'apos;➡️'apos;;
   };
 
   return (
@@ -308,10 +308,10 @@ function MetricCard({
   color: string;
 }) {
   const colorClasses = {
-    blue: 'bg-blue-50 text-blue-600',
-    green: 'bg-green-50 text-green-600',
-    purple: 'bg-purple-50 text-purple-600',
-    orange: 'bg-orange-50 text-orange-600',
+    blue: 'apos;bg-blue-50 text-blue-600'apos;,
+    green: 'apos;bg-green-50 text-green-600'apos;,
+    purple: 'apos;bg-purple-50 text-purple-600'apos;,
+    orange: 'apos;bg-orange-50 text-orange-600'apos;,
   };
 
   return (

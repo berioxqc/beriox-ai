@@ -11,7 +11,7 @@ export async function GET() {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Récupérer l'utilisateur depuis la base de données
+    // Récupérer l'apos;utilisateur depuis la base de données
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: {
@@ -31,7 +31,7 @@ export async function GET() {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
 
-    // Compter les missions de l'utilisateur
+    // Compter les missions de l'apos;utilisateur
     const totalMissions = await prisma.mission.count({
       where: {
         // Note: Ajuster selon votre schéma de base de données
@@ -51,7 +51,7 @@ export async function GET() {
     const userStats = {
       totalMissions,
       completedMissions,
-      subscriptionStatus: "trial", // À adapter selon votre système d'abonnement
+      subscriptionStatus: "trial", // À adapter selon votre système d'apos;abonnement
       planId: "free",
       joinDate: user.createdAt.toISOString(),
       provider: user.accounts[0]?.provider || "google"

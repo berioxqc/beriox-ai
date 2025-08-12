@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { logger } from '@/lib/logger';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { prisma } from 'apos;@/lib/prisma'apos;;
+import { logger } from 'apos;@/lib/logger'apos;;
 
 export async function GET(request: NextRequest) {
   const startTime = Date.now();
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     // Test de performance avec une requête plus complexe
     const complexStart = Date.now();
     const missionStats = await prisma.mission.groupBy({
-      by: ['status'],
+      by: ['apos;status'apos;],
       _count: {
         status: true
       }
@@ -27,21 +27,21 @@ export async function GET(request: NextRequest) {
     const complexDuration = Date.now() - complexStart;
 
     const healthCheck = {
-      status: 'healthy',
+      status: 'apos;healthy'apos;,
       timestamp: new Date().toISOString(),
       checks: {
         connectivity: {
-          status: 'healthy',
+          status: 'apos;healthy'apos;,
           duration: pingDuration,
           threshold: 100 // 100ms max
         },
         simpleQuery: {
-          status: 'healthy',
+          status: 'apos;healthy'apos;,
           duration: queryDuration,
           threshold: 200 // 200ms max
         },
         complexQuery: {
-          status: 'healthy',
+          status: 'apos;healthy'apos;,
           duration: complexDuration,
           threshold: 500 // 500ms max
         }
@@ -59,48 +59,48 @@ export async function GET(request: NextRequest) {
     );
 
     if (!allHealthy) {
-      healthCheck.status = 'degraded';
+      healthCheck.status = 'apos;degraded'apos;;
       Object.values(healthCheck.checks).forEach(check => {
         if (check.duration > check.threshold) {
-          check.status = 'slow';
+          check.status = 'apos;slow'apos;;
         }
       });
     }
 
-    logger.info('Database health check completed', {
-      action: 'health_check_db',
+    logger.info('apos;Database health check completed'apos;, {
+      action: 'apos;health_check_db'apos;,
       duration: healthCheck.metrics.totalDuration,
       status: healthCheck.status,
       checks: healthCheck.checks
     });
 
     return NextResponse.json(healthCheck, {
-      status: healthCheck.status === 'healthy' ? 200 : 503,
+      status: healthCheck.status === 'apos;healthy'apos; ? 200 : 503,
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
+        'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
+        'apos;Pragma'apos;: 'apos;no-cache'apos;,
+        'apos;Expires'apos;: 'apos;0'apos;
       }
     });
 
   } catch (error) {
-    logger.error('Database health check failed', error as Error, {
-      action: 'health_check_db',
+    logger.error('apos;Database health check failed'apos;, error as Error, {
+      action: 'apos;health_check_db'apos;,
       duration: Date.now() - startTime
     });
 
     return NextResponse.json({
-      status: 'unhealthy',
+      status: 'apos;unhealthy'apos;,
       timestamp: new Date().toISOString(),
-      error: 'Database health check failed',
-      details: error instanceof Error ? error.message : 'Unknown error',
+      error: 'apos;Database health check failed'apos;,
+      details: error instanceof Error ? error.message : 'apos;Unknown error'apos;,
       duration: Date.now() - startTime
     }, {
       status: 503,
       headers: {
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
+        'apos;Cache-Control'apos;: 'apos;no-cache, no-store, must-revalidate'apos;,
+        'apos;Pragma'apos;: 'apos;no-cache'apos;,
+        'apos;Expires'apos;: 'apos;0'apos;
       }
     });
   }

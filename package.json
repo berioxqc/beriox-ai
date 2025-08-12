@@ -43,7 +43,7 @@
     "test:linter-fixer": "node scripts/test-bots.js linter",
     "fix:html": "node scripts/test-bots.js html --apply",
     "fix:linter": "node scripts/test-bots.js linter --apply",
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage --watchAll=false",

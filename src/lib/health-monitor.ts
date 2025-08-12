@@ -1,16 +1,16 @@
-import { prisma } from './prisma';
-import { logger } from './logger';
-import { redisUtils } from './redis';
+import { prisma } from 'apos;./prisma'apos;;
+import { logger } from 'apos;./logger'apos;;
+import { redisUtils } from 'apos;./redis'apos;;
 
 // ============================================================================
 // TYPES ET INTERFACES
 // ============================================================================
 
 export enum HealthStatus {
-  HEALTHY = 'healthy',
-  DEGRADED = 'degraded',
-  UNHEALTHY = 'unhealthy',
-  CRITICAL = 'critical'
+  HEALTHY = 'apos;healthy'apos;,
+  DEGRADED = 'apos;degraded'apos;,
+  UNHEALTHY = 'apos;unhealthy'apos;,
+  CRITICAL = 'apos;critical'apos;
 }
 
 export interface HealthCheck {
@@ -52,7 +52,7 @@ export interface HealthCheckConfig {
   check: () => Promise<HealthCheck>;
   interval: number; // en millisecondes
   timeout: number; // en millisecondes
-  critical: boolean; // si true, l'échec de ce check rend le système unhealthy
+  critical: boolean; // si true, l'apos;échec de ce check rend le système unhealthy
   retries: number;
 }
 
@@ -78,22 +78,22 @@ async function checkDatabase(): Promise<HealthCheck> {
     const responseTime = Date.now() - startTime;
     
     return {
-      name: 'database',
+      name: 'apos;database'apos;,
       status: dbPerf < 1000 ? HealthStatus.HEALTHY : HealthStatus.DEGRADED,
       responseTime,
       lastCheck: new Date(),
       details: {
         performance: dbPerf,
-        connectionPool: 'active'
+        connectionPool: 'apos;active'apos;
       }
     };
   } catch (error) {
     return {
-      name: 'database',
+      name: 'apos;database'apos;,
       status: HealthStatus.CRITICAL,
       responseTime: Date.now() - startTime,
       lastCheck: new Date(),
-      error: error instanceof Error ? error.message : 'Unknown database error',
+      error: error instanceof Error ? error.message : 'apos;Unknown database error'apos;,
       details: { error }
     };
   }
@@ -111,30 +111,30 @@ async function checkRedis(): Promise<HealthCheck> {
     
     // Test de performance
     const startPerf = Date.now();
-    await redisUtils.set('health_check', 'test', 10);
-    await redisUtils.get('health_check');
-    await redisUtils.del('health_check');
+    await redisUtils.set('apos;health_check'apos;, 'apos;test'apos;, 10);
+    await redisUtils.get('apos;health_check'apos;);
+    await redisUtils.del('apos;health_check'apos;);
     const redisPerf = Date.now() - startPerf;
     
     const responseTime = Date.now() - startTime;
     
     return {
-      name: 'redis',
+      name: 'apos;redis'apos;,
       status: redisPerf < 100 ? HealthStatus.HEALTHY : HealthStatus.DEGRADED,
       responseTime,
       lastCheck: new Date(),
       details: {
         performance: redisPerf,
-        memory: 'available'
+        memory: 'apos;available'apos;
       }
     };
   } catch (error) {
     return {
-      name: 'redis',
+      name: 'apos;redis'apos;,
       status: HealthStatus.UNHEALTHY,
       responseTime: Date.now() - startTime,
       lastCheck: new Date(),
-      error: error instanceof Error ? error.message : 'Redis connection failed',
+      error: error instanceof Error ? error.message : 'apos;Redis connection failed'apos;,
       details: { error }
     };
   }
@@ -146,17 +146,17 @@ async function checkRedis(): Promise<HealthCheck> {
 async function checkExternalServices(): Promise<HealthCheck> {
   const startTime = Date.now();
   const services = [
-    { name: 'stripe', url: 'https://api.stripe.com/v1/account' },
-    { name: 'openai', url: 'https://api.openai.com/v1/models' },
-    { name: 'google_oauth', url: 'https://www.googleapis.com/oauth2/v1/tokeninfo' }
+    { name: 'apos;stripe'apos;, url: 'apos;https://api.stripe.com/v1/account'apos; },
+    { name: 'apos;openai'apos;, url: 'apos;https://api.openai.com/v1/models'apos; },
+    { name: 'apos;google_oauth'apos;, url: 'apos;https://www.googleapis.com/oauth2/v1/tokeninfo'apos; }
   ];
   
   const results = await Promise.allSettled(
     services.map(async (service) => {
       const response = await fetch(service.url, {
-        method: 'HEAD',
+        method: 'apos;HEAD'apos;,
         headers: {
-          'User-Agent': 'Beriox-Health-Check/1.0'
+          'apos;User-Agent'apos;: 'apos;Beriox-Health-Check/1.0'apos;
         }
       });
       return { name: service.name, status: response.status };
@@ -164,8 +164,8 @@ async function checkExternalServices(): Promise<HealthCheck> {
   );
   
   const failedServices = results.filter(
-    (result) => result.status === 'rejected' || 
-    (result.status === 'fulfilled' && result.value.status >= 500)
+    (result) => result.status === 'apos;rejected'apos; || 
+    (result.status === 'apos;fulfilled'apos; && result.value.status >= 500)
   );
   
   const responseTime = Date.now() - startTime;
@@ -178,7 +178,7 @@ async function checkExternalServices(): Promise<HealthCheck> {
   }
   
   return {
-    name: 'external_services',
+    name: 'apos;external_services'apos;,
     status,
     responseTime,
     lastCheck: new Date(),
@@ -187,21 +187,21 @@ async function checkExternalServices(): Promise<HealthCheck> {
       failed: failedServices.length,
       services: results.map((result, index) => ({
         name: services[index].name,
-        status: result.status === 'fulfilled' ? 'ok' : 'failed'
+        status: result.status === 'apos;fulfilled'apos; ? 'apos;ok'apos; : 'apos;failed'apos;
       }))
     }
   };
 }
 
 /**
- * Vérification de l'espace disque et mémoire
+ * Vérification de l'apos;espace disque et mémoire
  */
 async function checkSystemResources(): Promise<HealthCheck> {
   const startTime = Date.now();
   
   try {
     // Simulation des métriques système
-    // En production, utilisez des bibliothèques comme 'systeminformation'
+    // En production, utilisez des bibliothèques comme 'apos;systeminformation'apos;
     const memoryUsage = process.memoryUsage();
     const cpuUsage = process.cpuUsage();
     
@@ -211,7 +211,7 @@ async function checkSystemResources(): Promise<HealthCheck> {
     const responseTime = Date.now() - startTime;
     
     return {
-      name: 'system_resources',
+      name: 'apos;system_resources'apos;,
       status: isMemoryHealthy ? HealthStatus.HEALTHY : HealthStatus.DEGRADED,
       responseTime,
       lastCheck: new Date(),
@@ -229,11 +229,11 @@ async function checkSystemResources(): Promise<HealthCheck> {
     };
   } catch (error) {
     return {
-      name: 'system_resources',
+      name: 'apos;system_resources'apos;,
       status: HealthStatus.UNHEALTHY,
       responseTime: Date.now() - startTime,
       lastCheck: new Date(),
-      error: error instanceof Error ? error.message : 'System check failed',
+      error: error instanceof Error ? error.message : 'apos;System check failed'apos;,
       details: { error }
     };
   }
@@ -245,24 +245,24 @@ async function checkSystemResources(): Promise<HealthCheck> {
 async function checkInternalAPIs(): Promise<HealthCheck> {
   const startTime = Date.now();
   const apis = [
-    '/api/health',
-    '/api/missions',
-    '/api/user/stats'
+    'apos;/api/health'apos;,
+    'apos;/api/missions'apos;,
+    'apos;/api/user/stats'apos;
   ];
   
   const results = await Promise.allSettled(
     apis.map(async (api) => {
       const response = await fetch(`http://localhost:3000${api}`, {
-        method: 'GET',
-        headers: { 'User-Agent': 'Beriox-Health-Check/1.0' }
+        method: 'apos;GET'apos;,
+        headers: { 'apos;User-Agent'apos;: 'apos;Beriox-Health-Check/1.0'apos; }
       });
       return { name: api, status: response.status };
     })
   );
   
   const failedAPIs = results.filter(
-    (result) => result.status === 'rejected' || 
-    (result.status === 'fulfilled' && result.value.status >= 500)
+    (result) => result.status === 'apos;rejected'apos; || 
+    (result.status === 'apos;fulfilled'apos; && result.value.status >= 500)
   );
   
   const responseTime = Date.now() - startTime;
@@ -275,7 +275,7 @@ async function checkInternalAPIs(): Promise<HealthCheck> {
   }
   
   return {
-    name: 'internal_apis',
+    name: 'apos;internal_apis'apos;,
     status,
     responseTime,
     lastCheck: new Date(),
@@ -284,7 +284,7 @@ async function checkInternalAPIs(): Promise<HealthCheck> {
       failed: failedAPIs.length,
       apis: results.map((result, index) => ({
         name: apis[index],
-        status: result.status === 'fulfilled' ? 'ok' : 'failed'
+        status: result.status === 'apos;fulfilled'apos; ? 'apos;ok'apos; : 'apos;failed'apos;
       }))
     }
   };
@@ -319,7 +319,7 @@ export class HealthMonitor {
   private initializeChecks(): void {
     this.configs = [
       {
-        name: 'database',
+        name: 'apos;database'apos;,
         check: checkDatabase,
         interval: 30000, // 30 secondes
         timeout: 10000,  // 10 secondes
@@ -327,7 +327,7 @@ export class HealthMonitor {
         retries: 3
       },
       {
-        name: 'redis',
+        name: 'apos;redis'apos;,
         check: checkRedis,
         interval: 30000, // 30 secondes
         timeout: 5000,   // 5 secondes
@@ -335,7 +335,7 @@ export class HealthMonitor {
         retries: 2
       },
       {
-        name: 'external_services',
+        name: 'apos;external_services'apos;,
         check: checkExternalServices,
         interval: 60000, // 1 minute
         timeout: 15000,  // 15 secondes
@@ -343,7 +343,7 @@ export class HealthMonitor {
         retries: 2
       },
       {
-        name: 'system_resources',
+        name: 'apos;system_resources'apos;,
         check: checkSystemResources,
         interval: 30000, // 30 secondes
         timeout: 5000,   // 5 secondes
@@ -351,7 +351,7 @@ export class HealthMonitor {
         retries: 1
       },
       {
-        name: 'internal_apis',
+        name: 'apos;internal_apis'apos;,
         check: checkInternalAPIs,
         interval: 45000, // 45 secondes
         timeout: 10000,  // 10 secondes
@@ -366,11 +366,11 @@ export class HealthMonitor {
    */
   start(): void {
     if (this.isRunning) {
-      logger.warn('Health monitor is already running');
+      logger.warn('apos;Health monitor is already running'apos;);
       return;
     }
 
-    logger.info('Starting health monitor');
+    logger.info('apos;Starting health monitor'apos;);
     this.isRunning = true;
 
     // Démarrer toutes les vérifications
@@ -390,7 +390,7 @@ export class HealthMonitor {
       return;
     }
 
-    logger.info('Stopping health monitor');
+    logger.info('apos;Stopping health monitor'apos;);
     this.isRunning = false;
 
     // Arrêter tous les intervalles
@@ -422,7 +422,7 @@ export class HealthMonitor {
         const check = await Promise.race([
           config.check(),
           new Promise<never>((_, reject) => 
-            setTimeout(() => reject(new Error('Timeout')), config.timeout)
+            setTimeout(() => reject(new Error('apos;Timeout'apos;)), config.timeout)
           )
         ]);
 
@@ -431,12 +431,12 @@ export class HealthMonitor {
         // Log du résultat
         if (check.status === HealthStatus.HEALTHY) {
           logger.debug(`Health check ${config.name} passed`, {
-            action: 'health_check_success',
+            action: 'apos;health_check_success'apos;,
             metadata: { check: config.name, responseTime: check.responseTime }
           });
         } else {
           logger.warn(`Health check ${config.name} failed`, {
-            action: 'health_check_failed',
+            action: 'apos;health_check_failed'apos;,
             metadata: { 
               check: config.name, 
               status: check.status, 
@@ -448,11 +448,11 @@ export class HealthMonitor {
 
         return;
       } catch (error) {
-        lastError = error instanceof Error ? error : new Error('Unknown error');
+        lastError = error instanceof Error ? error : new Error('apos;Unknown error'apos;);
         
         if (attempt < config.retries) {
           logger.debug(`Health check ${config.name} attempt ${attempt} failed, retrying...`, {
-            action: 'health_check_retry',
+            action: 'apos;health_check_retry'apos;,
             metadata: { check: config.name, attempt, error: lastError.message }
           });
           
@@ -468,14 +468,14 @@ export class HealthMonitor {
       status: config.critical ? HealthStatus.CRITICAL : HealthStatus.UNHEALTHY,
       responseTime: config.timeout,
       lastCheck: new Date(),
-      error: lastError?.message || 'All retry attempts failed',
+      error: lastError?.message || 'apos;All retry attempts failed'apos;,
       details: { attempts: config.retries, lastError }
     };
 
     this.checks.set(config.name, failedCheck);
     
     logger.error(`Health check ${config.name} failed after ${config.retries} attempts`, {
-      action: 'health_check_critical_failure',
+      action: 'apos;health_check_critical_failure'apos;,
       metadata: { 
         check: config.name, 
         status: failedCheck.status,
@@ -489,7 +489,7 @@ export class HealthMonitor {
    * Exécute toutes les vérifications immédiatement
    */
   async runAllChecks(): Promise<void> {
-    logger.info('Running all health checks');
+    logger.info('apos;Running all health checks'apos;);
     
     const promises = this.configs.map(config => this.runCheck(config));
     await Promise.allSettled(promises);
@@ -535,8 +535,8 @@ export class HealthMonitor {
       status: overallStatus,
       timestamp: now,
       uptime: Date.now() - this.startTime.getTime(),
-      version: process.env.npm_package_version || '1.0.0',
-      environment: process.env.NODE_ENV || 'development',
+      version: process.env.npm_package_version || 'apos;1.0.0'apos;,
+      environment: process.env.NODE_ENV || 'apos;development'apos;,
       checks,
       summary,
       metrics: {
@@ -552,7 +552,7 @@ export class HealthMonitor {
   }
 
   /**
-   * Obtient le statut d'un check spécifique
+   * Obtient le statut d'apos;un check spécifique
    */
   getCheckStatus(name: string): HealthCheck | null {
     return this.checks.get(name) || null;

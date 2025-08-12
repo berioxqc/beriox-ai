@@ -69,11 +69,11 @@ export default function MissionsPage() {
         // Recharger les missions pour voir les changements
         await fetchMissions();
       } else {
-        alert("❌ Erreur lors de l'orchestration: " + (result.error || "Erreur inconnue"));
+        alert("❌ Erreur lors de l'apos;orchestration: " + (result.error || "Erreur inconnue"));
       }
     } catch (error) {
       console.error("Erreur orchestration:", error);
-      alert("❌ Erreur lors de l'orchestration: " + (error instanceof Error ? error.message : "Erreur inconnue"));
+      alert("❌ Erreur lors de l'apos;orchestration: " + (error instanceof Error ? error.message : "Erreur inconnue"));
     } finally {
       setOrchestrating(null);
     }
@@ -134,13 +134,13 @@ export default function MissionsPage() {
 
   const getMissionIcon = (objective: string) => {
     const lower = objective.toLowerCase();
-    if (lower.includes('marketing') || lower.includes('campagne')) return '📊';
-    if (lower.includes('développement') || lower.includes('site') || lower.includes('app')) return '💻';
-    if (lower.includes('contenu') || lower.includes('article') || lower.includes('blog')) return '✍️';
-    if (lower.includes('design') || lower.includes('logo') || lower.includes('graphique')) return '🎨';
-    if (lower.includes('vente') || lower.includes('commercial')) return '💰';
-    if (lower.includes('formation') || lower.includes('cours')) return '🎓';
-    return '🎯';
+    if (lower.includes('apos;marketing'apos;) || lower.includes('apos;campagne'apos;)) return 'apos;📊'apos;;
+    if (lower.includes('apos;développement'apos;) || lower.includes('apos;site'apos;) || lower.includes('apos;app'apos;)) return 'apos;💻'apos;;
+    if (lower.includes('apos;contenu'apos;) || lower.includes('apos;article'apos;) || lower.includes('apos;blog'apos;)) return 'apos;✍️'apos;;
+    if (lower.includes('apos;design'apos;) || lower.includes('apos;logo'apos;) || lower.includes('apos;graphique'apos;)) return 'apos;🎨'apos;;
+    if (lower.includes('apos;vente'apos;) || lower.includes('apos;commercial'apos;)) return 'apos;💰'apos;;
+    if (lower.includes('apos;formation'apos;) || lower.includes('apos;cours'apos;)) return 'apos;🎓'apos;;
+    return 'apos;🎯'apos;;
   };
 
   const notionUrl = (mission: Mission) =>
@@ -161,7 +161,7 @@ export default function MissionsPage() {
           fontSize: "14px",
           fontWeight: "500",
           transition: "all 0.2s",
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
         }}
         onMouseOver={(e) => {
           if (!loading) {
@@ -185,9 +185,9 @@ export default function MissionsPage() {
         borderRadius: 12,
         fontSize: "14px",
         fontWeight: "500",
-        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
       }}>
-        {filteredMissions.length} mission{filteredMissions.length !== 1 ? 's' : ''}
+        {filteredMissions.length} mission{filteredMissions.length !== 1 ? 'apos;s'apos; : 'apos;'apos;}
       </div>
     </div>
   );
@@ -195,7 +195,7 @@ export default function MissionsPage() {
   // Contenu limité pour les utilisateurs non connectés
   const limitedContent = (
     <LoginPrompt 
-      message="Connectez-vous pour accéder à vos missions et utiliser l'orchestration IA"
+      message="Connectez-vous pour accéder à vos missions et utiliser l'apos;orchestration IA"
       showSignUp={true}
     />
   );
@@ -244,7 +244,7 @@ export default function MissionsPage() {
               fontWeight: "500",
               color: "#425466",
               marginBottom: 6,
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
             }}>
               Rechercher
             </label>
@@ -262,7 +262,7 @@ export default function MissionsPage() {
                 color: "#0a2540",
                 outline: "none",
                 transition: "border-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}
               onFocus={(e) => e.target.style.borderColor = "#635bff"}
               onBlur={(e) => e.target.style.borderColor = "#e3e8ee"}
@@ -277,7 +277,7 @@ export default function MissionsPage() {
               fontWeight: "500",
               color: "#425466",
               marginBottom: 6,
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
             }}>
               Statut
             </label>
@@ -294,7 +294,7 @@ export default function MissionsPage() {
                 background: "white",
                 outline: "none",
                 cursor: "pointer",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}
             >
               <option value="all">Tous les statuts</option>
@@ -316,7 +316,7 @@ export default function MissionsPage() {
               fontWeight: "500",
               color: "#425466",
               marginBottom: 6,
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
             }}>
               Priorité
             </label>
@@ -333,7 +333,7 @@ export default function MissionsPage() {
                 background: "white",
                 outline: "none",
                 cursor: "pointer",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}
             >
               <option value="all">Toutes les priorités</option>
@@ -361,7 +361,7 @@ export default function MissionsPage() {
                 fontSize: "14px",
                 fontWeight: "500",
                 transition: "all 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}
               onMouseOver={(e) => {
                 e.currentTarget.style.borderColor = "#fecaca";
@@ -394,7 +394,7 @@ export default function MissionsPage() {
             padding: 60,
             color: "#8898aa",
             fontSize: "14px",
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
           }}>
             ⏳ Chargement des missions...
           </div>
@@ -406,7 +406,7 @@ export default function MissionsPage() {
             fontSize: "14px",
             background: "rgba(223, 27, 65, 0.05)",
             border: "1px solid rgba(223, 27, 65, 0.2)",
-            fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
           }}>
             ⚠️ {error}
           </div>
@@ -422,16 +422,16 @@ export default function MissionsPage() {
               marginBottom: 8,
               fontWeight: "500",
               color: "#425466",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
             }}>
               Aucune mission trouvée avec ces filtres
             </div>
             <div style={{
               fontSize: "14px",
               color: "#8898aa",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
             }}>
-              Essayez d'ajuster vos critères de recherche
+              Essayez d'apos;ajuster vos critères de recherche
             </div>
           </div>
         ) : (
@@ -465,16 +465,16 @@ export default function MissionsPage() {
                       color: "#0a2540",
                       marginBottom: 4,
                       lineHeight: "1.4",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                     }}>
                       {mission.objective}
                     </div>
                     <div style={{
                       fontSize: "13px",
                       color: "#8898aa",
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                     }}>
-                      Créée le {new Date(mission.createdAt).toLocaleDateString('fr-FR')}
+                      Créée le {new Date(mission.createdAt).toLocaleDateString('apos;fr-FR'apos;)}
                     </div>
                   </div>
 
@@ -488,7 +488,7 @@ export default function MissionsPage() {
                     fontWeight: "500",
                     textAlign: "center",
                     minWidth: 80,
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                     textTransform: "uppercase",
                     letterSpacing: "0.5px"
                   }}>
@@ -505,12 +505,12 @@ export default function MissionsPage() {
                     fontWeight: "500",
                     textAlign: "center",
                     minWidth: 70,
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                   }}>
                     {getPriorityLabel(mission.priority || "")}
                   </div>
 
-                  {/* Boutons d'action */}
+                  {/* Boutons d'apos;action */}
                   <div style={{
                     display: "flex",
                     gap: 8,
@@ -534,7 +534,7 @@ export default function MissionsPage() {
                         fontWeight: "500",
                         cursor: orchestrating === mission.id ? "not-allowed" : "pointer",
                         transition: "all 0.2s",
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                       }}
                       onMouseOver={(e) => {
                         if (orchestrating !== mission.id) {
@@ -563,7 +563,7 @@ export default function MissionsPage() {
                           fontWeight: "500",
                           cursor: "pointer",
                           transition: "all 0.2s",
-                          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                         }}
                         onMouseOver={(e) => {
                           e.currentTarget.style.background = "#f7f9fc";

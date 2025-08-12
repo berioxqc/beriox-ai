@@ -1,23 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { notificationManager } from '@/lib/notifications';
-import { logger } from '@/lib/logger';
-import { withRateLimit } from '@/lib/rate-limit-advanced';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { getServerSession } from 'apos;next-auth'apos;;
+import { authOptions } from 'apos;@/lib/auth'apos;;
+import { notificationManager } from 'apos;@/lib/notifications'apos;;
+import { logger } from 'apos;@/lib/logger'apos;;
+import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
 
-// GET - Récupérer les notifications de l'utilisateur
+// GET - Récupérer les notifications de l'apos;utilisateur
 async function getNotifications(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   const { searchParams } = new URL(request.url);
-  const unreadOnly = searchParams.get('unreadOnly') === 'true';
-  const limit = parseInt(searchParams.get('limit') || '50');
-  const offset = parseInt(searchParams.get('offset') || '0');
-  const type = searchParams.get('type') || undefined;
-  const priority = searchParams.get('priority') || undefined;
+  const unreadOnly = searchParams.get('apos;unreadOnly'apos;) === 'apos;true'apos;;
+  const limit = parseInt(searchParams.get('apos;limit'apos;) || 'apos;50'apos;);
+  const offset = parseInt(searchParams.get('apos;offset'apos;) || 'apos;0'apos;);
+  const type = searchParams.get('apos;type'apos;) || undefined;
+  const priority = searchParams.get('apos;priority'apos;) || undefined;
 
   try {
     const notifications = notificationManager.getUserNotifications(session.user.id, {
@@ -30,8 +30,8 @@ async function getNotifications(request: NextRequest) {
 
     const unreadCount = notificationManager.getUnreadCount(session.user.id);
 
-    logger.info('Notifications retrieved', {
-      action: 'notifications_retrieved',
+    logger.info('apos;Notifications retrieved'apos;, {
+      action: 'apos;notifications_retrieved'apos;,
       metadata: {
         userId: session.user.id,
         count: notifications.length,
@@ -47,13 +47,13 @@ async function getNotifications(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('Failed to retrieve notifications', error as Error, {
-      action: 'notifications_retrieve_error',
+    logger.error('apos;Failed to retrieve notifications'apos;, error as Error, {
+      action: 'apos;notifications_retrieve_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to retrieve notifications' },
+      { error: 'apos;Failed to retrieve notifications'apos; },
       { status: 500 }
     );
   }
@@ -63,7 +63,7 @@ async function getNotifications(request: NextRequest) {
 async function createNotification(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -79,7 +79,7 @@ async function createNotification(request: NextRequest) {
 
     if (!type || !priority || !title || !message) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'apos;Missing required fields'apos; },
         { status: 400 }
       );
     }
@@ -95,8 +95,8 @@ async function createNotification(request: NextRequest) {
       actions
     );
 
-    logger.info('Custom notification created', {
-      action: 'notification_custom_created',
+    logger.info('apos;Custom notification created'apos;, {
+      action: 'apos;notification_custom_created'apos;,
       metadata: {
         userId: session.user.id,
         notificationId: notification.id,
@@ -108,13 +108,13 @@ async function createNotification(request: NextRequest) {
     return NextResponse.json({ notification }, { status: 201 });
 
   } catch (error) {
-    logger.error('Failed to create notification', error as Error, {
-      action: 'notification_create_error',
+    logger.error('apos;Failed to create notification'apos;, error as Error, {
+      action: 'apos;notification_create_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to create notification' },
+      { error: 'apos;Failed to create notification'apos; },
       { status: 500 }
     );
   }
@@ -124,7 +124,7 @@ async function createNotification(request: NextRequest) {
 async function markAsRead(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -133,7 +133,7 @@ async function markAsRead(request: NextRequest) {
 
     if (!notificationId) {
       return NextResponse.json(
-        { error: 'Notification ID is required' },
+        { error: 'apos;Notification ID is required'apos; },
         { status: 400 }
       );
     }
@@ -142,13 +142,13 @@ async function markAsRead(request: NextRequest) {
 
     if (!success) {
       return NextResponse.json(
-        { error: 'Notification not found or access denied' },
+        { error: 'apos;Notification not found or access denied'apos; },
         { status: 404 }
       );
     }
 
-    logger.info('Notification marked as read', {
-      action: 'notification_marked_read',
+    logger.info('apos;Notification marked as read'apos;, {
+      action: 'apos;notification_marked_read'apos;,
       metadata: {
         userId: session.user.id,
         notificationId
@@ -158,13 +158,13 @@ async function markAsRead(request: NextRequest) {
     return NextResponse.json({ success: true });
 
   } catch (error) {
-    logger.error('Failed to mark notification as read', error as Error, {
-      action: 'notification_mark_read_error',
+    logger.error('apos;Failed to mark notification as read'apos;, error as Error, {
+      action: 'apos;notification_mark_read_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to mark notification as read' },
+      { error: 'apos;Failed to mark notification as read'apos; },
       { status: 500 }
     );
   }
@@ -174,7 +174,7 @@ async function markAsRead(request: NextRequest) {
 async function deleteNotification(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -183,7 +183,7 @@ async function deleteNotification(request: NextRequest) {
 
     if (!notificationId) {
       return NextResponse.json(
-        { error: 'Notification ID is required' },
+        { error: 'apos;Notification ID is required'apos; },
         { status: 400 }
       );
     }
@@ -192,13 +192,13 @@ async function deleteNotification(request: NextRequest) {
 
     if (!success) {
       return NextResponse.json(
-        { error: 'Notification not found or access denied' },
+        { error: 'apos;Notification not found or access denied'apos; },
         { status: 404 }
       );
     }
 
-    logger.info('Notification deleted', {
-      action: 'notification_deleted',
+    logger.info('apos;Notification deleted'apos;, {
+      action: 'apos;notification_deleted'apos;,
       metadata: {
         userId: session.user.id,
         notificationId
@@ -208,20 +208,20 @@ async function deleteNotification(request: NextRequest) {
     return NextResponse.json({ success: true });
 
   } catch (error) {
-    logger.error('Failed to delete notification', error as Error, {
-      action: 'notification_delete_error',
+    logger.error('apos;Failed to delete notification'apos;, error as Error, {
+      action: 'apos;notification_delete_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to delete notification' },
+      { error: 'apos;Failed to delete notification'apos; },
       { status: 500 }
     );
   }
 }
 
 // Handler principal avec rate limiting
-export const GET = withRateLimit(getNotifications, 'notifications');
-export const POST = withRateLimit(createNotification, 'notifications');
-export const PUT = withRateLimit(markAsRead, 'notifications');
-export const DELETE = withRateLimit(deleteNotification, 'notifications');
+export const GET = withRateLimit(getNotifications, 'apos;notifications'apos;);
+export const POST = withRateLimit(createNotification, 'apos;notifications'apos;);
+export const PUT = withRateLimit(markAsRead, 'apos;notifications'apos;);
+export const DELETE = withRateLimit(deleteNotification, 'apos;notifications'apos;);

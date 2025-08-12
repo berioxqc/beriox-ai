@@ -1,21 +1,21 @@
 "use client";
-import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useEffect, Suspense } from 'apos;react'apos;;
+import { useRouter, useSearchParams } from 'apos;next/navigation'apos;;
+import Link from 'apos;next/link'apos;;
 
 function VerifyForm() {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('apos;'apos;);
+  const [success, setSuccess] = useState('apos;'apos;);
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const verifyEmail = async () => {
-      const token = searchParams.get('token');
+      const token = searchParams.get('apos;token'apos;);
       
       if (!token) {
-        setError('Token de vérification manquant');
+        setError('apos;Token de vérification manquant'apos;);
         setIsLoading(false);
         return;
       }
@@ -25,12 +25,12 @@ function VerifyForm() {
         const data = await response.json();
 
         if (!response.ok) {
-          setError(data.error || 'Erreur lors de la vérification');
+          setError(data.error || 'apos;Erreur lors de la vérification'apos;);
         } else {
           setSuccess(data.message);
         }
       } catch (error) {
-        setError('Erreur lors de la vérification');
+        setError('apos;Erreur lors de la vérification'apos;);
       } finally {
         setIsLoading(false);
       }

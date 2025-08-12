@@ -8,8 +8,8 @@ import CookieConsent from "@/components/CookieConsent";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Beriox AI - Plateforme d'Automatisation IA",
-  description: "Votre équipe d'agents IA pour automatiser et optimiser vos processus business",
+  title: "Beriox AI - Plateforme d'apos;Automatisation IA",
+  description: "Votre équipe d'apos;agents IA pour automatiser et optimiser vos processus business",
 };
 
 export default function RootLayout({
@@ -29,8 +29,8 @@ export default function RootLayout({
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-4BNMH2FQMZ');
+            gtag('apos;js'apos;, new Date());
+            gtag('apos;config'apos;, 'apos;G-4BNMH2FQMZ'apos;);
           `}
         </Script>
       </head>

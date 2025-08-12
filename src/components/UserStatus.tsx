@@ -11,13 +11,13 @@ export default function UserStatus() {
     const fetchProfile = async () => {
       if (session?.user?.email) {
         try {
-          const response = await fetch('/api/user/profile');
+          const response = await fetch('apos;/api/user/profile'apos;);
           if (response.ok) {
             const data = await response.json();
             setProfile(data);
           }
         } catch (error) {
-          console.error('Erreur lors de la récupération du profil:', error);
+          console.error('apos;Erreur lors de la récupération du profil:'apos;, error);
         }
       }
     };
@@ -25,39 +25,39 @@ export default function UserStatus() {
     fetchProfile();
   }, [session]);
 
-  // Déterminer l'accès premium basé sur le rôle et les crédits
+  // Déterminer l'apos;accès premium basé sur le rôle et les crédits
   let hasAccess = false;
   let plan = undefined;
 
-  if (profile?.user?.role === 'SUPER_ADMIN' || profile?.user?.role === 'ADMIN') {
+  if (profile?.user?.role === 'apos;SUPER_ADMIN'apos; || profile?.user?.role === 'apos;ADMIN'apos;) {
     hasAccess = true;
-    plan = 'enterprise';
+    plan = 'apos;enterprise'apos;;
   } else if (profile?.user?.credits && profile.user.credits > 0) {
     hasAccess = true;
-    plan = 'basic';
+    plan = 'apos;basic'apos;;
   }
 
   const getRoleColor = () => {
     switch (profile?.user?.role) {
-      case 'SUPER_ADMIN':
-        return 'text-red-600 bg-red-50';
-      case 'ADMIN':
-        return 'text-orange-600 bg-orange-50';
-      case 'USER':
-        return 'text-blue-600 bg-blue-50';
+      case 'apos;SUPER_ADMIN'apos;:
+        return 'apos;text-red-600 bg-red-50'apos;;
+      case 'apos;ADMIN'apos;:
+        return 'apos;text-orange-600 bg-orange-50'apos;;
+      case 'apos;USER'apos;:
+        return 'apos;text-blue-600 bg-blue-50'apos;;
       default:
-        return 'text-gray-600 bg-gray-50';
+        return 'apos;text-gray-600 bg-gray-50'apos;;
     }
   };
 
   const getPlanColor = () => {
     switch (plan) {
-      case 'enterprise':
-        return 'text-purple-600 bg-purple-50';
-      case 'basic':
-        return 'text-green-600 bg-green-50';
+      case 'apos;enterprise'apos;:
+        return 'apos;text-purple-600 bg-purple-50'apos;;
+      case 'apos;basic'apos;:
+        return 'apos;text-green-600 bg-green-50'apos;;
       default:
-        return 'text-gray-600 bg-gray-50';
+        return 'apos;text-gray-600 bg-gray-50'apos;;
     }
   };
 
@@ -75,7 +75,7 @@ export default function UserStatus() {
       {profile?.user?.role && (
         <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${getRoleColor()}`}>
           <Icon name="user" size={12} />
-          <span>{profile.user.role.replace('_', ' ')}</span>
+          <span>{profile.user.role.replace('apos;_'apos;, 'apos; 'apos;)}</span>
         </div>
       )}
 
@@ -92,7 +92,7 @@ export default function UserStatus() {
         <div 
           className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-sm text-white font-semibold bg-cover bg-center"
           style={{
-            backgroundImage: session?.user?.image ? `url(${session.user.image})` : 'none'
+            backgroundImage: session?.user?.image ? `url(${session.user.image})` : 'apos;none'apos;
           }}
         >
           {!session?.user?.image && (session?.user?.name ? session.user.name.charAt(0).toUpperCase() : "U")}

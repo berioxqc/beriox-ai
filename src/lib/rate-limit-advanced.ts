@@ -3,8 +3,8 @@
  * Protection contre les abus et attaques par déni de service
  */
 
-import { NextRequest, NextResponse } from 'next/server';
-import { redisUtils } from './redis';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { redisUtils } from 'apos;./redis'apos;;
 
 // Types
 interface RateLimitConfig {
@@ -13,7 +13,7 @@ interface RateLimitConfig {
   keyGenerator?: (req: NextRequest) => string; // Générateur de clé personnalisé
   skipSuccessfulRequests?: boolean; // Ignorer les requêtes réussies
   skipFailedRequests?: boolean; // Ignorer les requêtes échouées
-  message?: string; // Message d'erreur personnalisé
+  message?: string; // Message d'apos;erreur personnalisé
   statusCode?: number; // Code de statut HTTP
   headers?: boolean; // Inclure les headers de rate limit
 }
@@ -31,30 +31,30 @@ interface RateLimitResult {
 const DEFAULT_CONFIG: RateLimitConfig = {
   windowMs: 15 * 60 * 1000, // 15 minutes
   maxRequests: 100,
-  message: 'Trop de requêtes, veuillez réessayer plus tard.',
+  message: 'apos;Trop de requêtes, veuillez réessayer plus tard.'apos;,
   statusCode: 429,
   headers: true
 };
 
 // Générateurs de clés par type de route
 const keyGenerators = {
-  // Clé basée sur l'IP
+  // Clé basée sur l'apos;IP
   ip: (req: NextRequest) => {
-    const forwarded = req.headers.get('x-forwarded-for');
-    const realIp = req.headers.get('x-real-ip');
-    const ip = forwarded?.split(',')[0] || realIp || req.ip || 'unknown';
+    const forwarded = req.headers.get('apos;x-forwarded-for'apos;);
+    const realIp = req.headers.get('apos;x-real-ip'apos;);
+    const ip = forwarded?.split('apos;,'apos;)[0] || realIp || req.ip || 'apos;unknown'apos;;
     return `rate_limit:ip:${ip}`;
   },
 
-  // Clé basée sur l'utilisateur (si authentifié)
+  // Clé basée sur l'apos;utilisateur (si authentifié)
   user: (req: NextRequest) => {
-    const userId = req.headers.get('x-user-id') || 'anonymous';
+    const userId = req.headers.get('apos;x-user-id'apos;) || 'apos;anonymous'apos;;
     return `rate_limit:user:${userId}`;
   },
 
-  // Clé basée sur l'API key
+  // Clé basée sur l'apos;API key
   apiKey: (req: NextRequest) => {
-    const apiKey = req.headers.get('x-api-key') || 'no-key';
+    const apiKey = req.headers.get('apos;x-api-key'apos;) || 'apos;no-key'apos;;
     return `rate_limit:apikey:${apiKey}`;
   },
 
@@ -62,7 +62,7 @@ const keyGenerators = {
   combined: (req: NextRequest) => {
     const ip = keyGenerators.ip(req);
     const user = keyGenerators.user(req);
-    const route = req.nextUrl?.pathname || 'unknown';
+    const route = req.nextUrl?.pathname || 'apos;unknown'apos;;
     return `rate_limit:combined:${ip}:${user}:${route}`;
   }
 };
@@ -70,55 +70,55 @@ const keyGenerators = {
 // Configuration par route
 const routeConfigs: Record<string, RateLimitConfig> = {
   // Routes sensibles - plus restrictives
-  '/api/auth': {
+  'apos;/api/auth'apos;: {
     windowMs: 5 * 60 * 1000, // 5 minutes
     maxRequests: 10,
     keyGenerator: keyGenerators.ip,
-    message: 'Trop de tentatives de connexion, veuillez réessayer dans 5 minutes.'
+    message: 'apos;Trop de tentatives de connexion, veuillez réessayer dans 5 minutes.'apos;
   },
 
-  '/api/missions': {
+  'apos;/api/missions'apos;: {
     windowMs: 15 * 60 * 1000, // 15 minutes
     maxRequests: 50,
     keyGenerator: keyGenerators.user,
-    message: 'Limite de création de missions atteinte.'
+    message: 'apos;Limite de création de missions atteinte.'apos;
   },
 
-  '/api/stripe': {
+  'apos;/api/stripe'apos;: {
     windowMs: 60 * 1000, // 1 minute
     maxRequests: 5,
     keyGenerator: keyGenerators.user,
-    message: 'Trop de tentatives de paiement, veuillez réessayer dans 1 minute.'
+    message: 'apos;Trop de tentatives de paiement, veuillez réessayer dans 1 minute.'apos;
   },
 
-  '/api/refunds': {
+  'apos;/api/refunds'apos;: {
     windowMs: 60 * 60 * 1000, // 1 heure
     maxRequests: 3,
     keyGenerator: keyGenerators.user,
-    message: 'Limite de demandes de remboursement atteinte.'
+    message: 'apos;Limite de demandes de remboursement atteinte.'apos;
   },
 
-  // Routes d'administration - très restrictives
-  '/api/admin': {
+  // Routes d'apos;administration - très restrictives
+  'apos;/api/admin'apos;: {
     windowMs: 15 * 60 * 1000, // 15 minutes
     maxRequests: 20,
     keyGenerator: keyGenerators.combined,
-    message: 'Accès administrateur limité.'
+    message: 'apos;Accès administrateur limité.'apos;
   },
 
   // Routes publiques - plus permissives
-  '/api/health': {
+  'apos;/api/health'apos;: {
     windowMs: 60 * 1000, // 1 minute
     maxRequests: 100,
     keyGenerator: keyGenerators.ip,
     skipSuccessfulRequests: true
   },
 
-  '/api/integrations': {
+  'apos;/api/integrations'apos;: {
     windowMs: 5 * 60 * 1000, // 5 minutes
     maxRequests: 30,
     keyGenerator: keyGenerators.user,
-    message: 'Limite d\'intégrations atteinte.'
+    message: 'apos;Limite d\'apos;intégrations atteinte.'apos;
   }
 };
 
@@ -129,7 +129,7 @@ export async function checkRateLimit(
   req: NextRequest,
   customConfig?: Partial<RateLimitConfig>
 ): Promise<RateLimitResult> {
-  const pathname = req.nextUrl?.pathname || '';
+  const pathname = req.nextUrl?.pathname || 'apos;'apos;;
   
   // Trouver la configuration appropriée
   let config = { ...DEFAULT_CONFIG };
@@ -185,9 +185,9 @@ export async function checkRateLimit(
     };
 
   } catch (error) {
-    console.error('Erreur Redis pour rate limiting:', error);
+    console.error('apos;Erreur Redis pour rate limiting:'apos;, error);
     
-    // En cas d'erreur Redis, permettre la requête
+    // En cas d'apos;erreur Redis, permettre la requête
     return {
       success: true,
       remaining: config.maxRequests - 1,
@@ -211,8 +211,8 @@ export async function rateLimitMiddleware(
   if (!result.success) {
     const response = NextResponse.json(
       { 
-        error: 'Rate limit exceeded',
-        message: customConfig?.message || 'Trop de requêtes, veuillez réessayer plus tard.',
+        error: 'apos;Rate limit exceeded'apos;,
+        message: customConfig?.message || 'apos;Trop de requêtes, veuillez réessayer plus tard.'apos;,
         retryAfter: result.retryAfter
       },
       { status: customConfig?.statusCode || 429 }
@@ -220,10 +220,10 @@ export async function rateLimitMiddleware(
 
     // Ajouter les headers de rate limiting
     if (customConfig?.headers !== false) {
-      response.headers.set('X-RateLimit-Limit', result.limit.toString());
-      response.headers.set('X-RateLimit-Remaining', result.remaining.toString());
-      response.headers.set('X-RateLimit-Reset', result.resetTime.toString());
-      response.headers.set('Retry-After', result.retryAfter.toString());
+      response.headers.set('apos;X-RateLimit-Limit'apos;, result.limit.toString());
+      response.headers.set('apos;X-RateLimit-Remaining'apos;, result.remaining.toString());
+      response.headers.set('apos;X-RateLimit-Reset'apos;, result.resetTime.toString());
+      response.headers.set('apos;Retry-After'apos;, result.retryAfter.toString());
     }
 
     return response;
@@ -240,13 +240,13 @@ export function createRateLimiter(config: RateLimitConfig) {
 }
 
 /**
- * Fonction pour réinitialiser le rate limit d'une clé
+ * Fonction pour réinitialiser le rate limit d'apos;une clé
  */
 export async function resetRateLimit(key: string): Promise<void> {
   try {
     await redisUtils.del(key);
   } catch (error) {
-    console.error('Erreur lors de la réinitialisation du rate limit:', error);
+    console.error('apos;Erreur lors de la réinitialisation du rate limit:'apos;, error);
   }
 }
 
@@ -254,9 +254,9 @@ export async function resetRateLimit(key: string): Promise<void> {
  * Fonction pour obtenir les statistiques de rate limiting
  */
 export async function getRateLimitStats(): Promise<Record<string, any>> {
-  // Désactivé car redis.keys n'est pas disponible dans le wrapper
+  // Désactivé car redis.keys n'apos;est pas disponible dans le wrapper
   // try {
-  //   const keys = await redis.keys('rate_limit:*');
+  //   const keys = await redis.keys('apos;rate_limit:*'apos;);
   //   const stats: Record<string, any> = {};
 
   //   for (const key of keys) {
@@ -264,7 +264,7 @@ export async function getRateLimitStats(): Promise<Record<string, any>> {
   //     const ttl = await redis.ttl(key);
       
   //     stats[key] = {
-  //       count: parseInt(count || '0', 10),
+  //       count: parseInt(count || 'apos;0'apos;, 10),
   //       ttl,
   //       expiresAt: Date.now() + (ttl * 1000)
   //     };
@@ -272,7 +272,7 @@ export async function getRateLimitStats(): Promise<Record<string, any>> {
 
   //   return stats;
   // } catch (error) {
-  //   console.error('Erreur lors de la récupération des stats:', error);
+  //   console.error('apos;Erreur lors de la récupération des stats:'apos;, error);
   //   return {};
   // }
   return {};
@@ -284,7 +284,7 @@ export async function getRateLimitStats(): Promise<Record<string, any>> {
 export async function cleanupExpiredRateLimits(): Promise<number> {
   // Désactivé car redis.keys et redis.ttl ne sont pas disponibles dans le wrapper
   // try {
-  //   const keys = await redis.keys('rate_limit:*');
+  //   const keys = await redis.keys('apos;rate_limit:*'apos;);
   //   let cleaned = 0;
 
   //   for (const key of keys) {
@@ -297,7 +297,7 @@ export async function cleanupExpiredRateLimits(): Promise<number> {
 
   //   return cleaned;
   // } catch (error) {
-  //   console.error('Erreur lors du nettoyage:', error);
+  //   console.error('apos;Erreur lors du nettoyage:'apos;, error);
   //   return 0;
   // }
   return 0;
@@ -317,8 +317,8 @@ export function withRateLimit(
     if (!rateLimitResult.success) {
       return NextResponse.json(
         { 
-          error: 'Rate limit exceeded',
-          message: 'Trop de requêtes, veuillez réessayer plus tard.',
+          error: 'apos;Rate limit exceeded'apos;,
+          message: 'apos;Trop de requêtes, veuillez réessayer plus tard.'apos;,
           retryAfter: rateLimitResult.retryAfter
         },
         { status: 429 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'apos;react'apos;;
 
 interface IconProps {
   name: string;
@@ -22,7 +22,7 @@ const icons: Record<string, React.ReactNode> = {
   user: (
     <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
   ),
-  'credit-card': (
+  'apos;credit-card'apos;: (
     <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
   ),
   gift: (
@@ -34,13 +34,13 @@ const icons: Record<string, React.ReactNode> = {
   cog: (
     <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
   ),
-  'chevron-down': (
+  'apos;chevron-down'apos;: (
     <path d="M19 9l-7 7-7-7" />
   ),
-  'chevron-right': (
+  'apos;chevron-right'apos;: (
     <path d="M9 5l7 7-7 7" />
   ),
-  'chevron-left': (
+  'apos;chevron-left'apos;: (
     <path d="M15 19l-7-7 7-7" />
   ),
   bolt: (
@@ -52,7 +52,7 @@ const icons: Record<string, React.ReactNode> = {
   times: (
     <path d="M6 18L18 6M6 6l12 12" />
   ),
-  'sign-out-alt': (
+  'apos;sign-out-alt'apos;: (
     <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
   ),
   search: (
@@ -67,13 +67,13 @@ const icons: Record<string, React.ReactNode> = {
   bell: (
     <path d="M15 17h5l-5 5v-5zM10.5 3.75a6 6 0 00-6 6v3.75l-.75.75h13.5l-.75-.75V9.75a6 6 0 00-6-6zM12 10.5a.75.75 0 01.75.75v.375a.75.75 0 01-1.5 0V11.25A.75.75 0 0112 10.5z" />
   ),
-  'info-circle': (
+  'apos;info-circle'apos;: (
     <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
   ),
   check: (
     <path d="M5 13l4 4L19 7" />
   ),
-  'arrow-right': (
+  'apos;arrow-right'apos;: (
     <path d="M14 5l7 7m0 0l-7 7m7-7H3" />
   ),
   database: (
@@ -82,7 +82,7 @@ const icons: Record<string, React.ReactNode> = {
   bullseye: (
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" />
   ),
-  'user-check': (
+  'apos;user-check'apos;: (
     <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7zM9 12l2 2 4-4" />
   ),
   eye: (
@@ -106,7 +106,7 @@ const icons: Record<string, React.ReactNode> = {
   rocket: (
     <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
   ),
-  'exclamation-triangle': (
+  'apos;exclamation-triangle'apos;: (
     <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
   ),
   pause: (
@@ -121,7 +121,7 @@ const icons: Record<string, React.ReactNode> = {
   clock: (
     <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
   ),
-  'shield-alt': (
+  'apos;shield-alt'apos;: (
     <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
   ),
   lock: (
@@ -133,7 +133,7 @@ const icons: Record<string, React.ReactNode> = {
   key: (
     <path d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
   ),
-  'cookie-bite': (
+  'apos;cookie-bite'apos;: (
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-2-2 2-2-2-2 2-2 2 2 2-2 2 2-2 2 2 2-2 2z" />
   ),
   certificate: (
@@ -148,11 +148,11 @@ const icons: Record<string, React.ReactNode> = {
   zap: (
     <path d="M13 10V3L4 14h7v7l9-11h-7z" />
   ),
-  'trending-up': (
+  'apos;trending-up'apos;: (
     <path d="M23 6l-9.5 9.5-5-5L1 18" />
   ),
   // Icônes manquantes ajoutées
-  'chart-line': (
+  'apos;chart-line'apos;: (
     <path d="M3 3v18h18M9 9l3 3 3-3M9 15l3-3 3 3" />
   ),
   spinner: (
@@ -164,13 +164,13 @@ const icons: Record<string, React.ReactNode> = {
   lightbulb: (
     <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
   ),
-  'check-circle': (
+  'apos;check-circle'apos;: (
     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
   ),
-  'puzzle-piece': (
+  'apos;puzzle-piece'apos;: (
     <path d="M4 7h3a1 1 0 010 2H4a1 1 0 010-2zM7 4h2a1 1 0 010 2H7a1 1 0 010-2zM10 7h3a1 1 0 010 2h-3a1 1 0 010-2zM7 10h2a1 1 0 010 2H7a1 1 0 010-2zM4 13h3a1 1 0 010 2H4a1 1 0 010-2zM10 13h3a1 1 0 010 2h-3a1 1 0 010-2zM7 16h2a1 1 0 010 2H7a1 1 0 010-2z" />
   ),
-  'dollar-sign': (
+  'apos;dollar-sign'apos;: (
     <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
   ),
   play: (
@@ -182,10 +182,10 @@ const icons: Record<string, React.ReactNode> = {
   save: (
     <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-2h-2v2M7 3v2h8V3" />
   ),
-  'times-circle': (
+  'apos;times-circle'apos;: (
     <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
   ),
-  'universal-access': (
+  'apos;universal-access'apos;: (
     <path d="M16 4a2 2 0 100-4 2 2 0 000 4zM12 8v8m-4-4h8M12 20v-4m-4 4h8" />
   ),
   mobile: (
@@ -196,7 +196,7 @@ const icons: Record<string, React.ReactNode> = {
   )
 };
 
-function Icon({ name, className = '', size = 16 }: IconProps) {
+function Icon({ name, className = 'apos;'apos;, size = 16 }: IconProps) {
   const icon = icons[name];
   
   if (!icon) {

@@ -1,16 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
-import { logger } from '@/lib/logger';
-import { withRateLimit } from '@/lib/rate-limit-advanced';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { getServerSession } from 'apos;next-auth'apos;;
+import { authOptions } from 'apos;@/lib/auth'apos;;
+import { prisma } from 'apos;@/lib/prisma'apos;;
+import { logger } from 'apos;@/lib/logger'apos;;
+import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
 
 export const PUT = withRateLimit(async (request: NextRequest) => {
   const session = await getServerSession(authOptions);
   
-  // Vérifier que l'utilisateur est super admin
-  if (session?.user?.email !== 'info@beriox.ca') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  // Vérifier que l'apos;utilisateur est super admin
+  if (session?.user?.email !== 'apos;info@beriox.ca'apos;) {
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -19,35 +19,35 @@ export const PUT = withRateLimit(async (request: NextRequest) => {
 
     if (!userId || !role) {
       return NextResponse.json(
-        { error: 'User ID and role are required' },
+        { error: 'apos;User ID and role are required'apos; },
         { status: 400 }
       );
     }
 
     // Vérifier que le rôle est valide
-    if (!['USER', 'ADMIN', 'SUPER_ADMIN'].includes(role)) {
+    if (!['apos;USER'apos;, 'apos;ADMIN'apos;, 'apos;SUPER_ADMIN'apos;].includes(role)) {
       return NextResponse.json(
-        { error: 'Invalid role. Must be USER, ADMIN, or SUPER_ADMIN' },
+        { error: 'apos;Invalid role. Must be USER, ADMIN, or SUPER_ADMIN'apos; },
         { status: 400 }
       );
     }
 
-    // Vérifier que l'utilisateur existe
+    // Vérifier que l'apos;utilisateur existe
     const existingUser = await prisma.user.findUnique({
       where: { id: userId }
     });
 
     if (!existingUser) {
       return NextResponse.json(
-        { error: 'User not found' },
+        { error: 'apos;User not found'apos; },
         { status: 404 }
       );
     }
 
     // Empêcher de modifier son propre rôle
-    if (existingUser.email === 'info@beriox.ca' && role !== 'SUPER_ADMIN') {
+    if (existingUser.email === 'apos;info@beriox.ca'apos; && role !== 'apos;SUPER_ADMIN'apos;) {
       return NextResponse.json(
-        { error: 'Cannot modify your own role' },
+        { error: 'apos;Cannot modify your own role'apos; },
         { status: 400 }
       );
     }
@@ -61,8 +61,8 @@ export const PUT = withRateLimit(async (request: NextRequest) => {
       }
     });
 
-    logger.info('User role updated by super admin', {
-      action: 'user_role_updated',
+    logger.info('apos;User role updated by super admin'apos;, {
+      action: 'apos;user_role_updated'apos;,
       metadata: {
         adminEmail: session.user.email,
         targetUserId: userId,
@@ -82,20 +82,20 @@ export const PUT = withRateLimit(async (request: NextRequest) => {
         emailVerified: !!updatedUser.emailVerified,
         createdAt: updatedUser.createdAt.toISOString(),
         credits: updatedUser.userCredits?.credits || 0,
-        plan: updatedUser.userCredits?.plan || 'free'
+        plan: updatedUser.userCredits?.plan || 'apos;free'apos;
       },
       message: `Rôle de ${updatedUser.name || updatedUser.email} mis à jour vers ${role}`
     });
 
   } catch (error) {
-    logger.error('Failed to update user role', error as Error, {
-      action: 'user_role_update_error',
+    logger.error('apos;Failed to update user role'apos;, error as Error, {
+      action: 'apos;user_role_update_error'apos;,
       metadata: { adminEmail: session.user.email }
     });
 
     return NextResponse.json(
-      { error: 'Failed to update user role' },
+      { error: 'apos;Failed to update user role'apos; },
       { status: 500 }
     );
   }
-}, 'super-admin-users-role');
+}, 'apos;super-admin-users-role'apos;);

@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'apos;react'apos;;
 import Layout from "@/components/Layout";
-import Icon from '@/components/ui/Icon';
+import Icon from 'apos;@/components/ui/Icon'apos;;
 
 interface CookiePreferences {
   necessary: boolean;
@@ -21,26 +21,26 @@ export default function CookiesPage() {
 
   useEffect(() => {
     // Charger les préférences existantes
-    const consent = localStorage.getItem('cookie-consent');
+    const consent = localStorage.getItem('apos;cookie-consent'apos;);
     if (consent) {
       try {
         const savedPreferences = JSON.parse(consent);
         setPreferences(savedPreferences);
       } catch (error) {
-        console.error('Erreur lors du chargement des préférences:', error);
+        console.error('apos;Erreur lors du chargement des préférences:'apos;, error);
       }
     }
   }, []);
 
   const savePreferences = () => {
-    localStorage.setItem('cookie-consent', JSON.stringify(preferences));
+    localStorage.setItem('apos;cookie-consent'apos;, JSON.stringify(preferences));
     setSaved(true);
     
     // Activer Google Analytics si accepté
     if (preferences.analytics) {
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('consent', 'update', {
-          analytics_storage: 'granted'
+      if (typeof window !== 'apos;undefined'apos; && window.gtag) {
+        window.gtag('apos;consent'apos;, 'apos;update'apos;, {
+          analytics_storage: 'apos;granted'apos;
         });
       }
     }
@@ -49,7 +49,7 @@ export default function CookiesPage() {
   };
 
   const resetPreferences = () => {
-    localStorage.removeItem('cookie-consent');
+    localStorage.removeItem('apos;cookie-consent'apos;);
     setPreferences({
       necessary: true,
       analytics: false,
@@ -120,11 +120,11 @@ export default function CookiesPage() {
               </div>
             </div>
 
-            {/* Cookies d'analyse */}
+            {/* Cookies d'apos;analyse */}
             <div className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-semibold text-gray-900">Cookies d'analyse</h3>
+                  <h3 className="font-semibold text-gray-900">Cookies d'apos;analyse</h3>
                   <p className="text-sm text-gray-600">
                     Nous aident à comprendre comment vous utilisez notre site
                   </p>
@@ -144,7 +144,7 @@ export default function CookiesPage() {
                   <li>Analyser le trafic du site</li>
                   <li>Comprendre les pages les plus visitées</li>
                   <li>Mesurer les performances du site</li>
-                  <li>Améliorer l'expérience utilisateur</li>
+                  <li>Améliorer l'apos;expérience utilisateur</li>
                 </ul>
                 <p className="mt-2 text-xs text-gray-400">
                   <strong>Services :</strong> Google Analytics, statistiques de visite
@@ -175,7 +175,7 @@ export default function CookiesPage() {
                 <ul className="list-disc list-inside space-y-1 text-gray-500">
                   <li>Personnaliser les publicités</li>
                   <li>Suivre les conversions</li>
-                  <li>Analyser l'efficacité des campagnes</li>
+                  <li>Analyser l'apos;efficacité des campagnes</li>
                   <li>Proposer du contenu pertinent</li>
                 </ul>
                 <p className="mt-2 text-xs text-gray-400">
@@ -206,8 +206,8 @@ export default function CookiesPage() {
                 <p className="mb-2"><strong>Utilisation :</strong></p>
                 <ul className="list-disc list-inside space-y-1 text-gray-500">
                   <li>Mémoriser votre langue préférée</li>
-                  <li>Sauvegarder vos paramètres d'affichage</li>
-                  <li>Personnaliser l'interface</li>
+                  <li>Sauvegarder vos paramètres d'apos;affichage</li>
+                  <li>Personnaliser l'apos;interface</li>
                   <li>Rappeler vos préférences de contenu</li>
                 </ul>
               </div>
@@ -248,7 +248,7 @@ export default function CookiesPage() {
               <li>Nous ne vendons jamais vos données personnelles</li>
             </ul>
             <p className="mt-4">
-              Pour plus d'informations, consultez notre{' '}
+              Pour plus d'apos;informations, consultez notre{'apos; 'apos;}
               <a href="/privacy" className="text-blue-600 hover:underline font-medium">
                 Politique de confidentialité
               </a>

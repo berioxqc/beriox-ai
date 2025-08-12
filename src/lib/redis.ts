@@ -3,12 +3,12 @@ let redis: any = null;
 let bullConnection: any = null;
 
 // Vérifier si nous sommes côté serveur (pas dans Edge Runtime)
-if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
+if (typeof window === 'apos;undefined'apos; && process.env.NODE_ENV !== 'apos;test'apos;) {
   try {
     const IORedis = require("ioredis");
     const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
     
-    // Vérifier si l'URL Redis est valide
+    // Vérifier si l'apos;URL Redis est valide
     if (redisUrl && redisUrl !== "redis://localhost:6379") {
       redis = new IORedis(redisUrl, {
         maxRetriesPerRequest: null, // Required for BullMQ
@@ -22,26 +22,26 @@ if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
       bullConnection = redis; // BullMQ accepts an ioredis instance
     } else {
       // Log silencieux en production
-      if (process.env.NODE_ENV !== 'production') {
-        console.log('Redis URL not configured, using in-memory fallback');
+      if (process.env.NODE_ENV !== 'apos;production'apos;) {
+        console.log('apos;Redis URL not configured, using in-memory fallback'apos;);
       }
     }
   } catch (error) {
     // Log silencieux en production
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('Redis not available, using in-memory fallback:', error.message);
+    if (process.env.NODE_ENV !== 'apos;production'apos;) {
+      console.log('apos;Redis not available, using in-memory fallback:'apos;, error.message);
     }
   }
 }
 
-// Fonctions utilitaires pour Redis avec gestion d'erreur
+// Fonctions utilitaires pour Redis avec gestion d'apos;erreur
 export const redisUtils = {
   async get(key: string): Promise<string | null> {
     if (!redis) return null;
     try {
       return await redis.get(key);
     } catch (error) {
-      console.warn('Redis get error:', error);
+      console.warn('apos;Redis get error:'apos;, error);
       return null;
     }
   },
@@ -55,7 +55,7 @@ export const redisUtils = {
         await redis.set(key, value);
       }
     } catch (error) {
-      console.warn('Redis set error:', error);
+      console.warn('apos;Redis set error:'apos;, error);
     }
   },
 
@@ -64,7 +64,7 @@ export const redisUtils = {
     try {
       await redis.del(key);
     } catch (error) {
-      console.warn('Redis del error:', error);
+      console.warn('apos;Redis del error:'apos;, error);
     }
   },
 
@@ -74,7 +74,7 @@ export const redisUtils = {
       const result = await redis.exists(key);
       return result === 1;
     } catch (error) {
-      console.warn('Redis exists error:', error);
+      console.warn('apos;Redis exists error:'apos;, error);
       return false;
     }
   },
@@ -84,7 +84,7 @@ export const redisUtils = {
     try {
       await redis.expire(key, ttl);
     } catch (error) {
-      console.warn('Redis expire error:', error);
+      console.warn('apos;Redis expire error:'apos;, error);
     }
   }
 };

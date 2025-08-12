@@ -23,13 +23,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Utilisateur introuvable" }, { status: 404 });
     }
 
-    // Vérifier si l'utilisateur peut utiliser NovaBot (fonctionnalité premium)
-    const basePlan = user.planId || 'free';
+    // Vérifier si l'apos;utilisateur peut utiliser NovaBot (fonctionnalité premium)
+    const basePlan = user.planId || 'apos;free'apos;;
     const hasPremiumAccess = user.premiumAccess && 
       user.premiumAccess.isActive && 
       user.premiumAccess.endDate > new Date();
 
-    if (basePlan === 'free' && !hasPremiumAccess) {
+    if (basePlan === 'apos;free'apos; && !hasPremiumAccess) {
       return NextResponse.json({ 
         error: "NovaBot est réservé aux plans premium",
         upgradeRequired: true,
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     const { dataSources, userContext } = await req.json();
 
-    // Récupérer l'historique des missions de l'utilisateur
+    // Récupérer l'apos;historique des missions de l'apos;utilisateur
     const userMissions = await prisma.mission.findMany({
       where: { userId: user.id },
       select: {
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         createdAt: true,
         status: true
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: 'apos;desc'apos; },
       take: 50 // Dernières 50 missions
     });
 
@@ -58,9 +58,9 @@ export async function POST(req: NextRequest) {
       title: mission.objective.substring(0, 100),
       objectif: mission.objective,
       tags: [], // À implémenter plus tard
-      resultat: mission.status === 'completed' ? 'success' : 
-                mission.status === 'failed' ? 'failure' : 'partial',
-      notes: '',
+      resultat: mission.status === 'apos;completed'apos; ? 'apos;success'apos; : 
+                mission.status === 'apos;failed'apos; ? 'apos;failure'apos; : 'apos;partial'apos;,
+      notes: 'apos;'apos;,
       createdAt: mission.createdAt
     }));
 
@@ -69,8 +69,8 @@ export async function POST(req: NextRequest) {
       dataSources || [],
       missionHistory,
       userContext || {
-        industry: 'general',
-        goals: ['growth', 'optimization'],
+        industry: 'apos;general'apos;,
+        goals: ['apos;growth'apos;, 'apos;optimization'apos;],
         currentPlan: basePlan
       }
     );
@@ -79,10 +79,10 @@ export async function POST(req: NextRequest) {
     const savedMission = await prisma.mission.create({
       data: {
         objective: novaMission.title,
-        status: 'pending',
+        status: 'apos;pending'apos;,
         userId: user.id,
         metadata: {
-          type: 'novabot',
+          type: 'apos;novabot'apos;,
           novaData: novaMission,
           sources: novaMission.sources,
           impact: novaMission.impactEstime,
@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('Erreur génération mission NovaBot:', error);
+    console.error('apos;Erreur génération mission NovaBot:'apos;, error);
     
     if (error.message.includes("Aucune nouvelle opportunité")) {
       return NextResponse.json({

@@ -15,7 +15,7 @@ const defaultAgents = [
 
 export async function GET(req: NextRequest) {
   try {
-    // Pour l'instant, on retourne la configuration par défaut
+    // Pour l'apos;instant, on retourne la configuration par défaut
     // Dans le futur, on pourrait stocker cela en base de données par utilisateur
     const activeAgents = defaultAgents.filter(agent => agent.active && agent.id !== "prioritybot");
     
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
   try {
     const { agents } = await req.json();
     
-    // Pour l'instant, on simule juste le succès
+    // Pour l'apos;instant, on simule juste le succès
     // Dans le futur, on sauvegarderait en base de données par utilisateur
     console.log("Agents config updated:", agents);
     

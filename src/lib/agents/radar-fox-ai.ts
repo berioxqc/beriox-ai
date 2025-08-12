@@ -18,18 +18,18 @@ export interface RadarFoxAnalysis {
     growthRate: number;
     relevance: number; // 1-10
     timeframe: string;
-    impact: 'high' | 'medium' | 'low';
+    impact: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
   }[];
   priceAnalysis: {
     competitor: string;
     product: string;
     price: number;
     priceChange: number;
-    pricePosition: 'premium' | 'mid-range' | 'budget';
+    pricePosition: 'apos;premium'apos; | 'apos;mid-range'apos; | 'apos;budget'apos;;
   }[];
   immediateActions: {
     action: string;
-    priority: 'critical' | 'high' | 'medium' | 'low';
+    priority: 'apos;critical'apos; | 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
     expectedImpact: string;
     timeframe: string;
     resources: string[];
@@ -43,7 +43,7 @@ export interface RadarFoxAnalysis {
 
 export interface RadarFoxConfig {
   targetCompetitors: string[];
-  monitoringFrequency: 'hourly' | 'daily' | 'weekly';
+  monitoringFrequency: 'apos;hourly'apos; | 'apos;daily'apos; | 'apos;weekly'apos;;
   alertThresholds: {
     priceChange: number;
     marketShareChange: number;
@@ -69,10 +69,10 @@ export class RadarFoxAI {
    * Analyse complète du marché et des concurrents
    */
   async analyzeMarket(): Promise<RadarFoxAnalysis> {
-    console.log("🦊 RadarFoxAI: Démarrage de l'analyse de veille concurrentielle...");
+    console.log("🦊 RadarFoxAI: Démarrage de l'apos;analyse de veille concurrentielle...");
 
     try {
-      // Simulation d'analyse concurrentielle
+      // Simulation d'apos;analyse concurrentielle
       const competitorInsights = await this.analyzeCompetitors();
       const marketTrends = await this.detectTrends();
       const priceAnalysis = await this.analyzePricing();
@@ -93,8 +93,8 @@ export class RadarFoxAI {
       
       return analysis;
     } catch (error) {
-      console.error("🦊 RadarFoxAI: Erreur lors de l'analyse:", error);
-      throw new Error("Impossible de compléter l'analyse de veille concurrentielle");
+      console.error("🦊 RadarFoxAI: Erreur lors de l'apos;analyse:", error);
+      throw new Error("Impossible de compléter l'apos;analyse de veille concurrentielle");
     }
   }
 
@@ -105,7 +105,7 @@ export class RadarFoxAI {
     const insights = [];
     
     for (const competitor of this.config.targetCompetitors) {
-      // Simulation d'analyse de concurrent
+      // Simulation d'apos;analyse de concurrent
       const insight = {
         name: competitor,
         strengths: [
@@ -114,7 +114,7 @@ export class RadarFoxAI {
           "Innovation technologique récente"
         ],
         weaknesses: [
-          "Prix élevés limitent l'accessibilité",
+          "Prix élevés limitent l'apos;accessibilité",
           "Service client parfois lent",
           "Gamme de produits limitée"
         ],
@@ -130,7 +130,7 @@ export class RadarFoxAI {
         ],
         marketShare: Math.random() * 30 + 5, // 5-35%
         recentChanges: [
-          "Lancement d'une nouvelle gamme premium",
+          "Lancement d'apos;une nouvelle gamme premium",
           "Partenariat avec une startup tech",
           "Expansion internationale"
         ]
@@ -152,21 +152,21 @@ export class RadarFoxAI {
         growthRate: 45,
         relevance: 9,
         timeframe: "6-12 mois",
-        impact: 'high' as const
+        impact: 'apos;high'apos; as const
       },
       {
         trend: "Personnalisation en temps réel",
         growthRate: 32,
         relevance: 8,
         timeframe: "3-6 mois",
-        impact: 'medium' as const
+        impact: 'apos;medium'apos; as const
       },
       {
         trend: "Durabilité et responsabilité sociale",
         growthRate: 28,
         relevance: 7,
         timeframe: "12-18 mois",
-        impact: 'medium' as const
+        impact: 'apos;medium'apos; as const
       }
     ];
     
@@ -183,21 +183,21 @@ export class RadarFoxAI {
         product: "Solution Premium",
         price: 299,
         priceChange: -5,
-        pricePosition: 'premium' as const
+        pricePosition: 'apos;premium'apos; as const
       },
       {
         competitor: "Concurrent B",
         product: "Solution Standard",
         price: 149,
         priceChange: 0,
-        pricePosition: 'mid-range' as const
+        pricePosition: 'apos;mid-range'apos; as const
       },
       {
         competitor: "Concurrent C",
         product: "Solution Basique",
         price: 79,
         priceChange: 10,
-        pricePosition: 'budget' as const
+        pricePosition: 'apos;budget'apos; as const
       }
     ];
     
@@ -205,7 +205,7 @@ export class RadarFoxAI {
   }
 
   /**
-   * Génération d'actions immédiates
+   * Génération d'apos;actions immédiates
    */
   private generateImmediateActions(
     competitors: any[],
@@ -215,10 +215,10 @@ export class RadarFoxAI {
     const actions = [];
 
     // Action basée sur les tendances
-    if (trends.some(t => t.impact === 'high' && t.relevance >= 8)) {
+    if (trends.some(t => t.impact === 'apos;high'apos; && t.relevance >= 8)) {
       actions.push({
-        action: "Lancer une campagne de contenu sur l'IA dans le service client",
-        priority: 'high' as const,
+        action: "Lancer une campagne de contenu sur l'apos;IA dans le service client",
+        priority: 'apos;high'apos; as const,
         expectedImpact: "Positionnement comme leader technologique",
         timeframe: "2-4 semaines",
         resources: ["Équipe marketing", "Budget contenu", "Expert technique"]
@@ -229,8 +229,8 @@ export class RadarFoxAI {
     const priceChanges = pricing.filter(p => p.priceChange < 0);
     if (priceChanges.length > 0) {
       actions.push({
-        action: "Analyser l'impact des baisses de prix concurrentes sur nos ventes",
-        priority: 'critical' as const,
+        action: "Analyser l'apos;impact des baisses de prix concurrentes sur nos ventes",
+        priority: 'apos;critical'apos; as const,
         expectedImpact: "Protection de notre part de marché",
         timeframe: "1 semaine",
         resources: ["Équipe commerciale", "Analytics", "CRM"]
@@ -242,7 +242,7 @@ export class RadarFoxAI {
     if (opportunities.some(o => o.includes("croissance"))) {
       actions.push({
         action: "Accélérer le développement de notre nouvelle fonctionnalité",
-        priority: 'high' as const,
+        priority: 'apos;high'apos; as const,
         expectedImpact: "Capture de la croissance du marché",
         timeframe: "4-6 semaines",
         resources: ["Équipe produit", "Développeurs", "Budget R&D"]
@@ -264,7 +264,7 @@ export class RadarFoxAI {
       ],
       mediumTerm: [
         "Développer des partenariats stratégiques pour élargir notre offre",
-        "Investir dans l'innovation pour créer un avantage concurrentiel durable",
+        "Investir dans l'apos;innovation pour créer un avantage concurrentiel durable",
         "Expander dans les marchés où nos concurrents sont absents"
       ],
       longTerm: [
@@ -276,11 +276,11 @@ export class RadarFoxAI {
   }
 
   /**
-   * Génère un rapport d'analyse formaté
+   * Génère un rapport d'apos;analyse formaté
    */
   generateReport(): string {
     if (!this.lastAnalysis) {
-      return "Aucune analyse disponible. Lancez d'abord une analyse de marché.";
+      return "Aucune analyse disponible. Lancez d'apos;abord une analyse de marché.";
     }
 
     const { competitorInsights, marketTrends, immediateActions, strategicRecommendations } = this.lastAnalysis;
@@ -296,18 +296,18 @@ export class RadarFoxAI {
     // Actions immédiates prioritaires
     report += "## ⚡ ACTIONS IMMÉDIATES\n";
     immediateActions
-      .filter(action => action.priority === 'critical' || action.priority === 'high')
+      .filter(action => action.priority === 'apos;critical'apos; || action.priority === 'apos;high'apos;)
       .forEach(action => {
-        report += `### ${action.priority === 'critical' ? '🚨' : '⚡'} ${action.action}\n`;
+        report += `### ${action.priority === 'apos;critical'apos; ? 'apos;🚨'apos; : 'apos;⚡'apos;} ${action.action}\n`;
         report += `**Impact attendu:** ${action.expectedImpact}\n`;
         report += `**Délai:** ${action.timeframe}\n`;
-        report += `**Ressources:** ${action.resources.join(', ')}\n\n`;
+        report += `**Ressources:** ${action.resources.join('apos;, 'apos;)}\n\n`;
       });
 
     // Tendances clés
     report += "## 📈 TENDANCES CLÉS\n";
     marketTrends
-      .filter(trend => trend.impact === 'high')
+      .filter(trend => trend.impact === 'apos;high'apos;)
       .forEach(trend => {
         report += `### ${trend.trend}\n`;
         report += `**Croissance:** +${trend.growthRate}%\n`;
@@ -327,7 +327,7 @@ export class RadarFoxAI {
     });
 
     report += "\n---\n";
-    report += "*Rapport généré par RadarFoxAI - Si on agit maintenant, on prend l'avantage.*";
+    report += "*Rapport généré par RadarFoxAI - Si on agit maintenant, on prend l'apos;avantage.*";
 
     return report;
   }
@@ -352,14 +352,14 @@ export class RadarFoxAI {
     // Alertes sur les changements de prix
     priceAnalysis.forEach(price => {
       if (Math.abs(price.priceChange) > this.config.alertThresholds.priceChange) {
-        alerts.push(`🚨 ${price.competitor} a ${price.priceChange > 0 ? 'augmenté' : 'diminué'} ses prix de ${Math.abs(price.priceChange)}%`);
+        alerts.push(`🚨 ${price.competitor} a ${price.priceChange > 0 ? 'apos;augmenté'apos; : 'apos;diminué'apos;} ses prix de ${Math.abs(price.priceChange)}%`);
       }
     });
 
     // Alertes sur les nouveaux produits
     competitorInsights.forEach(competitor => {
       const newProducts = competitor.recentChanges.filter(change => 
-        change.toLowerCase().includes('nouveau') || change.toLowerCase().includes('lancement')
+        change.toLowerCase().includes('apos;nouveau'apos;) || change.toLowerCase().includes('apos;lancement'apos;)
       );
       if (newProducts.length > 0) {
         alerts.push(`🆕 ${competitor.name} a lancé de nouveaux produits/services`);

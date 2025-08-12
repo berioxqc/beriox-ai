@@ -76,10 +76,10 @@ export default function HomePage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Votre équipe d'agents IA
+            Votre équipe d'apos;agents IA
           </h1>
           <p className="text-xl text-purple-200 mb-8 max-w-3xl mx-auto">
-            Automatisez et optimisez vos processus business avec l'intelligence artificielle avancée
+            Automatisez et optimisez vos processus business avec l'apos;intelligence artificielle avancée
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -127,7 +127,7 @@ export default function HomePage() {
             </div>
             <h3 className="text-xl font-semibold text-white mb-3">Équipe IA</h3>
             <p className="text-purple-200">
-              Une équipe d'agents IA spécialisés pour chaque domaine d'expertise
+              Une équipe d'apos;agents IA spécialisés pour chaque domaine d'apos;expertise
             </p>
           </div>
 
@@ -144,7 +144,7 @@ export default function HomePage() {
 
         {/* Pricing Section */}
         <div className="mt-20 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Plans d'abonnement</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Plans d'apos;abonnement</h2>
           <p className="text-purple-200 mb-8">
             Choisissez le plan qui correspond à vos besoins
           </p>

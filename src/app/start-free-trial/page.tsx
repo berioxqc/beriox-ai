@@ -1,94 +1,94 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Layout from '@/components/Layout';
-import SchemaMarkup from '@/components/seo/SchemaMarkup';
+import { Metadata } from 'apos;next'apos;;
+import Link from 'apos;next/link'apos;;
+import Layout from 'apos;@/components/Layout'apos;;
+import SchemaMarkup from 'apos;@/components/seo/SchemaMarkup'apos;;
 
 export const metadata: Metadata = {
-  title: 'Essai Gratuit Beriox AI - Commencez Maintenant',
-  description: 'Essayez Beriox AI gratuitement pendant 14 jours. Aucune carte de crédit requise. Transformez votre productivité avec l\'orchestration IA avancée.',
-  keywords: 'essai gratuit beriox ai, test gratuit, orchestration IA, automatisation',
+  title: 'apos;Essai Gratuit Beriox AI - Commencez Maintenant'apos;,
+  description: 'apos;Essayez Beriox AI gratuitement pendant 14 jours. Aucune carte de crédit requise. Transformez votre productivité avec l\'apos;orchestration IA avancée.'apos;,
+  keywords: 'apos;essai gratuit beriox ai, test gratuit, orchestration IA, automatisation'apos;,
   openGraph: {
-    title: 'Essai Gratuit Beriox AI - Commencez Maintenant',
-    description: 'Essayez Beriox AI gratuitement pendant 14 jours.',
-    type: 'website',
-    url: 'https://beriox-ai.vercel.app/start-free-trial',
+    title: 'apos;Essai Gratuit Beriox AI - Commencez Maintenant'apos;,
+    description: 'apos;Essayez Beriox AI gratuitement pendant 14 jours.'apos;,
+    type: 'apos;website'apos;,
+    url: 'apos;https://beriox-ai.vercel.app/start-free-trial'apos;,
   },
 };
 
 const features = [
   {
-    icon: '🤖',
-    title: 'Agents IA Spécialisés',
-    description: 'KarineAI, HugoAI, JPBot et plus - des agents intelligents pour chaque tâche',
+    icon: 'apos;🤖'apos;,
+    title: 'apos;Agents IA Spécialisés'apos;,
+    description: 'apos;KarineAI, HugoAI, JPBot et plus - des agents intelligents pour chaque tâche'apos;,
   },
   {
-    icon: '🎯',
-    title: 'Orchestration Intelligente',
-    description: 'Coordination automatique de plusieurs agents pour des résultats optimaux',
+    icon: 'apos;🎯'apos;,
+    title: 'apos;Orchestration Intelligente'apos;,
+    description: 'apos;Coordination automatique de plusieurs agents pour des résultats optimaux'apos;,
   },
   {
-    icon: '📊',
-    title: 'Analytics Avancés',
-    description: 'Métriques détaillées et ROI mesurable en temps réel',
+    icon: 'apos;📊'apos;,
+    title: 'apos;Analytics Avancés'apos;,
+    description: 'apos;Métriques détaillées et ROI mesurable en temps réel'apos;,
   },
   {
-    icon: '⚡',
-    title: 'Intégrations Illimitées',
-    description: 'Connectez tous vos outils favoris en quelques clics',
+    icon: 'apos;⚡'apos;,
+    title: 'apos;Intégrations Illimitées'apos;,
+    description: 'apos;Connectez tous vos outils favoris en quelques clics'apos;,
   },
   {
-    icon: '🔒',
-    title: 'Sécurité Enterprise',
-    description: 'Protection des données et conformité GDPR',
+    icon: 'apos;🔒'apos;,
+    title: 'apos;Sécurité Enterprise'apos;,
+    description: 'apos;Protection des données et conformité GDPR'apos;,
   },
   {
-    icon: '🎨',
-    title: 'Personnalisation Totale',
-    description: 'Adaptez la plateforme à vos besoins spécifiques',
+    icon: 'apos;🎨'apos;,
+    title: 'apos;Personnalisation Totale'apos;,
+    description: 'apos;Adaptez la plateforme à vos besoins spécifiques'apos;,
   },
 ];
 
 const testimonials = [
   {
-    name: 'Marie Dubois',
-    role: 'CEO, TechStartup',
-    content: 'Beriox AI a transformé notre productivité. Nous avons gagné 20h par semaine !',
+    name: 'apos;Marie Dubois'apos;,
+    role: 'apos;CEO, TechStartup'apos;,
+    content: 'apos;Beriox AI a transformé notre productivité. Nous avons gagné 20h par semaine !'apos;,
     rating: 5,
   },
   {
-    name: 'Jean Martin',
-    role: 'Directeur Marketing',
-    content: 'L\'orchestration IA nous a permis d\'automatiser 80% de nos tâches répétitives.',
+    name: 'apos;Jean Martin'apos;,
+    role: 'apos;Directeur Marketing'apos;,
+    content: 'apos;L\'apos;orchestration IA nous a permis d\'apos;automatiser 80% de nos tâches répétitives.'apos;,
     rating: 5,
   },
   {
-    name: 'Sophie Bernard',
-    role: 'Chef de Projet',
-    content: 'Interface intuitive et résultats impressionnants. ROI de 300% en 3 mois.',
+    name: 'apos;Sophie Bernard'apos;,
+    role: 'apos;Chef de Projet'apos;,
+    content: 'apos;Interface intuitive et résultats impressionnants. ROI de 300% en 3 mois.'apos;,
     rating: 5,
   },
 ];
 
 const guarantees = [
   {
-    icon: '🛡️',
-    title: 'Garantie 30 Jours',
-    description: 'Remboursement complet si vous n\'êtes pas satisfait',
+    icon: 'apos;🛡️'apos;,
+    title: 'apos;Garantie 30 Jours'apos;,
+    description: 'apos;Remboursement complet si vous n\'apos;êtes pas satisfait'apos;,
   },
   {
-    icon: '🔒',
-    title: 'Aucune Carte de Crédit',
-    description: 'Commencez gratuitement sans engagement',
+    icon: 'apos;🔒'apos;,
+    title: 'apos;Aucune Carte de Crédit'apos;,
+    description: 'apos;Commencez gratuitement sans engagement'apos;,
   },
   {
-    icon: '📞',
-    title: 'Support Premium',
-    description: 'Assistance dédiée pendant votre essai',
+    icon: 'apos;📞'apos;,
+    title: 'apos;Support Premium'apos;,
+    description: 'apos;Assistance dédiée pendant votre essai'apos;,
   },
   {
-    icon: '📚',
-    title: 'Formation Incluse',
-    description: 'Tutoriels et webinaires gratuits',
+    icon: 'apos;📚'apos;,
+    title: 'apos;Formation Incluse'apos;,
+    description: 'apos;Tutoriels et webinaires gratuits'apos;,
   },
 ];
 
@@ -98,19 +98,19 @@ export default function StartFreeTrialPage() {
       <SchemaMarkup
         type="product"
         data={{
-          name: 'Beriox AI Platform',
-          description: 'Plateforme d\'orchestration IA avancée',
+          name: 'apos;Beriox AI Platform'apos;,
+          description: 'apos;Plateforme d\'apos;orchestration IA avancée'apos;,
           offers: {
-            price: '0',
-            priceCurrency: 'USD',
-            description: 'Essai gratuit 14 jours',
+            price: 'apos;0'apos;,
+            priceCurrency: 'apos;USD'apos;,
+            description: 'apos;Essai gratuit 14 jours'apos;,
           },
         }}
       />
       
       <Layout
         title="Essai Gratuit Beriox AI"
-        subtitle="Commencez votre transformation digitale aujourd'hui"
+        subtitle="Commencez votre transformation digitale aujourd'apos;hui"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Hero Section */}
@@ -125,7 +125,7 @@ export default function StartFreeTrialPage() {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Essayez Beriox AI pendant 14 jours. Aucune carte de crédit requise. 
-              Transformez votre productivité avec l'orchestration IA la plus avancée.
+              Transformez votre productivité avec l'apos;orchestration IA la plus avancée.
             </p>
             
             {/* Trial Form */}
@@ -161,12 +161,12 @@ export default function StartFreeTrialPage() {
                 />
                 <input
                   type="text"
-                  placeholder="Nom de l'entreprise"
+                  placeholder="Nom de l'apos;entreprise"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   required
                 />
                 <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                  <option value="">Taille de l'entreprise</option>
+                  <option value="">Taille de l'apos;entreprise</option>
                   <option value="1-10">1-10 employés</option>
                   <option value="11-50">11-50 employés</option>
                   <option value="51-200">51-200 employés</option>
@@ -189,7 +189,7 @@ export default function StartFreeTrialPage() {
           {/* Features Grid */}
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-              Tout ce que vous obtenez pendant l'essai
+              Tout ce que vous obtenez pendant l'apos;essai
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {features.map((feature, index) => (
@@ -291,8 +291,8 @@ export default function StartFreeTrialPage() {
               Prêt à transformer votre productivité ?
             </h3>
             <p className="text-purple-100 mb-6 max-w-2xl mx-auto text-lg">
-              Rejoignez des milliers d'entreprises qui ont déjà choisi Beriox AI. 
-              Commencez votre essai gratuit aujourd'hui.
+              Rejoignez des milliers d'apos;entreprises qui ont déjà choisi Beriox AI. 
+              Commencez votre essai gratuit aujourd'apos;hui.
             </p>
             <Link
               href="#trial-form"

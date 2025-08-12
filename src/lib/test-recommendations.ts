@@ -1,29 +1,29 @@
-import { BotRecommendationEngine } from './bot-recommendations';
+import { BotRecommendationEngine } from 'apos;./bot-recommendations'apos;;
 
 /**
  * Script de test pour le système de recommandations IA
  */
 export async function testRecommendations() {
-  console.log('🤖 Test du système de recommandations IA...\n');
+  console.log('apos;🤖 Test du système de recommandations IA...\n'apos;);
 
   // Simuler un utilisateur
-  const userId = 'test-user-123';
+  const userId = 'apos;test-user-123'apos;;
   const engine = new BotRecommendationEngine(userId);
 
   try {
     // Générer des recommandations
-    console.log('📊 Génération des recommandations...');
+    console.log('apos;📊 Génération des recommandations...'apos;);
     const recommendations = await engine.generateRecommendations();
 
     console.log(`✅ ${recommendations.length} recommandations générées\n`);
 
     // Afficher les recommandations par catégorie
     const categories = {
-      performance: recommendations.filter(r => r.type === 'performance'),
-      security: recommendations.filter(r => r.type === 'security'),
-      ux: recommendations.filter(r => r.type === 'ux'),
-      business: recommendations.filter(r => r.type === 'business'),
-      technical: recommendations.filter(r => r.type === 'technical')
+      performance: recommendations.filter(r => r.type === 'apos;performance'apos;),
+      security: recommendations.filter(r => r.type === 'apos;security'apos;),
+      ux: recommendations.filter(r => r.type === 'apos;ux'apos;),
+      business: recommendations.filter(r => r.type === 'apos;business'apos;),
+      technical: recommendations.filter(r => r.type === 'apos;technical'apos;)
     };
 
     Object.entries(categories).forEach(([category, recs]) => {
@@ -33,45 +33,45 @@ export async function testRecommendations() {
           console.log(`  ${index + 1}. [${rec.priority.toUpperCase()}] ${rec.title}`);
           console.log(`     Effort: ${rec.effort} | Temps: ${rec.estimatedTime}`);
           console.log(`     Impact: ${rec.impact.substring(0, 80)}...`);
-          console.log('');
+          console.log('apos;'apos;);
         });
       }
     });
 
     // Statistiques
     const priorityStats = {
-      critical: recommendations.filter(r => r.priority === 'critical').length,
-      high: recommendations.filter(r => r.priority === 'high').length,
-      medium: recommendations.filter(r => r.priority === 'medium').length,
-      low: recommendations.filter(r => r.priority === 'low').length
+      critical: recommendations.filter(r => r.priority === 'apos;critical'apos;).length,
+      high: recommendations.filter(r => r.priority === 'apos;high'apos;).length,
+      medium: recommendations.filter(r => r.priority === 'apos;medium'apos;).length,
+      low: recommendations.filter(r => r.priority === 'apos;low'apos;).length
     };
 
-    console.log('📈 Statistiques des recommandations:');
+    console.log('apos;📈 Statistiques des recommandations:'apos;);
     console.log(`  🔴 Critique: ${priorityStats.critical}`);
     console.log(`  🟠 Haute: ${priorityStats.high}`);
     console.log(`  🟡 Moyenne: ${priorityStats.medium}`);
     console.log(`  🟢 Basse: ${priorityStats.low}`);
 
     // Recommandations prioritaires
-    const criticalRecs = recommendations.filter(r => r.priority === 'critical');
+    const criticalRecs = recommendations.filter(r => r.priority === 'apos;critical'apos;);
     if (criticalRecs.length > 0) {
-      console.log('\n🚨 RECOMMANDATIONS CRITIQUES:');
+      console.log('apos;\n🚨 RECOMMANDATIONS CRITIQUES:'apos;);
       criticalRecs.forEach((rec, index) => {
         console.log(`  ${index + 1}. ${rec.title}`);
         console.log(`     ${rec.description}`);
-        console.log('');
+        console.log('apos;'apos;);
       });
     }
 
     // Sauvegarder les recommandations (simulation)
-    console.log('💾 Sauvegarde des recommandations...');
+    console.log('apos;💾 Sauvegarde des recommandations...'apos;);
     // await engine.saveRecommendations(recommendations);
-    console.log('✅ Recommandations sauvegardées (simulation)');
+    console.log('apos;✅ Recommandations sauvegardées (simulation)'apos;);
 
     return recommendations;
 
   } catch (error) {
-    console.error('❌ Erreur lors du test des recommandations:', error);
+    console.error('apos;❌ Erreur lors du test des recommandations:'apos;, error);
     throw error;
   }
 }
@@ -80,34 +80,34 @@ export async function testRecommendations() {
  * Test des analyses spécifiques
  */
 export async function testSpecificAnalyses() {
-  console.log('\n🔍 Test des analyses spécifiques...\n');
+  console.log('apos;\n🔍 Test des analyses spécifiques...\n'apos;);
 
-  const userId = 'test-user-123';
+  const userId = 'apos;test-user-123'apos;;
   const engine = new BotRecommendationEngine(userId);
 
-  // Test d'analyse de performance
-  console.log('⚡ Test analyse performance:');
-  const perfRecs = await engine['analyzePerformance']();
+  // Test d'apos;analyse de performance
+  console.log('apos;⚡ Test analyse performance:'apos;);
+  const perfRecs = await engine['apos;analyzePerformance'apos;]();
   console.log(`  ${perfRecs.length} recommandations de performance`);
 
-  // Test d'analyse de sécurité
-  console.log('🔒 Test analyse sécurité:');
-  const secRecs = await engine['analyzeSecurity']();
+  // Test d'apos;analyse de sécurité
+  console.log('apos;🔒 Test analyse sécurité:'apos;);
+  const secRecs = await engine['apos;analyzeSecurity'apos;]();
   console.log(`  ${secRecs.length} recommandations de sécurité`);
 
-  // Test d'analyse UX
-  console.log('🎨 Test analyse UX:');
-  const uxRecs = await engine['analyzeUX']();
+  // Test d'apos;analyse UX
+  console.log('apos;🎨 Test analyse UX:'apos;);
+  const uxRecs = await engine['apos;analyzeUX'apos;]();
   console.log(`  ${uxRecs.length} recommandations UX`);
 
-  // Test d'analyse business
-  console.log('💰 Test analyse business:');
-  const busRecs = await engine['analyzeBusiness']();
+  // Test d'apos;analyse business
+  console.log('apos;💰 Test analyse business:'apos;);
+  const busRecs = await engine['apos;analyzeBusiness'apos;]();
   console.log(`  ${busRecs.length} recommandations business`);
 
-  // Test d'analyse technique
-  console.log('⚙️ Test analyse technique:');
-  const techRecs = await engine['analyzeTechnical']();
+  // Test d'apos;analyse technique
+  console.log('apos;⚙️ Test analyse technique:'apos;);
+  const techRecs = await engine['apos;analyzeTechnical'apos;]();
   console.log(`  ${techRecs.length} recommandations techniques`);
 
   return {
@@ -124,11 +124,11 @@ if (require.main === module) {
   testRecommendations()
     .then(() => testSpecificAnalyses())
     .then(() => {
-      console.log('\n🎉 Tests terminés avec succès!');
+      console.log('apos;\n🎉 Tests terminés avec succès!'apos;);
       process.exit(0);
     })
     .catch((error) => {
-      console.error('\n💥 Erreur lors des tests:', error);
+      console.error('apos;\n💥 Erreur lors des tests:'apos;, error);
       process.exit(1);
     });
 }

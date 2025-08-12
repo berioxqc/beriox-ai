@@ -74,147 +74,147 @@ export interface ApiKeyValidation {
 // Configuration de validation des clés
 export const API_KEY_VALIDATION: Record<ApiKeyName, ApiKeyValidation> = {
   OPENAI: {
-    name: 'OPENAI',
+    name: 'apos;OPENAI'apos;,
     required: true,
     pattern: /^sk-[a-zA-Z0-9]{32,}$/,
-    description: 'Clé API OpenAI pour les modèles GPT'
+    description: 'apos;Clé API OpenAI pour les modèles GPT'apos;
   },
   OPENAI_ORG: {
-    name: 'OPENAI_ORG',
+    name: 'apos;OPENAI_ORG'apos;,
     required: false,
-    description: 'ID d\'organisation OpenAI'
+    description: 'apos;ID d\'apos;organisation OpenAI'apos;
   },
   STRIPE_SECRET: {
-    name: 'STRIPE_SECRET',
+    name: 'apos;STRIPE_SECRET'apos;,
     required: true,
     pattern: /^sk_(test|live)_[a-zA-Z0-9]{24}$/,
-    description: 'Clé secrète Stripe pour les paiements'
+    description: 'apos;Clé secrète Stripe pour les paiements'apos;
   },
   STRIPE_PUBLISHABLE: {
-    name: 'STRIPE_PUBLISHABLE',
+    name: 'apos;STRIPE_PUBLISHABLE'apos;,
     required: true,
     pattern: /^pk_(test|live)_[a-zA-Z0-9]{24}$/,
-    description: 'Clé publique Stripe pour le frontend'
+    description: 'apos;Clé publique Stripe pour le frontend'apos;
   },
   STRIPE_WEBHOOK: {
-    name: 'STRIPE_WEBHOOK',
+    name: 'apos;STRIPE_WEBHOOK'apos;,
     required: true,
     pattern: /^whsec_[a-zA-Z0-9]{32,}$/,
-    description: 'Secret webhook Stripe'
+    description: 'apos;Secret webhook Stripe'apos;
   },
   SEMRUSH: {
-    name: 'SEMRUSH',
+    name: 'apos;SEMRUSH'apos;,
     required: false,
     pattern: /^[a-zA-Z0-9]{32}$/,
-    description: 'Clé API SEMrush pour l\'analyse SEO'
+    description: 'apos;Clé API SEMrush pour l\'apos;analyse SEO'apos;
   },
   GITHUB: {
-    name: 'GITHUB',
+    name: 'apos;GITHUB'apos;,
     required: false,
     pattern: /^ghp_[a-zA-Z0-9]{36}$/,
-    description: 'Token GitHub pour l\'authentification'
+    description: 'apos;Token GitHub pour l\'apos;authentification'apos;
   },
   GITHUB_CLIENT_ID: {
-    name: 'GITHUB_CLIENT_ID',
+    name: 'apos;GITHUB_CLIENT_ID'apos;,
     required: false,
-    description: 'Client ID GitHub OAuth'
+    description: 'apos;Client ID GitHub OAuth'apos;
   },
   GITHUB_CLIENT_SECRET: {
-    name: 'GITHUB_CLIENT_SECRET',
+    name: 'apos;GITHUB_CLIENT_SECRET'apos;,
     required: false,
-    description: 'Client Secret GitHub OAuth'
+    description: 'apos;Client Secret GitHub OAuth'apos;
   },
   GOOGLE_CLIENT_ID: {
-    name: 'GOOGLE_CLIENT_ID',
+    name: 'apos;GOOGLE_CLIENT_ID'apos;,
     required: false,
-    description: 'Client ID Google OAuth'
+    description: 'apos;Client ID Google OAuth'apos;
   },
   GOOGLE_CLIENT_SECRET: {
-    name: 'GOOGLE_CLIENT_SECRET',
+    name: 'apos;GOOGLE_CLIENT_SECRET'apos;,
     required: false,
-    description: 'Client Secret Google OAuth'
+    description: 'apos;Client Secret Google OAuth'apos;
   },
   GOOGLE_SEARCH_CONSOLE: {
-    name: 'GOOGLE_SEARCH_CONSOLE',
+    name: 'apos;GOOGLE_SEARCH_CONSOLE'apos;,
     required: false,
-    description: 'Clé API Google Search Console'
+    description: 'apos;Clé API Google Search Console'apos;
   },
   MICROSOFT_CLARITY: {
-    name: 'MICROSOFT_CLARITY',
+    name: 'apos;MICROSOFT_CLARITY'apos;,
     required: false,
-    description: 'ID Microsoft Clarity pour l\'analytics'
+    description: 'apos;ID Microsoft Clarity pour l\'apos;analytics'apos;
   },
   RESEND: {
-    name: 'RESEND',
+    name: 'apos;RESEND'apos;,
     required: false,
     pattern: /^re_[a-zA-Z0-9]{32}$/,
-    description: 'Clé API Resend pour l\'envoi d\'emails'
+    description: 'apos;Clé API Resend pour l\'apos;envoi d\'apos;emails'apos;
   },
   DATABASE_URL: {
-    name: 'DATABASE_URL',
+    name: 'apos;DATABASE_URL'apos;,
     required: true,
     pattern: /^postgresql:\/\/.+/,
-    description: 'URL de connexion à la base de données PostgreSQL'
+    description: 'apos;URL de connexion à la base de données PostgreSQL'apos;
   },
   REDIS_URL: {
-    name: 'REDIS_URL',
+    name: 'apos;REDIS_URL'apos;,
     required: false,
     pattern: /^redis:\/\/.+/,
-    description: 'URL de connexion Redis'
+    description: 'apos;URL de connexion Redis'apos;
   },
   NEXTAUTH_SECRET: {
-    name: 'NEXTAUTH_SECRET',
+    name: 'apos;NEXTAUTH_SECRET'apos;,
     required: true,
-    description: 'Secret pour NextAuth.js'
+    description: 'apos;Secret pour NextAuth.js'apos;
   },
   NEXTAUTH_URL: {
-    name: 'NEXTAUTH_URL',
+    name: 'apos;NEXTAUTH_URL'apos;,
     required: true,
     pattern: /^https?:\/\/.+/,
-    description: 'URL de base pour NextAuth.js'
+    description: 'apos;URL de base pour NextAuth.js'apos;
   },
   SENTRY_DSN: {
-    name: 'SENTRY_DSN',
+    name: 'apos;SENTRY_DSN'apos;,
     required: false,
     pattern: /^https:\/\/[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+\/[0-9]+$/,
-    description: 'DSN Sentry pour le monitoring d\'erreurs'
+    description: 'apos;DSN Sentry pour le monitoring d\'apos;erreurs'apos;
   },
   GOOGLE_ANALYTICS: {
-    name: 'GOOGLE_ANALYTICS',
+    name: 'apos;GOOGLE_ANALYTICS'apos;,
     required: false,
     pattern: /^G-[A-Z0-9]{10}$/,
-    description: 'ID Google Analytics 4'
+    description: 'apos;ID Google Analytics 4'apos;
   },
   GOOGLE_TAG_MANAGER: {
-    name: 'GOOGLE_TAG_MANAGER',
+    name: 'apos;GOOGLE_TAG_MANAGER'apos;,
     required: false,
     pattern: /^GTM-[A-Z0-9]{6}$/,
-    description: 'ID Google Tag Manager'
+    description: 'apos;ID Google Tag Manager'apos;
   },
   PAGESPEED_API_KEY: {
-    name: 'PAGESPEED_API_KEY',
+    name: 'apos;PAGESPEED_API_KEY'apos;,
     required: false,
-    description: 'Clé API PageSpeed Insights'
+    description: 'apos;Clé API PageSpeed Insights'apos;
   },
   MOZILLA_OBSERVATORY: {
-    name: 'MOZILLA_OBSERVATORY',
+    name: 'apos;MOZILLA_OBSERVATORY'apos;,
     required: false,
-    description: 'Clé API Mozilla Observatory'
+    description: 'apos;Clé API Mozilla Observatory'apos;
   },
   VERCEL_TOKEN: {
-    name: 'VERCEL_TOKEN',
+    name: 'apos;VERCEL_TOKEN'apos;,
     required: false,
-    description: 'Token Vercel pour le déploiement'
+    description: 'apos;Token Vercel pour le déploiement'apos;
   },
   VERCEL_ORG_ID: {
-    name: 'VERCEL_ORG_ID',
+    name: 'apos;VERCEL_ORG_ID'apos;,
     required: false,
-    description: 'ID d\'organisation Vercel'
+    description: 'apos;ID d\'apos;organisation Vercel'apos;
   },
   VERCEL_PROJECT_ID: {
-    name: 'VERCEL_PROJECT_ID',
+    name: 'apos;VERCEL_PROJECT_ID'apos;,
     required: false,
-    description: 'ID de projet Vercel'
+    description: 'apos;ID de projet Vercel'apos;
   }
 };
 
@@ -277,9 +277,9 @@ export function getMissingApiKeys(): ApiKeyName[] {
 
 // Fonction pour masquer une clé API (pour les logs)
 export function maskApiKey(key: string | undefined): string {
-  if (!key) return 'undefined';
-  if (key.length <= 8) return '*'.repeat(key.length);
-  return key.substring(0, 4) + '*'.repeat(key.length - 8) + key.substring(key.length - 4);
+  if (!key) return 'apos;undefined'apos;;
+  if (key.length <= 8) return 'apos;*'apos;.repeat(key.length);
+  return key.substring(0, 4) + 'apos;*'apos;.repeat(key.length - 8) + key.substring(key.length - 4);
 }
 
 // Fonction pour obtenir un objet avec les clés masquées (pour les logs)
@@ -293,5 +293,5 @@ export function getMaskedApiKeys(): Record<string, string> {
   return masked;
 }
 
-// Export par défaut pour faciliter l'import
+// Export par défaut pour faciliter l'apos;import
 export default API_KEYS;

@@ -1,12 +1,12 @@
-import { logger } from '@/lib/logger';
-import { redis } from '@/lib/redis';
-import { prisma } from '@/lib/prisma';
+import { logger } from 'apos;@/lib/logger'apos;;
+import { redis } from 'apos;@/lib/redis'apos;;
+import { prisma } from 'apos;@/lib/prisma'apos;;
 
 export interface DeploymentMetrics {
   deploymentId: string;
   timestamp: Date;
   version: string;
-  environment: 'staging' | 'production';
+  environment: 'apos;staging'apos; | 'apos;production'apos;;
   health: {
     database: boolean;
     redis: boolean;
@@ -28,7 +28,7 @@ export interface DeploymentMetrics {
 export interface ErrorAlert {
   id: string;
   timestamp: Date;
-  level: 'low' | 'medium' | 'high' | 'critical';
+  level: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos; | 'apos;critical'apos;;
   message: string;
   context: Record<string, any>;
   resolved: boolean;
@@ -62,7 +62,7 @@ export class DeploymentMonitor {
       await this.performFullHealthCheck();
     }, 300000);
 
-    logger.info('🚀 Deployment monitoring started');
+    logger.info('apos;🚀 Deployment monitoring started'apos;);
   }
 
   private async performHealthCheck(): Promise<void> {
@@ -79,14 +79,14 @@ export class DeploymentMonitor {
       const responseTime = Date.now() - startTime;
 
       const metrics: DeploymentMetrics = {
-        deploymentId: process.env.VERCEL_DEPLOYMENT_ID || 'local',
+        deploymentId: process.env.VERCEL_DEPLOYMENT_ID || 'apos;local'apos;,
         timestamp: new Date(),
-        version: process.env.npm_package_version || '1.0.0',
-        environment: (process.env.NODE_ENV as 'staging' | 'production') || 'production',
+        version: process.env.npm_package_version || 'apos;1.0.0'apos;,
+        environment: (process.env.NODE_ENV as 'apos;staging'apos; | 'apos;production'apos;) || 'apos;production'apos;,
         health: {
-          database: dbHealth.status === 'fulfilled' && dbHealth.value,
-          redis: redisHealth.status === 'fulfilled' && redisHealth.value,
-          externalApis: apiHealth.status === 'fulfilled' && apiHealth.value,
+          database: dbHealth.status === 'apos;fulfilled'apos; && dbHealth.value,
+          redis: redisHealth.status === 'apos;fulfilled'apos; && redisHealth.value,
+          externalApis: apiHealth.status === 'apos;fulfilled'apos; && apiHealth.value,
           responseTime
         },
         errors: await this.getErrorMetrics(),
@@ -98,8 +98,8 @@ export class DeploymentMonitor {
       await this.checkForAlerts(metrics);
 
     } catch (error) {
-      logger.error('❌ Health check failed:', error);
-      await this.createAlert('critical', 'Health check failed', { error: error.message });
+      logger.error('apos;❌ Health check failed:'apos;, error);
+      await this.createAlert('apos;critical'apos;, 'apos;Health check failed'apos;, { error: error.message });
     }
   }
 
@@ -112,10 +112,10 @@ export class DeploymentMonitor {
       await this.checkMemoryUsage();
       await this.checkErrorRates();
       
-      logger.info('✅ Full health check completed');
+      logger.info('apos;✅ Full health check completed'apos;);
     } catch (error) {
-      logger.error('❌ Full health check failed:', error);
-      await this.createAlert('high', 'Full health check failed', { error: error.message });
+      logger.error('apos;❌ Full health check failed:'apos;, error);
+      await this.createAlert('apos;high'apos;, 'apos;Full health check failed'apos;, { error: error.message });
     }
   }
 
@@ -124,7 +124,7 @@ export class DeploymentMonitor {
       await prisma.$queryRaw`SELECT 1`;
       return true;
     } catch (error) {
-      logger.error('❌ Database health check failed:', error);
+      logger.error('apos;❌ Database health check failed:'apos;, error);
       return false;
     }
   }
@@ -134,7 +134,7 @@ export class DeploymentMonitor {
       await redis.ping();
       return true;
     } catch (error) {
-      logger.error('❌ Redis health check failed:', error);
+      logger.error('apos;❌ Redis health check failed:'apos;, error);
       return false;
     }
   }
@@ -142,17 +142,17 @@ export class DeploymentMonitor {
   private async checkExternalApisHealth(): Promise<boolean> {
     try {
       const apis = [
-        'https://api.openai.com/v1/models',
-        'https://api.stripe.com/v1/account'
+        'apos;https://api.openai.com/v1/models'apos;,
+        'apos;https://api.stripe.com/v1/account'apos;
       ];
 
       const results = await Promise.allSettled(
-        apis.map(url => fetch(url, { method: 'HEAD' }))
+        apis.map(url => fetch(url, { method: 'apos;HEAD'apos; }))
       );
 
-      return results.every(result => result.status === 'fulfilled');
+      return results.every(result => result.status === 'apos;fulfilled'apos;);
     } catch (error) {
-      logger.error('❌ External APIs health check failed:', error);
+      logger.error('apos;❌ External APIs health check failed:'apos;, error);
       return false;
     }
   }
@@ -168,36 +168,36 @@ export class DeploymentMonitor {
       const connections = (connectionCount as any)[0]?.connections || 0;
       
       if (connections > 50) {
-        await this.createAlert('medium', 'High database connections', { connections });
+        await this.createAlert('apos;medium'apos;, 'apos;High database connections'apos;, { connections });
       }
     } catch (error) {
-      logger.error('❌ Database connections check failed:', error);
+      logger.error('apos;❌ Database connections check failed:'apos;, error);
     }
   }
 
   private async checkRedisConnections(): Promise<void> {
     try {
-      const info = await redis.info('clients');
-      const clientLines = info.split('\n').find(line => line.startsWith('connected_clients:'));
-      const connections = parseInt(clientLines?.split(':')[1] || '0');
+      const info = await redis.info('apos;clients'apos;);
+      const clientLines = info.split('apos;\n'apos;).find(line => line.startsWith('apos;connected_clients:'apos;));
+      const connections = parseInt(clientLines?.split('apos;:'apos;)[1] || 'apos;0'apos;);
       
       if (connections > 100) {
-        await this.createAlert('medium', 'High Redis connections', { connections });
+        await this.createAlert('apos;medium'apos;, 'apos;High Redis connections'apos;, { connections });
       }
     } catch (error) {
-      logger.error('❌ Redis connections check failed:', error);
+      logger.error('apos;❌ Redis connections check failed:'apos;, error);
     }
   }
 
   private async checkApiEndpoints(): Promise<void> {
     try {
       const endpoints = [
-        '/api/health',
-        '/api/missions',
-        '/api/metrics'
+        'apos;/api/health'apos;,
+        'apos;/api/missions'apos;,
+        'apos;/api/metrics'apos;
       ];
 
-      const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+      const baseUrl = process.env.NEXTAUTH_URL || 'apos;http://localhost:3000'apos;;
       
       for (const endpoint of endpoints) {
         const startTime = Date.now();
@@ -205,7 +205,7 @@ export class DeploymentMonitor {
         const responseTime = Date.now() - startTime;
         
         if (!response.ok || responseTime > 5000) {
-          await this.createAlert('medium', `API endpoint slow or failing`, {
+          await this.createAlert('apos;medium'apos;, `API endpoint slow or failing`, {
             endpoint,
             status: response.status,
             responseTime
@@ -213,7 +213,7 @@ export class DeploymentMonitor {
         }
       }
     } catch (error) {
-      logger.error('❌ API endpoints check failed:', error);
+      logger.error('apos;❌ API endpoints check failed:'apos;, error);
     }
   }
 
@@ -223,10 +223,10 @@ export class DeploymentMonitor {
       const memoryUsageMB = usage.heapUsed / 1024 / 1024;
       
       if (memoryUsageMB > 500) {
-        await this.createAlert('medium', 'High memory usage', { memoryUsageMB });
+        await this.createAlert('apos;medium'apos;, 'apos;High memory usage'apos;, { memoryUsageMB });
       }
     } catch (error) {
-      logger.error('❌ Memory usage check failed:', error);
+      logger.error('apos;❌ Memory usage check failed:'apos;, error);
     }
   }
 
@@ -236,10 +236,10 @@ export class DeploymentMonitor {
       const errorRate = recentMetrics.reduce((sum, metric) => sum + metric.errors.rate, 0) / recentMetrics.length;
       
       if (errorRate > 0.05) { // 5% error rate
-        await this.createAlert('high', 'High error rate detected', { errorRate });
+        await this.createAlert('apos;high'apos;, 'apos;High error rate detected'apos;, { errorRate });
       }
     } catch (error) {
-      logger.error('❌ Error rate check failed:', error);
+      logger.error('apos;❌ Error rate check failed:'apos;, error);
     }
   }
 
@@ -252,10 +252,10 @@ export class DeploymentMonitor {
       return {
         count: recentAlerts.length,
         rate: recentAlerts.length / 10, // 10 checks per 5 minutes
-        critical: recentAlerts.filter(alert => alert.level === 'critical').length
+        critical: recentAlerts.filter(alert => alert.level === 'apos;critical'apos;).length
       };
     } catch (error) {
-      logger.error('❌ Error metrics calculation failed:', error);
+      logger.error('apos;❌ Error metrics calculation failed:'apos;, error);
       return { count: 0, rate: 0, critical: 0 };
     }
   }
@@ -270,7 +270,7 @@ export class DeploymentMonitor {
         responseTime: this.metrics.length > 0 ? this.metrics[this.metrics.length - 1].health.responseTime : 0
       };
     } catch (error) {
-      logger.error('❌ Performance metrics calculation failed:', error);
+      logger.error('apos;❌ Performance metrics calculation failed:'apos;, error);
       return { memoryUsage: 0, cpuUsage: 0, responseTime: 0 };
     }
   }
@@ -278,33 +278,33 @@ export class DeploymentMonitor {
   private async checkForAlerts(metrics: DeploymentMetrics): Promise<void> {
     // Vérifier la santé générale
     if (!metrics.health.database) {
-      await this.createAlert('critical', 'Database connection lost');
+      await this.createAlert('apos;critical'apos;, 'apos;Database connection lost'apos;);
     }
     
     if (!metrics.health.redis) {
-      await this.createAlert('high', 'Redis connection lost');
+      await this.createAlert('apos;high'apos;, 'apos;Redis connection lost'apos;);
     }
     
     if (!metrics.health.externalApis) {
-      await this.createAlert('medium', 'External APIs unavailable');
+      await this.createAlert('apos;medium'apos;, 'apos;External APIs unavailable'apos;);
     }
     
     // Vérifier les performances
     if (metrics.health.responseTime > 5000) {
-      await this.createAlert('medium', 'High response time', { responseTime: metrics.health.responseTime });
+      await this.createAlert('apos;medium'apos;, 'apos;High response time'apos;, { responseTime: metrics.health.responseTime });
     }
     
     if (metrics.errors.critical > 0) {
-      await this.createAlert('critical', 'Critical errors detected', { count: metrics.errors.critical });
+      await this.createAlert('apos;critical'apos;, 'apos;Critical errors detected'apos;, { count: metrics.errors.critical });
     }
     
     if (metrics.errors.rate > 0.1) { // 10% error rate
-      await this.createAlert('high', 'High error rate', { rate: metrics.errors.rate });
+      await this.createAlert('apos;high'apos;, 'apos;High error rate'apos;, { rate: metrics.errors.rate });
     }
   }
 
   private async createAlert(
-    level: ErrorAlert['level'],
+    level: ErrorAlert['apos;level'apos;],
     message: string,
     context: Record<string, any> = {}
   ): Promise<void> {
@@ -321,7 +321,7 @@ export class DeploymentMonitor {
     await this.storeAlert(alert);
     
     // Notifications immédiates pour les alertes critiques
-    if (level === 'critical') {
+    if (level === 'apos;critical'apos;) {
       await this.sendCriticalAlert(alert);
     }
     
@@ -336,7 +336,7 @@ export class DeploymentMonitor {
         JSON.stringify(metrics)
       );
     } catch (error) {
-      logger.error('❌ Failed to store metrics:', error);
+      logger.error('apos;❌ Failed to store metrics:'apos;, error);
     }
   }
 
@@ -348,7 +348,7 @@ export class DeploymentMonitor {
         JSON.stringify(alert)
       );
     } catch (error) {
-      logger.error('❌ Failed to store alert:', error);
+      logger.error('apos;❌ Failed to store alert:'apos;, error);
     }
   }
 
@@ -363,10 +363,10 @@ export class DeploymentMonitor {
       };
       
       // Ici vous pouvez intégrer Slack, Email, etc.
-      logger.error('🚨 CRITICAL ALERT:', notification);
+      logger.error('apos;🚨 CRITICAL ALERT:'apos;, notification);
       
     } catch (error) {
-      logger.error('❌ Failed to send critical alert:', error);
+      logger.error('apos;❌ Failed to send critical alert:'apos;, error);
     }
   }
 
@@ -388,18 +388,18 @@ export class DeploymentMonitor {
     if (!lastMetric) {
       return {
         healthy: false,
-        issues: ['No health check data available'],
+        issues: ['apos;No health check data available'apos;],
         lastCheck: new Date()
       };
     }
 
     const issues: string[] = [];
     
-    if (!lastMetric.health.database) issues.push('Database connection failed');
-    if (!lastMetric.health.redis) issues.push('Redis connection failed');
-    if (!lastMetric.health.externalApis) issues.push('External APIs unavailable');
-    if (lastMetric.health.responseTime > 5000) issues.push('High response time');
-    if (lastMetric.errors.critical > 0) issues.push('Critical errors detected');
+    if (!lastMetric.health.database) issues.push('apos;Database connection failed'apos;);
+    if (!lastMetric.health.redis) issues.push('apos;Redis connection failed'apos;);
+    if (!lastMetric.health.externalApis) issues.push('apos;External APIs unavailable'apos;);
+    if (lastMetric.health.responseTime > 5000) issues.push('apos;High response time'apos;);
+    if (lastMetric.errors.critical > 0) issues.push('apos;Critical errors detected'apos;);
 
     return {
       healthy: issues.length === 0,
@@ -413,7 +413,7 @@ export class DeploymentMonitor {
       clearInterval(this.checkInterval);
       this.checkInterval = null;
     }
-    logger.info('🛑 Deployment monitoring stopped');
+    logger.info('apos;🛑 Deployment monitoring stopped'apos;);
   }
 }
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect } from 'apos;react'apos;;
 
 declare global {
   interface Window {
@@ -9,16 +9,16 @@ declare global {
 
 export const useAnalytics = () => {
   const trackPageView = (url: string) => {
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('config', 'G-4BNMH2FQMZ', {
+    if (typeof window !== 'apos;undefined'apos; && window.gtag) {
+      window.gtag('apos;config'apos;, 'apos;G-4BNMH2FQMZ'apos;, {
         page_path: url,
       });
     }
   };
 
   const trackEvent = (action: string, category: string, label?: string, value?: number) => {
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', action, {
+    if (typeof window !== 'apos;undefined'apos; && window.gtag) {
+      window.gtag('apos;event'apos;, action, {
         event_category: category,
         event_label: label,
         value: value,
@@ -27,24 +27,24 @@ export const useAnalytics = () => {
   };
 
   const trackConversion = (conversionId: string, conversionLabel: string) => {
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'conversion', {
+    if (typeof window !== 'apos;undefined'apos; && window.gtag) {
+      window.gtag('apos;event'apos;, 'apos;conversion'apos;, {
         send_to: `${conversionId}/${conversionLabel}`,
       });
     }
   };
 
   const trackSignUp = (method: string) => {
-    trackEvent('sign_up', 'engagement', method);
+    trackEvent('apos;sign_up'apos;, 'apos;engagement'apos;, method);
   };
 
   const trackLogin = (method: string) => {
-    trackEvent('login', 'engagement', method);
+    trackEvent('apos;login'apos;, 'apos;engagement'apos;, method);
   };
 
-  const trackPurchase = (value: number, currency: string = 'CAD') => {
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'purchase', {
+  const trackPurchase = (value: number, currency: string = 'apos;CAD'apos;) => {
+    if (typeof window !== 'apos;undefined'apos; && window.gtag) {
+      window.gtag('apos;event'apos;, 'apos;purchase'apos;, {
         value: value,
         currency: currency,
       });
@@ -52,11 +52,11 @@ export const useAnalytics = () => {
   };
 
   const trackButtonClick = (buttonName: string, page: string) => {
-    trackEvent('click', 'button', `${page}_${buttonName}`);
+    trackEvent('apos;click'apos;, 'apos;button'apos;, `${page}_${buttonName}`);
   };
 
   const trackFormSubmission = (formName: string) => {
-    trackEvent('form_submit', 'engagement', formName);
+    trackEvent('apos;form_submit'apos;, 'apos;engagement'apos;, formName);
   };
 
   return {

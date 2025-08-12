@@ -1,10 +1,10 @@
-'use client';
+'apos;use client'apos;;
 
-import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import Layout from '@/components/Layout';
-import { ApiIntegration } from '@/lib/integrations/types';
+import { useState, useEffect } from 'apos;react'apos;;
+import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
+import { useTheme } from 'apos;@/hooks/useTheme'apos;;
+import Layout from 'apos;@/components/Layout'apos;;
+import { ApiIntegration } from 'apos;@/lib/integrations/types'apos;;
 
 interface IntegrationConfig {
   [key: string]: any;
@@ -14,7 +14,7 @@ export default function IntegrationsPage() {
   const theme = useTheme();
   const [integrations, setIntegrations] = useState<ApiIntegration[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<string>('all');
+  const [activeTab, setActiveTab] = useState<string>('apos;all'apos;);
   const [configModal, setConfigModal] = useState<{ integration: ApiIntegration; config: IntegrationConfig } | null>(null);
 
   useEffect(() => {
@@ -23,13 +23,13 @@ export default function IntegrationsPage() {
 
   const fetchIntegrations = async () => {
     try {
-      const response = await fetch('/api/integrations');
+      const response = await fetch('apos;/api/integrations'apos;);
       if (response.ok) {
         const data = await response.json();
         setIntegrations(data.integrations);
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des intégrations:', error);
+      console.error('apos;Erreur lors du chargement des intégrations:'apos;, error);
     } finally {
       setLoading(false);
     }
@@ -37,9 +37,9 @@ export default function IntegrationsPage() {
 
   const toggleIntegration = async (id: string, enabled: boolean) => {
     try {
-      const response = await fetch('/api/integrations/toggle', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch('apos;/api/integrations/toggle'apos;, {
+        method: 'apos;POST'apos;,
+        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
         body: JSON.stringify({ id, enabled }),
       });
 
@@ -51,7 +51,7 @@ export default function IntegrationsPage() {
         );
       }
     } catch (error) {
-      console.error('Erreur lors de la mise à jour:', error);
+      console.error('apos;Erreur lors de la mise à jour:'apos;, error);
     }
   };
 
@@ -66,9 +66,9 @@ export default function IntegrationsPage() {
     if (!configModal) return;
 
     try {
-      const response = await fetch('/api/integrations/config', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch('apos;/api/integrations/config'apos;, {
+        method: 'apos;POST'apos;,
+        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
         body: JSON.stringify({
           id: configModal.integration.id,
           config: configModal.config,
@@ -86,30 +86,30 @@ export default function IntegrationsPage() {
         setConfigModal(null);
       }
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde:', error);
+      console.error('apos;Erreur lors de la sauvegarde:'apos;, error);
     }
   };
 
   const categories = [
-    { id: 'all', name: 'Toutes', icon: 'list' },
-    { id: 'seo', name: 'SEO', icon: 'search' },
-    { id: 'analytics', name: 'Analytics', icon: 'chart-line' },
-    { id: 'performance', name: 'Performance', icon: 'tachometer-alt' },
-    { id: 'security', name: 'Sécurité', icon: 'shield' },
-    { id: 'monitoring', name: 'Monitoring', icon: 'heartbeat' },
-    { id: 'ux', name: 'UX', icon: 'mouse-pointer' },
-    { id: 'accessibility', name: 'Accessibilité', icon: 'universal-access' },
-    { id: 'development', name: 'Dev', icon: 'code' },
-    { id: 'communication', name: 'Communication', icon: 'comments' },
+    { id: 'apos;all'apos;, name: 'apos;Toutes'apos;, icon: 'apos;list'apos; },
+    { id: 'apos;seo'apos;, name: 'apos;SEO'apos;, icon: 'apos;search'apos; },
+    { id: 'apos;analytics'apos;, name: 'apos;Analytics'apos;, icon: 'apos;chart-line'apos; },
+    { id: 'apos;performance'apos;, name: 'apos;Performance'apos;, icon: 'apos;tachometer-alt'apos; },
+    { id: 'apos;security'apos;, name: 'apos;Sécurité'apos;, icon: 'apos;shield'apos; },
+    { id: 'apos;monitoring'apos;, name: 'apos;Monitoring'apos;, icon: 'apos;heartbeat'apos; },
+    { id: 'apos;ux'apos;, name: 'apos;UX'apos;, icon: 'apos;mouse-pointer'apos; },
+    { id: 'apos;accessibility'apos;, name: 'apos;Accessibilité'apos;, icon: 'apos;universal-access'apos; },
+    { id: 'apos;development'apos;, name: 'apos;Dev'apos;, icon: 'apos;code'apos; },
+    { id: 'apos;communication'apos;, name: 'apos;Communication'apos;, icon: 'apos;comments'apos; },
   ];
 
-  const filteredIntegrations = activeTab === 'all' 
+  const filteredIntegrations = activeTab === 'apos;all'apos; 
     ? integrations 
     : integrations.filter(integration => integration.category === activeTab);
 
   const getCategoryIcon = (category: string) => {
     const categoryData = categories.find(cat => cat.id === category);
-    return categoryData?.icon || 'plug';
+    return categoryData?.icon || 'apos;plug'apos;;
   };
 
   const getStatusColor = (integration: ApiIntegration) => {
@@ -125,8 +125,8 @@ export default function IntegrationsPage() {
   if (loading) {
     return (
       <Layout>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-          <FontAwesomeIcon icon="spinner" spin style={{ fontSize: '32px', color: theme.colors.neutral[400] }} />
+        <div style={{ display: 'apos;flex'apos;, justifyContent: 'apos;center'apos;, alignItems: 'apos;center'apos;, minHeight: 'apos;400px'apos; }}>
+          <FontAwesomeIcon icon="spinner" spin style={{ fontSize: 'apos;32px'apos;, color: theme.colors.neutral[400] }} />
         </div>
       </Layout>
     );
@@ -134,12 +134,12 @@ export default function IntegrationsPage() {
 
   return (
     <Layout>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: theme.spacing.xl }}>
+      <div style={{ maxWidth: 'apos;1200px'apos;, margin: 'apos;0 auto'apos;, padding: theme.spacing.xl }}>
         {/* Header */}
         <div style={{ marginBottom: theme.spacing.xl }}>
           <h1 style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
+            fontSize: 'apos;2rem'apos;,
+            fontWeight: 'apos;bold'apos;,
             color: theme.colors.neutral[900],
             marginBottom: theme.spacing.sm
           }}>
@@ -153,28 +153,28 @@ export default function IntegrationsPage() {
 
         {/* Tabs */}
         <div style={{
-          display: 'flex',
+          display: 'apos;flex'apos;,
           gap: theme.spacing.sm,
           marginBottom: theme.spacing.xl,
-          flexWrap: 'wrap'
+          flexWrap: 'apos;wrap'apos;
         }}>
           {categories.map(category => (
             <button
               key={category.id}
               onClick={() => setActiveTab(category.id)}
               style={{
-                display: 'flex',
-                alignItems: 'center',
+                display: 'apos;flex'apos;,
+                alignItems: 'apos;center'apos;,
                 gap: theme.spacing.xs,
                 padding: `${theme.spacing.sm} ${theme.spacing.md}`,
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: activeTab === category.id ? theme.colors.primary.main : 'white',
-                color: activeTab === category.id ? 'white' : theme.colors.neutral[700],
-                cursor: 'pointer',
-                fontSize: '14px',
-                fontWeight: '500',
-                transition: 'all 0.2s'
+                borderRadius: 'apos;8px'apos;,
+                border: 'apos;none'apos;,
+                backgroundColor: activeTab === category.id ? theme.colors.primary.main : 'apos;white'apos;,
+                color: activeTab === category.id ? 'apos;white'apos; : theme.colors.neutral[700],
+                cursor: 'apos;pointer'apos;,
+                fontSize: 'apos;14px'apos;,
+                fontWeight: 'apos;500'apos;,
+                transition: 'apos;all 0.2s'apos;
               }}
             >
               <FontAwesomeIcon icon={category.icon as any} />
@@ -185,76 +185,76 @@ export default function IntegrationsPage() {
 
         {/* Integrations Grid */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
+          display: 'apos;grid'apos;,
+          gridTemplateColumns: 'apos;repeat(auto-fill, minmax(350px, 1fr))'apos;,
           gap: theme.spacing.lg
         }}>
           {filteredIntegrations.map(integration => (
             <div
               key={integration.id}
               style={{
-                backgroundColor: 'white',
-                borderRadius: '12px',
+                backgroundColor: 'apos;white'apos;,
+                borderRadius: 'apos;12px'apos;,
                 padding: theme.spacing.lg,
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
+                boxShadow: 'apos;0 4px 6px rgba(0, 0, 0, 0.05)'apos;,
                 border: `2px solid ${integration.isEnabled ? theme.colors.primary.light : theme.colors.neutral[200]}`,
-                transition: 'all 0.2s'
+                transition: 'apos;all 0.2s'apos;
               }}
             >
               {/* Header */}
               <div style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'space-between',
+                display: 'apos;flex'apos;,
+                alignItems: 'apos;flex-start'apos;,
+                justifyContent: 'apos;space-between'apos;,
                 marginBottom: theme.spacing.md
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing.sm }}>
+                <div style={{ display: 'apos;flex'apos;, alignItems: 'apos;center'apos;, gap: theme.spacing.sm }}>
                   <div style={{
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '8px',
+                    width: 'apos;40px'apos;,
+                    height: 'apos;40px'apos;,
+                    borderRadius: 'apos;8px'apos;,
                     backgroundColor: `${getStatusColor(integration)}20`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
+                    display: 'apos;flex'apos;,
+                    alignItems: 'apos;center'apos;,
+                    justifyContent: 'apos;center'apos;
                   }}>
                     <FontAwesomeIcon 
                       icon={getCategoryIcon(integration.category) as any}
-                      style={{ color: getStatusColor(integration), fontSize: '18px' }}
+                      style={{ color: getStatusColor(integration), fontSize: 'apos;18px'apos; }}
                     />
                   </div>
                   <div>
                     <h3 style={{
-                      fontSize: '16px',
-                      fontWeight: 'bold',
+                      fontSize: 'apos;16px'apos;,
+                      fontWeight: 'apos;bold'apos;,
                       color: theme.colors.neutral[900],
                       margin: 0
                     }}>
                       {integration.name}
                     </h3>
                     <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
+                      display: 'apos;flex'apos;,
+                      alignItems: 'apos;center'apos;,
                       gap: theme.spacing.xs,
-                      marginTop: '2px'
+                      marginTop: 'apos;2px'apos;
                     }}>
                       <span style={{
-                        fontSize: '12px',
+                        fontSize: 'apos;12px'apos;,
                         color: integration.isFree ? theme.colors.success : theme.colors.warning,
-                        fontWeight: '500'
+                        fontWeight: 'apos;500'apos;
                       }}>
-                        {integration.isFree ? 'Gratuit' : 'Payant'}
+                        {integration.isFree ? 'apos;Gratuit'apos; : 'apos;Payant'apos;}
                       </span>
                       <span style={{
-                        width: '4px',
-                        height: '4px',
-                        borderRadius: '50%',
+                        width: 'apos;4px'apos;,
+                        height: 'apos;4px'apos;,
+                        borderRadius: 'apos;50%'apos;,
                         backgroundColor: theme.colors.neutral[300]
                       }} />
                       <span style={{
-                        fontSize: '12px',
+                        fontSize: 'apos;12px'apos;,
                         color: theme.colors.neutral[500],
-                        textTransform: 'capitalize'
+                        textTransform: 'apos;capitalize'apos;
                       }}>
                         {integration.category}
                       </span>
@@ -264,11 +264,11 @@ export default function IntegrationsPage() {
 
                 {/* Toggle Switch */}
                 <label style={{
-                  position: 'relative',
-                  display: 'inline-block',
-                  width: '44px',
-                  height: '24px',
-                  cursor: 'pointer'
+                  position: 'apos;relative'apos;,
+                  display: 'apos;inline-block'apos;,
+                  width: 'apos;44px'apos;,
+                  height: 'apos;24px'apos;,
+                  cursor: 'apos;pointer'apos;
                 }}>
                   <input
                     type="checkbox"
@@ -277,26 +277,26 @@ export default function IntegrationsPage() {
                     style={{ opacity: 0, width: 0, height: 0 }}
                   />
                   <span style={{
-                    position: 'absolute',
+                    position: 'apos;absolute'apos;,
                     top: 0,
                     left: 0,
                     right: 0,
                     bottom: 0,
                     backgroundColor: integration.isEnabled ? theme.colors.primary.main : theme.colors.neutral[300],
-                    borderRadius: '24px',
-                    transition: 'all 0.2s',
-                    cursor: 'pointer'
+                    borderRadius: 'apos;24px'apos;,
+                    transition: 'apos;all 0.2s'apos;,
+                    cursor: 'apos;pointer'apos;
                   }}>
                     <span style={{
-                      position: 'absolute',
-                      content: '""',
-                      height: '18px',
-                      width: '18px',
-                      left: integration.isEnabled ? '23px' : '3px',
-                      bottom: '3px',
-                      backgroundColor: 'white',
-                      borderRadius: '50%',
-                      transition: 'all 0.2s'
+                      position: 'apos;absolute'apos;,
+                      content: 'apos;""'apos;,
+                      height: 'apos;18px'apos;,
+                      width: 'apos;18px'apos;,
+                      left: integration.isEnabled ? 'apos;23px'apos; : 'apos;3px'apos;,
+                      bottom: 'apos;3px'apos;,
+                      backgroundColor: 'apos;white'apos;,
+                      borderRadius: 'apos;50%'apos;,
+                      transition: 'apos;all 0.2s'apos;
                     }} />
                   </span>
                 </label>
@@ -304,9 +304,9 @@ export default function IntegrationsPage() {
 
               {/* Description */}
               <p style={{
-                fontSize: '14px',
+                fontSize: 'apos;14px'apos;,
                 color: theme.colors.neutral[600],
-                lineHeight: '1.5',
+                lineHeight: 'apos;1.5'apos;,
                 marginBottom: theme.spacing.md
               }}>
                 {integration.description}
@@ -316,30 +316,30 @@ export default function IntegrationsPage() {
               {integration.quotaLimit && (
                 <div style={{ marginBottom: theme.spacing.md }}>
                   <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
+                    display: 'apos;flex'apos;,
+                    justifyContent: 'apos;space-between'apos;,
+                    alignItems: 'apos;center'apos;,
                     marginBottom: theme.spacing.xs
                   }}>
-                    <span style={{ fontSize: '12px', color: theme.colors.neutral[600] }}>
+                    <span style={{ fontSize: 'apos;12px'apos;, color: theme.colors.neutral[600] }}>
                       Quota utilisé
                     </span>
-                    <span style={{ fontSize: '12px', color: theme.colors.neutral[700], fontWeight: '500' }}>
+                    <span style={{ fontSize: 'apos;12px'apos;, color: theme.colors.neutral[700], fontWeight: 'apos;500'apos; }}>
                       {integration.quotaUsed || 0} / {integration.quotaLimit}
                     </span>
                   </div>
                   <div style={{
-                    width: '100%',
-                    height: '4px',
+                    width: 'apos;100%'apos;,
+                    height: 'apos;4px'apos;,
                     backgroundColor: theme.colors.neutral[200],
-                    borderRadius: '2px',
-                    overflow: 'hidden'
+                    borderRadius: 'apos;2px'apos;,
+                    overflow: 'apos;hidden'apos;
                   }}>
                     <div style={{
                       width: `${Math.min(100, ((integration.quotaUsed || 0) / integration.quotaLimit) * 100)}%`,
-                      height: '100%',
+                      height: 'apos;100%'apos;,
                       backgroundColor: getStatusColor(integration),
-                      transition: 'width 0.3s'
+                      transition: 'apos;width 0.3s'apos;
                     }} />
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export default function IntegrationsPage() {
 
               {/* Actions */}
               <div style={{
-                display: 'flex',
+                display: 'apos;flex'apos;,
                 gap: theme.spacing.sm
               }}>
                 <button
@@ -356,14 +356,14 @@ export default function IntegrationsPage() {
                   style={{
                     flex: 1,
                     padding: `${theme.spacing.sm} ${theme.spacing.md}`,
-                    borderRadius: '6px',
+                    borderRadius: 'apos;6px'apos;,
                     border: `1px solid ${theme.colors.neutral[300]}`,
-                    backgroundColor: 'white',
+                    backgroundColor: 'apos;white'apos;,
                     color: integration.isEnabled ? theme.colors.neutral[700] : theme.colors.neutral[400],
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    cursor: integration.isEnabled ? 'pointer' : 'not-allowed',
-                    transition: 'all 0.2s'
+                    fontSize: 'apos;14px'apos;,
+                    fontWeight: 'apos;500'apos;,
+                    cursor: integration.isEnabled ? 'apos;pointer'apos; : 'apos;not-allowed'apos;,
+                    transition: 'apos;all 0.2s'apos;
                   }}
                 >
                   <FontAwesomeIcon icon="cog" style={{ marginRight: theme.spacing.xs }} />
@@ -375,14 +375,14 @@ export default function IntegrationsPage() {
                     onClick={() => {/* Test connection */}}
                     style={{
                       padding: `${theme.spacing.sm} ${theme.spacing.md}`,
-                      borderRadius: '6px',
-                      border: 'none',
+                      borderRadius: 'apos;6px'apos;,
+                      border: 'apos;none'apos;,
                       backgroundColor: theme.colors.primary.main,
-                      color: 'white',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s'
+                      color: 'apos;white'apos;,
+                      fontSize: 'apos;14px'apos;,
+                      fontWeight: 'apos;500'apos;,
+                      cursor: 'apos;pointer'apos;,
+                      transition: 'apos;all 0.2s'apos;
                     }}
                   >
                     <FontAwesomeIcon icon="play" />
@@ -396,35 +396,35 @@ export default function IntegrationsPage() {
         {/* Configuration Modal */}
         {configModal && (
           <div style={{
-            position: 'fixed',
+            position: 'apos;fixed'apos;,
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.6)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            backgroundColor: 'apos;rgba(0, 0, 0, 0.6)'apos;,
+            display: 'apos;flex'apos;,
+            alignItems: 'apos;center'apos;,
+            justifyContent: 'apos;center'apos;,
             zIndex: 1000
           }}>
             <div style={{
-              backgroundColor: 'white',
-              borderRadius: '12px',
+              backgroundColor: 'apos;white'apos;,
+              borderRadius: 'apos;12px'apos;,
               padding: theme.spacing.xl,
-              maxWidth: '500px',
-              width: '90%',
-              maxHeight: '80vh',
-              overflow: 'auto'
+              maxWidth: 'apos;500px'apos;,
+              width: 'apos;90%'apos;,
+              maxHeight: 'apos;80vh'apos;,
+              overflow: 'apos;auto'apos;
             }}>
               <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                display: 'apos;flex'apos;,
+                justifyContent: 'apos;space-between'apos;,
+                alignItems: 'apos;center'apos;,
                 marginBottom: theme.spacing.lg
               }}>
                 <h3 style={{
-                  fontSize: '18px',
-                  fontWeight: 'bold',
+                  fontSize: 'apos;18px'apos;,
+                  fontWeight: 'apos;bold'apos;,
                   color: theme.colors.neutral[900],
                   margin: 0
                 }}>
@@ -433,11 +433,11 @@ export default function IntegrationsPage() {
                 <button
                   onClick={() => setConfigModal(null)}
                   style={{
-                    background: 'none',
-                    border: 'none',
-                    fontSize: '20px',
+                    background: 'apos;none'apos;,
+                    border: 'apos;none'apos;,
+                    fontSize: 'apos;20px'apos;,
                     color: theme.colors.neutral[500],
-                    cursor: 'pointer'
+                    cursor: 'apos;pointer'apos;
                   }}
                 >
                   <FontAwesomeIcon icon="times" />
@@ -446,9 +446,9 @@ export default function IntegrationsPage() {
 
               <div style={{ marginBottom: theme.spacing.lg }}>
                 <label style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  fontWeight: '500',
+                  display: 'apos;block'apos;,
+                  fontSize: 'apos;14px'apos;,
+                  fontWeight: 'apos;500'apos;,
                   color: theme.colors.neutral[700],
                   marginBottom: theme.spacing.sm
                 }}>
@@ -456,36 +456,36 @@ export default function IntegrationsPage() {
                 </label>
                 <input
                   type="password"
-                  value={configModal.config.apiKey || ''}
+                  value={configModal.config.apiKey || 'apos;'apos;}
                   onChange={(e) => setConfigModal({
                     ...configModal,
                     config: { ...configModal.config, apiKey: e.target.value }
                   })}
                   placeholder="Entrez votre clé API..."
                   style={{
-                    width: '100%',
+                    width: 'apos;100%'apos;,
                     padding: theme.spacing.sm,
                     border: `1px solid ${theme.colors.neutral[300]}`,
-                    borderRadius: '6px',
-                    fontSize: '14px'
+                    borderRadius: 'apos;6px'apos;,
+                    fontSize: 'apos;14px'apos;
                   }}
                 />
               </div>
 
               <div style={{
-                display: 'flex',
+                display: 'apos;flex'apos;,
                 gap: theme.spacing.sm,
-                justifyContent: 'flex-end'
+                justifyContent: 'apos;flex-end'apos;
               }}>
                 <button
                   onClick={() => setConfigModal(null)}
                   style={{
                     padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
                     border: `1px solid ${theme.colors.neutral[300]}`,
-                    borderRadius: '6px',
-                    backgroundColor: 'white',
+                    borderRadius: 'apos;6px'apos;,
+                    backgroundColor: 'apos;white'apos;,
                     color: theme.colors.neutral[700],
-                    cursor: 'pointer'
+                    cursor: 'apos;pointer'apos;
                   }}
                 >
                   Annuler
@@ -494,12 +494,12 @@ export default function IntegrationsPage() {
                   onClick={saveConfig}
                   style={{
                     padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-                    border: 'none',
-                    borderRadius: '6px',
+                    border: 'apos;none'apos;,
+                    borderRadius: 'apos;6px'apos;,
                     backgroundColor: theme.colors.primary.main,
-                    color: 'white',
-                    cursor: 'pointer',
-                    fontWeight: '500'
+                    color: 'apos;white'apos;,
+                    cursor: 'apos;pointer'apos;,
+                    fontWeight: 'apos;500'apos;
                   }}
                 >
                   Sauvegarder

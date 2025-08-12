@@ -28,14 +28,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Mission introuvable" }, { status: 404 });
     }
 
-    // Vérifier que l'utilisateur est propriétaire de la mission
+    // Vérifier que l'apos;utilisateur est propriétaire de la mission
     if (mission.user.email !== session.user.email) {
       return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
     }
 
-    // Vérifier que c'est une mission NovaBot
-    if (!mission.metadata || mission.metadata.type !== 'novabot') {
-      return NextResponse.json({ error: "Cette mission n'est pas une mission NovaBot" }, { status: 400 });
+    // Vérifier que c'apos;est une mission NovaBot
+    if (!mission.metadata || mission.metadata.type !== 'apos;novabot'apos;) {
+      return NextResponse.json({ error: "Cette mission n'apos;est pas une mission NovaBot" }, { status: 400 });
     }
 
     // Extraire les données NovaBot
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const validation = await NovaBotService.validateWithJPBot(novaData);
 
     // Mettre à jour le statut de la mission
-    const newStatus = validation.validated ? 'validated' : 'rejected';
+    const newStatus = validation.validated ? 'apos;validated'apos; : 'apos;rejected'apos;;
     
     await prisma.mission.update({
       where: { id: missionId },
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
       }
     });
 
-    console.log(`✅ Mission NovaBot validée par JPBot: ${mission.objective} - ${validation.validated ? 'APPROUVÉE' : 'REJETÉE'}`);
+    console.log(`✅ Mission NovaBot validée par JPBot: ${mission.objective} - ${validation.validated ? 'apos;APPROUVÉE'apos; : 'apos;REJETÉE'apos;}`);
 
     return NextResponse.json({
       success: true,
@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('Erreur validation JPBot:', error);
+    console.error('apos;Erreur validation JPBot:'apos;, error);
     return NextResponse.json({ 
       error: "Erreur lors de la validation",
       details: error.message

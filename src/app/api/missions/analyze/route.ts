@@ -79,7 +79,7 @@ function calculateRelevanceScore(text: string, specialties: string[]): number {
   return score;
 }
 
-// Fonction pour recommander des agents basée sur l'objectif et le contexte
+// Fonction pour recommander des agents basée sur l'apos;objectif et le contexte
 function recommendAgents(objective: string, context: string = ""): {
   recommendedAgents: string[];
   reasoning: string;
@@ -121,14 +121,14 @@ function generateReasoning(objective: string, context: string, agents: string[])
   });
   
   if (agents.length === 0) {
-    return "Analyse non disponible, utilisation de l'équipe par défaut";
+    return "Analyse non disponible, utilisation de l'apos;équipe par défaut";
   }
   
   const objectiveLower = objective.toLowerCase();
   
   // Logique de raisonnement basée sur le contenu
   if (objectiveLower.includes("seo") || objectiveLower.includes("contenu") || objectiveLower.includes("article")) {
-    return `Équipe optimisée pour le contenu : ${agentDescriptions.join(", ")} - Focus sur la création de contenu SEO et l'optimisation`;
+    return `Équipe optimisée pour le contenu : ${agentDescriptions.join(", ")} - Focus sur la création de contenu SEO et l'apos;optimisation`;
   }
   
   if (objectiveLower.includes("design") || objectiveLower.includes("ui") || objectiveLower.includes("visuel")) {
@@ -140,7 +140,7 @@ function generateReasoning(objective: string, context: string, agents: string[])
   }
   
   if (objectiveLower.includes("analyse") || objectiveLower.includes("data") || objectiveLower.includes("performance")) {
-    return `Équipe analytique : ${agentDescriptions.join(", ")} - Focus sur l'analyse de données et l'optimisation`;
+    return `Équipe analytique : ${agentDescriptions.join(", ")} - Focus sur l'apos;analyse de données et l'apos;optimisation`;
   }
   
   if (objectiveLower.includes("conversion") || objectiveLower.includes("vente")) {
@@ -148,7 +148,7 @@ function generateReasoning(objective: string, context: string, agents: string[])
   }
   
   if (objectiveLower.includes("productivité") || objectiveLower.includes("efficacité")) {
-    return `Équipe optimisation : ${agentDescriptions.join(", ")} - Focus sur l'amélioration de la productivité`;
+    return `Équipe optimisation : ${agentDescriptions.join(", ")} - Focus sur l'apos;amélioration de la productivité`;
   }
   
   return `Équipe équilibrée : ${agentDescriptions.join(", ")} - Combinaison optimale pour cette mission`;
@@ -156,7 +156,7 @@ function generateReasoning(objective: string, context: string, agents: string[])
 
 export async function POST(request: NextRequest) {
   try {
-    // Vérifier l'authentification
+    // Vérifier l'apos;authentification
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
@@ -164,15 +164,15 @@ export async function POST(request: NextRequest) {
 
     const { objective, context } = await request.json();
 
-    if (!objective || typeof objective !== 'string') {
+    if (!objective || typeof objective !== 'apos;string'apos;) {
       return NextResponse.json({ error: "Objectif requis" }, { status: 400 });
     }
 
     // Analyser et recommander des agents
     const analysis = recommendAgents(objective, context || "");
 
-    // Logger l'analyse
-    logger.info('Mission analysis completed', {
+    // Logger l'apos;analyse
+    logger.info('apos;Mission analysis completed'apos;, {
       user: session.user.email,
       objective: objective.substring(0, 100),
       recommendedAgents: analysis.recommendedAgents,
@@ -191,12 +191,12 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('Mission analysis error', error as Error, {
-      endpoint: '/api/missions/analyze'
+    logger.error('apos;Mission analysis error'apos;, error as Error, {
+      endpoint: 'apos;/api/missions/analyze'apos;
     });
 
     return NextResponse.json(
-      { error: "Erreur lors de l'analyse" },
+      { error: "Erreur lors de l'apos;analyse" },
       { status: 500 }
     );
   }

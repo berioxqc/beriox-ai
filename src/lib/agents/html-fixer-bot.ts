@@ -1,6 +1,6 @@
-import { logger } from '@/lib/logger';
-import * as fs from 'fs';
-import * as path from 'path';
+import { logger } from 'apos;@/lib/logger'apos;;
+import * as fs from 'apos;fs'apos;;
+import * as path from 'apos;path'apos;;
 
 export interface HTMLFixerBot {
   name: "HTMLFixerBot";
@@ -46,8 +46,8 @@ export interface HTMLFixReport {
 
 export class HTMLFixerBotService {
   private patterns: Record<string, string> = {
-    "&apos;": "'",
-    "&quot;": '"',
+    "'": "'apos;",
+    "&quot;": 'apos;"'apos;,
     "&amp;": "&",
     "&lt;": "<",
     "&gt;": ">",
@@ -57,14 +57,14 @@ export class HTMLFixerBotService {
     "&ndash;": "–"
   };
 
-  private fileExtensions = ['.tsx', '.ts', '.jsx', '.js'];
-  private excludeDirs = ['node_modules', '.git', '.next', 'dist', 'build'];
+  private fileExtensions = ['apos;.tsx'apos;, 'apos;.ts'apos;, 'apos;.jsx'apos;, 'apos;.js'apos;];
+  private excludeDirs = ['apos;node_modules'apos;, 'apos;.git'apos;, 'apos;.next'apos;, 'apos;dist'apos;, 'apos;build'apos;];
 
   /**
    * Analyse et corrige les caractères HTML mal encodés dans le projet
    */
   async fixHTMLEncoding(projectRoot: string = process.cwd(), dryRun: boolean = true): Promise<HTMLFixReport> {
-    logger.info('🔧 HTMLFixerBot: Début de l\'analyse des fichiers', { projectRoot, dryRun });
+    logger.info('apos;🔧 HTMLFixerBot: Début de l\'apos;analyse des fichiers'apos;, { projectRoot, dryRun });
 
     const report: HTMLFixReport = {
       totalFiles: 0,
@@ -99,7 +99,7 @@ export class HTMLFixerBotService {
 
             // Mettre à jour le résumé
             result.changes.forEach(change => {
-              if (change.pattern === "&apos;") {
+              if (change.pattern === "'") {
                 report.summary.apostrophes += change.count;
               } else if (change.pattern === "&quot;") {
                 report.summary.quotes += change.count;
@@ -117,7 +117,7 @@ export class HTMLFixerBotService {
         }
       }
 
-      logger.info('✅ HTMLFixerBot: Analyse terminée', {
+      logger.info('apos;✅ HTMLFixerBot: Analyse terminée'apos;, {
         totalFiles: report.totalFiles,
         fixedFiles: report.fixedFiles,
         totalChanges: report.totalChanges
@@ -150,7 +150,7 @@ export class HTMLFixerBotService {
           files.push(...this.getAllFiles(fullPath));
         }
       } else if (stat.isFile()) {
-        // Vérifier l'extension
+        // Vérifier l'apos;extension
         const ext = path.extname(item);
         if (this.fileExtensions.includes(ext)) {
           files.push(fullPath);
@@ -167,15 +167,15 @@ export class HTMLFixerBotService {
   private async fixFile(filePath: string, dryRun: boolean): Promise<HTMLFixResult> {
     const result: HTMLFixResult = {
       filePath,
-      originalContent: '',
-      fixedContent: '',
+      originalContent: 'apos;'apos;,
+      fixedContent: 'apos;'apos;,
       changes: [],
       isValid: true
     };
 
     try {
       // Lire le contenu du fichier
-      result.originalContent = fs.readFileSync(filePath, 'utf-8');
+      result.originalContent = fs.readFileSync(filePath, 'apos;utf-8'apos;);
       result.fixedContent = result.originalContent;
 
       // Appliquer les corrections
@@ -191,11 +191,11 @@ export class HTMLFixerBotService {
           });
 
           // Remplacer les occurrences
-          result.fixedContent = result.fixedContent.replace(new RegExp(pattern, 'g'), replacement);
+          result.fixedContent = result.fixedContent.replace(new RegExp(pattern, 'apos;g'apos;), replacement);
         }
       }
 
-      // Valider la syntaxe si ce n'est pas un dry run
+      // Valider la syntaxe si ce n'apos;est pas un dry run
       if (!dryRun && result.changes.length > 0) {
         result.isValid = await this.validateSyntax(result.fixedContent, filePath);
         
@@ -209,7 +209,7 @@ export class HTMLFixerBotService {
           fs.writeFileSync(filePath, result.fixedContent);
           logger.info(`✅ Fichier corrigé: ${filePath}`);
         } else {
-          result.error = 'Syntaxe invalide après correction';
+          result.error = 'apos;Syntaxe invalide après correction'apos;;
           logger.warn(`⚠️ Syntaxe invalide dans ${filePath}`);
         }
       }
@@ -224,11 +224,11 @@ export class HTMLFixerBotService {
   }
 
   /**
-   * Trouve toutes les occurrences d'un pattern dans le contenu
+   * Trouve toutes les occurrences d'apos;un pattern dans le contenu
    */
   private findMatches(content: string, pattern: string): Array<{ line: number; column: number }> {
     const matches: Array<{ line: number; column: number }> = [];
-    const lines = content.split('\n');
+    const lines = content.split('apos;\n'apos;);
 
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
       const line = lines[lineIndex];
@@ -257,10 +257,10 @@ export class HTMLFixerBotService {
     try {
       const ext = path.extname(filePath);
 
-      if (ext === '.ts' || ext === '.tsx') {
+      if (ext === 'apos;.ts'apos; || ext === 'apos;.tsx'apos;) {
         // Validation TypeScript basique
         return this.validateTypeScript(content);
-      } else if (ext === '.js' || ext === '.jsx') {
+      } else if (ext === 'apos;.js'apos; || ext === 'apos;.jsx'apos;) {
         // Validation JavaScript basique
         return this.validateJavaScript(content);
       }
@@ -281,7 +281,7 @@ export class HTMLFixerBotService {
       const checks = [
         // Vérifier les guillemets non fermés
         () => {
-          const singleQuotes = (content.match(/'/g) || []).length;
+          const singleQuotes = (content.match(/'apos;/g) || []).length;
           const doubleQuotes = (content.match(/"/g) || []).length;
           return singleQuotes % 2 === 0 && doubleQuotes % 2 === 0;
         },
@@ -317,10 +317,10 @@ export class HTMLFixerBotService {
    * Génère un rapport détaillé
    */
   generateDetailedReport(report: HTMLFixReport): string {
-    let output = '';
+    let output = 'apos;'apos;;
 
-    output += '🔧 RAPPORT HTMLFixerBot\n';
-    output += '='.repeat(50) + '\n\n';
+    output += 'apos;🔧 RAPPORT HTMLFixerBot\n'apos;;
+    output += 'apos;='apos;.repeat(50) + 'apos;\n\n'apos;;
 
     output += `📊 RÉSUMÉ GÉNÉRAL\n`;
     output += `- Fichiers analysés: ${report.totalFiles}\n`;
@@ -329,7 +329,7 @@ export class HTMLFixerBotService {
     output += `- Erreurs: ${report.errors.length}\n\n`;
 
     output += `📈 DÉTAIL DES CORRECTIONS\n`;
-    output += `- Apostrophes (&apos;): ${report.summary.apostrophes}\n`;
+    output += `- Apostrophes ('): ${report.summary.apostrophes}\n`;
     output += `- Guillemets (&quot;): ${report.summary.quotes}\n`;
     output += `- Et commercial (&amp;): ${report.summary.ampersands}\n`;
     output += `- Autres: ${report.summary.other}\n\n`;

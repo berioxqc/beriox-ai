@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'apos;react'apos;;
 
 interface InputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   label?: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'textarea';
+  type?: 'apos;text'apos; | 'apos;email'apos; | 'apos;password'apos; | 'apos;number'apos; | 'apos;textarea'apos;;
   disabled?: boolean;
   error?: string;
   className?: string;
@@ -16,12 +16,12 @@ interface InputProps {
 const Input: React.FC<InputProps> = ({
   value,
   onChange,
-  placeholder = '',
+  placeholder = 'apos;'apos;,
   label,
-  type = 'text',
+  type = 'apos;text'apos;,
   disabled = false,
   error,
-  className = '',
+  className = 'apos;'apos;,
   onKeyDown,
   rows = 3
 }) => {
@@ -39,7 +39,7 @@ const Input: React.FC<InputProps> = ({
         </label>
       )}
       
-      {type === 'textarea' ? (
+      {type === 'apos;textarea'apos; ? (
         <textarea
           value={value}
           onChange={(e) => onChange(e.target.value)}

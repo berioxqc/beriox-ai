@@ -1,15 +1,15 @@
-import { MessagingService } from './messaging-service';
+import { MessagingService } from 'apos;./messaging-service'apos;;
 
 export const defaultEmailTemplates = [
   {
-    name: 'Bienvenue Beriox',
-    description: 'Email de bienvenue pour les nouveaux utilisateurs',
-    subject: 'Bienvenue chez Beriox AI - Votre équipe d\'agents IA',
+    name: 'apos;Bienvenue Beriox'apos;,
+    description: 'apos;Email de bienvenue pour les nouveaux utilisateurs'apos;,
+    subject: 'apos;Bienvenue chez Beriox AI - Votre équipe d\'apos;agents IA'apos;,
     body: `Bonjour {{userName}},
 
 Bienvenue chez Beriox AI ! Nous sommes ravis de vous compter parmi nos utilisateurs.
 
-Beriox AI vous offre une équipe d'agents IA spécialisés pour automatiser et optimiser vos processus business :
+Beriox AI vous offre une équipe d'apos;agents IA spécialisés pour automatiser et optimiser vos processus business :
 
 🤖 **Nos Agents IA :**
 - Karine : Analyste de données et insights
@@ -25,9 +25,9 @@ Beriox AI vous offre une équipe d'agents IA spécialisés pour automatiser et o
 
 Si vous avez des questions, notre équipe support est là pour vous aider.
 
-Bienvenue dans l'avenir de l'automatisation !
+Bienvenue dans l'apos;avenir de l'apos;automatisation !
 
-L'équipe Beriox AI`,
+L'apos;équipe Beriox AI`,
     bodyHtml: `
 <!DOCTYPE html>
 <html>
@@ -43,7 +43,7 @@ L'équipe Beriox AI`,
         
         <p>Bienvenue chez Beriox AI ! Nous sommes ravis de vous compter parmi nos utilisateurs.</p>
         
-        <p>Beriox AI vous offre une équipe d'agents IA spécialisés pour automatiser et optimiser vos processus business :</p>
+        <p>Beriox AI vous offre une équipe d'apos;agents IA spécialisés pour automatiser et optimiser vos processus business :</p>
         
         <h2 style="color: #6366f1;">🤖 Nos Agents IA :</h2>
         <ul>
@@ -64,22 +64,22 @@ L'équipe Beriox AI`,
         <p>Si vous avez des questions, notre équipe support est là pour vous aider.</p>
         
         <p style="text-align: center; font-weight: bold; color: #6366f1;">
-            Bienvenue dans l'avenir de l'automatisation !
+            Bienvenue dans l'apos;avenir de l'apos;automatisation !
         </p>
         
         <p style="text-align: center;">
-            L'équipe Beriox AI
+            L'apos;équipe Beriox AI
         </p>
     </div>
 </body>
 </html>`,
-    variables: ['userName'],
-    category: 'welcome'
+    variables: ['apos;userName'apos;],
+    category: 'apos;welcome'apos;
   },
   {
-    name: 'Support Ticket Créé',
-    description: 'Confirmation de création d\'un ticket de support',
-    subject: 'Ticket de support créé - {{ticketNumber}}',
+    name: 'apos;Support Ticket Créé'apos;,
+    description: 'apos;Confirmation de création d\'apos;un ticket de support'apos;,
+    subject: 'apos;Ticket de support créé - {{ticketNumber}}'apos;,
     body: `Bonjour {{userName}},
 
 Votre ticket de support a été créé avec succès.
@@ -90,37 +90,37 @@ Votre ticket de support a été créé avec succès.
 - Catégorie : {{ticketCategory}}
 - Priorité : {{ticketPriority}}
 
-Notre équipe va traiter votre demande dans les plus brefs délais. Vous recevrez une notification dès qu'une réponse sera disponible.
+Notre équipe va traiter votre demande dans les plus brefs délais. Vous recevrez une notification dès qu'apos;une réponse sera disponible.
 
-Vous pouvez suivre l'état de votre ticket depuis votre dashboard.
+Vous pouvez suivre l'apos;état de votre ticket depuis votre dashboard.
 
 Merci de votre patience.
 
-L'équipe support Beriox AI`,
-    variables: ['userName', 'ticketNumber', 'ticketSubject', 'ticketCategory', 'ticketPriority'],
-    category: 'support'
+L'apos;équipe support Beriox AI`,
+    variables: ['apos;userName'apos;, 'apos;ticketNumber'apos;, 'apos;ticketSubject'apos;, 'apos;ticketCategory'apos;, 'apos;ticketPriority'apos;],
+    category: 'apos;support'apos;
   },
   {
-    name: 'Réponse Support',
-    description: 'Réponse à un ticket de support',
-    subject: 'Re: {{ticketSubject}} - {{ticketNumber}}',
+    name: 'apos;Réponse Support'apos;,
+    description: 'apos;Réponse à un ticket de support'apos;,
+    subject: 'apos;Re: {{ticketSubject}} - {{ticketNumber}}'apos;,
     body: `Bonjour {{userName}},
 
 Voici la réponse à votre ticket de support {{ticketNumber}} :
 
 {{responseMessage}}
 
-Si vous avez d'autres questions, n'hésitez pas à nous contacter.
+Si vous avez d'apos;autres questions, n'apos;hésitez pas à nous contacter.
 
 Cordialement,
-L'équipe support Beriox AI`,
-    variables: ['userName', 'ticketNumber', 'ticketSubject', 'responseMessage'],
-    category: 'support'
+L'apos;équipe support Beriox AI`,
+    variables: ['apos;userName'apos;, 'apos;ticketNumber'apos;, 'apos;ticketSubject'apos;, 'apos;responseMessage'apos;],
+    category: 'apos;support'apos;
   },
   {
-    name: 'Recommandations IA',
-    description: 'Notification de nouvelles recommandations IA',
-    subject: 'Nouvelles recommandations IA disponibles - {{recommendationCount}} suggestions',
+    name: 'apos;Recommandations IA'apos;,
+    description: 'apos;Notification de nouvelles recommandations IA'apos;,
+    subject: 'apos;Nouvelles recommandations IA disponibles - {{recommendationCount}} suggestions'apos;,
     body: `Bonjour {{userName}},
 
 Nos agents IA ont analysé votre système et généré {{recommendationCount}} nouvelles recommandations pour optimiser votre expérience.
@@ -137,14 +137,14 @@ Nos agents IA ont analysé votre système et généré {{recommendationCount}} n
 
 Connectez-vous à votre dashboard pour consulter toutes les recommandations et commencer à les implémenter.
 
-L'équipe Beriox AI`,
-    variables: ['userName', 'recommendationCount', 'priorityRecommendations', 'performanceCount', 'securityCount', 'uxCount', 'businessCount', 'technicalCount'],
-    category: 'recommendations'
+L'apos;équipe Beriox AI`,
+    variables: ['apos;userName'apos;, 'apos;recommendationCount'apos;, 'apos;priorityRecommendations'apos;, 'apos;performanceCount'apos;, 'apos;securityCount'apos;, 'apos;uxCount'apos;, 'apos;businessCount'apos;, 'apos;technicalCount'apos;],
+    category: 'apos;recommendations'apos;
   },
   {
-    name: 'Mission Terminée',
-    description: 'Notification de fin de mission',
-    subject: 'Mission terminée - {{missionTitle}}',
+    name: 'apos;Mission Terminée'apos;,
+    description: 'apos;Notification de fin de mission'apos;,
+    subject: 'apos;Mission terminée - {{missionTitle}}'apos;,
     body: `Bonjour {{userName}},
 
 Votre mission "{{missionTitle}}" a été terminée avec succès par {{agentName}}.
@@ -160,14 +160,14 @@ Votre mission "{{missionTitle}}" a été terminée avec succès par {{agentName}
 
 Consultez le rapport complet dans votre dashboard pour plus de détails.
 
-L'équipe Beriox AI`,
-    variables: ['userName', 'missionTitle', 'agentName', 'missionObjective', 'missionDuration', 'missionResults'],
-    category: 'missions'
+L'apos;équipe Beriox AI`,
+    variables: ['apos;userName'apos;, 'apos;missionTitle'apos;, 'apos;agentName'apos;, 'apos;missionObjective'apos;, 'apos;missionDuration'apos;, 'apos;missionResults'apos;],
+    category: 'apos;missions'apos;
   }
 ];
 
 export async function createDefaultTemplates(messagingService: MessagingService, createdBy?: string) {
-  console.log('📧 Création des templates d\'emails par défaut...');
+  console.log('apos;📧 Création des templates d\'apos;emails par défaut...'apos;);
   
   for (const template of defaultEmailTemplates) {
     try {
@@ -178,5 +178,5 @@ export async function createDefaultTemplates(messagingService: MessagingService,
     }
   }
   
-  console.log('✅ Templates d\'emails par défaut créés');
+  console.log('apos;✅ Templates d\'apos;emails par défaut créés'apos;);
 }

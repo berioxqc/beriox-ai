@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'apos;next/server'apos;;
 
 export async function GET() {
   return NextResponse.json({

@@ -24,10 +24,10 @@ export default function Sidebar() {
     const fetchUserInfo = async () => {
       if (session?.user?.email) {
         try {
-          const response = await fetch('/api/user/profile');
+          const response = await fetch('apos;/api/user/profile'apos;);
           if (response.ok) {
             const data = await response.json();
-            setUserRole(data.user?.role || 'USER');
+            setUserRole(data.user?.role || 'apos;USER'apos;);
             
             // Calculer les infos premium
             if (data.user?.premiumAccess && data.user.premiumAccess.isActive) {
@@ -51,7 +51,7 @@ export default function Sidebar() {
             }
           }
         } catch (error) {
-          console.error('Erreur lors de la récupération des infos utilisateur:', error);
+          console.error('apos;Erreur lors de la récupération des infos utilisateur:'apos;, error);
         }
       }
     };
@@ -65,8 +65,8 @@ export default function Sidebar() {
       setIsCollapsed(!isCollapsed);
     };
 
-    window.addEventListener('sidebar-toggle', handleSidebarToggle);
-    return () => window.removeEventListener('sidebar-toggle', handleSidebarToggle);
+    window.addEventListener('apos;sidebar-toggle'apos;, handleSidebarToggle);
+    return () => window.removeEventListener('apos;sidebar-toggle'apos;, handleSidebarToggle);
   }, [isCollapsed]);
 
   // Structure du menu organisée par catégories
@@ -78,7 +78,7 @@ export default function Sidebar() {
           href: "/", 
           label: "Tableau de bord", 
           icon: "home",
-          description: "Vue d'ensemble de vos activités"
+          description: "Vue d'apos;ensemble de vos activités"
         },
         { 
           href: "/missions", 
@@ -103,7 +103,7 @@ export default function Sidebar() {
           icon: "brain",
           description: "Assistant conversationnel"
         },
-        ...(premiumInfo?.hasAccess && (premiumInfo.planId === 'competitor-intelligence' || premiumInfo.planId === 'enterprise') ? [{
+        ...(premiumInfo?.hasAccess && (premiumInfo.planId === 'apos;competitor-intelligence'apos; || premiumInfo.planId === 'apos;enterprise'apos;) ? [{
           href: "/competitors",
           label: "Veille Concurrentielle",
           icon: "search",
@@ -143,7 +143,7 @@ export default function Sidebar() {
           href: "/settings", 
           label: "Paramètres", 
           icon: "cog",
-          description: "Configuration de l'application"
+          description: "Configuration de l'apos;application"
         }
       ]
     }
@@ -203,7 +203,7 @@ export default function Sidebar() {
                 fontSize: "16px",
                 fontWeight: "600",
                 color: "white",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}>
                 Beriox AI
               </div>
@@ -291,7 +291,7 @@ export default function Sidebar() {
                 color: "rgba(255, 255, 255, 0.4)",
                 textTransform: "uppercase",
                 letterSpacing: "0.5px",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}>
                 {section.category}
               </div>
@@ -316,7 +316,7 @@ export default function Sidebar() {
                     fontWeight: "500",
                     transition: "all 0.2s",
                     borderRight: isActive ? "2px solid #635bff" : "2px solid transparent",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                     position: "relative",
                     justifyContent: isCollapsed ? "center" : "flex-start"
                   }}
@@ -421,14 +421,14 @@ export default function Sidebar() {
                   fontSize: "13px",
                   fontWeight: "500",
                   color: "white",
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                 }}>
                   {session?.user?.name || "Utilisateur"}
                 </div>
                 <div style={{
                   fontSize: "12px",
                   color: "rgba(255, 255, 255, 0.6)",
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                 }}>
                   {session?.user?.email || "Non connecté"}
                 </div>
@@ -443,7 +443,7 @@ export default function Sidebar() {
                     alignItems: "center",
                     gap: "4px",
                     marginTop: "4px",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                   }}>
                     <Icon name="crown" className="text-yellow-400" size={10} />
                     {premiumInfo.planId?.toUpperCase()} • {premiumInfo.daysLeft}j restants
@@ -487,14 +487,14 @@ export default function Sidebar() {
                 fontSize: "14px",
                 fontWeight: "500",
                 color: "#0a2540",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}>
                 {session?.user?.name}
               </div>
               <div style={{
                 fontSize: "12px",
                 color: "#8898aa",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
               }}>
                 {session?.user?.email}
               </div>
@@ -510,7 +510,7 @@ export default function Sidebar() {
                 textDecoration: "none",
                 fontSize: "14px",
                 color: "#0a2540",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                 transition: "background-color 0.2s",
                 borderBottom: "1px solid #f6f9fc"
               }}
@@ -522,7 +522,7 @@ export default function Sidebar() {
             </Link>
             
             {/* Liens Administration pour Super Admin */}
-            {session?.user?.email === 'info@beriox.ca' && (
+            {session?.user?.email === 'apos;info@beriox.ca'apos; && (
               <>
                 <div style={{
                   padding: "8px 16px",
@@ -548,7 +548,7 @@ export default function Sidebar() {
                     textDecoration: "none",
                     fontSize: "14px",
                     color: "#0a2540",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                     transition: "background-color 0.2s",
                     borderBottom: "1px solid #f6f9fc"
                   }}
@@ -570,7 +570,7 @@ export default function Sidebar() {
                     textDecoration: "none",
                     fontSize: "13px",
                     color: "#6b7280",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                     transition: "background-color 0.2s"
                   }}
                   onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f6f9fc"}
@@ -591,7 +591,7 @@ export default function Sidebar() {
                     textDecoration: "none",
                     fontSize: "13px",
                     color: "#6b7280",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                     transition: "background-color 0.2s",
                     borderBottom: "1px solid #f6f9fc"
                   }}
@@ -613,7 +613,7 @@ export default function Sidebar() {
                     textDecoration: "none",
                     fontSize: "13px",
                     color: "#6b7280",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                     transition: "background-color 0.2s"
                   }}
                   onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#f6f9fc"}
@@ -634,7 +634,7 @@ export default function Sidebar() {
                     textDecoration: "none",
                     fontSize: "13px",
                     color: "#6b7280",
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                     transition: "background-color 0.2s",
                     borderBottom: "1px solid #f6f9fc"
                   }}
@@ -657,7 +657,7 @@ export default function Sidebar() {
                 fontSize: "14px",
                 color: "#df1b41",
                 cursor: "pointer",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
                 transition: "background-color 0.2s"
               }}
               onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#fef2f2"}

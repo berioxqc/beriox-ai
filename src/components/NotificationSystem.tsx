@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useState, useCallback } from 'apos;react'apos;;
+import { useSession } from 'apos;next-auth/react'apos;;
+import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
 import {
   faBell,
   faCheck,
@@ -14,19 +14,19 @@ import {
   faRocket,
   faCreditCard,
   faCog
-} from '@fortawesome/free-solid-svg-icons';
+} from 'apos;@fortawesome/free-solid-svg-icons'apos;;
 import {
   NotificationData,
   NotificationType,
   NotificationPriority,
   notificationManager
-} from '@/lib/notifications';
+} from 'apos;@/lib/notifications'apos;;
 
 interface NotificationSystemProps {
   className?: string;
 }
 
-export default function NotificationSystem({ className = '' }: NotificationSystemProps) {
+export default function NotificationSystem({ className = 'apos;'apos; }: NotificationSystemProps) {
   const { data: session } = useSession();
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -39,14 +39,14 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/notifications?limit=20');
+      const response = await fetch('apos;/api/notifications?limit=20'apos;);
       if (response.ok) {
         const data = await response.json();
         setNotifications(data.notifications);
         setUnreadCount(data.unreadCount);
       }
     } catch (error) {
-      console.error('Failed to load notifications:', error);
+      console.error('apos;Failed to load notifications:'apos;, error);
     } finally {
       setIsLoading(false);
     }
@@ -55,9 +55,9 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
   // Marquer comme lu
   const markAsRead = async (notificationId: string) => {
     try {
-      const response = await fetch('/api/notifications', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch('apos;/api/notifications'apos;, {
+        method: 'apos;PUT'apos;,
+        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
         body: JSON.stringify({ notificationId })
       });
 
@@ -72,16 +72,16 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
     } catch (error) {
-      console.error('Failed to mark notification as read:', error);
+      console.error('apos;Failed to mark notification as read:'apos;, error);
     }
   };
 
   // Supprimer une notification
   const deleteNotification = async (notificationId: string) => {
     try {
-      const response = await fetch('/api/notifications', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch('apos;/api/notifications'apos;, {
+        method: 'apos;DELETE'apos;,
+        headers: { 'apos;Content-Type'apos;: 'apos;application/json'apos; },
         body: JSON.stringify({ notificationId })
       });
 
@@ -93,7 +93,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
         }
       }
     } catch (error) {
-      console.error('Failed to delete notification:', error);
+      console.error('apos;Failed to delete notification:'apos;, error);
     }
   };
 
@@ -107,36 +107,36 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
       );
       setUnreadCount(0);
     } catch (error) {
-      console.error('Failed to mark all as read:', error);
+      console.error('apos;Failed to mark all as read:'apos;, error);
     }
   };
 
   // Gérer les actions de notification
   const handleNotificationAction = (action: any, notification: NotificationData) => {
     switch (action.action) {
-      case 'navigate':
+      case 'apos;navigate'apos;:
         if (action.url) {
           window.location.href = action.url;
         }
         break;
-      case 'download':
+      case 'apos;download'apos;:
         if (action.url) {
-          window.open(action.url, '_blank');
+          window.open(action.url, 'apos;_blank'apos;);
         }
         break;
-      case 'retry':
+      case 'apos;retry'apos;:
         // Logique de retry spécifique
-        console.log('Retry action for notification:', notification.id);
+        console.log('apos;Retry action for notification:'apos;, notification.id);
         break;
       default:
-        console.log('Unknown action:', action.action);
+        console.log('apos;Unknown action:'apos;, action.action);
     }
 
     // Marquer comme lu après action
     markAsRead(notification.id);
   };
 
-  // Obtenir l'icône pour le type de notification
+  // Obtenir l'apos;icône pour le type de notification
   const getNotificationIcon = (type: NotificationType) => {
     switch (type) {
       case NotificationType.INFO:
@@ -163,23 +163,23 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
   const getNotificationColor = (type: NotificationType) => {
     switch (type) {
       case NotificationType.INFO:
-        return 'text-blue-600 bg-blue-50 border-blue-200';
+        return 'apos;text-blue-600 bg-blue-50 border-blue-200'apos;;
       case NotificationType.SUCCESS:
-        return 'text-green-600 bg-green-50 border-green-200';
+        return 'apos;text-green-600 bg-green-50 border-green-200'apos;;
       case NotificationType.WARNING:
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+        return 'apos;text-yellow-600 bg-yellow-50 border-yellow-200'apos;;
       case NotificationType.ERROR:
-        return 'text-red-600 bg-red-50 border-red-200';
+        return 'apos;text-red-600 bg-red-50 border-red-200'apos;;
       case NotificationType.MISSION_COMPLETE:
-        return 'text-purple-600 bg-purple-50 border-purple-200';
+        return 'apos;text-purple-600 bg-purple-50 border-purple-200'apos;;
       case NotificationType.PAYMENT_SUCCESS:
-        return 'text-green-600 bg-green-50 border-green-200';
+        return 'apos;text-green-600 bg-green-50 border-green-200'apos;;
       case NotificationType.PAYMENT_FAILED:
-        return 'text-red-600 bg-red-50 border-red-200';
+        return 'apos;text-red-600 bg-red-50 border-red-200'apos;;
       case NotificationType.SYSTEM_ALERT:
-        return 'text-orange-600 bg-orange-50 border-orange-200';
+        return 'apos;text-orange-600 bg-orange-50 border-orange-200'apos;;
       default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
+        return 'apos;text-gray-600 bg-gray-50 border-gray-200'apos;;
     }
   };
 
@@ -187,15 +187,15 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
   const getPriorityColor = (priority: NotificationPriority) => {
     switch (priority) {
       case NotificationPriority.LOW:
-        return 'bg-gray-100';
+        return 'apos;bg-gray-100'apos;;
       case NotificationPriority.MEDIUM:
-        return 'bg-blue-100';
+        return 'apos;bg-blue-100'apos;;
       case NotificationPriority.HIGH:
-        return 'bg-yellow-100';
+        return 'apos;bg-yellow-100'apos;;
       case NotificationPriority.URGENT:
-        return 'bg-red-100';
+        return 'apos;bg-red-100'apos;;
       default:
-        return 'bg-gray-100';
+        return 'apos;bg-gray-100'apos;;
     }
   };
 
@@ -207,11 +207,11 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-    if (minutes < 1) return 'À l\'instant';
+    if (minutes < 1) return 'apos;À l\'apos;instant'apos;;
     if (minutes < 60) return `Il y a ${minutes} min`;
     if (hours < 24) return `Il y a ${hours}h`;
     if (days < 7) return `Il y a ${days}j`;
-    return new Date(date).toLocaleDateString('fr-FR');
+    return new Date(date).toLocaleDateString('apos;fr-FR'apos;);
   };
 
   // Charger les notifications au montage et quand la session change
@@ -219,7 +219,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
     loadNotifications();
   }, [loadNotifications]);
 
-  // S'abonner aux nouvelles notifications
+  // S'apos;abonner aux nouvelles notifications
   useEffect(() => {
     if (!session?.user?.id) return;
 
@@ -246,7 +246,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
         <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-            {unreadCount > 99 ? '99+' : unreadCount}
+            {unreadCount > 99 ? 'apos;99+'apos; : unreadCount}
           </span>
         )}
       </button>
@@ -284,7 +284,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
                 <div
                   key={notification.id}
                   className={`p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors ${
-                    !notification.readAt ? 'bg-blue-50' : ''
+                    !notification.readAt ? 'apos;bg-blue-50'apos; : 'apos;'apos;
                   }`}
                 >
                   {/* Header de la notification */}
@@ -292,7 +292,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
                     <div className="flex items-center space-x-2">
                       <FontAwesomeIcon
                         icon={getNotificationIcon(notification.type)}
-                        className={`w-4 h-4 ${getNotificationColor(notification.type).split(' ')[0]}`}
+                        className={`w-4 h-4 ${getNotificationColor(notification.type).split('apos; 'apos;)[0]}`}
                       />
                       <span className="text-sm font-medium text-gray-900">
                         {notification.title}
@@ -354,7 +354,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
           {notifications.length > 0 && (
             <div className="p-3 border-t border-gray-200 text-center">
               <button
-                onClick={() => window.location.href = '/notifications'}
+                onClick={() => window.location.href = 'apos;/notifications'apos;}
                 className="text-sm text-blue-600 hover:text-blue-800"
               >
                 Voir toutes les notifications

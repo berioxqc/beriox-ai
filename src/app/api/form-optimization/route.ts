@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { getServerSession } from 'apos;next-auth'apos;;
+import { authOptions } from 'apos;@/lib/auth'apos;;
 import {
   formOptimizer,
   addForm,
@@ -14,25 +14,25 @@ import {
   abandonForm,
   getFormAnalytics,
   generateOptimizations
-} from '@/lib/form-optimization';
-import { logger } from '@/lib/logger';
-import { withRateLimit } from '@/lib/rate-limit-advanced';
+} from 'apos;@/lib/form-optimization'apos;;
+import { logger } from 'apos;@/lib/logger'apos;;
+import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
 
 // GET - Obtenir les formulaires
 async function getFormsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const formId = searchParams.get('formId');
+    const formId = searchParams.get('apos;formId'apos;);
 
     if (formId) {
       const form = getForm(formId);
       if (!form) {
-        return NextResponse.json({ error: 'Form not found' }, { status: 404 });
+        return NextResponse.json({ error: 'apos;Form not found'apos; }, { status: 404 });
       }
       return NextResponse.json({ form });
     } else {
@@ -41,13 +41,13 @@ async function getFormsHandler(request: NextRequest) {
     }
 
   } catch (error) {
-    logger.error('Failed to get forms', error as Error, {
-      action: 'forms_error',
+    logger.error('apos;Failed to get forms'apos;, error as Error, {
+      action: 'apos;forms_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to get forms' },
+      { error: 'apos;Failed to get forms'apos; },
       { status: 500 }
     );
   }
@@ -57,28 +57,28 @@ async function getFormsHandler(request: NextRequest) {
 async function createFormHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
     const body = await request.json();
     addForm(body);
 
-    logger.info('Form created', {
-      action: 'form_created',
+    logger.info('apos;Form created'apos;, {
+      action: 'apos;form_created'apos;,
       metadata: { userId: session.user.id, formId: body.id }
     });
 
     return NextResponse.json({ success: true, formId: body.id }, { status: 201 });
 
   } catch (error) {
-    logger.error('Failed to create form', error as Error, {
-      action: 'form_creation_error',
+    logger.error('apos;Failed to create form'apos;, error as Error, {
+      action: 'apos;form_creation_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to create form' },
+      { error: 'apos;Failed to create form'apos; },
       { status: 500 }
     );
   }
@@ -88,7 +88,7 @@ async function createFormHandler(request: NextRequest) {
 async function startFormHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -97,28 +97,28 @@ async function startFormHandler(request: NextRequest) {
 
     if (!formId) {
       return NextResponse.json(
-        { error: 'Form ID is required' },
+        { error: 'apos;Form ID is required'apos; },
         { status: 400 }
       );
     }
 
     const formData = startForm(formId, session.user.id);
 
-    logger.info('Form started', {
-      action: 'form_started',
+    logger.info('apos;Form started'apos;, {
+      action: 'apos;form_started'apos;,
       metadata: { userId: session.user.id, formId, sessionId: formData.sessionId }
     });
 
     return NextResponse.json({ formData }, { status: 201 });
 
   } catch (error) {
-    logger.error('Failed to start form', error as Error, {
-      action: 'form_start_error',
+    logger.error('apos;Failed to start form'apos;, error as Error, {
+      action: 'apos;form_start_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to start form' },
+      { error: 'apos;Failed to start form'apos; },
       { status: 500 }
     );
   }
@@ -128,7 +128,7 @@ async function startFormHandler(request: NextRequest) {
 async function updateFormDataHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -137,7 +137,7 @@ async function updateFormDataHandler(request: NextRequest) {
 
     if (!sessionId || !fieldId) {
       return NextResponse.json(
-        { error: 'Session ID and field ID are required' },
+        { error: 'apos;Session ID and field ID are required'apos; },
         { status: 400 }
       );
     }
@@ -146,26 +146,26 @@ async function updateFormDataHandler(request: NextRequest) {
 
     if (!formData) {
       return NextResponse.json(
-        { error: 'Form session not found' },
+        { error: 'apos;Form session not found'apos; },
         { status: 404 }
       );
     }
 
-    logger.info('Form data updated', {
-      action: 'form_data_updated',
+    logger.info('apos;Form data updated'apos;, {
+      action: 'apos;form_data_updated'apos;,
       metadata: { userId: session.user.id, sessionId, fieldId, progress: formData.progress }
     });
 
     return NextResponse.json({ formData });
 
   } catch (error) {
-    logger.error('Failed to update form data', error as Error, {
-      action: 'form_data_update_error',
+    logger.error('apos;Failed to update form data'apos;, error as Error, {
+      action: 'apos;form_data_update_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to update form data' },
+      { error: 'apos;Failed to update form data'apos; },
       { status: 500 }
     );
   }
@@ -175,7 +175,7 @@ async function updateFormDataHandler(request: NextRequest) {
 async function validateFormHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -184,28 +184,28 @@ async function validateFormHandler(request: NextRequest) {
 
     if (!sessionId) {
       return NextResponse.json(
-        { error: 'Session ID is required' },
+        { error: 'apos;Session ID is required'apos; },
         { status: 400 }
       );
     }
 
     const validation = validateForm(sessionId);
 
-    logger.info('Form validated', {
-      action: 'form_validated',
+    logger.info('apos;Form validated'apos;, {
+      action: 'apos;form_validated'apos;,
       metadata: { userId: session.user.id, sessionId, isValid: validation.isValid }
     });
 
     return NextResponse.json(validation);
 
   } catch (error) {
-    logger.error('Failed to validate form', error as Error, {
-      action: 'form_validation_error',
+    logger.error('apos;Failed to validate form'apos;, error as Error, {
+      action: 'apos;form_validation_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to validate form' },
+      { error: 'apos;Failed to validate form'apos; },
       { status: 500 }
     );
   }
@@ -215,7 +215,7 @@ async function validateFormHandler(request: NextRequest) {
 async function submitFormHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -224,28 +224,28 @@ async function submitFormHandler(request: NextRequest) {
 
     if (!sessionId) {
       return NextResponse.json(
-        { error: 'Session ID is required' },
+        { error: 'apos;Session ID is required'apos; },
         { status: 400 }
       );
     }
 
     const result = submitForm(sessionId);
 
-    logger.info('Form submitted', {
-      action: 'form_submitted',
+    logger.info('apos;Form submitted'apos;, {
+      action: 'apos;form_submitted'apos;,
       metadata: { userId: session.user.id, sessionId, success: result.success }
     });
 
     return NextResponse.json(result);
 
   } catch (error) {
-    logger.error('Failed to submit form', error as Error, {
-      action: 'form_submission_error',
+    logger.error('apos;Failed to submit form'apos;, error as Error, {
+      action: 'apos;form_submission_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to submit form' },
+      { error: 'apos;Failed to submit form'apos; },
       { status: 500 }
     );
   }
@@ -255,7 +255,7 @@ async function submitFormHandler(request: NextRequest) {
 async function saveDraftHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -264,7 +264,7 @@ async function saveDraftHandler(request: NextRequest) {
 
     if (!sessionId) {
       return NextResponse.json(
-        { error: 'Session ID is required' },
+        { error: 'apos;Session ID is required'apos; },
         { status: 400 }
       );
     }
@@ -273,26 +273,26 @@ async function saveDraftHandler(request: NextRequest) {
 
     if (!success) {
       return NextResponse.json(
-        { error: 'Form session not found' },
+        { error: 'apos;Form session not found'apos; },
         { status: 404 }
       );
     }
 
-    logger.info('Form draft saved', {
-      action: 'form_draft_saved',
+    logger.info('apos;Form draft saved'apos;, {
+      action: 'apos;form_draft_saved'apos;,
       metadata: { userId: session.user.id, sessionId }
     });
 
     return NextResponse.json({ success: true });
 
   } catch (error) {
-    logger.error('Failed to save draft', error as Error, {
-      action: 'form_draft_save_error',
+    logger.error('apos;Failed to save draft'apos;, error as Error, {
+      action: 'apos;form_draft_save_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to save draft' },
+      { error: 'apos;Failed to save draft'apos; },
       { status: 500 }
     );
   }
@@ -302,7 +302,7 @@ async function saveDraftHandler(request: NextRequest) {
 async function abandonFormHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -311,7 +311,7 @@ async function abandonFormHandler(request: NextRequest) {
 
     if (!sessionId) {
       return NextResponse.json(
-        { error: 'Session ID is required' },
+        { error: 'apos;Session ID is required'apos; },
         { status: 400 }
       );
     }
@@ -320,45 +320,45 @@ async function abandonFormHandler(request: NextRequest) {
 
     if (!success) {
       return NextResponse.json(
-        { error: 'Form session not found or already submitted' },
+        { error: 'apos;Form session not found or already submitted'apos; },
         { status: 404 }
       );
     }
 
-    logger.info('Form abandoned', {
-      action: 'form_abandoned',
+    logger.info('apos;Form abandoned'apos;, {
+      action: 'apos;form_abandoned'apos;,
       metadata: { userId: session.user.id, sessionId, reason }
     });
 
     return NextResponse.json({ success: true });
 
   } catch (error) {
-    logger.error('Failed to abandon form', error as Error, {
-      action: 'form_abandon_error',
+    logger.error('apos;Failed to abandon form'apos;, error as Error, {
+      action: 'apos;form_abandon_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to abandon form' },
+      { error: 'apos;Failed to abandon form'apos; },
       { status: 500 }
     );
   }
 }
 
-// GET - Obtenir les analytics d'un formulaire
+// GET - Obtenir les analytics d'apos;un formulaire
 async function getAnalyticsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
     const { searchParams } = new URL(request.url);
-    const formId = searchParams.get('formId');
+    const formId = searchParams.get('apos;formId'apos;);
 
     if (!formId) {
       return NextResponse.json(
-        { error: 'Form ID is required' },
+        { error: 'apos;Form ID is required'apos; },
         { status: 400 }
       );
     }
@@ -367,7 +367,7 @@ async function getAnalyticsHandler(request: NextRequest) {
 
     if (!analytics) {
       return NextResponse.json(
-        { error: 'Analytics not found' },
+        { error: 'apos;Analytics not found'apos; },
         { status: 404 }
       );
     }
@@ -375,13 +375,13 @@ async function getAnalyticsHandler(request: NextRequest) {
     return NextResponse.json({ analytics });
 
   } catch (error) {
-    logger.error('Failed to get analytics', error as Error, {
-      action: 'analytics_error',
+    logger.error('apos;Failed to get analytics'apos;, error as Error, {
+      action: 'apos;analytics_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to get analytics' },
+      { error: 'apos;Failed to get analytics'apos; },
       { status: 500 }
     );
   }
@@ -391,7 +391,7 @@ async function getAnalyticsHandler(request: NextRequest) {
 async function generateOptimizationsHandler(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -400,28 +400,28 @@ async function generateOptimizationsHandler(request: NextRequest) {
 
     if (!formId) {
       return NextResponse.json(
-        { error: 'Form ID is required' },
+        { error: 'apos;Form ID is required'apos; },
         { status: 400 }
       );
     }
 
     const optimization = generateOptimizations(formId);
 
-    logger.info('Form optimizations generated', {
-      action: 'form_optimizations_generated',
+    logger.info('apos;Form optimizations generated'apos;, {
+      action: 'apos;form_optimizations_generated'apos;,
       metadata: { userId: session.user.id, formId, suggestionsCount: optimization.suggestions.length }
     });
 
     return NextResponse.json({ optimization });
 
   } catch (error) {
-    logger.error('Failed to generate optimizations', error as Error, {
-      action: 'optimizations_error',
+    logger.error('apos;Failed to generate optimizations'apos;, error as Error, {
+      action: 'apos;optimizations_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to generate optimizations' },
+      { error: 'apos;Failed to generate optimizations'apos; },
       { status: 500 }
     );
   }
@@ -430,59 +430,59 @@ async function generateOptimizationsHandler(request: NextRequest) {
 // Handlers avec rate limiting
 export const GET = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('action');
+  const action = searchParams.get('apos;action'apos;);
 
   switch (action) {
-    case 'forms':
+    case 'apos;forms'apos;:
       return getFormsHandler(request);
-    case 'analytics':
+    case 'apos;analytics'apos;:
       return getAnalyticsHandler(request);
     default:
       return NextResponse.json(
-        { error: 'Invalid action. Use: forms or analytics' },
+        { error: 'apos;Invalid action. Use: forms or analytics'apos; },
         { status: 400 }
       );
   }
-}, 'form-optimization');
+}, 'apos;form-optimization'apos;);
 
 export const POST = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('action');
+  const action = searchParams.get('apos;action'apos;);
 
   switch (action) {
-    case 'create':
+    case 'apos;create'apos;:
       return createFormHandler(request);
-    case 'start':
+    case 'apos;start'apos;:
       return startFormHandler(request);
-    case 'validate':
+    case 'apos;validate'apos;:
       return validateFormHandler(request);
-    case 'submit':
+    case 'apos;submit'apos;:
       return submitFormHandler(request);
-    case 'save-draft':
+    case 'apos;save-draft'apos;:
       return saveDraftHandler(request);
-    case 'abandon':
+    case 'apos;abandon'apos;:
       return abandonFormHandler(request);
-    case 'optimizations':
+    case 'apos;optimizations'apos;:
       return generateOptimizationsHandler(request);
     default:
       return NextResponse.json(
-        { error: 'Invalid action. Use: create, start, validate, submit, save-draft, abandon, or optimizations' },
+        { error: 'apos;Invalid action. Use: create, start, validate, submit, save-draft, abandon, or optimizations'apos; },
         { status: 400 }
       );
   }
-}, 'form-optimization');
+}, 'apos;form-optimization'apos;);
 
 export const PUT = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('action');
+  const action = searchParams.get('apos;action'apos;);
 
   switch (action) {
-    case 'update':
+    case 'apos;update'apos;:
       return updateFormDataHandler(request);
     default:
       return NextResponse.json(
-        { error: 'Invalid action. Use: update' },
+        { error: 'apos;Invalid action. Use: update'apos; },
         { status: 400 }
       );
   }
-}, 'form-optimization');
+}, 'apos;form-optimization'apos;);

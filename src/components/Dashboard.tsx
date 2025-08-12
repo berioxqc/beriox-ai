@@ -1,13 +1,13 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import Icon from '@/components/ui/Icon';
+import React, { useState, useEffect } from 'apos;react'apos;;
+import { useSession } from 'apos;next-auth/react'apos;;
+import Icon from 'apos;@/components/ui/Icon'apos;;
 
 interface Widget {
   id: string;
-  type: 'metric' | 'chart' | 'list' | 'alert';
+  type: 'apos;metric'apos; | 'apos;chart'apos; | 'apos;list'apos; | 'apos;alert'apos;;
   title: string;
-  size: 'small' | 'medium' | 'large';
+  size: 'apos;small'apos; | 'apos;medium'apos; | 'apos;large'apos;;
   position: { x: number; y: number };
   config: any;
 }
@@ -19,36 +19,36 @@ interface DashboardProps {
 
 const defaultWidgets: Widget[] = [
   {
-    id: 'performance-overview',
-    type: 'metric',
-    title: 'Performance Globale',
-    size: 'medium',
+    id: 'apos;performance-overview'apos;,
+    type: 'apos;metric'apos;,
+    title: 'apos;Performance Globale'apos;,
+    size: 'apos;medium'apos;,
     position: { x: 0, y: 0 },
-    config: { metric: 'bpi', trend: true }
+    config: { metric: 'apos;bpi'apos;, trend: true }
   },
   {
-    id: 'recent-missions',
-    type: 'list',
-    title: 'Missions Récentes',
-    size: 'medium',
+    id: 'apos;recent-missions'apos;,
+    type: 'apos;list'apos;,
+    title: 'apos;Missions Récentes'apos;,
+    size: 'apos;medium'apos;,
     position: { x: 1, y: 0 },
     config: { limit: 5, showStatus: true }
   },
   {
-    id: 'opportunity-radar',
-    type: 'alert',
-    title: 'Opportunity Radar',
-    size: 'large',
+    id: 'apos;opportunity-radar'apos;,
+    type: 'apos;alert'apos;,
+    title: 'apos;Opportunity Radar'apos;,
+    size: 'apos;large'apos;,
     position: { x: 0, y: 1 },
     config: { showTop5: true }
   },
   {
-    id: 'traffic-forecast',
-    type: 'chart',
-    title: 'Prévision Trafic',
-    size: 'medium',
+    id: 'apos;traffic-forecast'apos;,
+    type: 'apos;chart'apos;,
+    title: 'apos;Prévision Trafic'apos;,
+    size: 'apos;medium'apos;,
     position: { x: 1, y: 1 },
-    config: { period: '30d', showTrend: true }
+    config: { period: 'apos;30d'apos;, showTrend: true }
   }
 ];
 
@@ -75,7 +75,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
     onWidgetUpdate?.(updatedWidgets);
   };
 
-  const handleWidgetResize = (widgetId: string, newSize: 'small' | 'medium' | 'large') => {
+  const handleWidgetResize = (widgetId: string, newSize: 'apos;small'apos; | 'apos;medium'apos; | 'apos;large'apos;) => {
     const updatedWidgets = dashboardWidgets.map(widget =>
       widget.id === widgetId ? { ...widget, size: newSize } : widget
     );
@@ -85,8 +85,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
   const renderMetricWidget = (widget: Widget) => {
     const { config } = widget;
-    const value = config.metric === 'bpi' ? 87 : 92;
-    const trend = config.trend ? '+5.2%' : null;
+    const value = config.metric === 'apos;bpi'apos; ? 87 : 92;
+    const trend = config.trend ? 'apos;+5.2%'apos; : null;
 
     return (
       <div className="metric-widget">
@@ -100,9 +100,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const renderListWidget = (widget: Widget) => {
     const { config } = widget;
     const missions = [
-      { id: 1, name: 'Analyse SEO Amazon', status: 'completed', date: '2024-08-10' },
-      { id: 2, name: 'Veille Concurrentielle', status: 'running', date: '2024-08-10' },
-      { id: 3, name: 'Audit Performance', status: 'pending', date: '2024-08-09' },
+      { id: 1, name: 'apos;Analyse SEO Amazon'apos;, status: 'apos;completed'apos;, date: 'apos;2024-08-10'apos; },
+      { id: 2, name: 'apos;Veille Concurrentielle'apos;, status: 'apos;running'apos;, date: 'apos;2024-08-10'apos; },
+      { id: 3, name: 'apos;Audit Performance'apos;, status: 'apos;pending'apos;, date: 'apos;2024-08-09'apos; },
     ].slice(0, config.limit);
 
     return (
@@ -123,9 +123,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const renderAlertWidget = (widget: Widget) => {
     const { config } = widget;
     const opportunities = [
-      { id: 1, title: 'Optimiser la vitesse de chargement', impact: 'high', effort: 'medium' },
-      { id: 2, title: 'Améliorer le SEO mobile', impact: 'high', effort: 'low' },
-      { id: 3, title: 'Créer du contenu vidéo', impact: 'medium', effort: 'high' },
+      { id: 1, title: 'apos;Optimiser la vitesse de chargement'apos;, impact: 'apos;high'apos;, effort: 'apos;medium'apos; },
+      { id: 2, title: 'apos;Améliorer le SEO mobile'apos;, impact: 'apos;high'apos;, effort: 'apos;low'apos; },
+      { id: 3, title: 'apos;Créer du contenu vidéo'apos;, impact: 'apos;medium'apos;, effort: 'apos;high'apos; },
     ].slice(0, config.showTop5 ? 5 : 3);
 
     return (
@@ -171,9 +171,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
     return (
       <div 
         key={widget.id} 
-        className={`dashboard-widget ${sizeClass} ${isEditing ? 'editable' : ''}`}
+        className={`dashboard-widget ${sizeClass} ${isEditing ? 'apos;editable'apos; : 'apos;'apos;}`}
         style={{
-          gridColumn: `${widget.position.x + 1} / span ${widget.size === 'large' ? 2 : 1}`,
+          gridColumn: `${widget.position.x + 1} / span ${widget.size === 'apos;large'apos; ? 2 : 1}`,
           gridRow: `${widget.position.y + 1} / span 1`
         }}
       >
@@ -181,10 +181,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <h3>{widget.title}</h3>
           {isEditing && (
             <div className="widget-controls">
-              <button onClick={() => handleWidgetResize(widget.id, 'small')}>
+              <button onClick={() => handleWidgetResize(widget.id, 'apos;small'apos;)}>
                 <Icon name="minus" size="sm" />
               </button>
-              <button onClick={() => handleWidgetResize(widget.id, 'large')}>
+              <button onClick={() => handleWidgetResize(widget.id, 'apos;large'apos;)}>
                 <Icon name="plus" size="sm" />
               </button>
             </div>
@@ -198,10 +198,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
             </div>
           ) : (
             <>
-              {widget.type === 'metric' && renderMetricWidget(widget)}
-              {widget.type === 'list' && renderListWidget(widget)}
-              {widget.type === 'alert' && renderAlertWidget(widget)}
-              {widget.type === 'chart' && renderChartWidget(widget)}
+              {widget.type === 'apos;metric'apos; && renderMetricWidget(widget)}
+              {widget.type === 'apos;list'apos; && renderListWidget(widget)}
+              {widget.type === 'apos;alert'apos; && renderAlertWidget(widget)}
+              {widget.type === 'apos;chart'apos; && renderChartWidget(widget)}
             </>
           )}
         </div>
@@ -215,11 +215,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <h1>Dashboard Personnalisé</h1>
         <div className="dashboard-controls">
           <button 
-            className={`edit-button ${isEditing ? 'active' : ''}`}
+            className={`edit-button ${isEditing ? 'apos;active'apos; : 'apos;'apos;}`}
             onClick={() => setIsEditing(!isEditing)}
           >
             <Icon name="edit" size="sm" />
-            {isEditing ? 'Terminer' : 'Personnaliser'}
+            {isEditing ? 'apos;Terminer'apos; : 'apos;Personnaliser'apos;}
           </button>
           {isEditing && (
             <button className="add-widget-button">

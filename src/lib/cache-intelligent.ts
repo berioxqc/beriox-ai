@@ -4,13 +4,13 @@
  */
 
 // Import Redis sécurisé
-import { redisUtils } from './redis';
+import { redisUtils } from 'apos;./redis'apos;;
 
 // Types
 interface CacheConfig {
   ttl: number; // Time to live en secondes
   prefix: string; // Préfixe pour les clés
-  maxSize?: number; // Taille maximale du cache (en nombre d'éléments)
+  maxSize?: number; // Taille maximale du cache (en nombre d'apos;éléments)
   compression?: boolean; // Activer la compression
 }
 
@@ -25,7 +25,7 @@ interface CacheStats {
 // Configuration par défaut
 const DEFAULT_CONFIG: CacheConfig = {
   ttl: 300, // 5 minutes
-  prefix: 'cache:',
+  prefix: 'apos;cache:'apos;,
   compression: false
 };
 
@@ -34,35 +34,35 @@ const CACHE_CONFIGS: Record<string, CacheConfig> = {
   // Cache des missions - court terme
   missions: {
     ttl: 60, // 1 minute
-    prefix: 'cache:missions:',
+    prefix: 'apos;cache:missions:'apos;,
     maxSize: 1000
   },
 
   // Cache des utilisateurs - moyen terme
   users: {
     ttl: 300, // 5 minutes
-    prefix: 'cache:users:',
+    prefix: 'apos;cache:users:'apos;,
     maxSize: 500
   },
 
   // Cache des intégrations - long terme
   integrations: {
     ttl: 1800, // 30 minutes
-    prefix: 'cache:integrations:',
+    prefix: 'apos;cache:integrations:'apos;,
     maxSize: 200
   },
 
   // Cache des analytics - très long terme
   analytics: {
     ttl: 3600, // 1 heure
-    prefix: 'cache:analytics:',
+    prefix: 'apos;cache:analytics:'apos;,
     maxSize: 100
   },
 
   // Cache des recommandations IA - court terme
   recommendations: {
     ttl: 120, // 2 minutes
-    prefix: 'cache:recommendations:',
+    prefix: 'apos;cache:recommendations:'apos;,
     maxSize: 500
   }
 };
@@ -74,7 +74,7 @@ class IntelligentCache {
   private config: CacheConfig;
   private stats: { hits: number; misses: number } = { hits: 0, misses: 0 };
 
-  constructor(type: string = 'default') {
+  constructor(type: string = 'apos;default'apos;) {
     this.config = { ...DEFAULT_CONFIG, ...CACHE_CONFIGS[type] };
   }
 
@@ -122,7 +122,7 @@ class IntelligentCache {
         return null;
       }
     } catch (error) {
-      console.error('Erreur lors de la récupération du cache:', error);
+      console.error('apos;Erreur lors de la récupération du cache:'apos;, error);
       this.stats.misses++;
       return null;
     }
@@ -144,7 +144,7 @@ class IntelligentCache {
         await this.enforceMaxSize();
       }
     } catch (error) {
-      console.error('Erreur lors du stockage en cache:', error);
+      console.error('apos;Erreur lors du stockage en cache:'apos;, error);
     }
   }
 
@@ -156,7 +156,7 @@ class IntelligentCache {
       const cacheKey = this.generateKey(key);
       await redisUtils.del(cacheKey);
     } catch (error) {
-      console.error('Erreur lors de la suppression du cache:', error);
+      console.error('apos;Erreur lors de la suppression du cache:'apos;, error);
     }
   }
 
@@ -169,7 +169,7 @@ class IntelligentCache {
       const exists = await redisUtils.exists(cacheKey);
       return exists === 1;
     } catch (error) {
-      console.error('Erreur lors de la vérification du cache:', error);
+      console.error('apos;Erreur lors de la vérification du cache:'apos;, error);
       return false;
     }
   }
@@ -198,7 +198,7 @@ class IntelligentCache {
   }
 
   /**
-   * Met à jour le TTL d'une clé
+   * Met à jour le TTL d'apos;une clé
    */
   async touch(key: string, customTtl?: number): Promise<void> {
     try {
@@ -212,7 +212,7 @@ class IntelligentCache {
                   await redisUtils.set(cacheKey, value, ttl);
       }
     } catch (error) {
-      console.error('Erreur lors du touch du cache:', error);
+      console.error('apos;Erreur lors du touch du cache:'apos;, error);
     }
   }
 
@@ -220,7 +220,7 @@ class IntelligentCache {
    * Applique la limite de taille maximale (désactivée temporairement)
    */
   private async enforceMaxSize(): Promise<void> {
-    // Désactivé car redis.keys n'est pas disponible dans le wrapper
+    // Désactivé car redis.keys n'apos;est pas disponible dans le wrapper
     // try {
     //   const pattern = `${this.config.prefix}*`;
     //   const keys = await redis.keys(pattern);
@@ -229,14 +229,14 @@ class IntelligentCache {
     //     // Supprimer les clés les plus anciennes
     //     const keysToDelete = keys
     //       .slice(0, keys.length - this.config.maxSize!)
-    //       .map(key => key.replace(this.config.prefix, ''));
+    //       .map(key => key.replace(this.config.prefix, 'apos;'apos;));
 
     //     for (const key of keysToDelete) {
     //       await this.delete(key);
     //     }
     //   }
     // } catch (error) {
-    //   console.error('Erreur lors de l\'application de la taille maximale:', error);
+    //   console.error('apos;Erreur lors de l\'apos;application de la taille maximale:'apos;, error);
     // }
   }
 
@@ -260,7 +260,7 @@ class IntelligentCache {
 
     //   return cleaned;
     // } catch (error) {
-    //   console.error('Erreur lors du nettoyage du cache:', error);
+    //   console.error('apos;Erreur lors du nettoyage du cache:'apos;, error);
     //   return 0;
     // }
     return 0;
@@ -271,7 +271,7 @@ class IntelligentCache {
    */
   async getStats(): Promise<CacheStats> {
     try {
-      // Désactivé car redis.keys n'est pas disponible dans le wrapper
+      // Désactivé car redis.keys n'apos;est pas disponible dans le wrapper
       // const pattern = `${this.config.prefix}*`;
       // const keys = await redis.keys(pattern);
       const total = this.stats.hits + this.stats.misses;
@@ -285,7 +285,7 @@ class IntelligentCache {
         hitRate
       };
     } catch (error) {
-      console.error('Erreur lors de la récupération des stats:', error);
+      console.error('apos;Erreur lors de la récupération des stats:'apos;, error);
       return {
         hits: this.stats.hits,
         misses: this.stats.misses,
@@ -300,7 +300,7 @@ class IntelligentCache {
    * Vide tout le cache (désactivé temporairement)
    */
   async clear(): Promise<void> {
-    // Désactivé car redis.keys n'est pas disponible dans le wrapper
+    // Désactivé car redis.keys n'apos;est pas disponible dans le wrapper
     // try {
     //   const pattern = `${this.config.prefix}*`;
     //   const keys = await redis.keys(pattern);
@@ -309,19 +309,19 @@ class IntelligentCache {
     //     await redis.del(...keys);
     //   }
     // } catch (error) {
-    //   console.error('Erreur lors du vidage du cache:', error);
+    //   console.error('apos;Erreur lors du vidage du cache:'apos;, error);
     // }
   }
 }
 
 // Instances de cache préconfigurées
 export const cacheInstances = {
-  missions: new IntelligentCache('missions'),
-  users: new IntelligentCache('users'),
-  integrations: new IntelligentCache('integrations'),
-  analytics: new IntelligentCache('analytics'),
-  recommendations: new IntelligentCache('recommendations'),
-  default: new IntelligentCache('default')
+  missions: new IntelligentCache('apos;missions'apos;),
+  users: new IntelligentCache('apos;users'apos;),
+  integrations: new IntelligentCache('apos;integrations'apos;),
+  analytics: new IntelligentCache('apos;analytics'apos;),
+  recommendations: new IntelligentCache('apos;recommendations'apos;),
+  default: new IntelligentCache('apos;default'apos;)
 };
 
 // Fonctions utilitaires pour le cache

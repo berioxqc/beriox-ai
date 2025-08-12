@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from 'react';
-import Icon from '@/components/ui/Icon';
+import React, { useState } from 'apos;react'apos;;
+import Icon from 'apos;@/components/ui/Icon'apos;;
 
 interface ExportData {
   id: string;
   name: string;
-  type: 'performance' | 'seo' | 'security' | 'competitor' | 'custom';
+  type: 'apos;performance'apos; | 'apos;seo'apos; | 'apos;security'apos; | 'apos;competitor'apos; | 'apos;custom'apos;;
   data: any;
   lastUpdated: Date;
 }
@@ -17,54 +17,54 @@ interface ExportSystemProps {
 
 const mockExportData: ExportData[] = [
   {
-    id: '1',
-    name: 'Rapport Performance Global',
-    type: 'performance',
+    id: 'apos;1'apos;,
+    name: 'apos;Rapport Performance Global'apos;,
+    type: 'apos;performance'apos;,
     data: {
       bpi: 87,
       traffic: 15420,
       conversions: 234,
       revenue: 45600,
       trends: {
-        bpi: '+5.2%',
-        traffic: '+12.3%',
-        conversions: '+8.7%',
-        revenue: '+15.4%'
+        bpi: 'apos;+5.2%'apos;,
+        traffic: 'apos;+12.3%'apos;,
+        conversions: 'apos;+8.7%'apos;,
+        revenue: 'apos;+15.4%'apos;
       }
     },
     lastUpdated: new Date()
   },
   {
-    id: '2',
-    name: 'Analyse SEO Complète',
-    type: 'seo',
+    id: 'apos;2'apos;,
+    name: 'apos;Analyse SEO Complète'apos;,
+    type: 'apos;seo'apos;,
     data: {
       score: 92,
       keywords: 145,
       backlinks: 1234,
       pages: 67,
       issues: [
-        { type: 'warning', message: 'Meta descriptions manquantes', count: 12 },
-        { type: 'error', message: 'Images sans alt', count: 8 },
-        { type: 'info', message: 'Opportunités d\'optimisation', count: 23 }
+        { type: 'apos;warning'apos;, message: 'apos;Meta descriptions manquantes'apos;, count: 12 },
+        { type: 'apos;error'apos;, message: 'apos;Images sans alt'apos;, count: 8 },
+        { type: 'apos;info'apos;, message: 'apos;Opportunités d\'apos;optimisation'apos;, count: 23 }
       ]
     },
     lastUpdated: new Date(Date.now() - 1000 * 60 * 60 * 2)
   },
   {
-    id: '3',
-    name: 'Veille Concurrentielle',
-    type: 'competitor',
+    id: 'apos;3'apos;,
+    name: 'apos;Veille Concurrentielle'apos;,
+    type: 'apos;competitor'apos;,
     data: {
       competitors: [
-        { name: 'Competitor A', price: 29.99, features: 15, rating: 4.2 },
-        { name: 'Competitor B', price: 39.99, features: 18, rating: 4.5 },
-        { name: 'Competitor C', price: 24.99, features: 12, rating: 3.8 }
+        { name: 'apos;Competitor A'apos;, price: 29.99, features: 15, rating: 4.2 },
+        { name: 'apos;Competitor B'apos;, price: 39.99, features: 18, rating: 4.5 },
+        { name: 'apos;Competitor C'apos;, price: 24.99, features: 12, rating: 3.8 }
       ],
       opportunities: [
-        'Prix 20% plus bas que la concurrence',
-        'Fonctionnalités uniques identifiées',
-        'Gaps dans l\'offre concurrentielle'
+        'apos;Prix 20% plus bas que la concurrence'apos;,
+        'apos;Fonctionnalités uniques identifiées'apos;,
+        'apos;Gaps dans l\'apos;offre concurrentielle'apos;
       ]
     },
     lastUpdated: new Date(Date.now() - 1000 * 60 * 60 * 6)
@@ -76,7 +76,7 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
   onExport
 }) => {
   const [selectedData, setSelectedData] = useState<string[]>([]);
-  const [exportFormat, setExportFormat] = useState<'pdf' | 'excel' | 'csv'>('pdf');
+  const [exportFormat, setExportFormat] = useState<'apos;pdf'apos; | 'apos;excel'apos; | 'apos;csv'apos;>('apos;pdf'apos;);
   const [includeCharts, setIncludeCharts] = useState(true);
   const [customTemplate, setCustomTemplate] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -99,13 +99,13 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
 
   const handleExport = async () => {
     if (selectedData.length === 0) {
-      alert('Veuillez sélectionner au moins un élément à exporter');
+      alert('apos;Veuillez sélectionner au moins un élément à exporter'apos;);
       return;
     }
 
     setIsExporting(true);
     
-    // Simuler l'export
+    // Simuler l'apos;export
     setTimeout(() => {
       setIsExporting(false);
       onExport?.(exportFormat, data.filter(item => selectedData.includes(item.id)));
@@ -115,33 +115,33 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'performance': return 'chart-line';
-      case 'seo': return 'search';
-      case 'security': return 'shield';
-      case 'competitor': return 'users';
-      case 'custom': return 'cog';
-      default: return 'file';
+      case 'apos;performance'apos;: return 'apos;chart-line'apos;;
+      case 'apos;seo'apos;: return 'apos;search'apos;;
+      case 'apos;security'apos;: return 'apos;shield'apos;;
+      case 'apos;competitor'apos;: return 'apos;users'apos;;
+      case 'apos;custom'apos;: return 'apos;cog'apos;;
+      default: return 'apos;file'apos;;
     }
   };
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'performance': return '#3b82f6';
-      case 'seo': return '#10b981';
-      case 'security': return '#f59e0b';
-      case 'competitor': return '#8b5cf6';
-      case 'custom': return '#6b7280';
-      default: return '#6b7280';
+      case 'apos;performance'apos;: return 'apos;#3b82f6'apos;;
+      case 'apos;seo'apos;: return 'apos;#10b981'apos;;
+      case 'apos;security'apos;: return 'apos;#f59e0b'apos;;
+      case 'apos;competitor'apos;: return 'apos;#8b5cf6'apos;;
+      case 'apos;custom'apos;: return 'apos;#6b7280'apos;;
+      default: return 'apos;#6b7280'apos;;
     }
   };
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('fr-FR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Intl.DateTimeFormat('apos;fr-FR'apos;, {
+      day: 'apos;2-digit'apos;,
+      month: 'apos;2-digit'apos;,
+      year: 'apos;numeric'apos;,
+      hour: 'apos;2-digit'apos;,
+      minute: 'apos;2-digit'apos;
     }).format(date);
   };
 
@@ -173,7 +173,7 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
             {data.map(item => (
               <div 
                 key={item.id}
-                className={`data-item ${selectedData.includes(item.id) ? 'selected' : ''}`}
+                className={`data-item ${selectedData.includes(item.id) ? 'apos;selected'apos; : 'apos;'apos;}`}
                 onClick={() => handleDataSelection(item.id)}
               >
                 <div className="data-item-header">
@@ -186,9 +186,9 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
                   </div>
                   <div className="data-checkbox">
                     <Icon 
-                      name={selectedData.includes(item.id) ? 'check-circle' : 'circle'} 
+                      name={selectedData.includes(item.id) ? 'apos;check-circle'apos; : 'apos;circle'apos;} 
                       size="lg"
-                      style={{ color: selectedData.includes(item.id) ? '#10b981' : '#d1d5db' }}
+                      style={{ color: selectedData.includes(item.id) ? 'apos;#10b981'apos; : 'apos;#d1d5db'apos; }}
                     />
                   </div>
                 </div>
@@ -199,7 +199,7 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
                       <span>Aperçu des données</span>
                     </div>
                     <div className="preview-content">
-                      {item.type === 'performance' && (
+                      {item.type === 'apos;performance'apos; && (
                         <div className="performance-preview">
                           <div className="metric">
                             <span className="metric-label">BPI</span>
@@ -214,7 +214,7 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
                         </div>
                       )}
                       
-                      {item.type === 'seo' && (
+                      {item.type === 'apos;seo'apos; && (
                         <div className="seo-preview">
                           <div className="seo-score">
                             <span className="score-label">Score SEO</span>
@@ -227,7 +227,7 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
                         </div>
                       )}
                       
-                      {item.type === 'competitor' && (
+                      {item.type === 'apos;competitor'apos; && (
                         <div className="competitor-preview">
                           <div className="competitor-count">
                             {item.data.competitors.length} concurrents analysés
@@ -245,33 +245,33 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
           </div>
         </div>
 
-        {/* Options d'export */}
+        {/* Options d'apos;export */}
         <div className="export-options">
           <div className="section-header">
-            <h3>Options d'export</h3>
+            <h3>Options d'apos;export</h3>
           </div>
 
           <div className="options-grid">
             <div className="option-group">
-              <label>Format d'export</label>
+              <label>Format d'apos;export</label>
               <div className="format-buttons">
                 <button 
-                  className={`format-btn ${exportFormat === 'pdf' ? 'active' : ''}`}
-                  onClick={() => setExportFormat('pdf')}
+                  className={`format-btn ${exportFormat === 'apos;pdf'apos; ? 'apos;active'apos; : 'apos;'apos;}`}
+                  onClick={() => setExportFormat('apos;pdf'apos;)}
                 >
                   <Icon name="file" size="sm" />
                   PDF
                 </button>
                 <button 
-                  className={`format-btn ${exportFormat === 'excel' ? 'active' : ''}`}
-                  onClick={() => setExportFormat('excel')}
+                  className={`format-btn ${exportFormat === 'apos;excel'apos; ? 'apos;active'apos; : 'apos;'apos;}`}
+                  onClick={() => setExportFormat('apos;excel'apos;)}
                 >
                   <Icon name="file" size="sm" />
                   Excel
                 </button>
                 <button 
-                  className={`format-btn ${exportFormat === 'csv' ? 'active' : ''}`}
-                  onClick={() => setExportFormat('csv')}
+                  className={`format-btn ${exportFormat === 'apos;csv'apos; ? 'apos;active'apos; : 'apos;'apos;}`}
+                  onClick={() => setExportFormat('apos;csv'apos;)}
                 >
                   <Icon name="file" size="sm" />
                   CSV
@@ -328,8 +328,8 @@ export const ExportSystem: React.FC<ExportSystemProps> = ({
           <div className="export-info">
             <Icon name="info-circle" size="sm" />
             <span>
-              L'export sera généré avec les données les plus récentes et inclura 
-              {includeCharts ? ' des graphiques interactifs' : ' des données tabulaires'}.
+              L'apos;export sera généré avec les données les plus récentes et inclura 
+              {includeCharts ? 'apos; des graphiques interactifs'apos; : 'apos; des données tabulaires'apos;}.
             </span>
           </div>
         </div>

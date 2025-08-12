@@ -1,7 +1,7 @@
 "use client";
-import { useState } from 'react';
-import { Plan, PlanService } from '@/lib/plans';
-import Icon from '@/components/ui/Icon';
+import { useState } from 'apos;react'apos;;
+import { Plan, PlanService } from 'apos;@/lib/plans'apos;;
+import Icon from 'apos;@/components/ui/Icon'apos;;
 
 interface PricingCardProps {
   plan: Plan;
@@ -26,7 +26,7 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
   return (
     <div className={`
       relative bg-white rounded-2xl shadow-lg border-2 p-8 transition-all duration-300 hover:shadow-xl
-      ${isPopular ? 'border-purple-500 scale-105' : 'border-gray-200 hover:border-purple-300'}
+      ${isPopular ? 'apos;border-purple-500 scale-105'apos; : 'apos;border-gray-200 hover:border-purple-300'apos;}
     `}>
       {/* Badge populaire */}
       {isPopular && (
@@ -41,9 +41,9 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
       <div className="text-center mb-6">
         <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
         <p className="text-gray-600 text-sm mb-4">
-          {plan.id === 'free' ? 'Parfait pour commencer' : 
-           plan.id === 'starter' ? 'Pour les petites équipes' :
-           plan.id === 'pro' ? 'Pour les professionnels' : 'Pour les grandes entreprises'}
+          {plan.id === 'apos;free'apos; ? 'apos;Parfait pour commencer'apos; : 
+           plan.id === 'apos;starter'apos; ? 'apos;Pour les petites équipes'apos; :
+           plan.id === 'apos;pro'apos; ? 'apos;Pour les professionnels'apos; : 'apos;Pour les grandes entreprises'apos;}
         </p>
       </div>
 
@@ -60,20 +60,20 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
             
             {/* Toggle annuel/mensuel */}
             <div className="flex items-center justify-center mt-4 space-x-4">
-              <span className={`text-sm ${!isAnnual ? 'text-gray-900 font-semibold' : 'text-gray-500'}`}>
+              <span className={`text-sm ${!isAnnual ? 'apos;text-gray-900 font-semibold'apos; : 'apos;text-gray-500'apos;}`}>
                 Mensuel
               </span>
               <button
                 onClick={() => setIsAnnual(!isAnnual)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  isAnnual ? 'bg-purple-600' : 'bg-gray-200'
+                  isAnnual ? 'apos;bg-purple-600'apos; : 'apos;bg-gray-200'apos;
                 }`}
               >
                 <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                  isAnnual ? 'translate-x-6' : 'translate-x-1'
+                  isAnnual ? 'apos;translate-x-6'apos; : 'apos;translate-x-1'apos;
                 }`} />
               </button>
-              <span className={`text-sm ${isAnnual ? 'text-gray-900 font-semibold' : 'text-gray-500'}`}>
+              <span className={`text-sm ${isAnnual ? 'apos;text-gray-900 font-semibold'apos; : 'apos;text-gray-500'apos;}`}>
                 Annuel
                 <span className="ml-1 text-xs text-green-600 font-semibold">(-17%)</span>
               </span>
@@ -97,7 +97,7 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
             className="w-full text-left text-sm text-gray-600 hover:text-purple-600 transition-colors"
           >
             <Icon name="info-circle" size={16} className="inline mr-1" />
-            {showTaxes ? 'Masquer' : 'Voir'} les taxes (TPS/TVQ)
+            {showTaxes ? 'apos;Masquer'apos; : 'apos;Voir'apos;} les taxes (TPS/TVQ)
           </button>
           
           {showTaxes && (
@@ -135,22 +135,22 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
         </ul>
       </div>
 
-      {/* Bouton d'action */}
+      {/* Bouton d'apos;action */}
       <button
         onClick={() => onSelect(plan.id)}
         className={`
           w-full py-3 px-6 rounded-xl font-semibold transition-all duration-200
           ${plan.price === 0 
-            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
-            : 'bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg'
+            ? 'apos;bg-gray-100 text-gray-700 hover:bg-gray-200'apos; 
+            : 'apos;bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg'apos;
           }
         `}
       >
-        {plan.price === 0 ? 'Commencer gratuitement' : 
-         isAnnual ? `S'abonner annuellement` : 'Commencer l\'essai'}
+        {plan.price === 0 ? 'apos;Commencer gratuitement'apos; : 
+         isAnnual ? `S'apos;abonner annuellement` : 'apos;Commencer l\'apos;essai'apos;}
       </button>
 
-      {/* Note sur l'essai */}
+      {/* Note sur l'apos;essai */}
       {plan.price > 0 && (
         <p className="text-xs text-gray-500 text-center mt-3">
           Essai gratuit de 14 jours • Annulation à tout moment

@@ -1,19 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
-import { abTesting, getVariant, recordImpression, recordConversion } from '@/lib/ab-testing';
-import { logger } from '@/lib/logger';
-import { withRateLimit } from '@/lib/rate-limit-advanced';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { getServerSession } from 'apos;next-auth'apos;;
+import { authOptions } from 'apos;@/lib/auth'apos;;
+import { abTesting, getVariant, recordImpression, recordConversion } from 'apos;@/lib/ab-testing'apos;;
+import { logger } from 'apos;@/lib/logger'apos;;
+import { withRateLimit } from 'apos;@/lib/rate-limit-advanced'apos;;
 
 // GET - Obtenir une variante pour une expérience
 async function getExperimentVariant(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const experimentId = searchParams.get('experimentId');
-  const sessionId = searchParams.get('sessionId');
+  const experimentId = searchParams.get('apos;experimentId'apos;);
+  const sessionId = searchParams.get('apos;sessionId'apos;);
 
   if (!experimentId) {
     return NextResponse.json(
-      { error: 'experimentId is required' },
+      { error: 'apos;experimentId is required'apos; },
       { status: 400 }
     );
   }
@@ -26,19 +26,19 @@ async function getExperimentVariant(request: NextRequest) {
 
     if (!variant) {
       return NextResponse.json(
-        { error: 'Experiment not found or not active' },
+        { error: 'apos;Experiment not found or not active'apos; },
         { status: 404 }
       );
     }
 
-    // Enregistrer l'impression
+    // Enregistrer l'apos;impression
     recordImpression(experimentId, variant.id, userId, sessionId || undefined, {
-      userAgent: request.headers.get('user-agent'),
-      referer: request.headers.get('referer')
+      userAgent: request.headers.get('apos;user-agent'apos;),
+      referer: request.headers.get('apos;referer'apos;)
     });
 
     logger.info(`Variant requested: ${variant.name}`, {
-      action: 'variant_requested',
+      action: 'apos;variant_requested'apos;,
       metadata: {
         experimentId,
         variantId: variant.id,
@@ -54,13 +54,13 @@ async function getExperimentVariant(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('Failed to get experiment variant', error as Error, {
-      action: 'variant_request_error',
+    logger.error('apos;Failed to get experiment variant'apos;, error as Error, {
+      action: 'apos;variant_request_error'apos;,
       metadata: { experimentId, sessionId }
     });
 
     return NextResponse.json(
-      { error: 'Failed to get experiment variant' },
+      { error: 'apos;Failed to get experiment variant'apos; },
       { status: 500 }
     );
   }
@@ -70,7 +70,7 @@ async function getExperimentVariant(request: NextRequest) {
 async function recordExperimentConversion(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
   try {
@@ -85,7 +85,7 @@ async function recordExperimentConversion(request: NextRequest) {
 
     if (!experimentId || !variantId || !goalId) {
       return NextResponse.json(
-        { error: 'experimentId, variantId, and goalId are required' },
+        { error: 'apos;experimentId, variantId, and goalId are required'apos; },
         { status: 400 }
       );
     }
@@ -101,7 +101,7 @@ async function recordExperimentConversion(request: NextRequest) {
     );
 
     logger.info(`Conversion recorded: ${goalId}`, {
-      action: 'conversion_recorded',
+      action: 'apos;conversion_recorded'apos;,
       metadata: {
         experimentId,
         variantId,
@@ -117,46 +117,46 @@ async function recordExperimentConversion(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('Failed to record conversion', error as Error, {
-      action: 'conversion_record_error',
+    logger.error('apos;Failed to record conversion'apos;, error as Error, {
+      action: 'apos;conversion_record_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to record conversion' },
+      { error: 'apos;Failed to record conversion'apos; },
       { status: 500 }
     );
   }
 }
 
-// GET - Obtenir les statistiques d'une expérience
+// GET - Obtenir les statistiques d'apos;une expérience
 async function getExperimentStats(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
-  // Vérifier si l'utilisateur est admin
-  if (session.user.email !== 'info@beriox.ca') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  // Vérifier si l'apos;utilisateur est admin
+  if (session.user.email !== 'apos;info@beriox.ca'apos;) {
+    return NextResponse.json({ error: 'apos;Forbidden'apos; }, { status: 403 });
   }
 
   const { searchParams } = new URL(request.url);
-  const experimentId = searchParams.get('experimentId');
+  const experimentId = searchParams.get('apos;experimentId'apos;);
 
   if (!experimentId) {
     return NextResponse.json(
-      { error: 'experimentId is required' },
+      { error: 'apos;experimentId is required'apos; },
       { status: 400 }
     );
   }
 
   try {
     const stats = abTesting.getExperimentStats(experimentId);
-    const significance = abTesting.calculateSignificance(experimentId, 'default');
+    const significance = abTesting.calculateSignificance(experimentId, 'apos;default'apos;);
 
     logger.info(`Stats requested for experiment: ${experimentId}`, {
-      action: 'experiment_stats_requested',
+      action: 'apos;experiment_stats_requested'apos;,
       metadata: {
         experimentId,
         userId: session.user.id,
@@ -172,13 +172,13 @@ async function getExperimentStats(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('Failed to get experiment stats', error as Error, {
-      action: 'experiment_stats_error',
+    logger.error('apos;Failed to get experiment stats'apos;, error as Error, {
+      action: 'apos;experiment_stats_error'apos;,
       metadata: { experimentId, userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to get experiment stats' },
+      { error: 'apos;Failed to get experiment stats'apos; },
       { status: 500 }
     );
   }
@@ -188,19 +188,19 @@ async function getExperimentStats(request: NextRequest) {
 async function getActiveExperiments(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
-  // Vérifier si l'utilisateur est admin
-  if (session.user.email !== 'info@beriox.ca') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  // Vérifier si l'apos;utilisateur est admin
+  if (session.user.email !== 'apos;info@beriox.ca'apos;) {
+    return NextResponse.json({ error: 'apos;Forbidden'apos; }, { status: 403 });
   }
 
   try {
     const experiments = abTesting.getActiveExperiments();
 
     logger.info(`Active experiments requested`, {
-      action: 'active_experiments_requested',
+      action: 'apos;active_experiments_requested'apos;,
       metadata: {
         userId: session.user.id,
         count: experiments.length
@@ -214,13 +214,13 @@ async function getActiveExperiments(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('Failed to get active experiments', error as Error, {
-      action: 'active_experiments_error',
+    logger.error('apos;Failed to get active experiments'apos;, error as Error, {
+      action: 'apos;active_experiments_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to get active experiments' },
+      { error: 'apos;Failed to get active experiments'apos; },
       { status: 500 }
     );
   }
@@ -230,12 +230,12 @@ async function getActiveExperiments(request: NextRequest) {
 async function createExperiment(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
-  // Vérifier si l'utilisateur est admin
-  if (session.user.email !== 'info@beriox.ca') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  // Vérifier si l'apos;utilisateur est admin
+  if (session.user.email !== 'apos;info@beriox.ca'apos;) {
+    return NextResponse.json({ error: 'apos;Forbidden'apos; }, { status: 403 });
   }
 
   try {
@@ -244,7 +244,7 @@ async function createExperiment(request: NextRequest) {
     abTesting.createExperiment(body);
 
     logger.info(`Experiment created: ${body.name}`, {
-      action: 'experiment_created',
+      action: 'apos;experiment_created'apos;,
       metadata: {
         experimentId: body.id,
         userId: session.user.id,
@@ -259,13 +259,13 @@ async function createExperiment(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    logger.error('Failed to create experiment', error as Error, {
-      action: 'experiment_create_error',
+    logger.error('apos;Failed to create experiment'apos;, error as Error, {
+      action: 'apos;experiment_create_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to create experiment' },
+      { error: error instanceof Error ? error.message : 'apos;Failed to create experiment'apos; },
       { status: 500 }
     );
   }
@@ -275,12 +275,12 @@ async function createExperiment(request: NextRequest) {
 async function deactivateExperiment(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
-  // Vérifier si l'utilisateur est admin
-  if (session.user.email !== 'info@beriox.ca') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  // Vérifier si l'apos;utilisateur est admin
+  if (session.user.email !== 'apos;info@beriox.ca'apos;) {
+    return NextResponse.json({ error: 'apos;Forbidden'apos; }, { status: 403 });
   }
 
   try {
@@ -289,7 +289,7 @@ async function deactivateExperiment(request: NextRequest) {
 
     if (!experimentId) {
       return NextResponse.json(
-        { error: 'experimentId is required' },
+        { error: 'apos;experimentId is required'apos; },
         { status: 400 }
       );
     }
@@ -297,7 +297,7 @@ async function deactivateExperiment(request: NextRequest) {
     abTesting.deactivateExperiment(experimentId);
 
     logger.info(`Experiment deactivated: ${experimentId}`, {
-      action: 'experiment_deactivated',
+      action: 'apos;experiment_deactivated'apos;,
       metadata: {
         experimentId,
         userId: session.user.id
@@ -310,36 +310,36 @@ async function deactivateExperiment(request: NextRequest) {
     });
 
   } catch (error) {
-    logger.error('Failed to deactivate experiment', error as Error, {
-      action: 'experiment_deactivate_error',
+    logger.error('apos;Failed to deactivate experiment'apos;, error as Error, {
+      action: 'apos;experiment_deactivate_error'apos;,
       metadata: { userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to deactivate experiment' },
+      { error: 'apos;Failed to deactivate experiment'apos; },
       { status: 500 }
     );
   }
 }
 
-// GET - Exporter les données d'une expérience
+// GET - Exporter les données d'apos;une expérience
 async function exportExperimentData(request: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'apos;Unauthorized'apos; }, { status: 401 });
   }
 
-  // Vérifier si l'utilisateur est admin
-  if (session.user.email !== 'info@beriox.ca') {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  // Vérifier si l'apos;utilisateur est admin
+  if (session.user.email !== 'apos;info@beriox.ca'apos;) {
+    return NextResponse.json({ error: 'apos;Forbidden'apos; }, { status: 403 });
   }
 
   const { searchParams } = new URL(request.url);
-  const experimentId = searchParams.get('experimentId');
+  const experimentId = searchParams.get('apos;experimentId'apos;);
 
   if (!experimentId) {
     return NextResponse.json(
-      { error: 'experimentId is required' },
+      { error: 'apos;experimentId is required'apos; },
       { status: 400 }
     );
   }
@@ -348,7 +348,7 @@ async function exportExperimentData(request: NextRequest) {
     const data = abTesting.exportExperimentData(experimentId);
 
     logger.info(`Experiment data exported: ${experimentId}`, {
-      action: 'experiment_data_exported',
+      action: 'apos;experiment_data_exported'apos;,
       metadata: {
         experimentId,
         userId: session.user.id,
@@ -359,13 +359,13 @@ async function exportExperimentData(request: NextRequest) {
     return NextResponse.json(data);
 
   } catch (error) {
-    logger.error('Failed to export experiment data', error as Error, {
-      action: 'experiment_export_error',
+    logger.error('apos;Failed to export experiment data'apos;, error as Error, {
+      action: 'apos;experiment_export_error'apos;,
       metadata: { experimentId, userId: session.user.id }
     });
 
     return NextResponse.json(
-      { error: 'Failed to export experiment data' },
+      { error: 'apos;Failed to export experiment data'apos; },
       { status: 500 }
     );
   }
@@ -374,40 +374,40 @@ async function exportExperimentData(request: NextRequest) {
 // Handlers avec rate limiting
 export const GET = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('action');
+  const action = searchParams.get('apos;action'apos;);
 
   switch (action) {
-    case 'variant':
+    case 'apos;variant'apos;:
       return getExperimentVariant(request);
-    case 'stats':
+    case 'apos;stats'apos;:
       return getExperimentStats(request);
-    case 'active':
+    case 'apos;active'apos;:
       return getActiveExperiments(request);
-    case 'export':
+    case 'apos;export'apos;:
       return exportExperimentData(request);
     default:
       return NextResponse.json(
-        { error: 'Invalid action. Use: variant, stats, active, or export' },
+        { error: 'apos;Invalid action. Use: variant, stats, active, or export'apos; },
         { status: 400 }
       );
   }
-}, 'ab-testing');
+}, 'apos;ab-testing'apos;);
 
 export const POST = withRateLimit(async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('action');
+  const action = searchParams.get('apos;action'apos;);
 
   switch (action) {
-    case 'conversion':
+    case 'apos;conversion'apos;:
       return recordExperimentConversion(request);
-    case 'create':
+    case 'apos;create'apos;:
       return createExperiment(request);
     default:
       return NextResponse.json(
-        { error: 'Invalid action. Use: conversion or create' },
+        { error: 'apos;Invalid action. Use: conversion or create'apos; },
         { status: 400 }
       );
   }
-}, 'ab-testing');
+}, 'apos;ab-testing'apos;);
 
-export const PUT = withRateLimit(deactivateExperiment, 'ab-testing');
+export const PUT = withRateLimit(deactivateExperiment, 'apos;ab-testing'apos;);

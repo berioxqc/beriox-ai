@@ -23,7 +23,7 @@ export interface RefundRequest {
 
 export class CreditsService {
   /**
-   * Initialise ou récupère les crédits d'un utilisateur
+   * Initialise ou récupère les crédits d'apos;un utilisateur
    */
   static async getUserCredits(userId: string, planId: string = "free"): Promise<CreditUsage> {
     let userCredits = await prisma.userCredits.findUnique({
@@ -83,7 +83,7 @@ export class CreditsService {
     const userCredits = await this.getUserCredits(userId);
     
     if (userCredits.creditsUsed < amount) {
-      throw new Error("Vous ne pouvez pas demander un remboursement pour plus de crédits que vous n'en avez utilisés");
+      throw new Error("Vous ne pouvez pas demander un remboursement pour plus de crédits que vous n'apos;en avez utilisés");
     }
 
     const refundRequest = await prisma.refundRequest.create({
@@ -195,7 +195,7 @@ export class CreditsService {
   }
 
   /**
-   * Calcule la prochaine date de reset (jour de l'abonnement)
+   * Calcule la prochaine date de reset (jour de l'apos;abonnement)
    */
   static calculateNextResetDate(): Date {
     const now = new Date();
@@ -212,7 +212,7 @@ export class CreditsService {
   }
 
   /**
-   * Obtient les statistiques de crédits pour l'admin
+   * Obtient les statistiques de crédits pour l'apos;admin
    */
   static async getAdminStats() {
     const totalUsers = await prisma.userCredits.count();

@@ -1,15 +1,15 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-import { getIconDynamic, preloadCommonIcons } from '@/lib/icons-dynamic';
+import React, { useState, useEffect } from 'apos;react'apos;;
+import { FontAwesomeIcon } from 'apos;@fortawesome/react-fontawesome'apos;;
+import { IconDefinition } from 'apos;@fortawesome/fontawesome-svg-core'apos;;
+import { getIconDynamic, preloadCommonIcons } from 'apos;@/lib/icons-dynamic'apos;;
 
 interface IconOptimizedProps {
   name: string;
   className?: string;
   style?: React.CSSProperties;
   spin?: boolean;
-  size?: 'xs' | 'sm' | 'lg' | '1x' | '2x' | '3x' | '4x' | '5x' | '6x' | '7x' | '8x' | '9x' | '10x';
+  size?: 'apos;xs'apos; | 'apos;sm'apos; | 'apos;lg'apos; | 'apos;1x'apos; | 'apos;2x'apos; | 'apos;3x'apos; | 'apos;4x'apos; | 'apos;5x'apos; | 'apos;6x'apos; | 'apos;7x'apos; | 'apos;8x'apos; | 'apos;9x'apos; | 'apos;10x'apos;;
   fallback?: React.ReactNode;
   onLoad?: () => void;
   onError?: (error: Error) => void;
@@ -17,11 +17,11 @@ interface IconOptimizedProps {
 
 export const IconOptimized: React.FC<IconOptimizedProps> = ({ 
   name, 
-  className = '', 
+  className = 'apos;'apos;, 
   style = {}, 
   spin = false,
-  size = '1x',
-  fallback = '⚠️',
+  size = 'apos;1x'apos;,
+  fallback = 'apos;⚠️'apos;,
   onLoad,
   onError
 }) => {
@@ -52,7 +52,7 @@ export const IconOptimized: React.FC<IconOptimizedProps> = ({
         }
       } catch (err) {
         if (isMounted) {
-          const error = err instanceof Error ? err : new Error('Failed to load icon');
+          const error = err instanceof Error ? err : new Error('apos;Failed to load icon'apos;);
           setError(error);
           onError?.(error);
           setLoading(false);
@@ -72,17 +72,17 @@ export const IconOptimized: React.FC<IconOptimizedProps> = ({
     preloadCommonIcons().catch(console.warn);
   }, []);
 
-  // Affichage du fallback pendant le chargement ou en cas d'erreur
+  // Affichage du fallback pendant le chargement ou en cas d'apos;erreur
   if (loading || error || !icon) {
     return (
       <span 
         className={className} 
         style={{ 
           ...style, 
-          display: 'inline-block',
-          width: size === '1x' ? '1em' : size,
-          height: size === '1x' ? '1em' : size,
-          textAlign: 'center'
+          display: 'apos;inline-block'apos;,
+          width: size === 'apos;1x'apos; ? 'apos;1em'apos; : size,
+          height: size === 'apos;1x'apos; ? 'apos;1em'apos; : size,
+          textAlign: 'apos;center'apos;
         }}
       >
         {fallback}
@@ -127,7 +127,7 @@ export function useIconOptimized(name: string) {
         }
       } catch (err) {
         if (isMounted) {
-          setError(err instanceof Error ? err : new Error('Failed to load icon'));
+          setError(err instanceof Error ? err : new Error('apos;Failed to load icon'apos;));
           setLoading(false);
         }
       }
@@ -170,7 +170,7 @@ export const IconCacheStats: React.FC = () => {
 
   useEffect(() => {
     // Importer dynamiquement pour éviter le chargement côté serveur
-    import('@/lib/icons-dynamic').then(({ getIconCacheStats }) => {
+    import('apos;@/lib/icons-dynamic'apos;).then(({ getIconCacheStats }) => {
       setStats(getIconCacheStats());
     });
   }, []);
@@ -179,17 +179,17 @@ export const IconCacheStats: React.FC = () => {
 
   return (
     <div style={{ 
-      position: 'fixed', 
+      position: 'apos;fixed'apos;, 
       bottom: 10, 
       right: 10, 
-      background: '#f0f0f0', 
-      padding: '8px', 
-      borderRadius: '4px',
-      fontSize: '12px',
+      background: 'apos;#f0f0f0'apos;, 
+      padding: 'apos;8px'apos;, 
+      borderRadius: 'apos;4px'apos;,
+      fontSize: 'apos;12px'apos;,
       zIndex: 1000
     }}>
       <div>Cache: {stats.size} icônes</div>
-      <div>Dernières: {stats.keys.slice(-3).join(', ')}</div>
+      <div>Dernières: {stats.keys.slice(-3).join('apos;, 'apos;)}</div>
     </div>
   );
 };

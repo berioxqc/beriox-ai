@@ -1,16 +1,16 @@
-import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
-import { SessionProvider } from 'next-auth/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React, { ReactElement } from 'apos;react'apos;;
+import { render, RenderOptions } from 'apos;@testing-library/react'apos;;
+import { SessionProvider } from 'apos;next-auth/react'apos;;
+import { QueryClient, QueryClientProvider } from 'apos;@tanstack/react-query'apos;;
 
 // Mock Next.js router
-jest.mock('next/router', () => ({
+jest.mock('apos;next/router'apos;, () => ({
   useRouter() {
     return {
-      route: '/',
-      pathname: '/',
+      route: 'apos;/'apos;,
+      pathname: 'apos;/'apos;,
       query: {},
-      asPath: '/',
+      asPath: 'apos;/'apos;,
       push: jest.fn(),
       pop: jest.fn(),
       reload: jest.fn(),
@@ -28,7 +28,7 @@ jest.mock('next/router', () => ({
 }));
 
 // Mock Next.js navigation
-jest.mock('next/navigation', () => ({
+jest.mock('apos;next/navigation'apos;, () => ({
   useRouter() {
     return {
       push: jest.fn(),
@@ -43,12 +43,12 @@ jest.mock('next/navigation', () => ({
     return new URLSearchParams();
   },
   usePathname() {
-    return '/';
+    return 'apos;/'apos;;
   },
 }));
 
 // Mock Prisma
-jest.mock('@/lib/prisma', () => ({
+jest.mock('apos;@/lib/prisma'apos;, () => ({
   prisma: {
     user: {
       findUnique: jest.fn(),
@@ -82,7 +82,7 @@ jest.mock('@/lib/prisma', () => ({
 }));
 
 // Mock Stripe
-jest.mock('stripe', () => {
+jest.mock('apos;stripe'apos;, () => {
   return jest.fn().mockImplementation(() => ({
     checkout: {
       sessions: {
@@ -104,7 +104,7 @@ jest.mock('stripe', () => {
 });
 
 // Mock OpenAI
-jest.mock('openai', () => ({
+jest.mock('apos;openai'apos;, () => ({
   OpenAI: jest.fn().mockImplementation(() => ({
     chat: {
       completions: {
@@ -118,7 +118,7 @@ jest.mock('openai', () => ({
 }));
 
 // Mock Sentry
-jest.mock('@sentry/nextjs', () => ({
+jest.mock('apos;@sentry/nextjs'apos;, () => ({
   captureException: jest.fn(),
   captureMessage: jest.fn(),
   setUser: jest.fn(),
@@ -127,7 +127,7 @@ jest.mock('@sentry/nextjs', () => ({
 }));
 
 // Mock Resend
-jest.mock('resend', () => ({
+jest.mock('apos;resend'apos;, () => ({
   Resend: jest.fn().mockImplementation(() => ({
     emails: {
       send: jest.fn(),
@@ -136,7 +136,7 @@ jest.mock('resend', () => ({
 }));
 
 // Mock Redis
-jest.mock('ioredis', () => {
+jest.mock('apos;ioredis'apos;, () => {
   return jest.fn().mockImplementation(() => ({
     get: jest.fn(),
     set: jest.fn(),
@@ -178,7 +178,7 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 }));
 
 // Mock matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, 'apos;matchMedia'apos;, {
   writable: true,
   value: jest.fn().mockImplementation(query => ({
     matches: false,
@@ -211,7 +211,7 @@ const sessionStorageMock = {
 global.sessionStorage = sessionStorageMock;
 
 // Custom render function with providers
-interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
+interface CustomRenderOptions extends Omit<RenderOptions, 'apos;wrapper'apos;> {
   session?: any;
   queryClient?: QueryClient;
 }
@@ -255,11 +255,11 @@ export function renderWithProviders(
 
 // Test data factories
 export const createMockUser = (overrides = {}) => ({
-  id: 'user-1',
-  email: 'test@example.com',
-  name: 'Test User',
-  image: 'https://example.com/avatar.jpg',
-  role: 'USER',
+  id: 'apos;user-1'apos;,
+  email: 'apos;test@example.com'apos;,
+  name: 'apos;Test User'apos;,
+  image: 'apos;https://example.com/avatar.jpg'apos;,
+  role: 'apos;USER'apos;,
   emailVerified: new Date(),
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -267,12 +267,12 @@ export const createMockUser = (overrides = {}) => ({
 });
 
 export const createMockMission = (overrides = {}) => ({
-  id: 'mission-1',
-  title: 'Test Mission',
-  description: 'Test mission description',
-  status: 'PENDING',
-  agentId: 'karine-ai',
-  userId: 'user-1',
+  id: 'apos;mission-1'apos;,
+  title: 'apos;Test Mission'apos;,
+  description: 'apos;Test mission description'apos;,
+  status: 'apos;PENDING'apos;,
+  agentId: 'apos;karine-ai'apos;,
+  userId: 'apos;user-1'apos;,
   createdAt: new Date(),
   updatedAt: new Date(),
   completedAt: null,
@@ -281,22 +281,22 @@ export const createMockMission = (overrides = {}) => ({
 });
 
 export const createMockDeliverable = (overrides = {}) => ({
-  id: 'deliverable-1',
-  missionId: 'mission-1',
-  content: 'Test deliverable content',
-  type: 'TEXT',
+  id: 'apos;deliverable-1'apos;,
+  missionId: 'apos;mission-1'apos;,
+  content: 'apos;Test deliverable content'apos;,
+  type: 'apos;TEXT'apos;,
   quality: 0.8,
-  structure: 'good',
+  structure: 'apos;good'apos;,
   createdAt: new Date(),
   updatedAt: new Date(),
   ...overrides,
 });
 
 export const createMockBrief = (overrides = {}) => ({
-  id: 'brief-1',
-  missionId: 'mission-1',
-  content: 'Test brief content',
-  type: 'REQUIREMENT',
+  id: 'apos;brief-1'apos;,
+  missionId: 'apos;mission-1'apos;,
+  content: 'apos;Test brief content'apos;,
+  type: 'apos;REQUIREMENT'apos;,
   createdAt: new Date(),
   updatedAt: new Date(),
   ...overrides,
@@ -342,7 +342,7 @@ export const mockApiError = (error: string, status = 500) => {
 
 // Form testing helpers
 export const fillForm = async (formData: Record<string, string>) => {
-  const { fireEvent } = await import('@testing-library/react');
+  const { fireEvent } = await import('apos;@testing-library/react'apos;);
   
   for (const [name, value] of Object.entries(formData)) {
     const input = document.querySelector(`[name="${name}"]`) as HTMLInputElement;
@@ -352,8 +352,8 @@ export const fillForm = async (formData: Record<string, string>) => {
   }
 };
 
-export const submitForm = async (formSelector = 'form') => {
-  const { fireEvent } = await import('@testing-library/react');
+export const submitForm = async (formSelector = 'apos;form'apos;) => {
+  const { fireEvent } = await import('apos;@testing-library/react'apos;);
   const form = document.querySelector(formSelector) as HTMLFormElement;
   if (form) {
     fireEvent.submit(form);
@@ -362,14 +362,14 @@ export const submitForm = async (formSelector = 'form') => {
 
 // Accessibility testing helpers
 export const checkA11y = async (container: HTMLElement) => {
-  const { axe, toHaveNoViolations } = await import('jest-axe');
+  const { axe, toHaveNoViolations } = await import('apos;jest-axe'apos;);
   const results = await axe(container);
   expect(results).toHaveNoViolations();
 };
 
 // Snapshot testing helpers
 export const createSnapshot = (component: ReactElement) => {
-  const { render } = require('@testing-library/react');
+  const { render } = require('apos;@testing-library/react'apos;);
   const { container } = render(component);
   expect(container.firstChild).toMatchSnapshot();
 };
@@ -386,12 +386,12 @@ export const mockEnvVars = (vars: Record<string, string>) => {
 
 // Test database helpers
 export const mockPrismaQuery = (model: string, method: string, returnValue: any) => {
-  const { prisma } = require('@/lib/prisma');
+  const { prisma } = require('apos;@/lib/prisma'apos;);
   prisma[model][method].mockResolvedValue(returnValue);
 };
 
 export const mockPrismaError = (model: string, method: string, error: Error) => {
-  const { prisma } = require('@/lib/prisma');
+  const { prisma } = require('apos;@/lib/prisma'apos;);
   prisma[model][method].mockRejectedValue(error);
 };
 
@@ -407,5 +407,5 @@ export const resetMocks = () => {
 };
 
 // Export everything
-export * from '@testing-library/react';
-export { default as userEvent } from '@testing-library/user-event';
+export * from 'apos;@testing-library/react'apos;;
+export { default as userEvent } from 'apos;@testing-library/user-event'apos;;

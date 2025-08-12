@@ -9,7 +9,7 @@ export {
   radarFoxAI,
   type RadarFoxAnalysis,
   type RadarFoxConfig 
-} from './radar-fox-ai';
+} from 'apos;./radar-fox-ai'apos;;
 
 // InsightPulseBot - Le traducteur de données en actions
 export { 
@@ -19,7 +19,7 @@ export {
   type InsightPulseConfig,
   type DataInsight,
   type ActionableInsight 
-} from './insight-pulse-bot';
+} from 'apos;./insight-pulse-bot'apos;;
 
 // EchoBrandAI - Le gardien de la cohérence de marque
 export { 
@@ -29,7 +29,7 @@ export {
   type BrandGuidelines,
   type ContentRewrite,
   type EchoBrandConfig 
-} from './echo-brand-ai';
+} from 'apos;./echo-brand-ai'apos;;
 
 // TrendSculptorBot - Le créateur de concepts
 export { 
@@ -39,9 +39,9 @@ export {
   type TrendSculptorConfig,
   type Trend,
   type CreativeConcept 
-} from './trend-sculptor-bot';
+} from 'apos;./trend-sculptor-bot'apos;;
 
-// ConversionHackerAI - L'optimisateur obsessionnel
+// ConversionHackerAI - L'apos;optimisateur obsessionnel
 export { 
   ConversionHackerAI, 
   conversionHackerAI,
@@ -51,7 +51,7 @@ export {
   type ABTest,
   type HeatmapData,
   type OptimizationOpportunity 
-} from './conversion-hacker-ai';
+} from 'apos;./conversion-hacker-ai'apos;;
 
 /**
  * Classe principale pour gérer tous les agents
@@ -79,7 +79,7 @@ export class BerioxAIAgents {
    * Lance une analyse complète avec tous les agents
    */
   async runFullAnalysis(data?: any) {
-    console.log("🤖 Beriox AI: Lancement de l'analyse complète avec tous les agents...");
+    console.log("🤖 Beriox AI: Lancement de l'apos;analyse complète avec tous les agents...");
 
     try {
       const results = await Promise.all([
@@ -97,8 +97,8 @@ export class BerioxAIAgents {
         timestamp: new Date().toISOString()
       };
     } catch (error) {
-      console.error("🤖 Beriox AI: Erreur lors de l'analyse complète:", error);
-      throw new Error("Impossible de compléter l'analyse avec tous les agents");
+      console.error("🤖 Beriox AI: Erreur lors de l'apos;analyse complète:", error);
+      throw new Error("Impossible de compléter l'apos;analyse avec tous les agents");
     }
   }
 
@@ -139,7 +139,7 @@ export class BerioxAIAgents {
     if (analysisResults.conversionHacker) {
       report += "## 🎯 CONVERSIONHACKER - OPTIMISATION\n";
       report += `• ${analysisResults.conversionHacker.summary.activeTests} tests A/B actifs\n`;
-      report += `• ${analysisResults.conversionHacker.opportunities.length} opportunités d'optimisation\n`;
+      report += `• ${analysisResults.conversionHacker.opportunities.length} opportunités d'apos;optimisation\n`;
       report += `• Impact revenus total: +${analysisResults.conversionHacker.summary.totalRevenueImpact}%\n\n`;
     }
 
@@ -148,10 +148,10 @@ export class BerioxAIAgents {
     report += "2. **Tests A/B** - Lancer les tests de conversion prioritaires\n";
     report += "3. **Contenu créatif** - Développer les concepts à fort potentiel\n";
     report += "4. **Veille continue** - Maintenir la surveillance concurrentielle\n";
-    report += "5. **Optimisation continue** - Mettre en place un processus d'amélioration constante\n\n";
+    report += "5. **Optimisation continue** - Mettre en place un processus d'apos;amélioration constante\n\n";
 
     report += "---\n";
-    report += "*Rapport généré par Beriox AI - L'intelligence artificielle au service de votre succès.*";
+    report += "*Rapport généré par Beriox AI - L'apos;intelligence artificielle au service de votre succès.*";
 
     return report;
   }
@@ -164,11 +164,11 @@ export class BerioxAIAgents {
   }
 
   /**
-   * Met à jour la configuration d'un agent
+   * Met à jour la configuration d'apos;un agent
    */
   updateAgentConfig(agentName: keyof typeof this.agents, config: any) {
     const agent = this.agents[agentName];
-    if (agent && typeof agent.updateConfig === 'function') {
+    if (agent && typeof agent.updateConfig === 'apos;function'apos;) {
       agent.updateConfig(config);
     }
   }

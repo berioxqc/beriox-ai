@@ -1,23 +1,23 @@
 "use client";
 
-import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useEffect, Suspense } from 'apos;react'apos;;
+import { useRouter, useSearchParams } from 'apos;next/navigation'apos;;
+import Link from 'apos;next/link'apos;;
 
 function ResetPasswordForm() {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState('apos;'apos;);
+  const [confirmPassword, setConfirmPassword] = useState('apos;'apos;);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [token, setToken] = useState('');
+  const [error, setError] = useState('apos;'apos;);
+  const [success, setSuccess] = useState('apos;'apos;);
+  const [token, setToken] = useState('apos;'apos;);
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const tokenParam = searchParams.get('token');
+    const tokenParam = searchParams.get('apos;token'apos;);
     if (!tokenParam) {
-      setError('Token de réinitialisation manquant');
+      setError('apos;Token de réinitialisation manquant'apos;);
       return;
     }
     setToken(tokenParam);
@@ -26,27 +26,27 @@ function ResetPasswordForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
-    setSuccess('');
+    setError('apos;'apos;);
+    setSuccess('apos;'apos;);
 
     // Validation
     if (password !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
+      setError('apos;Les mots de passe ne correspondent pas'apos;);
       setIsLoading(false);
       return;
     }
 
     if (password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères');
+      setError('apos;Le mot de passe doit contenir au moins 8 caractères'apos;);
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await fetch('/api/auth/reset-password', {
-        method: 'POST',
+      const response = await fetch('apos;/api/auth/reset-password'apos;, {
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/json',
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
         body: JSON.stringify({ token, password }),
       });
@@ -54,18 +54,18 @@ function ResetPasswordForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Erreur lors de la réinitialisation');
+        setError(data.error || 'apos;Erreur lors de la réinitialisation'apos;);
       } else {
         setSuccess(data.message);
-        setPassword('');
-        setConfirmPassword('');
+        setPassword('apos;'apos;);
+        setConfirmPassword('apos;'apos;);
         // Rediriger vers la page de connexion après 3 secondes
         setTimeout(() => {
-          router.push('/auth/signin');
+          router.push('apos;/auth/signin'apos;);
         }, 3000);
       }
     } catch (error) {
-      setError('Erreur lors de la réinitialisation');
+      setError('apos;Erreur lors de la réinitialisation'apos;);
     } finally {
       setIsLoading(false);
     }
@@ -131,7 +131,7 @@ function ResetPasswordForm() {
             disabled={isLoading}
             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Mise à jour...' : 'Mettre à jour le mot de passe'}
+            {isLoading ? 'apos;Mise à jour...'apos; : 'apos;Mettre à jour le mot de passe'apos;}
           </button>
         </form>
       )}

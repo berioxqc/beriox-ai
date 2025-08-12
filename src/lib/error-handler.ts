@@ -1,22 +1,22 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { logger } from './logger';
-import { ZodError } from 'zod';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { logger } from 'apos;./logger'apos;;
+import { ZodError } from 'apos;zod'apos;;
 
 // ============================================================================
-// TYPES D'ERREURS
+// TYPES D'apos;ERREURS
 // ============================================================================
 
 export enum ErrorType {
-  VALIDATION = 'VALIDATION',
-  AUTHENTICATION = 'AUTHENTICATION',
-  AUTHORIZATION = 'AUTHORIZATION',
-  NOT_FOUND = 'NOT_FOUND',
-  RATE_LIMIT = 'RATE_LIMIT',
-  DATABASE = 'DATABASE',
-  EXTERNAL_SERVICE = 'EXTERNAL_SERVICE',
-  INTERNAL = 'INTERNAL',
-  NETWORK = 'NETWORK',
-  TIMEOUT = 'TIMEOUT',
+  VALIDATION = 'apos;VALIDATION'apos;,
+  AUTHENTICATION = 'apos;AUTHENTICATION'apos;,
+  AUTHORIZATION = 'apos;AUTHORIZATION'apos;,
+  NOT_FOUND = 'apos;NOT_FOUND'apos;,
+  RATE_LIMIT = 'apos;RATE_LIMIT'apos;,
+  DATABASE = 'apos;DATABASE'apos;,
+  EXTERNAL_SERVICE = 'apos;EXTERNAL_SERVICE'apos;,
+  INTERNAL = 'apos;INTERNAL'apos;,
+  NETWORK = 'apos;NETWORK'apos;,
+  TIMEOUT = 'apos;TIMEOUT'apos;,
 }
 
 export interface AppError extends Error {
@@ -29,7 +29,7 @@ export interface AppError extends Error {
 }
 
 // ============================================================================
-// CLASSES D'ERREURS SPÉCIALISÉES
+// CLASSES D'apos;ERREURS SPÉCIALISÉES
 // ============================================================================
 
 export class ValidationError extends Error implements AppError {
@@ -44,7 +44,7 @@ export class ValidationError extends Error implements AppError {
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'ValidationError';
+    this.name = 'apos;ValidationError'apos;;
   }
 }
 
@@ -55,11 +55,11 @@ export class AuthenticationError extends Error implements AppError {
   public readonly retryable = false;
 
   constructor(
-    message: string = 'Authentification requise',
+    message: string = 'apos;Authentification requise'apos;,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'AuthenticationError';
+    this.name = 'apos;AuthenticationError'apos;;
   }
 }
 
@@ -70,11 +70,11 @@ export class AuthorizationError extends Error implements AppError {
   public readonly retryable = false;
 
   constructor(
-    message: string = 'Accès non autorisé',
+    message: string = 'apos;Accès non autorisé'apos;,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'AuthorizationError';
+    this.name = 'apos;AuthorizationError'apos;;
   }
 }
 
@@ -85,11 +85,11 @@ export class NotFoundError extends Error implements AppError {
   public readonly retryable = false;
 
   constructor(
-    message: string = 'Ressource non trouvée',
+    message: string = 'apos;Ressource non trouvée'apos;,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'NotFoundError';
+    this.name = 'apos;NotFoundError'apos;;
   }
 }
 
@@ -100,12 +100,12 @@ export class RateLimitError extends Error implements AppError {
   public readonly retryable = true;
 
   constructor(
-    message: string = 'Limite de taux dépassée',
+    message: string = 'apos;Limite de taux dépassée'apos;,
     public readonly retryAfter?: number,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'RateLimitError';
+    this.name = 'apos;RateLimitError'apos;;
   }
 }
 
@@ -116,12 +116,12 @@ export class DatabaseError extends Error implements AppError {
   public readonly retryable = true;
 
   constructor(
-    message: string = 'Erreur de base de données',
+    message: string = 'apos;Erreur de base de données'apos;,
     public readonly details?: unknown,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'DatabaseError';
+    this.name = 'apos;DatabaseError'apos;;
   }
 }
 
@@ -132,13 +132,13 @@ export class ExternalServiceError extends Error implements AppError {
   public readonly retryable = true;
 
   constructor(
-    message: string = 'Erreur de service externe',
+    message: string = 'apos;Erreur de service externe'apos;,
     public readonly service?: string,
     public readonly details?: unknown,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'ExternalServiceError';
+    this.name = 'apos;ExternalServiceError'apos;;
   }
 }
 
@@ -149,12 +149,12 @@ export class InternalError extends Error implements AppError {
   public readonly retryable = false;
 
   constructor(
-    message: string = 'Erreur interne du serveur',
+    message: string = 'apos;Erreur interne du serveur'apos;,
     public readonly details?: unknown,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'InternalError';
+    this.name = 'apos;InternalError'apos;;
   }
 }
 
@@ -165,12 +165,12 @@ export class NetworkError extends Error implements AppError {
   public readonly retryable = true;
 
   constructor(
-    message: string = 'Erreur de réseau',
+    message: string = 'apos;Erreur de réseau'apos;,
     public readonly details?: unknown,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'NetworkError';
+    this.name = 'apos;NetworkError'apos;;
   }
 }
 
@@ -181,12 +181,12 @@ export class TimeoutError extends Error implements AppError {
   public readonly retryable = true;
 
   constructor(
-    message: string = 'Délai d\'attente dépassé',
+    message: string = 'apos;Délai d\'apos;attente dépassé'apos;,
     public readonly timeout?: number,
     public readonly code?: string
   ) {
     super(message);
-    this.name = 'TimeoutError';
+    this.name = 'apos;TimeoutError'apos;;
   }
 }
 
@@ -198,92 +198,92 @@ export class TimeoutError extends Error implements AppError {
  * Convertit une erreur en AppError
  */
 export function normalizeError(error: unknown): AppError {
-  // Si c'est déjà une AppError
-  if (error && typeof error === 'object' && 'type' in error) {
+  // Si c'apos;est déjà une AppError
+  if (error && typeof error === 'apos;object'apos; && 'apos;type'apos; in error) {
     return error as AppError;
   }
 
   // Erreurs Zod
   if (error instanceof ZodError) {
     return new ValidationError(
-      'Données invalides',
+      'apos;Données invalides'apos;,
       error.errors,
-      'ZOD_VALIDATION_ERROR'
+      'apos;ZOD_VALIDATION_ERROR'apos;
     );
   }
 
   // Erreurs Prisma
   if (error && error.code) {
     switch (error.code) {
-      case 'P2002':
+      case 'apos;P2002'apos;:
         return new ValidationError(
-          'Conflit de données unique',
+          'apos;Conflit de données unique'apos;,
           { field: error.meta?.target },
-          'PRISMA_UNIQUE_CONSTRAINT'
+          'apos;PRISMA_UNIQUE_CONSTRAINT'apos;
         );
-      case 'P2025':
+      case 'apos;P2025'apos;:
         return new NotFoundError(
-          'Enregistrement non trouvé',
-          'PRISMA_RECORD_NOT_FOUND'
+          'apos;Enregistrement non trouvé'apos;,
+          'apos;PRISMA_RECORD_NOT_FOUND'apos;
         );
-      case 'P2003':
+      case 'apos;P2003'apos;:
         return new ValidationError(
-          'Violation de contrainte de clé étrangère',
+          'apos;Violation de contrainte de clé étrangère'apos;,
           { field: error.meta?.field_name },
-          'PRISMA_FOREIGN_KEY_CONSTRAINT'
+          'apos;PRISMA_FOREIGN_KEY_CONSTRAINT'apos;
         );
       default:
         return new DatabaseError(
-          'Erreur de base de données',
+          'apos;Erreur de base de données'apos;,
           { code: error.code, meta: error.meta },
-          'PRISMA_ERROR'
+          'apos;PRISMA_ERROR'apos;
         );
     }
   }
 
   // Erreurs de réseau
-  if (error && (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND')) {
+  if (error && (error.code === 'apos;ECONNREFUSED'apos; || error.code === 'apos;ENOTFOUND'apos;)) {
     return new NetworkError(
-      'Impossible de se connecter au service',
+      'apos;Impossible de se connecter au service'apos;,
       { code: error.code },
-      'NETWORK_CONNECTION_ERROR'
+      'apos;NETWORK_CONNECTION_ERROR'apos;
     );
   }
 
   // Erreurs de timeout
-  if (error && error.code === 'ETIMEDOUT') {
+  if (error && error.code === 'apos;ETIMEDOUT'apos;) {
     return new TimeoutError(
-      'Délai de connexion dépassé',
+      'apos;Délai de connexion dépassé'apos;,
       undefined,
-      'NETWORK_TIMEOUT'
+      'apos;NETWORK_TIMEOUT'apos;
     );
   }
 
   // Erreurs Stripe
-  if (error && error.type && error.type.startsWith('Stripe')) {
+  if (error && error.type && error.type.startsWith('apos;Stripe'apos;)) {
     return new ExternalServiceError(
-      'Erreur de paiement',
-      'stripe',
+      'apos;Erreur de paiement'apos;,
+      'apos;stripe'apos;,
       { type: error.type, code: error.code },
-      'STRIPE_ERROR'
+      'apos;STRIPE_ERROR'apos;
     );
   }
 
   // Erreurs OpenAI
   if (error && error.status && error.status === 429) {
     return new RateLimitError(
-      'Limite de taux OpenAI dépassée',
+      'apos;Limite de taux OpenAI dépassée'apos;,
       undefined,
-      'OPENAI_RATE_LIMIT'
+      'apos;OPENAI_RATE_LIMIT'apos;
     );
   }
 
   if (error && error.status && error.status >= 500) {
     return new ExternalServiceError(
-      'Erreur de service IA',
-      'openai',
+      'apos;Erreur de service IA'apos;,
+      'apos;openai'apos;,
       { status: error.status, message: error.message },
-      'OPENAI_SERVICE_ERROR'
+      'apos;OPENAI_SERVICE_ERROR'apos;
     );
   }
 
@@ -292,34 +292,34 @@ export function normalizeError(error: unknown): AppError {
     return new InternalError(
       error.message,
       { stack: error.stack },
-      'UNKNOWN_ERROR'
+      'apos;UNKNOWN_ERROR'apos;
     );
   }
 
   return new InternalError(
-    'Erreur inconnue',
+    'apos;Erreur inconnue'apos;,
     { originalError: error },
-    'UNKNOWN_ERROR'
+    'apos;UNKNOWN_ERROR'apos;
   );
 }
 
 /**
- * Crée une réponse d'erreur standardisée
+ * Crée une réponse d'apos;erreur standardisée
  */
 export function createErrorResponse(error: AppError, request?: NextRequest): NextResponse {
-  const isDevelopment = process.env.NODE_ENV === 'development';
+  const isDevelopment = process.env.NODE_ENV === 'apos;development'apos;;
   
-  // Log de l'erreur
+  // Log de l'apos;erreur
   logger.error(`API Error: ${error.message}`, error, {
-    action: 'api_error',
+    action: 'apos;api_error'apos;,
     metadata: {
       type: error.type,
       statusCode: error.statusCode,
       code: error.code,
       url: request?.url,
       method: request?.method,
-      userAgent: request?.headers.get('user-agent'),
-      ip: request?.ip || request?.headers.get('x-forwarded-for'),
+      userAgent: request?.headers.get('apos;user-agent'apos;),
+      ip: request?.ip || request?.headers.get('apos;x-forwarded-for'apos;),
     }
   });
 
@@ -331,7 +331,7 @@ export function createErrorResponse(error: AppError, request?: NextRequest): Nex
     timestamp: new Date().toISOString(),
   };
 
-  // Ajouter le code d'erreur si disponible
+  // Ajouter le code d'apos;erreur si disponible
   if (error.code) {
     responseBody.code = error.code;
   }
@@ -343,19 +343,19 @@ export function createErrorResponse(error: AppError, request?: NextRequest): Nex
 
   // Ajouter les headers spécifiques
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+    'apos;Content-Type'apos;: 'apos;application/json'apos;,
   };
 
   // Headers pour les erreurs de rate limiting
   if (error.type === ErrorType.RATE_LIMIT) {
     const retryAfter = (error as RateLimitError).retryAfter || 60;
-    headers['Retry-After'] = retryAfter.toString();
-    headers['X-RateLimit-Reset'] = new Date(Date.now() + retryAfter * 1000).toISOString();
+    headers['apos;Retry-After'apos;] = retryAfter.toString();
+    headers['apos;X-RateLimit-Reset'apos;] = new Date(Date.now() + retryAfter * 1000).toISOString();
   }
 
   // Headers pour les erreurs de timeout
   if (error.type === ErrorType.TIMEOUT) {
-    headers['X-Timeout-Duration'] = ((error as TimeoutError).timeout || 30).toString();
+    headers['apos;X-Timeout-Duration'apos;] = ((error as TimeoutError).timeout || 30).toString();
   }
 
   return NextResponse.json(responseBody, {
@@ -381,7 +381,7 @@ export function withErrorHandler<T extends any[], R>(
 }
 
 /**
- * Middleware de gestion d'erreurs pour Next.js
+ * Middleware de gestion d'apos;erreurs pour Next.js
  */
 export function errorHandlerMiddleware(
   handler: (request: NextRequest) => Promise<NextResponse>
@@ -397,7 +397,7 @@ export function errorHandlerMiddleware(
 }
 
 // ============================================================================
-// GESTIONNAIRE D'ERREURS GLOBAL
+// GESTIONNAIRE D'apos;ERREURS GLOBAL
 // ============================================================================
 
 export class GlobalErrorHandler {
@@ -418,16 +418,16 @@ export class GlobalErrorHandler {
    * Traite une erreur et détermine si elle doit être alertée
    */
   handleError(error: AppError, context?: unknown): void {
-    const errorKey = `${error.type}:${error.code || 'unknown'}`;
+    const errorKey = `${error.type}:${error.code || 'apos;unknown'apos;}`;
     const now = Date.now();
     
-    // Incrémenter le compteur d'erreurs
+    // Incrémenter le compteur d'apos;erreurs
     this.errorCounts.set(errorKey, (this.errorCounts.get(errorKey) || 0) + 1);
     this.lastErrorTime.set(errorKey, now);
 
-    // Log de l'erreur
+    // Log de l'apos;erreur
     logger.error(`Global Error: ${error.message}`, error, {
-      action: 'global_error',
+      action: 'apos;global_error'apos;,
       metadata: {
         type: error.type,
         code: error.code,
@@ -445,18 +445,18 @@ export class GlobalErrorHandler {
       this.alertHighErrorRate(errorKey, errorCount, error);
     }
 
-    // Réinitialiser le compteur si trop de temps s'est écoulé
+    // Réinitialiser le compteur si trop de temps s'apos;est écoulé
     if ((now - lastError) > timeWindow) {
       this.errorCounts.set(errorKey, 1);
     }
   }
 
   /**
-   * Alerte en cas de taux d'erreur élevé
+   * Alerte en cas de taux d'apos;erreur élevé
    */
   private alertHighErrorRate(errorKey: string, count: number, error: AppError): void {
     logger.warn(`High error rate detected: ${errorKey}`, {
-      action: 'high_error_rate_alert',
+      action: 'apos;high_error_rate_alert'apos;,
       metadata: {
         errorKey,
         count,
@@ -471,7 +471,7 @@ export class GlobalErrorHandler {
   }
 
   /**
-   * Obtient les statistiques d'erreurs
+   * Obtient les statistiques d'apos;erreurs
    */
   getErrorStats(): Record<string, any> {
     const stats: Record<string, any> = {};
@@ -489,7 +489,7 @@ export class GlobalErrorHandler {
   }
 
   /**
-   * Réinitialise les compteurs d'erreurs
+   * Réinitialise les compteurs d'apos;erreurs
    */
   resetErrorCounts(): void {
     this.errorCounts.clear();

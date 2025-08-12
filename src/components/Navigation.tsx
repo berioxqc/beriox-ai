@@ -19,30 +19,30 @@ export default function Navigation() {
       if (session?.user?.email) {
         try {
           // Récupérer les informations du profil utilisateur
-          const profileRes = await fetch('/api/user/profile');
+          const profileRes = await fetch('apos;/api/user/profile'apos;);
           const profile = profileRes.ok ? await profileRes.json() : null;
 
-          // Vérifier l'accès premium basé sur le rôle et les crédits
+          // Vérifier l'apos;accès premium basé sur le rôle et les crédits
           let hasAccess = false;
           let plan = undefined;
 
-          if (profile?.user?.role === 'SUPER_ADMIN' || profile?.user?.role === 'ADMIN') {
+          if (profile?.user?.role === 'apos;SUPER_ADMIN'apos; || profile?.user?.role === 'apos;ADMIN'apos;) {
             hasAccess = true;
-            plan = 'enterprise';
+            plan = 'apos;enterprise'apos;;
           } else if (profile?.user?.credits && profile.user.credits > 0) {
             hasAccess = true;
-            plan = 'basic';
+            plan = 'apos;basic'apos;;
           }
 
           const permissions = {
-            role: profile?.user?.role || 'USER',
+            role: profile?.user?.role || 'apos;USER'apos;,
             plan: plan,
             hasAccess: hasAccess
           };
 
           setUserPermissions(permissions);
         } catch (error) {
-          console.error('Erreur lors de la récupération des permissions:', error);
+          console.error('apos;Erreur lors de la récupération des permissions:'apos;, error);
         }
       }
     };

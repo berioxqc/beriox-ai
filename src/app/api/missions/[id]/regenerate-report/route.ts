@@ -24,7 +24,7 @@ export async function POST(
       return NextResponse.json({ error: "Mission non trouvée" }, { status: 404 });
     }
 
-    // Supprimer l'ancien rapport s'il existe
+    // Supprimer l'apos;ancien rapport s'apos;il existe
     await prisma.report.deleteMany({
       where: { missionId }
     });
@@ -45,7 +45,7 @@ export async function POST(
 
 **Objectif :** ${mission.objective}
 
-**Statut :** Mission terminée avec ${uniqueAgents.length} agent${uniqueAgents.length > 1 ? 's' : ''} mobilisé${uniqueAgents.length > 1 ? 's' : ''}
+**Statut :** Mission terminée avec ${uniqueAgents.length} agent${uniqueAgents.length > 1 ? 'apos;s'apos; : 'apos;'apos;} mobilisé${uniqueAgents.length > 1 ? 'apos;s'apos; : 'apos;'apos;}
 
 ---
 
@@ -57,33 +57,33 @@ ${uniqueAgents.map(agent => {
 **Spécialité :** ${agentInfo.specialty}
 ✅ Livrable produit et validé
 `;
-}).join('\n')}
+}).join('apos;\n'apos;)}
 
 ---
 
 ## 📊 Synthèse
 
-Cette mission a été traitée par ${uniqueAgents.length} spécialiste${uniqueAgents.length > 1 ? 's' : ''} de notre équipe IA. Chaque agent a apporté son expertise unique pour répondre à l'objectif défini.
+Cette mission a été traitée par ${uniqueAgents.length} spécialiste${uniqueAgents.length > 1 ? 'apos;s'apos; : 'apos;'apos;} de notre équipe IA. Chaque agent a apporté son expertise unique pour répondre à l'apos;objectif défini.
 
 ### 🔍 Points de vigilance
 - Suivi recommandé des livrables
-- Validation des résultats par l'équipe
-- Mesure de l'impact des recommandations
+- Validation des résultats par l'apos;équipe
+- Mesure de l'apos;impact des recommandations
 
 ### 🚀 Prochaines étapes recommandées
 1. **Mise en œuvre** des recommandations prioritaires
 2. **Suivi des KPIs** définis par chaque agent
 3. **Ajustements** basés sur les premiers résultats
-4. **Évaluation** de l'efficacité après 30 jours
+4. **Évaluation** de l'apos;efficacité après 30 jours
 
 ---
 
-*Rapport généré automatiquement par Beriox AI • ${new Date().toLocaleDateString('fr-FR', { 
-  year: 'numeric', 
-  month: 'long', 
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit'
+*Rapport généré automatiquement par Beriox AI • ${new Date().toLocaleDateString('apos;fr-FR'apos;, { 
+  year: 'apos;numeric'apos;, 
+  month: 'apos;long'apos;, 
+  day: 'apos;numeric'apos;,
+  hour: 'apos;2-digit'apos;,
+  minute: 'apos;2-digit'apos;
 })}*`
       }
     });

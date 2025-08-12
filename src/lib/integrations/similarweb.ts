@@ -1,7 +1,7 @@
-import { ApiResponse, CompetitorData } from './types';
+import { ApiResponse, CompetitorData } from 'apos;./types'apos;;
 
 export class SimilarWebAPI {
-  private baseUrl = 'https://api.similarweb.com/v1';
+  private baseUrl = 'apos;https://api.similarweb.com/v1'apos;;
   private apiKey: string;
 
   constructor(apiKey: string) {
@@ -9,14 +9,14 @@ export class SimilarWebAPI {
   }
 
   /**
-   * Analyse du trafic d'un domaine
+   * Analyse du trafic d'apos;un domaine
    */
   async getTrafficAnalysis(domain: string): Promise<ApiResponse<CompetitorData>> {
     try {
       const response = await fetch(`${this.baseUrl}/website/${domain}/total-traffic-and-engagement/visits`, {
         headers: {
-          'api-key': this.apiKey,
-          'Content-Type': 'application/json',
+          'apos;api-key'apos;: this.apiKey,
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
       });
 
@@ -49,14 +49,14 @@ export class SimilarWebAPI {
   }
 
   /**
-   * Analyse des mots-clés d'un domaine
+   * Analyse des mots-clés d'apos;un domaine
    */
   async getKeywordAnalysis(domain: string): Promise<ApiResponse<any>> {
     try {
       const response = await fetch(`${this.baseUrl}/website/${domain}/search/keyword`, {
         headers: {
-          'api-key': this.apiKey,
-          'Content-Type': 'application/json',
+          'apos;api-key'apos;: this.apiKey,
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
       });
 
@@ -91,8 +91,8 @@ export class SimilarWebAPI {
     try {
       const response = await fetch(`${this.baseUrl}/website/${domain}/traffic-sources/overview`, {
         headers: {
-          'api-key': this.apiKey,
-          'Content-Type': 'application/json',
+          'apos;api-key'apos;: this.apiKey,
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
       });
 
@@ -129,8 +129,8 @@ export class SimilarWebAPI {
     try {
       const response = await fetch(`${this.baseUrl}/website/${domain}/competitors/overview`, {
         headers: {
-          'api-key': this.apiKey,
-          'Content-Type': 'application/json',
+          'apos;api-key'apos;: this.apiKey,
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
       });
 
@@ -148,7 +148,7 @@ export class SimilarWebAPI {
             domain: comp.domain,
             overlapScore: comp.overlapScore || 0,
             trafficShare: comp.trafficShare || 0,
-            category: comp.category || '',
+            category: comp.category || 'apos;'apos;,
           })) || [],
         },
       };
@@ -161,7 +161,7 @@ export class SimilarWebAPI {
   }
 
   /**
-   * Analyse complète d'un domaine
+   * Analyse complète d'apos;un domaine
    */
   async getCompleteAnalysis(domain: string): Promise<ApiResponse<CompetitorData>> {
     try {
@@ -172,13 +172,13 @@ export class SimilarWebAPI {
         this.getCompetitors(domain),
       ]);
 
-      const traffic = trafficResult.status === 'fulfilled' ? trafficResult.value : null;
-      const keywords = keywordsResult.status === 'fulfilled' ? keywordsResult.value : null;
-      const sources = sourcesResult.status === 'fulfilled' ? sourcesResult.value : null;
-      const competitors = competitorsResult.status === 'fulfilled' ? competitorsResult.value : null;
+      const traffic = trafficResult.status === 'apos;fulfilled'apos; ? trafficResult.value : null;
+      const keywords = keywordsResult.status === 'apos;fulfilled'apos; ? keywordsResult.value : null;
+      const sources = sourcesResult.status === 'apos;fulfilled'apos; ? sourcesResult.value : null;
+      const competitors = competitorsResult.status === 'apos;fulfilled'apos; ? competitorsResult.value : null;
 
       if (!traffic?.success) {
-        throw new Error('Impossible d\'obtenir les données de trafic');
+        throw new Error('apos;Impossible d\'apos;obtenir les données de trafic'apos;);
       }
 
       return {

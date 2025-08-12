@@ -12,14 +12,14 @@ export function useFreeTrial() {
   const [showTrialModal, setShowTrialModal] = useState(false);
 
   useEffect(() => {
-    // Si l'utilisateur est connecté, il n'a pas de limite d'essais
+    // Si l'apos;utilisateur est connecté, il n'apos;a pas de limite d'apos;essais
     if (session) {
       setHasTrialsLeft(true);
       setTrialsUsed(0);
       return;
     }
 
-    // Récupérer le nombre d'essais utilisés depuis localStorage
+    // Récupérer le nombre d'apos;essais utilisés depuis localStorage
     const stored = localStorage.getItem(TRIAL_KEY);
     const used = stored ? parseInt(stored, 10) : 0;
     setTrialsUsed(used);
@@ -37,14 +37,14 @@ export function useFreeTrial() {
       return false;
     }
 
-    // Incrémenter le compteur d'essais
+    // Incrémenter le compteur d'apos;essais
     const newCount = trialsUsed + 1;
     setTrialsUsed(newCount);
     localStorage.setItem(TRIAL_KEY, newCount.toString());
     
     if (newCount >= MAX_FREE_TRIALS) {
       setHasTrialsLeft(false);
-      // Montrer le modal après un court délai pour laisser l'action se terminer
+      // Montrer le modal après un court délai pour laisser l'apos;action se terminer
       setTimeout(() => setShowTrialModal(true), 1000);
     }
 

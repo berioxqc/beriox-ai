@@ -1,17 +1,17 @@
-// Import Sentry avec gestion d'erreur pour éviter les problèmes de compatibilité
+// Import Sentry avec gestion d'apos;erreur pour éviter les problèmes de compatibilité
 let Sentry: any = null;
 try {
   Sentry = require("@sentry/nextjs");
 } catch (error) {
-  console.warn('Sentry not available, logging will be console-only');
+  console.warn('apos;Sentry not available, logging will be console-only'apos;);
 }
 
 export enum LogLevel {
-  DEBUG = 'debug',
-  INFO = 'info',
-  WARN = 'warn',
-  ERROR = 'error',
-  FATAL = 'fatal'
+  DEBUG = 'apos;debug'apos;,
+  INFO = 'apos;info'apos;,
+  WARN = 'apos;warn'apos;,
+  ERROR = 'apos;error'apos;,
+  FATAL = 'apos;fatal'apos;
 }
 
 interface LogContext {
@@ -24,12 +24,12 @@ interface LogContext {
 }
 
 class Logger {
-  private isDevelopment = process.env.NODE_ENV === 'development';
-  private isProduction = process.env.NODE_ENV === 'production';
+  private isDevelopment = process.env.NODE_ENV === 'apos;development'apos;;
+  private isProduction = process.env.NODE_ENV === 'apos;production'apos;;
 
   private formatMessage(level: LogLevel, message: string, context?: LogContext): string {
     const timestamp = new Date().toISOString();
-    const contextStr = context ? ` [${JSON.stringify(context)}]` : '';
+    const contextStr = context ? ` [${JSON.stringify(context)}]` : 'apos;'apos;;
     return `[${timestamp}] ${level.toUpperCase()}: ${message}${contextStr}`;
   }
 
@@ -75,18 +75,18 @@ class Logger {
       }
     } catch (sentryError) {
       // Fallback si Sentry échoue
-      console.warn('Sentry error:', sentryError);
+      console.warn('apos;Sentry error:'apos;, sentryError);
     }
   }
 
   private mapToSentryLevel(level: LogLevel): string {
     switch (level) {
-      case LogLevel.DEBUG: return 'debug';
-      case LogLevel.INFO: return 'info';
-      case LogLevel.WARN: return 'warning';
-      case LogLevel.ERROR: return 'error';
-      case LogLevel.FATAL: return 'fatal';
-      default: return 'info';
+      case LogLevel.DEBUG: return 'apos;debug'apos;;
+      case LogLevel.INFO: return 'apos;info'apos;;
+      case LogLevel.WARN: return 'apos;warning'apos;;
+      case LogLevel.ERROR: return 'apos;error'apos;;
+      case LogLevel.FATAL: return 'apos;fatal'apos;;
+      default: return 'apos;info'apos;;
     }
   }
 
@@ -113,7 +113,7 @@ class Logger {
     if (this.shouldLog(LogLevel.ERROR)) {
       console.error(this.formatMessage(LogLevel.ERROR, message, context));
       if (error) {
-        console.error('Error details:', error);
+        console.error('apos;Error details:'apos;, error);
       }
       this.sendToSentry(LogLevel.ERROR, message, context, error);
     }
@@ -122,7 +122,7 @@ class Logger {
   fatal(message: string, error?: Error, context?: LogContext) {
     console.error(this.formatMessage(LogLevel.FATAL, message, context));
     if (error) {
-      console.error('Fatal error details:', error);
+      console.error('apos;Fatal error details:'apos;, error);
     }
     this.sendToSentry(LogLevel.FATAL, message, context, error);
   }
@@ -133,20 +133,20 @@ class Logger {
       ...context,
       action,
       duration,
-      type: 'performance'
+      type: 'apos;performance'apos;
     });
 
     // Envoi des métriques de performance à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
-    //     Sentry.metrics.increment('performance.duration', duration, {
+    //     Sentry.metrics.increment('apos;performance.duration'apos;, duration, {
     //       tags: {
     //         action,
     //         ...context?.metadata
     //       }
     //     });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
   }
@@ -157,20 +157,20 @@ class Logger {
       ...context,
       action: event,
       metadata: data,
-      type: 'business'
+      type: 'apos;business'apos;
     });
 
     // Envoi des événements business à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
-    //     Sentry.metrics.increment('business.event', 1, {
+    //     Sentry.metrics.increment('apos;business.event'apos;, 1, {
     //       tags: {
     //         event,
     //         ...context?.metadata
     //       }
     //     });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
   }
@@ -181,21 +181,21 @@ class Logger {
       ...context,
       action: event,
       metadata: data,
-      type: 'security'
+      type: 'apos;security'apos;
     });
 
     // Envoi des événements de sécurité à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
-    //     Sentry.metrics.increment('security.event', 1, {
+    //     Sentry.metrics.increment('apos;security.event'apos;, 1, {
     //       tags: {
     //         event,
-    //         severity: data.severity || 'medium',
+    //         severity: data.severity || 'apos;medium'apos;,
     //         ...context?.metadata
     //       }
     //     });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
   }
@@ -206,51 +206,51 @@ class Logger {
       ...context,
       action: event,
       metadata: data,
-      type: 'payment'
+      type: 'apos;payment'apos;
     });
 
     // Envoi des événements de paiement à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
-    //     Sentry.metrics.increment('payment.event', 1, {
+    //     Sentry.metrics.increment('apos;payment.event'apos;, 1, {
     //       tags: {
     //         event,
-    //         status: data.status || 'unknown',
+    //         status: data.status || 'apos;unknown'apos;,
     //         amount: data.amount || 0,
-    //         currency: data.currency || 'usd',
+    //         currency: data.currency || 'apos;usd'apos;,
     //         ...context?.metadata
     //       }
     //     });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
   }
 
-  // Méthodes spécialisées pour les erreurs d'API
+  // Méthodes spécialisées pour les erreurs d'apos;API
   apiError(endpoint: string, statusCode: number, error: Error, context?: LogContext) {
     this.error(`API Error: ${endpoint} returned ${statusCode}`, error, {
       ...context,
-      action: 'api_error',
+      action: 'apos;api_error'apos;,
       metadata: {
         endpoint,
         statusCode,
-        method: context?.metadata?.method || 'GET'
+        method: context?.metadata?.method || 'apos;GET'apos;
       }
     });
 
-    // Envoi des métriques d'erreur API à Sentry (désactivé temporairement)
+    // Envoi des métriques d'apos;erreur API à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
-    //     Sentry.metrics.increment('api.error', 1, {
+    //     Sentry.metrics.increment('apos;api.error'apos;, 1, {
     //       tags: {
     //         endpoint,
     //         statusCode: statusCode.toString(),
-    //         method: context?.metadata?.method || 'GET'
+    //         method: context?.metadata?.method || 'apos;GET'apos;
     //       }
     //     });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
   }
@@ -259,48 +259,48 @@ class Logger {
   dbError(operation: string, table: string, error: Error, context?: LogContext) {
     this.error(`Database Error: ${operation} on ${table}`, error, {
       ...context,
-      action: 'db_error',
+      action: 'apos;db_error'apos;,
       metadata: {
         operation,
         table
       }
     });
 
-    // Envoi des métriques d'erreur DB à Sentry (désactivé temporairement)
+    // Envoi des métriques d'apos;erreur DB à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
-    //     Sentry.metrics.increment('database.error', 1, {
+    //     Sentry.metrics.increment('apos;database.error'apos;, 1, {
     //       tags: {
     //         operation,
     //         table
     //       }
     //     });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
   }
 
-  // Méthodes spécialisées pour les erreurs d'authentification
+  // Méthodes spécialisées pour les erreurs d'apos;authentification
   authError(action: string, error: Error, context?: LogContext) {
     this.warn(`Auth Error: ${action}`, {
       ...context,
-      action: 'auth_error',
+      action: 'apos;auth_error'apos;,
       metadata: {
         authAction: action
       }
     }, error);
 
-    // Envoi des métriques d'erreur d'auth à Sentry (désactivé temporairement)
+    // Envoi des métriques d'apos;erreur d'apos;auth à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
-    //     Sentry.metrics.increment('auth.error', 1, {
+    //     Sentry.metrics.increment('apos;auth.error'apos;, 1, {
     //       tags: {
     //         action
     //       }
     //     });
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('apos;Sentry metrics not available:'apos;, error);
     //   }
     // }
   }
@@ -345,10 +345,10 @@ export const withPerformanceLogging = <T extends any[], R>(
 
 //     try {
 //       const result = await fn(...args);
-//       transaction.setStatus('ok');
+//       transaction.setStatus('apos;ok'apos;);
 //       return result;
 //     } catch (error) {
-//       transaction.setStatus('internal_error');
+//       transaction.setStatus('apos;internal_error'apos;);
 //       throw error;
 //     } finally {
 //       transaction.finish();

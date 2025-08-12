@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import Icon from '@/components/ui/Icon';
-import BotRecommendations from '@/components/bots/BotRecommendations';
+import { useState, useEffect } from 'apos;react'apos;;
+import { useSession } from 'apos;next-auth/react'apos;;
+import Icon from 'apos;@/components/ui/Icon'apos;;
+import BotRecommendations from 'apos;@/components/bots/BotRecommendations'apos;;
 
 interface BotStats {
   botId: string;
@@ -30,16 +30,16 @@ export default function BotsDashboardPage() {
 
     setLoading(true);
     try {
-      const response = await fetch('/api/bots/stats');
+      const response = await fetch('apos;/api/bots/stats'apos;);
       const data = await response.json();
 
       if (response.ok) {
         setBotStats(data.stats);
       } else {
-        console.error('Erreur lors du chargement des stats:', data.error);
+        console.error('apos;Erreur lors du chargement des stats:'apos;, data.error);
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des stats:', error);
+      console.error('apos;Erreur lors du chargement des stats:'apos;, error);
     } finally {
       setLoading(false);
     }
@@ -51,10 +51,10 @@ export default function BotsDashboardPage() {
 
     setGenerating(true);
     try {
-      const response = await fetch('/api/bots/recommendations/generate-all', {
-        method: 'POST',
+      const response = await fetch('apos;/api/bots/recommendations/generate-all'apos;, {
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/json',
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
       });
 
@@ -64,10 +64,10 @@ export default function BotsDashboardPage() {
         await loadBotStats();
         console.log(`${data.totalRecommendations} recommandations générées`);
       } else {
-        console.error('Erreur lors de la génération:', data.error);
+        console.error('apos;Erreur lors de la génération:'apos;, data.error);
       }
     } catch (error) {
-      console.error('Erreur lors de la génération:', error);
+      console.error('apos;Erreur lors de la génération:'apos;, error);
     } finally {
       setGenerating(false);
     }
@@ -80,22 +80,22 @@ export default function BotsDashboardPage() {
 
   const getBotTypeColor = (type: string) => {
     switch (type) {
-      case 'analyst': return 'bg-blue-500';
-      case 'developer': return 'bg-green-500';
-      case 'business': return 'bg-purple-500';
-      case 'qa': return 'bg-orange-500';
-      default: return 'bg-gray-500';
+      case 'apos;analyst'apos;: return 'apos;bg-blue-500'apos;;
+      case 'apos;developer'apos;: return 'apos;bg-green-500'apos;;
+      case 'apos;business'apos;: return 'apos;bg-purple-500'apos;;
+      case 'apos;qa'apos;: return 'apos;bg-orange-500'apos;;
+      default: return 'apos;bg-gray-500'apos;;
     }
   };
 
   const getCapabilityColor = (capability: string) => {
     switch (capability) {
-      case 'performance': return 'bg-blue-100 text-blue-800';
-      case 'security': return 'bg-red-100 text-red-800';
-      case 'ux': return 'bg-purple-100 text-purple-800';
-      case 'business': return 'bg-green-100 text-green-800';
-      case 'technical': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'apos;performance'apos;: return 'apos;bg-blue-100 text-blue-800'apos;;
+      case 'apos;security'apos;: return 'apos;bg-red-100 text-red-800'apos;;
+      case 'apos;ux'apos;: return 'apos;bg-purple-100 text-purple-800'apos;;
+      case 'apos;business'apos;: return 'apos;bg-green-100 text-green-800'apos;;
+      case 'apos;technical'apos;: return 'apos;bg-gray-100 text-gray-800'apos;;
+      default: return 'apos;bg-gray-100 text-gray-800'apos;;
     }
   };
 
@@ -171,7 +171,7 @@ export default function BotsDashboardPage() {
                       <p className="text-sm text-gray-500 capitalize">{bot.botType}</p>
                     </div>
                   </div>
-                  <div className={`w-3 h-3 rounded-full ${bot.autoRecommendations ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                  <div className={`w-3 h-3 rounded-full ${bot.autoRecommendations ? 'apos;bg-green-500'apos; : 'apos;bg-gray-300'apos;}`}></div>
                 </div>
 
                 {/* Capacités */}
@@ -209,7 +209,7 @@ export default function BotsDashboardPage() {
                 {bot.lastAnalysis && (
                   <div className="mt-4 pt-4 border-t border-gray-100">
                     <p className="text-xs text-gray-500">
-                      Dernière analyse: {new Date(bot.lastAnalysis).toLocaleDateString('fr-FR')}
+                      Dernière analyse: {new Date(bot.lastAnalysis).toLocaleDateString('apos;fr-FR'apos;)}
                     </p>
                   </div>
                 )}

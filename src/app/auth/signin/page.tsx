@@ -1,35 +1,35 @@
 "use client";
 
-import { useState } from 'react';
-import { signIn, getSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Icon from '@/components/ui/Icon';
+import { useState } from 'apos;react'apos;;
+import { signIn, getSession } from 'apos;next-auth/react'apos;;
+import { useRouter } from 'apos;next/navigation'apos;;
+import Link from 'apos;next/link'apos;;
+import Icon from 'apos;@/components/ui/Icon'apos;;
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [error, setError] = useState('apos;'apos;);
+  const [email, setEmail] = useState('apos;'apos;);
+  const [password, setPassword] = useState('apos;'apos;);
   const router = useRouter();
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
-    setError('');
+    setError('apos;'apos;);
     
     try {
-      const result = await signIn('google', { 
-        callbackUrl: '/missions',
+      const result = await signIn('apos;google'apos;, { 
+        callbackUrl: 'apos;/missions'apos;,
         redirect: false 
       });
       
       if (result?.error) {
-        setError('Erreur lors de la connexion avec Google');
+        setError('apos;Erreur lors de la connexion avec Google'apos;);
       } else if (result?.ok) {
-        router.push('/missions');
+        router.push('apos;/missions'apos;);
       }
     } catch (error) {
-      setError('Erreur lors de la connexion');
+      setError('apos;Erreur lors de la connexion'apos;);
     } finally {
       setIsLoading(false);
     }
@@ -38,10 +38,10 @@ export default function SignInPage() {
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError('apos;'apos;);
 
     try {
-      const result = await signIn('credentials', {
+      const result = await signIn('apos;credentials'apos;, {
         email,
         password,
         redirect: false,
@@ -50,10 +50,10 @@ export default function SignInPage() {
       if (result?.error) {
         setError(result.error);
       } else if (result?.ok) {
-        router.push('/missions');
+        router.push('apos;/missions'apos;);
       }
     } catch (error) {
-      setError('Erreur lors de la connexion');
+      setError('apos;Erreur lors de la connexion'apos;);
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +130,7 @@ export default function SignInPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Connexion...' : 'Se connecter'}
+              {isLoading ? 'apos;Connexion...'apos; : 'apos;Se connecter'apos;}
             </button>
           </form>
 
@@ -143,7 +143,7 @@ export default function SignInPage() {
             </Link>
             
             <div className="text-sm text-gray-400">
-              Pas encore de compte ?{' '}
+              Pas encore de compte ?{'apos; 'apos;}
               <Link 
                 href="/auth/signup"
                 className="text-purple-300 hover:text-purple-200 transition-colors"

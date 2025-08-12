@@ -5,7 +5,7 @@ import { useEffect, useState, Suspense } from "react";
 function AuthErrorContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [error, setError] = useState<string>("Une erreur inattendue s'est produite");
+  const [error, setError] = useState<string>("Une erreur inattendue s'apos;est produite");
   const [details, setDetails] = useState<string>("");
 
   useEffect(() => {
@@ -14,19 +14,19 @@ function AuthErrorContent() {
     switch (errorType) {
       case "Configuration":
         setError("Erreur de configuration");
-        setDetails("Il y a un problème avec la configuration du serveur. Veuillez contacter l'administrateur.");
+        setDetails("Il y a un problème avec la configuration du serveur. Veuillez contacter l'apos;administrateur.");
         break;
       case "AccessDenied":
         setError("Accès refusé");
-        setDetails("Vous n'avez pas l'autorisation d'accéder à cette application.");
+        setDetails("Vous n'apos;avez pas l'apos;autorisation d'apos;accéder à cette application.");
         break;
       case "Verification":
         setError("Erreur de vérification");
         setDetails("Le token de vérification a expiré ou est invalide.");
         break;
       case "OAuthSignin":
-        setError("Erreur d'authentification");
-        setDetails("Impossible d'initialiser l'authentification avec Google.");
+        setError("Erreur d'apos;authentification");
+        setDetails("Impossible d'apos;initialiser l'apos;authentification avec Google.");
         break;
       case "OAuthCallback":
         setError("Erreur de callback");
@@ -42,15 +42,15 @@ function AuthErrorContent() {
         break;
       case "Callback":
         setError("Erreur de connexion");
-        setDetails("Une erreur s'est produite lors de la finalisation de votre connexion.");
+        setDetails("Une erreur s'apos;est produite lors de la finalisation de votre connexion.");
         break;
       case "OAuthAccountNotLinked":
         setError("Compte déjà existant");
-        setDetails("Un compte existe déjà avec cet email mais avec un autre fournisseur d'authentification.");
+        setDetails("Un compte existe déjà avec cet email mais avec un autre fournisseur d'apos;authentification.");
         break;
       case "EmailSignin":
-        setError("Envoi d'email impossible");
-        setDetails("Impossible d'envoyer l'email de connexion.");
+        setError("Envoi d'apos;email impossible");
+        setDetails("Impossible d'apos;envoyer l'apos;email de connexion.");
         break;
       case "CredentialsSignin":
         setError("Identifiants incorrects");
@@ -62,7 +62,7 @@ function AuthErrorContent() {
         break;
       default:
         setError("Erreur inconnue");
-        setDetails("Une erreur inattendue s'est produite lors de l'authentification.");
+        setDetails("Une erreur inattendue s'apos;est produite lors de l'apos;authentification.");
     }
   }, [searchParams]);
 
@@ -73,7 +73,7 @@ function AuthErrorContent() {
       alignItems: "center",
       justifyContent: "center",
       background: "#f7f9fc",
-      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
     }}>
       <div style={{
         background: "white",
@@ -85,7 +85,7 @@ function AuthErrorContent() {
         maxWidth: "500px",
         textAlign: "center"
       }}>
-        {/* Icône d'erreur */}
+        {/* Icône d'apos;erreur */}
         <div style={{
           fontSize: "64px",
           marginBottom: "24px"
@@ -160,7 +160,7 @@ function AuthErrorContent() {
               e.currentTarget.style.borderColor = "#d1d5db";
             }}
           >
-            Retour à l'accueil
+            Retour à l'apos;accueil
           </button>
         </div>
 
@@ -173,8 +173,8 @@ function AuthErrorContent() {
           fontSize: "14px",
           color: "#4b5563"
         }}>
-          <strong>Besoin d'aide ?</strong><br />
-          Si le problème persiste, veuillez contacter le support technique avec le code d'erreur affiché ci-dessus.
+          <strong>Besoin d'apos;aide ?</strong><br />
+          Si le problème persiste, veuillez contacter le support technique avec le code d'apos;erreur affiché ci-dessus.
         </div>
       </div>
     </div>

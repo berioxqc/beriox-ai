@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from 'apos;@/lib/prisma'apos;;
 
 export interface AgentScore {
   agentId: string;
@@ -15,9 +15,9 @@ export interface AgentScore {
 }
 
 export interface MissionContext {
-  type: 'content' | 'analysis' | 'automation' | 'research' | 'creative';
-  complexity: 'low' | 'medium' | 'high';
-  urgency: 'low' | 'medium' | 'high';
+  type: 'apos;content'apos; | 'apos;analysis'apos; | 'apos;automation'apos; | 'apos;research'apos; | 'apos;creative'apos;;
+  complexity: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
+  urgency: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
   domain: string[];
   keywords: string[];
   requirements: string[];
@@ -33,35 +33,35 @@ export class AgentScoringEngine {
   };
 
   private static readonly AGENT_EXPERTISE = {
-    'karine-ai': {
-      domains: ['content', 'writing', 'seo', 'marketing'],
-      strengths: ['creative', 'structured', 'user-friendly'],
-      keywords: ['article', 'blog', 'content', 'seo', 'marketing', 'wordpress'],
+    'apos;karine-ai'apos;: {
+      domains: ['apos;content'apos;, 'apos;writing'apos;, 'apos;seo'apos;, 'apos;marketing'apos;],
+      strengths: ['apos;creative'apos;, 'apos;structured'apos;, 'apos;user-friendly'apos;],
+      keywords: ['apos;article'apos;, 'apos;blog'apos;, 'apos;content'apos;, 'apos;seo'apos;, 'apos;marketing'apos;, 'apos;wordpress'apos;],
     },
-    'hugo-ai': {
-      domains: ['technical', 'development', 'automation'],
-      strengths: ['analytical', 'precise', 'systematic'],
-      keywords: ['code', 'development', 'automation', 'technical', 'api', 'integration'],
+    'apos;hugo-ai'apos;: {
+      domains: ['apos;technical'apos;, 'apos;development'apos;, 'apos;automation'apos;],
+      strengths: ['apos;analytical'apos;, 'apos;precise'apos;, 'apos;systematic'apos;],
+      keywords: ['apos;code'apos;, 'apos;development'apos;, 'apos;automation'apos;, 'apos;technical'apos;, 'apos;api'apos;, 'apos;integration'apos;],
     },
-    'jp-bot': {
-      domains: ['business', 'strategy', 'analysis'],
-      strengths: ['strategic', 'business-focused', 'data-driven'],
-      keywords: ['business', 'strategy', 'analysis', 'roi', 'metrics', 'planning'],
+    'apos;jp-bot'apos;: {
+      domains: ['apos;business'apos;, 'apos;strategy'apos;, 'apos;analysis'apos;],
+      strengths: ['apos;strategic'apos;, 'apos;business-focused'apos;, 'apos;data-driven'apos;],
+      keywords: ['apos;business'apos;, 'apos;strategy'apos;, 'apos;analysis'apos;, 'apos;roi'apos;, 'apos;metrics'apos;, 'apos;planning'apos;],
     },
-    'elodie-ai': {
-      domains: ['design', 'creative', 'visual'],
-      strengths: ['creative', 'aesthetic', 'user-experience'],
-      keywords: ['design', 'ui', 'ux', 'creative', 'visual', 'branding'],
+    'apos;elodie-ai'apos;: {
+      domains: ['apos;design'apos;, 'apos;creative'apos;, 'apos;visual'apos;],
+      strengths: ['apos;creative'apos;, 'apos;aesthetic'apos;, 'apos;user-experience'apos;],
+      keywords: ['apos;design'apos;, 'apos;ui'apos;, 'apos;ux'apos;, 'apos;creative'apos;, 'apos;visual'apos;, 'apos;branding'apos;],
     },
-    'clara-la-closeuse': {
-      domains: ['research', 'investigation', 'analysis'],
-      strengths: ['detailed', 'thorough', 'investigative'],
-      keywords: ['research', 'investigation', 'analysis', 'data', 'insights'],
+    'apos;clara-la-closeuse'apos;: {
+      domains: ['apos;research'apos;, 'apos;investigation'apos;, 'apos;analysis'apos;],
+      strengths: ['apos;detailed'apos;, 'apos;thorough'apos;, 'apos;investigative'apos;],
+      keywords: ['apos;research'apos;, 'apos;investigation'apos;, 'apos;analysis'apos;, 'apos;data'apos;, 'apos;insights'apos;],
     },
-    'faucon-le-maitre-focus': {
-      domains: ['focus', 'productivity', 'optimization'],
-      strengths: ['focused', 'efficient', 'optimization'],
-      keywords: ['focus', 'productivity', 'optimization', 'efficiency', 'workflow'],
+    'apos;faucon-le-maitre-focus'apos;: {
+      domains: ['apos;focus'apos;, 'apos;productivity'apos;, 'apos;optimization'apos;],
+      strengths: ['apos;focused'apos;, 'apos;efficient'apos;, 'apos;optimization'apos;],
+      keywords: ['apos;focus'apos;, 'apos;productivity'apos;, 'apos;optimization'apos;, 'apos;efficiency'apos;, 'apos;workflow'apos;],
     },
   };
 
@@ -117,7 +117,7 @@ export class AgentScoringEngine {
   }
 
   /**
-   * Calcule le score d'expertise basé sur la correspondance domaine/mots-clés
+   * Calcule le score d'apos;expertise basé sur la correspondance domaine/mots-clés
    */
   private static calculateExpertiseScore(agent: any, context: MissionContext): number {
     const agentExpertise = this.AGENT_EXPERTISE[agent.id as keyof typeof this.AGENT_EXPERTISE];
@@ -152,15 +152,15 @@ export class AgentScoringEngine {
   }
 
   /**
-   * Calcule le score de performance basé sur l'historique
+   * Calcule le score de performance basé sur l'apos;historique
    */
   private static async calculatePerformanceScore(agent: any, context: MissionContext): Promise<number> {
     try {
-      // Récupérer les missions récentes de l'agent
+      // Récupérer les missions récentes de l'apos;agent
       const recentMissions = await prisma.mission.findMany({
         where: {
           agentId: agent.id,
-          status: 'COMPLETED',
+          status: 'apos;COMPLETED'apos;,
           createdAt: {
             gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 derniers jours
           },
@@ -200,13 +200,13 @@ export class AgentScoringEngine {
 
       return totalMissions > 0 ? totalScore / totalMissions : 0.7;
     } catch (error) {
-      console.error('Erreur lors du calcul du score de performance:', error);
+      console.error('apos;Erreur lors du calcul du score de performance:'apos;, error);
       return 0.7;
     }
   }
 
   /**
-   * Calcule le score de disponibilité de l'agent
+   * Calcule le score de disponibilité de l'apos;agent
    */
   private static async calculateAvailabilityScore(agent: any): Promise<number> {
     try {
@@ -215,16 +215,16 @@ export class AgentScoringEngine {
         where: {
           agentId: agent.id,
           status: {
-            in: ['PENDING', 'IN_PROGRESS'],
+            in: ['apos;PENDING'apos;, 'apos;IN_PROGRESS'apos;],
           },
         },
       });
 
-      // Plus l'agent a de missions actives, moins il est disponible
+      // Plus l'apos;agent a de missions actives, moins il est disponible
       const availabilityScore = Math.max(0, 1 - (activeMissions * 0.2));
       return availabilityScore;
     } catch (error) {
-      console.error('Erreur lors du calcul du score de disponibilité:', error);
+      console.error('apos;Erreur lors du calcul du score de disponibilité:'apos;, error);
       return 0.8;
     }
   }
@@ -242,12 +242,12 @@ export class AgentScoringEngine {
     for (const requirement of context.requirements) {
       const requirementLower = requirement.toLowerCase();
       
-      // Vérifier si l'exigence correspond aux forces de l'agent
+      // Vérifier si l'apos;exigence correspond aux forces de l'apos;agent
       const strengthMatch = agentExpertise.strengths.some(strength =>
         requirementLower.includes(strength.toLowerCase())
       );
 
-      // Vérifier si l'exigence correspond aux domaines de l'agent
+      // Vérifier si l'apos;exigence correspond aux domaines de l'apos;agent
       const domainMatch = agentExpertise.domains.some(domain =>
         requirementLower.includes(domain.toLowerCase())
       );
@@ -270,7 +270,7 @@ export class AgentScoringEngine {
         where: {
           agentId: agent.id,
           status: {
-            in: ['PENDING', 'IN_PROGRESS'],
+            in: ['apos;PENDING'apos;, 'apos;IN_PROGRESS'apos;],
           },
         },
       });
@@ -279,13 +279,13 @@ export class AgentScoringEngine {
       const workloadScore = Math.max(0.3, 1 - (pendingMissions * 0.15));
       return workloadScore;
     } catch (error) {
-      console.error('Erreur lors du calcul du score de charge de travail:', error);
+      console.error('apos;Erreur lors du calcul du score de charge de travail:'apos;, error);
       return 0.8;
     }
   }
 
   /**
-   * Génère le raisonnement pour la sélection d'un agent
+   * Génère le raisonnement pour la sélection d'apos;un agent
    */
   private static generateReasoning(
     agent: any,
@@ -296,9 +296,9 @@ export class AgentScoringEngine {
     const agentExpertise = this.AGENT_EXPERTISE[agent.id as keyof typeof this.AGENT_EXPERTISE];
 
     if (factors.expertise > 0.8) {
-      reasoning.push(`Excellente correspondance d'expertise (${Math.round(factors.expertise * 100)}%)`);
+      reasoning.push(`Excellente correspondance d'apos;expertise (${Math.round(factors.expertise * 100)}%)`);
     } else if (factors.expertise > 0.6) {
-      reasoning.push(`Bonne correspondance d'expertise (${Math.round(factors.expertise * 100)}%)`);
+      reasoning.push(`Bonne correspondance d'apos;expertise (${Math.round(factors.expertise * 100)}%)`);
     }
 
     if (factors.performance > 0.8) {
@@ -306,7 +306,7 @@ export class AgentScoringEngine {
     }
 
     if (factors.availability > 0.9) {
-      reasoning.push('Disponibilité élevée');
+      reasoning.push('apos;Disponibilité élevée'apos;);
     }
 
     if (factors.context > 0.8) {
@@ -318,7 +318,7 @@ export class AgentScoringEngine {
         agentExpertise.domains.includes(domain)
       );
       if (domainMatches.length > 0) {
-        reasoning.push(`Expert en: ${domainMatches.join(', ')}`);
+        reasoning.push(`Expert en: ${domainMatches.join('apos;, 'apos;)}`);
       }
     }
 
@@ -329,15 +329,15 @@ export class AgentScoringEngine {
    * Récupère les agents disponibles
    */
   private static async getAvailableAgents() {
-    // Pour l'instant, retourner les agents hardcodés
+    // Pour l'apos;instant, retourner les agents hardcodés
     // TODO: Récupérer depuis la base de données
     return [
-      { id: 'karine-ai', name: 'KarineAI' },
-      { id: 'hugo-ai', name: 'HugoAI' },
-      { id: 'jp-bot', name: 'JPBot' },
-      { id: 'elodie-ai', name: 'ElodieAI' },
-      { id: 'clara-la-closeuse', name: 'ClaraLaCloseuse' },
-      { id: 'faucon-le-maitre-focus', name: 'FauconLeMaitreFocus' },
+      { id: 'apos;karine-ai'apos;, name: 'apos;KarineAI'apos; },
+      { id: 'apos;hugo-ai'apos;, name: 'apos;HugoAI'apos; },
+      { id: 'apos;jp-bot'apos;, name: 'apos;JPBot'apos; },
+      { id: 'apos;elodie-ai'apos;, name: 'apos;ElodieAI'apos; },
+      { id: 'apos;clara-la-closeuse'apos;, name: 'apos;ClaraLaCloseuse'apos; },
+      { id: 'apos;faucon-le-maitre-focus'apos;, name: 'apos;FauconLeMaitreFocus'apos; },
     ];
   }
 
@@ -346,9 +346,9 @@ export class AgentScoringEngine {
    */
   private static getExpectedDuration(complexity: string): number {
     switch (complexity) {
-      case 'low': return 2 * 60 * 60 * 1000; // 2 heures
-      case 'medium': return 8 * 60 * 60 * 1000; // 8 heures
-      case 'high': return 24 * 60 * 60 * 1000; // 24 heures
+      case 'apos;low'apos;: return 2 * 60 * 60 * 1000; // 2 heures
+      case 'apos;medium'apos;: return 8 * 60 * 60 * 1000; // 8 heures
+      case 'apos;high'apos;: return 24 * 60 * 60 * 1000; // 24 heures
       default: return 8 * 60 * 60 * 1000;
     }
   }
@@ -358,11 +358,11 @@ export class AgentScoringEngine {
    */
   private static getTypeMatchScore(type: string, domains: string[]): number {
     const typeMapping: Record<string, string[]> = {
-      content: ['content', 'writing', 'creative'],
-      analysis: ['business', 'research', 'analysis'],
-      automation: ['technical', 'development'],
-      research: ['research', 'investigation'],
-      creative: ['creative', 'design'],
+      content: ['apos;content'apos;, 'apos;writing'apos;, 'apos;creative'apos;],
+      analysis: ['apos;business'apos;, 'apos;research'apos;, 'apos;analysis'apos;],
+      automation: ['apos;technical'apos;, 'apos;development'apos;],
+      research: ['apos;research'apos;, 'apos;investigation'apos;],
+      creative: ['apos;creative'apos;, 'apos;design'apos;],
     };
 
     const typeDomains = typeMapping[type] || [];

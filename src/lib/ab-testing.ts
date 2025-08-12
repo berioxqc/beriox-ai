@@ -1,22 +1,22 @@
-import { logger } from './logger';
-import { metrics } from './metrics';
+import { logger } from 'apos;./logger'apos;;
+import { metrics } from 'apos;./metrics'apos;;
 
 export enum ExperimentType {
-  BUTTON_TEXT = 'button_text',
-  LAYOUT = 'layout',
-  COLOR_SCHEME = 'color_scheme',
-  PRICING = 'pricing',
-  ONBOARDING = 'onboarding',
-  FEATURE_FLAG = 'feature_flag',
-  CONTENT = 'content',
-  CTA_PLACEMENT = 'cta_placement'
+  BUTTON_TEXT = 'apos;button_text'apos;,
+  LAYOUT = 'apos;layout'apos;,
+  COLOR_SCHEME = 'apos;color_scheme'apos;,
+  PRICING = 'apos;pricing'apos;,
+  ONBOARDING = 'apos;onboarding'apos;,
+  FEATURE_FLAG = 'apos;feature_flag'apos;,
+  CONTENT = 'apos;content'apos;,
+  CTA_PLACEMENT = 'apos;cta_placement'apos;
 }
 
 export enum VariantType {
-  CONTROL = 'control',
-  VARIANT_A = 'variant_a',
-  VARIANT_B = 'variant_b',
-  VARIANT_C = 'variant_c'
+  CONTROL = 'apos;control'apos;,
+  VARIANT_A = 'apos;variant_a'apos;,
+  VARIANT_B = 'apos;variant_b'apos;,
+  VARIANT_C = 'apos;variant_c'apos;
 }
 
 export interface ExperimentConfig {
@@ -44,10 +44,10 @@ export interface ExperimentVariant {
 }
 
 export interface TargetAudience {
-  userTypes?: string[]; // 'new', 'returning', 'premium', etc.
+  userTypes?: string[]; // 'apos;new'apos;, 'apos;returning'apos;, 'apos;premium'apos;, etc.
   segments?: string[]; // Segments marketing
   countries?: string[];
-  devices?: string[]; // 'desktop', 'mobile', 'tablet'
+  devices?: string[]; // 'apos;desktop'apos;, 'apos;mobile'apos;, 'apos;tablet'apos;
   browsers?: string[];
   customRules?: Record<string, any>;
 }
@@ -55,8 +55,8 @@ export interface TargetAudience {
 export interface ExperimentGoal {
   id: string;
   name: string;
-  type: 'conversion' | 'engagement' | 'revenue' | 'custom';
-  metric: string; // 'click_rate', 'signup_rate', 'purchase_rate', etc.
+  type: 'apos;conversion'apos; | 'apos;engagement'apos; | 'apos;revenue'apos; | 'apos;custom'apos;;
+  metric: string; // 'apos;click_rate'apos;, 'apos;signup_rate'apos;, 'apos;purchase_rate'apos;, etc.
   targetValue?: number;
   weight?: number; // Importance relative du goal
 }
@@ -99,42 +99,42 @@ class ABTestingFramework {
   private initializeDefaultExperiments() {
     // Expérience 1: Test du bouton CTA principal
     this.createExperiment({
-      id: 'cta-button-test',
-      name: 'Test Bouton CTA Principal',
-      description: 'Test de différents textes pour le bouton CTA principal',
+      id: 'apos;cta-button-test'apos;,
+      name: 'apos;Test Bouton CTA Principal'apos;,
+      description: 'apos;Test de différents textes pour le bouton CTA principal'apos;,
       type: ExperimentType.BUTTON_TEXT,
       variants: [
         {
-          id: 'control',
-          name: 'Contrôle',
+          id: 'apos;control'apos;,
+          name: 'apos;Contrôle'apos;,
           type: VariantType.CONTROL,
-          config: { buttonText: 'Commencer maintenant' },
+          config: { buttonText: 'apos;Commencer maintenant'apos; },
           weight: 33.33
         },
         {
-          id: 'variant-a',
-          name: 'Variant A',
+          id: 'apos;variant-a'apos;,
+          name: 'apos;Variant A'apos;,
           type: VariantType.VARIANT_A,
-          config: { buttonText: 'Essai gratuit' },
+          config: { buttonText: 'apos;Essai gratuit'apos; },
           weight: 33.33
         },
         {
-          id: 'variant-b',
-          name: 'Variant B',
+          id: 'apos;variant-b'apos;,
+          name: 'apos;Variant B'apos;,
           type: VariantType.VARIANT_B,
-          config: { buttonText: 'Démarrer gratuitement' },
+          config: { buttonText: 'apos;Démarrer gratuitement'apos; },
           weight: 33.34
         }
       ],
-      trafficSplit: { control: 33.33, 'variant-a': 33.33, 'variant-b': 33.34 },
+      trafficSplit: { control: 33.33, 'apos;variant-a'apos;: 33.33, 'apos;variant-b'apos;: 33.34 },
       startDate: new Date(),
       isActive: true,
       goals: [
         {
-          id: 'signup-rate',
-          name: 'Taux d\'inscription',
-          type: 'conversion',
-          metric: 'signup_rate',
+          id: 'apos;signup-rate'apos;,
+          name: 'apos;Taux d\'apos;inscription'apos;,
+          type: 'apos;conversion'apos;,
+          metric: 'apos;signup_rate'apos;,
           weight: 1.0
         }
       ],
@@ -144,42 +144,42 @@ class ABTestingFramework {
 
     // Expérience 2: Test de la page de pricing
     this.createExperiment({
-      id: 'pricing-layout-test',
-      name: 'Test Layout Pricing',
-      description: 'Test de différents layouts pour la page de pricing',
+      id: 'apos;pricing-layout-test'apos;,
+      name: 'apos;Test Layout Pricing'apos;,
+      description: 'apos;Test de différents layouts pour la page de pricing'apos;,
       type: ExperimentType.LAYOUT,
       variants: [
         {
-          id: 'control',
-          name: 'Contrôle',
+          id: 'apos;control'apos;,
+          name: 'apos;Contrôle'apos;,
           type: VariantType.CONTROL,
-          config: { layout: 'grid', highlightPlan: 'professional' },
+          config: { layout: 'apos;grid'apos;, highlightPlan: 'apos;professional'apos; },
           weight: 50
         },
         {
-          id: 'variant-a',
-          name: 'Variant A',
+          id: 'apos;variant-a'apos;,
+          name: 'apos;Variant A'apos;,
           type: VariantType.VARIANT_A,
-          config: { layout: 'list', highlightPlan: 'enterprise' },
+          config: { layout: 'apos;list'apos;, highlightPlan: 'apos;enterprise'apos; },
           weight: 50
         }
       ],
-      trafficSplit: { control: 50, 'variant-a': 50 },
+      trafficSplit: { control: 50, 'apos;variant-a'apos;: 50 },
       startDate: new Date(),
       isActive: true,
       goals: [
         {
-          id: 'purchase-rate',
-          name: 'Taux d\'achat',
-          type: 'conversion',
-          metric: 'purchase_rate',
+          id: 'apos;purchase-rate'apos;,
+          name: 'apos;Taux d\'apos;achat'apos;,
+          type: 'apos;conversion'apos;,
+          metric: 'apos;purchase_rate'apos;,
           weight: 0.7
         },
         {
-          id: 'revenue',
-          name: 'Revenus',
-          type: 'revenue',
-          metric: 'revenue_per_visitor',
+          id: 'apos;revenue'apos;,
+          name: 'apos;Revenus'apos;,
+          type: 'apos;revenue'apos;,
+          metric: 'apos;revenue_per_visitor'apos;,
           weight: 0.3
         }
       ],
@@ -187,44 +187,44 @@ class ABTestingFramework {
       confidenceLevel: 0.95
     });
 
-    // Expérience 3: Test de l'onboarding
+    // Expérience 3: Test de l'apos;onboarding
     this.createExperiment({
-      id: 'onboarding-flow-test',
-      name: 'Test Flow Onboarding',
-      description: 'Test de différents flows d\'onboarding',
+      id: 'apos;onboarding-flow-test'apos;,
+      name: 'apos;Test Flow Onboarding'apos;,
+      description: 'apos;Test de différents flows d\'apos;onboarding'apos;,
       type: ExperimentType.ONBOARDING,
       variants: [
         {
-          id: 'control',
-          name: 'Contrôle',
+          id: 'apos;control'apos;,
+          name: 'apos;Contrôle'apos;,
           type: VariantType.CONTROL,
           config: { steps: 3, showTutorial: true, autoAdvance: false },
           weight: 50
         },
         {
-          id: 'variant-a',
-          name: 'Variant A',
+          id: 'apos;variant-a'apos;,
+          name: 'apos;Variant A'apos;,
           type: VariantType.VARIANT_A,
           config: { steps: 5, showTutorial: false, autoAdvance: true },
           weight: 50
         }
       ],
-      trafficSplit: { control: 50, 'variant-a': 50 },
+      trafficSplit: { control: 50, 'apos;variant-a'apos;: 50 },
       startDate: new Date(),
       isActive: true,
       goals: [
         {
-          id: 'completion-rate',
-          name: 'Taux de complétion',
-          type: 'conversion',
-          metric: 'onboarding_completion_rate',
+          id: 'apos;completion-rate'apos;,
+          name: 'apos;Taux de complétion'apos;,
+          type: 'apos;conversion'apos;,
+          metric: 'apos;onboarding_completion_rate'apos;,
           weight: 0.6
         },
         {
-          id: 'time-to-complete',
-          name: 'Temps de complétion',
-          type: 'engagement',
-          metric: 'onboarding_time',
+          id: 'apos;time-to-complete'apos;,
+          name: 'apos;Temps de complétion'apos;,
+          type: 'apos;engagement'apos;,
+          metric: 'apos;onboarding_time'apos;,
           weight: 0.4
         }
       ],
@@ -243,14 +243,14 @@ class ABTestingFramework {
     // Vérifier que les poids totalisent 100%
     const totalWeight = config.variants.reduce((sum, variant) => sum + variant.weight, 0);
     if (Math.abs(totalWeight - 100) > 0.01) {
-      throw new Error('Variant weights must sum to 100%');
+      throw new Error('apos;Variant weights must sum to 100%'apos;);
     }
 
     this.experiments.set(config.id, config);
     this.results.set(config.id, []);
 
     logger.info(`Experiment created: ${config.name}`, {
-      action: 'experiment_created',
+      action: 'apos;experiment_created'apos;,
       metadata: {
         experimentId: config.id,
         type: config.type,
@@ -258,7 +258,7 @@ class ABTestingFramework {
       }
     });
 
-    metrics.increment('experiment_created', 1, {
+    metrics.increment('apos;experiment_created'apos;, 1, {
       type: config.type,
       variants: config.variants.length.toString()
     });
@@ -271,18 +271,18 @@ class ABTestingFramework {
       return null;
     }
 
-    // Vérifier si l'expérience est dans sa période active
+    // Vérifier si l'apos;expérience est dans sa période active
     const now = new Date();
     if (now < experiment.startDate || (experiment.endDate && now > experiment.endDate)) {
       return null;
     }
 
-    // Vérifier l'audience cible
+    // Vérifier l'apos;audience cible
     if (!this.isUserInTargetAudience(experiment.targetAudience, userId, sessionId)) {
       return null;
     }
 
-    // Vérifier si l'utilisateur a déjà été assigné
+    // Vérifier si l'apos;utilisateur a déjà été assigné
     const assignmentKey = userId || sessionId;
     if (!assignmentKey) {
       return null;
@@ -303,7 +303,7 @@ class ABTestingFramework {
       assignments.set(assignmentKey, userAssignments);
 
       logger.info(`Variant assigned: ${variant.name}`, {
-        action: 'variant_assigned',
+        action: 'apos;variant_assigned'apos;,
         metadata: {
           experimentId,
           variantId: variant.id,
@@ -312,7 +312,7 @@ class ABTestingFramework {
         }
       });
 
-      metrics.increment('variant_assigned', 1, {
+      metrics.increment('apos;variant_assigned'apos;, 1, {
         experimentId,
         variantId: variant.id
       });
@@ -336,7 +336,7 @@ class ABTestingFramework {
     return experiment.variants[0] || null;
   }
 
-  // Vérifier si l'utilisateur est dans l'audience cible
+  // Vérifier si l'apos;utilisateur est dans l'apos;audience cible
   private isUserInTargetAudience(
     targetAudience: TargetAudience | undefined,
     userId?: string,
@@ -347,7 +347,7 @@ class ABTestingFramework {
     }
 
     // Implémentation basique - à étendre selon les besoins
-    // Ici on pourrait vérifier le type d'utilisateur, la localisation, etc.
+    // Ici on pourrait vérifier le type d'apos;utilisateur, la localisation, etc.
     
     return true;
   }
@@ -374,7 +374,7 @@ class ABTestingFramework {
     this.results.set(experimentId, experimentResults);
 
     logger.info(`Impression recorded: ${experimentId}`, {
-      action: 'experiment_impression',
+      action: 'apos;experiment_impression'apos;,
       metadata: {
         experimentId,
         variantId,
@@ -383,7 +383,7 @@ class ABTestingFramework {
       }
     });
 
-    metrics.increment('experiment_impression', 1, {
+    metrics.increment('apos;experiment_impression'apos;, 1, {
       experimentId,
       variantId
     });
@@ -417,7 +417,7 @@ class ABTestingFramework {
     this.results.set(experimentId, experimentResults);
 
     logger.info(`Conversion recorded: ${experimentId}`, {
-      action: 'experiment_conversion',
+      action: 'apos;experiment_conversion'apos;,
       metadata: {
         experimentId,
         variantId,
@@ -428,14 +428,14 @@ class ABTestingFramework {
       }
     });
 
-    metrics.increment('experiment_conversion', 1, {
+    metrics.increment('apos;experiment_conversion'apos;, 1, {
       experimentId,
       variantId,
       goalId
     });
 
     if (value) {
-      metrics.gauge('experiment_revenue', value, {
+      metrics.gauge('apos;experiment_revenue'apos;, value, {
         experimentId,
         variantId,
         goalId
@@ -443,7 +443,7 @@ class ABTestingFramework {
     }
   }
 
-  // Obtenir les statistiques d'une expérience
+  // Obtenir les statistiques d'apos;une expérience
   getExperimentStats(experimentId: string): ExperimentStats[] {
     const experiment = this.experiments.get(experimentId);
     if (!experiment) {
@@ -486,8 +486,8 @@ class ABTestingFramework {
       return {};
     }
 
-    const control = stats.find(s => s.variantId === 'control');
-    const variants = stats.filter(s => s.variantId !== 'control');
+    const control = stats.find(s => s.variantId === 'apos;control'apos;);
+    const variants = stats.filter(s => s.variantId !== 'apos;control'apos;);
 
     if (!control) {
       return {};
@@ -533,7 +533,7 @@ class ABTestingFramework {
     return 0.5 * (1 + this.erf(x / Math.sqrt(2)));
   }
 
-  // Fonction d'erreur (approximation)
+  // Fonction d'apos;erreur (approximation)
   private erf(x: number): number {
     const a1 = 0.254829592;
     const a2 = -0.284496736;
@@ -564,17 +564,17 @@ class ABTestingFramework {
       experiment.endDate = new Date();
 
       logger.info(`Experiment deactivated: ${experiment.name}`, {
-        action: 'experiment_deactivated',
+        action: 'apos;experiment_deactivated'apos;,
         metadata: { experimentId }
       });
 
-      metrics.increment('experiment_deactivated', 1, {
+      metrics.increment('apos;experiment_deactivated'apos;, 1, {
         experimentId
       });
     }
   }
 
-  // Obtenir les résultats bruts d'une expérience
+  // Obtenir les résultats bruts d'apos;une expérience
   getExperimentResults(experimentId: string): ExperimentResult[] {
     return this.results.get(experimentId) || [];
   }
@@ -594,18 +594,18 @@ class ABTestingFramework {
 
     if (cleanedCount > 0) {
       logger.info(`Cleaned up ${cleanedCount} old experiment results`, {
-        action: 'experiment_cleanup',
+        action: 'apos;experiment_cleanup'apos;,
         metadata: { cleanedCount, maxAge }
       });
     }
   }
 
-  // Exporter les données d'expérience
+  // Exporter les données d'apos;expérience
   exportExperimentData(experimentId: string) {
     const experiment = this.experiments.get(experimentId);
     const results = this.getExperimentResults(experimentId);
     const stats = this.getExperimentStats(experimentId);
-    const significance = this.calculateSignificance(experimentId, 'default');
+    const significance = this.calculateSignificance(experimentId, 'apos;default'apos;);
 
     return {
       experiment,

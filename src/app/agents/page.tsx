@@ -12,7 +12,7 @@ type Agent = {
   active: boolean;
   icon: string;
   color: string;
-  category: 'marketing' | 'creative' | 'analytics' | 'content' | 'sales' | 'productivity' | 'technical' | 'system';
+  category: 'apos;marketing'apos; | 'apos;creative'apos; | 'apos;analytics'apos; | 'apos;content'apos; | 'apos;sales'apos; | 'apos;productivity'apos; | 'apos;technical'apos; | 'apos;system'apos;;
   skills: string[];
   performance: number;
   lastUsed?: Date;
@@ -23,12 +23,12 @@ type SpecializedAgent = {
   name: string;
   role: string;
   description: string;
-  status: 'beta' | 'premium' | 'enterprise';
+  status: 'apos;beta'apos; | 'apos;premium'apos; | 'apos;enterprise'apos;;
   icon: string;
   color: string;
-  category: 'intelligence' | 'automation' | 'analysis' | 'optimization';
+  category: 'apos;intelligence'apos; | 'apos;automation'apos; | 'apos;analysis'apos; | 'apos;optimization'apos;;
   capabilities: string[];
-  complexity: 'basic' | 'advanced' | 'expert';
+  complexity: 'apos;basic'apos; | 'apos;advanced'apos; | 'apos;expert'apos;;
   lastUpdated: Date;
 };
 
@@ -50,7 +50,7 @@ const defaultAgents: Agent[] = [
     id: "hugo",
     name: "HugoAI",
     role: "Créatif & Designer",
-    description: "L'âme créative de l'équipe ! HugoAI transforme vos idées en concepts visuels percutants et crée des contenus qui marquent les esprits.",
+    description: "L'apos;âme créative de l'apos;équipe ! HugoAI transforme vos idées en concepts visuels percutants et crée des contenus qui marquent les esprits.",
     active: true,
     icon: "🎨",
     color: "#00d924",
@@ -76,7 +76,7 @@ const defaultAgents: Agent[] = [
     id: "elodie",
     name: "ElodieAI",
     role: "Rédactrice & Content Manager",
-    description: "La plume magique qui donne vie à vos idées ! ElodieAI maîtrise l'art des mots pour créer des contenus qui convertissent et engagent votre audience.",
+    description: "La plume magique qui donne vie à vos idées ! ElodieAI maîtrise l'apos;art des mots pour créer des contenus qui convertissent et engagent votre audience.",
     active: true,
     icon: "✍️",
     color: "#f79009",
@@ -102,7 +102,7 @@ const defaultAgents: Agent[] = [
     id: "faucon",
     name: "FauconLeMaitreFocus",
     role: "Coach Productivité & Focus",
-    description: "Le maître du focus absolu ! FauconLeMaitreFocus vous aide à rester concentré sur l'essentiel et à maximiser votre productivité.",
+    description: "Le maître du focus absolu ! FauconLeMaitreFocus vous aide à rester concentré sur l'apos;essentiel et à maximiser votre productivité.",
     active: false,
     icon: "🦅",
     color: "#8898aa",
@@ -115,7 +115,7 @@ const defaultAgents: Agent[] = [
     id: "speedbot",
     name: "SpeedBot",
     role: "Optimiseur Performance",
-    description: "L'expert de la vitesse ! SpeedBot analyse et optimise vos performances techniques pour des résultats ultra-rapides.",
+    description: "L'apos;expert de la vitesse ! SpeedBot analyse et optimise vos performances techniques pour des résultats ultra-rapides.",
     active: false,
     icon: "⚡",
     color: "#ff6b35",
@@ -154,7 +154,7 @@ const defaultAgents: Agent[] = [
     id: "competitorbot",
     name: "CompetitorBot",
     role: "Expert Veille Concurrentielle",
-    description: "L'espion stratégique ! CompetitorBot surveille vos concurrents avec SimilarWeb et SEMrush, analyse leurs performances, identifie les opportunités et vous alerte des changements importants.",
+    description: "L'apos;espion stratégique ! CompetitorBot surveille vos concurrents avec SimilarWeb et SEMrush, analyse leurs performances, identifie les opportunités et vous alerte des changements importants.",
     active: false,
     icon: "🔍",
     color: "#10b981",
@@ -183,7 +183,7 @@ const specializedAgents: SpecializedAgent[] = [
   {
     id: "insight-pulse",
     name: "InsightPulseBot",
-    role: "Détecteur d'Insights Avancés",
+    role: "Détecteur d'apos;Insights Avancés",
     description: "Transforme vos données brutes en insights actionnables. Identifie les patterns cachés et génère des recommandations stratégiques.",
     status: "premium",
     icon: "💡",
@@ -196,7 +196,7 @@ const specializedAgents: SpecializedAgent[] = [
   {
     id: "echo-brand",
     name: "EchoBrandAI",
-    role: "Architecte d'Identité de Marque",
+    role: "Architecte d'apos;Identité de Marque",
     description: "Crée et optimise votre identité de marque avec une approche data-driven. Assure la cohérence sur tous les canaux.",
     status: "enterprise",
     icon: "🎭",
@@ -210,7 +210,7 @@ const specializedAgents: SpecializedAgent[] = [
     id: "trend-sculptor",
     name: "TrendSculptorBot",
     role: "Sculpteur de Tendances",
-    description: "Anticipe et façonne les tendances de votre secteur. Transforme les insights en stratégies d'innovation.",
+    description: "Anticipe et façonne les tendances de votre secteur. Transforme les insights en stratégies d'apos;innovation.",
     status: "enterprise",
     icon: "🎨",
     color: "#ec4899",
@@ -223,7 +223,7 @@ const specializedAgents: SpecializedAgent[] = [
     id: "conversion-hacker",
     name: "ConversionHackerAI",
     role: "Hacker de Conversion",
-    description: "Optimise vos taux de conversion avec des techniques avancées d'A/B testing et d'analyse comportementale.",
+    description: "Optimise vos taux de conversion avec des techniques avancées d'apos;A/B testing et d'apos;analyse comportementale.",
     status: "premium",
     icon: "🚀",
     color: "#10b981",
@@ -245,7 +245,7 @@ const agentPackages = [
   {
     id: "growth",
     name: "Pack Business",
-    description: "L'équipe essentielle + ClaraLaCloseuse pour booster vos conversions",
+    description: "L'apos;équipe essentielle + ClaraLaCloseuse pour booster vos conversions",
     agents: ["karine", "hugo", "jpbot", "elodie", "clara"],
     color: "#00d924"
   },
@@ -266,15 +266,15 @@ const agentPackages = [
 ];
 
 const categories = [
-  { id: 'all', name: 'Tous', color: '#6b7280' },
-  { id: 'marketing', name: 'Marketing', color: '#635bff' },
-  { id: 'creative', name: 'Créatif', color: '#00d924' },
-  { id: 'analytics', name: 'Analytics', color: '#0570de' },
-  { id: 'content', name: 'Content', color: '#f79009' },
-  { id: 'sales', name: 'Sales', color: '#df1b41' },
-  { id: 'productivity', name: 'Productivité', color: '#8898aa' },
-  { id: 'technical', name: 'Technique', color: '#e74c3c' },
-  { id: 'system', name: 'Système', color: '#ff6b35' }
+  { id: 'apos;all'apos;, name: 'apos;Tous'apos;, color: 'apos;#6b7280'apos; },
+  { id: 'apos;marketing'apos;, name: 'apos;Marketing'apos;, color: 'apos;#635bff'apos; },
+  { id: 'apos;creative'apos;, name: 'apos;Créatif'apos;, color: 'apos;#00d924'apos; },
+  { id: 'apos;analytics'apos;, name: 'apos;Analytics'apos;, color: 'apos;#0570de'apos; },
+  { id: 'apos;content'apos;, name: 'apos;Content'apos;, color: 'apos;#f79009'apos; },
+  { id: 'apos;sales'apos;, name: 'apos;Sales'apos;, color: 'apos;#df1b41'apos; },
+  { id: 'apos;productivity'apos;, name: 'apos;Productivité'apos;, color: 'apos;#8898aa'apos; },
+  { id: 'apos;technical'apos;, name: 'apos;Technique'apos;, color: 'apos;#e74c3c'apos; },
+  { id: 'apos;system'apos;, name: 'apos;Système'apos;, color: 'apos;#ff6b35'apos; }
 ];
 
 export default function AgentsPage() {
@@ -307,21 +307,21 @@ export default function AgentsPage() {
     try {
       const activeAgents = agents.filter(agent => agent.active).map(agent => agent.name);
       
-      const response = await fetch('/api/agents/config', {
-        method: 'POST',
+      const response = await fetch('apos;/api/agents/config'apos;, {
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/json',
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
         body: JSON.stringify({ agents: activeAgents }),
       });
 
       if (response.ok) {
-        console.log('Configuration sauvegardée avec succès');
+        console.log('apos;Configuration sauvegardée avec succès'apos;);
       } else {
-        console.error('Erreur lors de la sauvegarde');
+        console.error('apos;Erreur lors de la sauvegarde'apos;);
       }
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde:', error);
+      console.error('apos;Erreur lors de la sauvegarde:'apos;, error);
     }
   };
 
@@ -375,11 +375,11 @@ export default function AgentsPage() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'beta':
+      case 'apos;beta'apos;:
         return <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">BETA</span>;
-      case 'premium':
+      case 'apos;premium'apos;:
         return <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">PREMIUM</span>;
-      case 'enterprise':
+      case 'apos;enterprise'apos;:
         return <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">ENTERPRISE</span>;
       default:
         return null;
@@ -388,11 +388,11 @@ export default function AgentsPage() {
 
   const getComplexityBadge = (complexity: string) => {
     switch (complexity) {
-      case 'basic':
+      case 'apos;basic'apos;:
         return <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">BASIC</span>;
-      case 'advanced':
+      case 'apos;advanced'apos;:
         return <span className="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-800 rounded-full">ADVANCED</span>;
-      case 'expert':
+      case 'apos;expert'apos;:
         return <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">EXPERT</span>;
       default:
         return null;
@@ -532,7 +532,7 @@ export default function AgentsPage() {
               </div>
             </div>
 
-            {/* Packages d'agents */}
+            {/* Packages d'apos;agents */}
             <div className="mb-8">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Packages Recommandés</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -580,7 +580,7 @@ export default function AgentsPage() {
                       <div className="flex items-center gap-3">
                         <div 
                           className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
-                          style={{ backgroundColor: agent.color + '20' }}
+                          style={{ backgroundColor: agent.color + 'apos;20'apos; }}
                         >
                           {agent.icon}
                         </div>
@@ -596,7 +596,7 @@ export default function AgentsPage() {
                           onChange={() => toggleAgent(agent.id)}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-['apos;'apos;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                       </label>
                     </div>
                     
@@ -658,7 +658,7 @@ export default function AgentsPage() {
                           <div className="flex items-center">
                             <div 
                               className="w-10 h-10 rounded-lg flex items-center justify-center text-lg mr-3"
-                              style={{ backgroundColor: agent.color + '20' }}
+                              style={{ backgroundColor: agent.color + 'apos;20'apos; }}
                             >
                               {agent.icon}
                             </div>
@@ -693,7 +693,7 @@ export default function AgentsPage() {
                               onChange={() => toggleAgent(agent.id)}
                               className="sr-only peer"
                             />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-['apos;'apos;] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                           </label>
                         </td>
                       </tr>
@@ -713,8 +713,8 @@ export default function AgentsPage() {
                   <div>
                     <h3 className="font-medium text-blue-900 mb-1">Agents Spécialisés Avancés</h3>
                     <p className="text-sm text-blue-700">
-                      Ces agents utilisent des algorithmes d'IA avancés pour des tâches spécialisées. 
-                      Ils sont disponibles selon votre plan d'abonnement.
+                      Ces agents utilisent des algorithmes d'apos;IA avancés pour des tâches spécialisées. 
+                      Ils sont disponibles selon votre plan d'apos;abonnement.
                     </p>
                   </div>
                 </div>
@@ -737,7 +737,7 @@ export default function AgentsPage() {
                   <div className="flex items-start gap-3 mb-4">
                     <div 
                       className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl"
-                      style={{ backgroundColor: agent.color + '20' }}
+                      style={{ backgroundColor: agent.color + 'apos;20'apos; }}
                     >
                       {agent.icon}
                     </div>
@@ -772,9 +772,9 @@ export default function AgentsPage() {
                     <div className="pt-3 border-t border-gray-100">
                       <button
                         className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
-                        disabled={agent.status === 'enterprise'}
+                        disabled={agent.status === 'apos;enterprise'apos;}
                       >
-                        {agent.status === 'enterprise' ? 'Plan Enterprise requis' : 'Activer l\'agent'}
+                        {agent.status === 'apos;enterprise'apos; ? 'apos;Plan Enterprise requis'apos; : 'apos;Activer l\'apos;agent'apos;}
                       </button>
                     </div>
                   </div>

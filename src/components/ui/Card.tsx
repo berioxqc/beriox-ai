@@ -1,38 +1,38 @@
-import React from 'react';
+import React from 'apos;react'apos;;
 
 interface CardProps {
   children: React.ReactNode;
   className?: string;
-  padding?: 'sm' | 'md' | 'lg' | 'xl';
-  shadow?: 'none' | 'sm' | 'md' | 'lg';
+  padding?: 'apos;sm'apos; | 'apos;md'apos; | 'apos;lg'apos; | 'apos;xl'apos;;
+  shadow?: 'apos;none'apos; | 'apos;sm'apos; | 'apos;md'apos; | 'apos;lg'apos;;
   border?: boolean;
   hover?: boolean;
 }
 
 const Card: React.FC<CardProps> = ({
   children,
-  className = '',
-  padding = 'md',
-  shadow = 'md',
+  className = 'apos;'apos;,
+  padding = 'apos;md'apos;,
+  shadow = 'apos;md'apos;,
   border = true,
   hover = false
 }) => {
   const paddingStyles = {
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
-    xl: 'p-10'
+    sm: 'apos;p-4'apos;,
+    md: 'apos;p-6'apos;,
+    lg: 'apos;p-8'apos;,
+    xl: 'apos;p-10'apos;
   };
   
   const shadowStyles = {
-    none: '',
-    sm: 'shadow-sm',
-    md: 'shadow-md',
-    lg: 'shadow-lg'
+    none: 'apos;'apos;,
+    sm: 'apos;shadow-sm'apos;,
+    md: 'apos;shadow-md'apos;,
+    lg: 'apos;shadow-lg'apos;
   };
   
-  const borderStyles = border ? 'border border-gray-200' : '';
-  const hoverStyles = hover ? 'hover:shadow-lg hover:-translate-y-1 transition-all duration-200' : '';
+  const borderStyles = border ? 'apos;border border-gray-200'apos; : 'apos;'apos;;
+  const hoverStyles = hover ? 'apos;hover:shadow-lg hover:-translate-y-1 transition-all duration-200'apos; : 'apos;'apos;;
   
   const styles = `bg-white rounded-lg ${paddingStyles[padding]} ${shadowStyles[shadow]} ${borderStyles} ${hoverStyles} ${className}`;
   

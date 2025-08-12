@@ -1,23 +1,23 @@
-import { logger } from './logger';
-import { metrics } from './metrics';
+import { logger } from 'apos;./logger'apos;;
+import { metrics } from 'apos;./metrics'apos;;
 
 export enum NotificationType {
-  INFO = 'info',
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error',
-  MISSION_COMPLETE = 'mission_complete',
-  PAYMENT_SUCCESS = 'payment_success',
-  PAYMENT_FAILED = 'payment_failed',
-  SYSTEM_ALERT = 'system_alert',
-  USER_ACTION = 'user_action'
+  INFO = 'apos;info'apos;,
+  SUCCESS = 'apos;success'apos;,
+  WARNING = 'apos;warning'apos;,
+  ERROR = 'apos;error'apos;,
+  MISSION_COMPLETE = 'apos;mission_complete'apos;,
+  PAYMENT_SUCCESS = 'apos;payment_success'apos;,
+  PAYMENT_FAILED = 'apos;payment_failed'apos;,
+  SYSTEM_ALERT = 'apos;system_alert'apos;,
+  USER_ACTION = 'apos;user_action'apos;
 }
 
 export enum NotificationPriority {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  URGENT = 'urgent'
+  LOW = 'apos;low'apos;,
+  MEDIUM = 'apos;medium'apos;,
+  HIGH = 'apos;high'apos;,
+  URGENT = 'apos;urgent'apos;
 }
 
 export interface NotificationData {
@@ -64,174 +64,174 @@ class NotificationManager {
 
   private initializeTemplates() {
     // Templates pour les missions
-    this.templates.set('mission_started', {
-      id: 'mission_started',
+    this.templates.set('apos;mission_started'apos;, {
+      id: 'apos;mission_started'apos;,
       type: NotificationType.INFO,
       priority: NotificationPriority.MEDIUM,
-      title: 'Mission démarrée',
-      message: 'Votre mission "{missionName}" a été lancée avec succès.',
+      title: 'apos;Mission démarrée'apos;,
+      message: 'apos;Votre mission "{missionName}" a été lancée avec succès.'apos;,
       actions: [
         {
-          id: 'view_mission',
-          label: 'Voir la mission',
-          action: 'navigate',
-          url: '/missions/{missionId}'
+          id: 'apos;view_mission'apos;,
+          label: 'apos;Voir la mission'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/missions/{missionId}'apos;
         }
       ],
       ttl: 24 * 60 * 60 // 24 heures
     });
 
-    this.templates.set('mission_completed', {
-      id: 'mission_completed',
+    this.templates.set('apos;mission_completed'apos;, {
+      id: 'apos;mission_completed'apos;,
       type: NotificationType.SUCCESS,
       priority: NotificationPriority.HIGH,
-      title: 'Mission terminée',
-      message: 'Votre mission "{missionName}" a été complétée avec succès !',
+      title: 'apos;Mission terminée'apos;,
+      message: 'apos;Votre mission "{missionName}" a été complétée avec succès !'apos;,
       actions: [
         {
-          id: 'view_results',
-          label: 'Voir les résultats',
-          action: 'navigate',
-          url: '/missions/{missionId}/results'
+          id: 'apos;view_results'apos;,
+          label: 'apos;Voir les résultats'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/missions/{missionId}/results'apos;
         },
         {
-          id: 'download_report',
-          label: 'Télécharger le rapport',
-          action: 'download',
-          url: '/api/missions/{missionId}/report'
+          id: 'apos;download_report'apos;,
+          label: 'apos;Télécharger le rapport'apos;,
+          action: 'apos;download'apos;,
+          url: 'apos;/api/missions/{missionId}/report'apos;
         }
       ],
       ttl: 7 * 24 * 60 * 60 // 7 jours
     });
 
-    this.templates.set('mission_failed', {
-      id: 'mission_failed',
+    this.templates.set('apos;mission_failed'apos;, {
+      id: 'apos;mission_failed'apos;,
       type: NotificationType.ERROR,
       priority: NotificationPriority.HIGH,
-      title: 'Mission échouée',
-      message: 'Votre mission "{missionName}" a échoué. Veuillez réessayer.',
+      title: 'apos;Mission échouée'apos;,
+      message: 'apos;Votre mission "{missionName}" a échoué. Veuillez réessayer.'apos;,
       actions: [
         {
-          id: 'retry_mission',
-          label: 'Réessayer',
-          action: 'retry',
-          url: '/missions/{missionId}/retry'
+          id: 'apos;retry_mission'apos;,
+          label: 'apos;Réessayer'apos;,
+          action: 'apos;retry'apos;,
+          url: 'apos;/missions/{missionId}/retry'apos;
         },
         {
-          id: 'contact_support',
-          label: 'Contacter le support',
-          action: 'navigate',
-          url: '/support'
+          id: 'apos;contact_support'apos;,
+          label: 'apos;Contacter le support'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/support'apos;
         }
       ],
       ttl: 24 * 60 * 60 // 24 heures
     });
 
     // Templates pour les paiements
-    this.templates.set('payment_success', {
-      id: 'payment_success',
+    this.templates.set('apos;payment_success'apos;, {
+      id: 'apos;payment_success'apos;,
       type: NotificationType.SUCCESS,
       priority: NotificationPriority.HIGH,
-      title: 'Paiement réussi',
-      message: 'Votre paiement de {amount} {currency} a été traité avec succès.',
+      title: 'apos;Paiement réussi'apos;,
+      message: 'apos;Votre paiement de {amount} {currency} a été traité avec succès.'apos;,
       actions: [
         {
-          id: 'view_invoice',
-          label: 'Voir la facture',
-          action: 'navigate',
-          url: '/billing/invoices/{invoiceId}'
+          id: 'apos;view_invoice'apos;,
+          label: 'apos;Voir la facture'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/billing/invoices/{invoiceId}'apos;
         }
       ],
       ttl: 30 * 24 * 60 * 60 // 30 jours
     });
 
-    this.templates.set('payment_failed', {
-      id: 'payment_failed',
+    this.templates.set('apos;payment_failed'apos;, {
+      id: 'apos;payment_failed'apos;,
       type: NotificationType.ERROR,
       priority: NotificationPriority.URGENT,
-      title: 'Échec du paiement',
-      message: 'Votre paiement de {amount} {currency} a échoué. Veuillez vérifier vos informations.',
+      title: 'apos;Échec du paiement'apos;,
+      message: 'apos;Votre paiement de {amount} {currency} a échoué. Veuillez vérifier vos informations.'apos;,
       actions: [
         {
-          id: 'update_payment',
-          label: 'Mettre à jour le paiement',
-          action: 'navigate',
-          url: '/billing/payment-methods'
+          id: 'apos;update_payment'apos;,
+          label: 'apos;Mettre à jour le paiement'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/billing/payment-methods'apos;
         },
         {
-          id: 'contact_support',
-          label: 'Contacter le support',
-          action: 'navigate',
-          url: '/support'
+          id: 'apos;contact_support'apos;,
+          label: 'apos;Contacter le support'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/support'apos;
         }
       ],
       ttl: 7 * 24 * 60 * 60 // 7 jours
     });
 
     // Templates pour les crédits
-    this.templates.set('credits_low', {
-      id: 'credits_low',
+    this.templates.set('apos;credits_low'apos;, {
+      id: 'apos;credits_low'apos;,
       type: NotificationType.WARNING,
       priority: NotificationPriority.MEDIUM,
-      title: 'Crédits faibles',
-      message: 'Il vous reste {credits} crédits. Pensez à recharger votre compte.',
+      title: 'apos;Crédits faibles'apos;,
+      message: 'apos;Il vous reste {credits} crédits. Pensez à recharger votre compte.'apos;,
       actions: [
         {
-          id: 'buy_credits',
-          label: 'Acheter des crédits',
-          action: 'navigate',
-          url: '/pricing'
+          id: 'apos;buy_credits'apos;,
+          label: 'apos;Acheter des crédits'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/pricing'apos;
         }
       ],
       ttl: 7 * 24 * 60 * 60 // 7 jours
     });
 
-    this.templates.set('credits_depleted', {
-      id: 'credits_depleted',
+    this.templates.set('apos;credits_depleted'apos;, {
+      id: 'apos;credits_depleted'apos;,
       type: NotificationType.ERROR,
       priority: NotificationPriority.HIGH,
-      title: 'Crédits épuisés',
-      message: 'Vous n\'avez plus de crédits. Rechargez votre compte pour continuer.',
+      title: 'apos;Crédits épuisés'apos;,
+      message: 'apos;Vous n\'apos;avez plus de crédits. Rechargez votre compte pour continuer.'apos;,
       actions: [
         {
-          id: 'buy_credits',
-          label: 'Acheter des crédits',
-          action: 'navigate',
-          url: '/pricing'
+          id: 'apos;buy_credits'apos;,
+          label: 'apos;Acheter des crédits'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/pricing'apos;
         }
       ],
       ttl: 30 * 24 * 60 * 60 // 30 jours
     });
 
     // Templates système
-    this.templates.set('system_maintenance', {
-      id: 'system_maintenance',
+    this.templates.set('apos;system_maintenance'apos;, {
+      id: 'apos;system_maintenance'apos;,
       type: NotificationType.WARNING,
       priority: NotificationPriority.HIGH,
-      title: 'Maintenance système',
-      message: 'Une maintenance est prévue le {date} à {time}. Le service sera temporairement indisponible.',
+      title: 'apos;Maintenance système'apos;,
+      message: 'apos;Une maintenance est prévue le {date} à {time}. Le service sera temporairement indisponible.'apos;,
       ttl: 24 * 60 * 60 // 24 heures
     });
 
-    this.templates.set('new_feature', {
-      id: 'new_feature',
+    this.templates.set('apos;new_feature'apos;, {
+      id: 'apos;new_feature'apos;,
       type: NotificationType.INFO,
       priority: NotificationPriority.MEDIUM,
-      title: 'Nouvelle fonctionnalité',
-      message: 'Découvrez notre nouvelle fonctionnalité : {featureName}',
+      title: 'apos;Nouvelle fonctionnalité'apos;,
+      message: 'apos;Découvrez notre nouvelle fonctionnalité : {featureName}'apos;,
       actions: [
         {
-          id: 'learn_more',
-          label: 'En savoir plus',
-          action: 'navigate',
-          url: '/features/{featureId}'
+          id: 'apos;learn_more'apos;,
+          label: 'apos;En savoir plus'apos;,
+          action: 'apos;navigate'apos;,
+          url: 'apos;/features/{featureId}'apos;
         }
       ],
       ttl: 7 * 24 * 60 * 60 // 7 jours
     });
   }
 
-  // Créer une notification à partir d'un template
+  // Créer une notification à partir d'apos;un template
   createFromTemplate(
     templateId: string,
     userId: string,
@@ -241,7 +241,7 @@ class NotificationManager {
     const template = this.templates.get(templateId);
     if (!template) {
       logger.error(`Notification template not found: ${templateId}`, null, {
-        action: 'notification_template_missing',
+        action: 'apos;notification_template_missing'apos;,
         metadata: { templateId, userId }
       });
       return null;
@@ -305,7 +305,7 @@ class NotificationManager {
 
     // Logger la notification
     logger.info(`Notification created: ${notification.title}`, {
-      action: 'notification_created',
+      action: 'apos;notification_created'apos;,
       metadata: {
         id: notification.id,
         type: notification.type,
@@ -315,7 +315,7 @@ class NotificationManager {
     });
 
     // Enregistrer la métrique
-    metrics.increment('notification_created', 1, {
+    metrics.increment('apos;notification_created'apos;, 1, {
       type: notification.type,
       priority: notification.priority
     });
@@ -331,7 +331,7 @@ class NotificationManager {
       return false;
     }
 
-    // Vérifier que l'utilisateur peut lire cette notification
+    // Vérifier que l'apos;utilisateur peut lire cette notification
     if (userId && notification.userId && notification.userId !== userId) {
       return false;
     }
@@ -340,11 +340,11 @@ class NotificationManager {
     this.notifications.set(notificationId, notification);
 
     logger.info(`Notification marked as read: ${notificationId}`, {
-      action: 'notification_read',
+      action: 'apos;notification_read'apos;,
       metadata: { notificationId, userId }
     });
 
-    metrics.increment('notification_read', 1, {
+    metrics.increment('apos;notification_read'apos;, 1, {
       type: notification.type,
       priority: notification.priority
     });
@@ -359,7 +359,7 @@ class NotificationManager {
       return false;
     }
 
-    // Vérifier que l'utilisateur peut supprimer cette notification
+    // Vérifier que l'apos;utilisateur peut supprimer cette notification
     if (userId && notification.userId && notification.userId !== userId) {
       return false;
     }
@@ -367,11 +367,11 @@ class NotificationManager {
     this.notifications.delete(notificationId);
 
     logger.info(`Notification deleted: ${notificationId}`, {
-      action: 'notification_deleted',
+      action: 'apos;notification_deleted'apos;,
       metadata: { notificationId, userId }
     });
 
-    metrics.increment('notification_deleted', 1, {
+    metrics.increment('apos;notification_deleted'apos;, 1, {
       type: notification.type,
       priority: notification.priority
     });
@@ -379,7 +379,7 @@ class NotificationManager {
     return true;
   }
 
-  // Récupérer les notifications d'un utilisateur
+  // Récupérer les notifications d'apos;un utilisateur
   getUserNotifications(
     userId: string,
     options: {
@@ -408,7 +408,7 @@ class NotificationManager {
     return notifications.slice(offset, offset + limit);
   }
 
-  // Récupérer les notifications d'une session
+  // Récupérer les notifications d'apos;une session
   getSessionNotifications(sessionId: string): NotificationData[] {
     return Array.from(this.notifications.values())
       .filter(n => n.sessionId === sessionId)
@@ -422,7 +422,7 @@ class NotificationManager {
       .length;
   }
 
-  // S'abonner aux notifications
+  // S'apos;abonner aux notifications
   subscribe(userId: string, callback: (notification: NotificationData) => void): () => void {
     if (!this.subscribers.has(userId)) {
       this.subscribers.set(userId, new Set());
@@ -451,8 +451,8 @@ class NotificationManager {
           try {
             callback(notification);
           } catch (error) {
-            logger.error('Error in notification callback', error as Error, {
-              action: 'notification_callback_error',
+            logger.error('apos;Error in notification callback'apos;, error as Error, {
+              action: 'apos;notification_callback_error'apos;,
               metadata: { notificationId: notification.id, userId: notification.userId }
             });
           }
@@ -478,7 +478,7 @@ class NotificationManager {
 
     if (expiredIds.length > 0) {
       logger.info(`Cleaned up ${expiredIds.length} expired notifications`, {
-        action: 'notification_cleanup',
+        action: 'apos;notification_cleanup'apos;,
         metadata: { expiredCount: expiredIds.length }
       });
     }
@@ -526,28 +526,28 @@ export const notificationManager = new NotificationManager();
 // Fonctions utilitaires
 export const createNotification = {
   missionStarted: (userId: string, missionName: string, missionId: string) => {
-    return notificationManager.createFromTemplate('mission_started', userId, undefined, {
+    return notificationManager.createFromTemplate('apos;mission_started'apos;, userId, undefined, {
       missionName,
       missionId
     });
   },
 
   missionCompleted: (userId: string, missionName: string, missionId: string) => {
-    return notificationManager.createFromTemplate('mission_completed', userId, undefined, {
+    return notificationManager.createFromTemplate('apos;mission_completed'apos;, userId, undefined, {
       missionName,
       missionId
     });
   },
 
   missionFailed: (userId: string, missionName: string, missionId: string) => {
-    return notificationManager.createFromTemplate('mission_failed', userId, undefined, {
+    return notificationManager.createFromTemplate('apos;mission_failed'apos;, userId, undefined, {
       missionName,
       missionId
     });
   },
 
   paymentSuccess: (userId: string, amount: string, currency: string, invoiceId: string) => {
-    return notificationManager.createFromTemplate('payment_success', userId, undefined, {
+    return notificationManager.createFromTemplate('apos;payment_success'apos;, userId, undefined, {
       amount,
       currency,
       invoiceId
@@ -555,31 +555,31 @@ export const createNotification = {
   },
 
   paymentFailed: (userId: string, amount: string, currency: string) => {
-    return notificationManager.createFromTemplate('payment_failed', userId, undefined, {
+    return notificationManager.createFromTemplate('apos;payment_failed'apos;, userId, undefined, {
       amount,
       currency
     });
   },
 
   creditsLow: (userId: string, credits: string) => {
-    return notificationManager.createFromTemplate('credits_low', userId, undefined, {
+    return notificationManager.createFromTemplate('apos;credits_low'apos;, userId, undefined, {
       credits
     });
   },
 
   creditsDepleted: (userId: string) => {
-    return notificationManager.createFromTemplate('credits_depleted', userId);
+    return notificationManager.createFromTemplate('apos;credits_depleted'apos;, userId);
   },
 
   systemMaintenance: (userId: string, date: string, time: string) => {
-    return notificationManager.createFromTemplate('system_maintenance', userId, undefined, {
+    return notificationManager.createFromTemplate('apos;system_maintenance'apos;, userId, undefined, {
       date,
       time
     });
   },
 
   newFeature: (userId: string, featureName: string, featureId: string) => {
-    return notificationManager.createFromTemplate('new_feature', userId, undefined, {
+    return notificationManager.createFromTemplate('apos;new_feature'apos;, userId, undefined, {
       featureName,
       featureId
     });

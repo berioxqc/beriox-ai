@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validatedData = refundRequestSchema.parse(body);
 
-    // Récupérer l'utilisateur et ses crédits
+    // Récupérer l'apos;utilisateur et ses crédits
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
       include: { userCredits: true }
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
     }
 
-    // Créer les crédits utilisateur s'ils n'existent pas
+    // Créer les crédits utilisateur s'apos;ils n'apos;existent pas
     let userCredits = user.userCredits;
     if (!userCredits) {
       const planId = user.planId || "free";
@@ -43,16 +43,16 @@ export async function POST(request: NextRequest) {
           userId: user.id,
           planId,
           creditsLimit,
-          resetDate: new Date(), // Reset le jour de l'abonnement
+          resetDate: new Date(), // Reset le jour de l'apos;abonnement
           creditsUsed: 0
         }
       });
     }
 
-    // Vérifier que l'utilisateur a assez de crédits utilisés pour demander un remboursement
+    // Vérifier que l'apos;utilisateur a assez de crédits utilisés pour demander un remboursement
     if (userCredits.creditsUsed < validatedData.amount) {
       return NextResponse.json({ 
-        error: "Vous ne pouvez pas demander un remboursement pour plus de crédits que vous n'en avez utilisés" 
+        error: "Vous ne pouvez pas demander un remboursement pour plus de crédits que vous n'apos;en avez utilisés" 
       }, { status: 400 });
     }
 
@@ -108,7 +108,7 @@ export async function GET(request: NextRequest) {
       where: { email: session.user.email },
       include: {
         refundRequests: {
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: 'apos;desc'apos; },
           take: 10
         },
         userCredits: true

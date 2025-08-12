@@ -1,21 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { logger } from './logger';
-import crypto from 'crypto';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { logger } from 'apos;./logger'apos;;
+import crypto from 'apos;crypto'apos;;
 
 // Configuration CSRF
 const CSRF_CONFIG = {
   tokenLength: 32,
-  cookieName: 'csrf-token',
-  headerName: 'x-csrf-token',
+  cookieName: 'apos;csrf-token'apos;,
+  headerName: 'apos;x-csrf-token'apos;,
   maxAge: 24 * 60 * 60 * 1000, // 24 heures
 };
 
-// Génération d'un token CSRF sécurisé
+// Génération d'apos;un token CSRF sécurisé
 export function generateCSRFToken(): string {
-  return crypto.randomBytes(CSRF_CONFIG.tokenLength).toString('hex');
+  return crypto.randomBytes(CSRF_CONFIG.tokenLength).toString('apos;hex'apos;);
 }
 
-// Validation d'un token CSRF
+// Validation d'apos;un token CSRF
 export function validateCSRFToken(token: string, storedToken: string): boolean {
   if (!token || !storedToken) {
     return false;
@@ -23,8 +23,8 @@ export function validateCSRFToken(token: string, storedToken: string): boolean {
   
   // Comparaison sécurisée des tokens
   return crypto.timingSafeEqual(
-    Buffer.from(token, 'hex'),
-    Buffer.from(storedToken, 'hex')
+    Buffer.from(token, 'apos;hex'apos;),
+    Buffer.from(storedToken, 'apos;hex'apos;)
   );
 }
 
@@ -33,9 +33,9 @@ export function withCSRFProtection(
   handler: (request: NextRequest) => Promise<NextResponse>
 ) {
   return async function(request: NextRequest) {
-    // Vérifier si c'est une méthode qui nécessite une protection CSRF
+    // Vérifier si c'apos;est une méthode qui nécessite une protection CSRF
     const method = request.method.toUpperCase();
-    const requiresCSRF = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method);
+    const requiresCSRF = ['apos;POST'apos;, 'apos;PUT'apos;, 'apos;PATCH'apos;, 'apos;DELETE'apos;].includes(method);
     
     if (!requiresCSRF) {
       return handler(request);
@@ -49,8 +49,8 @@ export function withCSRFProtection(
       const storedToken = request.cookies.get(CSRF_CONFIG.cookieName)?.value;
       
       if (!csrfToken || !storedToken) {
-        logger.warn('CSRF: Missing token', {
-          action: 'csrf_missing_token',
+        logger.warn('apos;CSRF: Missing token'apos;, {
+          action: 'apos;csrf_missing_token'apos;,
           method,
           url: request.url,
           hasHeaderToken: !!csrfToken,
@@ -58,21 +58,21 @@ export function withCSRFProtection(
         });
         
         return NextResponse.json(
-          { error: 'Token CSRF manquant' },
+          { error: 'apos;Token CSRF manquant'apos; },
           { status: 403 }
         );
       }
       
       // Valider le token
       if (!validateCSRFToken(csrfToken, storedToken)) {
-        logger.warn('CSRF: Invalid token', {
-          action: 'csrf_invalid_token',
+        logger.warn('apos;CSRF: Invalid token'apos;, {
+          action: 'apos;csrf_invalid_token'apos;,
           method,
           url: request.url
         });
         
         return NextResponse.json(
-          { error: 'Token CSRF invalide' },
+          { error: 'apos;Token CSRF invalide'apos; },
           { status: 403 }
         );
       }
@@ -81,14 +81,14 @@ export function withCSRFProtection(
       return handler(request);
       
     } catch (error) {
-      logger.error('CSRF: Validation error', error as Error, {
-        action: 'csrf_validation_error',
+      logger.error('apos;CSRF: Validation error'apos;, error as Error, {
+        action: 'apos;csrf_validation_error'apos;,
         method,
         url: request.url
       });
       
       return NextResponse.json(
-        { error: 'Erreur de validation CSRF' },
+        { error: 'apos;Erreur de validation CSRF'apos; },
         { status: 500 }
       );
     }
@@ -101,10 +101,10 @@ export function setCSRFCookie(response: NextResponse): NextResponse {
   
   response.cookies.set(CSRF_CONFIG.cookieName, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'apos;production'apos;,
+    sameSite: 'apos;strict'apos;,
     maxAge: CSRF_CONFIG.maxAge,
-    path: '/'
+    path: 'apos;/'apos;
   });
   
   return response;
@@ -126,10 +126,10 @@ export function createCSRFResponse(data: any = {}): NextResponse {
   // Définir le cookie
   response.cookies.set(CSRF_CONFIG.cookieName, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'apos;production'apos;,
+    sameSite: 'apos;strict'apos;,
     maxAge: CSRF_CONFIG.maxAge,
-    path: '/'
+    path: 'apos;/'apos;
   });
   
   return response;
@@ -139,19 +139,19 @@ export function createCSRFResponse(data: any = {}): NextResponse {
 export function useCSRF() {
   const getCSRFToken = async (): Promise<string> => {
     try {
-      const response = await fetch('/api/csrf', {
-        method: 'GET',
-        credentials: 'include'
+      const response = await fetch('apos;/api/csrf'apos;, {
+        method: 'apos;GET'apos;,
+        credentials: 'apos;include'apos;
       });
       
       if (!response.ok) {
-        throw new Error('Failed to get CSRF token');
+        throw new Error('apos;Failed to get CSRF token'apos;);
       }
       
       const data = await response.json();
       return data.csrfToken;
     } catch (error) {
-      console.error('Error getting CSRF token:', error);
+      console.error('apos;Error getting CSRF token:'apos;, error);
       throw error;
     }
   };
@@ -165,13 +165,13 @@ export function useCSRF() {
     const headers = {
       ...options.headers,
       [CSRF_CONFIG.headerName]: token,
-      'Content-Type': 'application/json'
+      'apos;Content-Type'apos;: 'apos;application/json'apos;
     };
     
     return fetch(url, {
       ...options,
       headers,
-      credentials: 'include'
+      credentials: 'apos;include'apos;
     });
   };
   

@@ -10,38 +10,38 @@ export const runtime = "nodejs";
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const code = searchParams.get('code');
-    const state = searchParams.get('state'); // userId/email
-    const error = searchParams.get('error');
+    const code = searchParams.get('apos;code'apos;);
+    const state = searchParams.get('apos;state'apos;); // userId/email
+    const error = searchParams.get('apos;error'apos;);
 
     if (error) {
-      console.error('❌ OAuth error:', error);
-      return NextResponse.redirect(new URL('/analytics?error=access_denied', req.url));
+      console.error('apos;❌ OAuth error:'apos;, error);
+      return NextResponse.redirect(new URL('apos;/analytics?error=access_denied'apos;, req.url));
     }
 
     if (!code || !state) {
-      return NextResponse.redirect(new URL('/analytics?error=invalid_request', req.url));
+      return NextResponse.redirect(new URL('apos;/analytics?error=invalid_request'apos;, req.url));
     }
 
     // Échanger le code contre des tokens
     const tokens = await googleAnalyticsService.exchangeCodeForTokens(code);
     if (!tokens) {
-      return NextResponse.redirect(new URL('/analytics?error=token_exchange_failed', req.url));
+      return NextResponse.redirect(new URL('apos;/analytics?error=token_exchange_failed'apos;, req.url));
     }
 
     // Récupérer les propriétés disponibles
     const properties = await googleAnalyticsService.getProperties(tokens.accessToken);
     if (!properties || properties.length === 0) {
-      return NextResponse.redirect(new URL('/analytics?error=no_properties', req.url));
+      return NextResponse.redirect(new URL('apos;/analytics?error=no_properties'apos;, req.url));
     }
 
-    // Trouver l'utilisateur
+    // Trouver l'apos;utilisateur
     const user = await prisma.user.findUnique({
       where: { email: state }
     });
 
     if (!user) {
-      return NextResponse.redirect(new URL('/analytics?error=user_not_found', req.url));
+      return NextResponse.redirect(new URL('apos;/analytics?error=user_not_found'apos;, req.url));
     }
 
     // Sauvegarder les connexions Analytics (pour chaque propriété)
@@ -72,10 +72,10 @@ export async function GET(req: NextRequest) {
     }
 
     // Redirection vers la page Analytics avec succès
-    return NextResponse.redirect(new URL('/analytics?success=connected', req.url));
+    return NextResponse.redirect(new URL('apos;/analytics?success=connected'apos;, req.url));
 
   } catch (error) {
     console.error("❌ Analytics callback error:", error);
-    return NextResponse.redirect(new URL('/analytics?error=server_error', req.url));
+    return NextResponse.redirect(new URL('apos;/analytics?error=server_error'apos;, req.url));
   }
 }

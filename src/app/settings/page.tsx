@@ -17,7 +17,7 @@ export default function SettingsPage() {
 
   // Charger les paramètres depuis localStorage au démarrage
   useEffect(() => {
-    const savedSettings = localStorage.getItem('beriox-settings');
+    const savedSettings = localStorage.getItem('apos;beriox-settings'apos;);
     if (savedSettings) {
       const settings = JSON.parse(savedSettings);
       setOpenaiKey(settings.openaiKey || "");
@@ -40,7 +40,7 @@ export default function SettingsPage() {
       emailSettings
     };
     
-    localStorage.setItem('beriox-settings', JSON.stringify(settings));
+    localStorage.setItem('apos;beriox-settings'apos;, JSON.stringify(settings));
     setSaved(true);
     setLoading(false);
     
@@ -50,7 +50,7 @@ export default function SettingsPage() {
 
   const resetSettings = () => {
     if (confirm("Êtes-vous sûr de vouloir effacer tous les paramètres ?")) {
-      localStorage.removeItem('beriox-settings');
+      localStorage.removeItem('apos;beriox-settings'apos;);
       setOpenaiKey("");
       setNotionKey("");
       setSlackWebhook("");
@@ -79,7 +79,7 @@ export default function SettingsPage() {
         borderRadius: 12,
         fontSize: "14px",
         fontWeight: "500",
-        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
       }}>
         🔧 Configuration
       </div>
@@ -93,7 +93,7 @@ export default function SettingsPage() {
           fontSize: "14px",
           fontWeight: "500",
           textDecoration: "none",
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif",
           transition: "all 0.2s"
         }}
         onMouseOver={(e) => {
@@ -129,7 +129,7 @@ export default function SettingsPage() {
               color: "#065f46",
               fontWeight: "500",
               fontSize: "14px",
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
             }}>
               ✅ Paramètres sauvegardés avec succès !
             </div>
@@ -162,7 +162,7 @@ export default function SettingsPage() {
                   fontWeight: "600", 
                   color: "#0a2540", 
                   margin: 0,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                 }}>
                   OpenAI Configuration
                 </h2>
@@ -170,7 +170,7 @@ export default function SettingsPage() {
                   fontSize: "14px", 
                   color: "#8898aa", 
                   margin: "4px 0 0 0",
-                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'apos;Segoe UI'apos;, Roboto, sans-serif"
                 }}>
                   Clé API pour les agents IA et la génération de contenu
                 </p>
@@ -274,7 +274,7 @@ export default function SettingsPage() {
                   color: "#333",
                   marginBottom: 8
                 }}>
-                  Token d'intégration Notion
+                  Token d'apos;intégration Notion
                 </label>
                 <input
                   type="password"

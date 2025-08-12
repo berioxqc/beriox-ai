@@ -16,7 +16,7 @@ export default function ConsentPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleConsentChange = (key: keyof typeof consents) => {
-    if (key === 'essential') return; // Ne peut pas être désactivé
+    if (key === 'apos;essential'apos;) return; // Ne peut pas être désactivé
     
     setConsents(prev => ({
       ...prev,
@@ -32,61 +32,61 @@ export default function ConsentPage() {
     setIsSubmitting(true);
     
     // Enregistrer les consentements dans le localStorage pour la session
-    localStorage.setItem('beriox_consents', JSON.stringify({
+    localStorage.setItem('apos;beriox_consents'apos;, JSON.stringify({
       ...consents,
       timestamp: new Date().toISOString(),
-      version: '1.0'
+      version: 'apos;1.0'apos;
     }));
     
     // Rediriger vers la page de connexion
-    router.push('/auth/signin?callbackUrl=' + encodeURIComponent('/'));
+    router.push('apos;/auth/signin?callbackUrl='apos; + encodeURIComponent('apos;/'apos;));
   };
 
   return (
     <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#f8fafc',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px'
+      minHeight: 'apos;100vh'apos;,
+      backgroundColor: 'apos;#f8fafc'apos;,
+      display: 'apos;flex'apos;,
+      alignItems: 'apos;center'apos;,
+      justifyContent: 'apos;center'apos;,
+      padding: 'apos;20px'apos;
     }}>
       <div style={{
-        maxWidth: '600px',
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: '16px',
-        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)',
-        overflow: 'hidden'
+        maxWidth: 'apos;600px'apos;,
+        width: 'apos;100%'apos;,
+        backgroundColor: 'apos;white'apos;,
+        borderRadius: 'apos;16px'apos;,
+        boxShadow: 'apos;0 10px 25px rgba(0, 0, 0, 0.1)'apos;,
+        overflow: 'apos;hidden'apos;
       }}>
         {/* Header */}
         <div style={{
-          background: 'linear-gradient(135deg, #635bff, #3b82f6)',
-          color: 'white',
-          padding: '32px',
-          textAlign: 'center'
+          background: 'apos;linear-gradient(135deg, #635bff, #3b82f6)'apos;,
+          color: 'apos;white'apos;,
+          padding: 'apos;32px'apos;,
+          textAlign: 'apos;center'apos;
         }}>
           <div style={{
-            width: '64px',
-            height: '64px',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px'
+            width: 'apos;64px'apos;,
+            height: 'apos;64px'apos;,
+            backgroundColor: 'apos;rgba(255, 255, 255, 0.2)'apos;,
+            borderRadius: 'apos;50%'apos;,
+            display: 'apos;flex'apos;,
+            alignItems: 'apos;center'apos;,
+            justifyContent: 'apos;center'apos;,
+            margin: 'apos;0 auto 16px'apos;
           }}>
-            <FontAwesomeIcon icon="shield-alt" style={{ fontSize: '28px' }} />
+            <FontAwesomeIcon icon="shield-alt" style={{ fontSize: 'apos;28px'apos; }} />
           </div>
           <h1 style={{
-            fontSize: '24px',
-            fontWeight: '700',
-            margin: '0 0 8px 0'
+            fontSize: 'apos;24px'apos;,
+            fontWeight: 'apos;700'apos;,
+            margin: 'apos;0 0 8px 0'apos;
           }}>
             Protection de vos données
           </h1>
           <p style={{
-            fontSize: '16px',
+            fontSize: 'apos;16px'apos;,
             opacity: 0.9,
             margin: 0
           }}>
@@ -95,44 +95,44 @@ export default function ConsentPage() {
         </div>
 
         {/* Contenu */}
-        <div style={{ padding: '32px' }}>
+        <div style={{ padding: 'apos;32px'apos; }}>
           
-          {/* Message d'introduction */}
+          {/* Message d'apos;introduction */}
           <div style={{
-            backgroundColor: '#eff6ff',
-            border: '1px solid #bfdbfe',
-            borderRadius: '8px',
-            padding: '16px',
-            marginBottom: '24px'
+            backgroundColor: 'apos;#eff6ff'apos;,
+            border: 'apos;1px solid #bfdbfe'apos;,
+            borderRadius: 'apos;8px'apos;,
+            padding: 'apos;16px'apos;,
+            marginBottom: 'apos;24px'apos;
           }}>
             <div style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '12px'
+              display: 'apos;flex'apos;,
+              alignItems: 'apos;flex-start'apos;,
+              gap: 'apos;12px'apos;
             }}>
               <FontAwesomeIcon 
                 icon="info-circle" 
                 style={{ 
-                  color: '#3b82f6',
-                  fontSize: '20px',
-                  marginTop: '2px',
+                  color: 'apos;#3b82f6'apos;,
+                  fontSize: 'apos;20px'apos;,
+                  marginTop: 'apos;2px'apos;,
                   flexShrink: 0
                 }} 
               />
               <div>
                 <h3 style={{
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  color: '#1e40af',
-                  margin: '0 0 8px 0'
+                  fontSize: 'apos;16px'apos;,
+                  fontWeight: 'apos;600'apos;,
+                  color: 'apos;#1e40af'apos;,
+                  margin: 'apos;0 0 8px 0'apos;
                 }}>
                   Pourquoi cette étape ?
                 </h3>
                 <p style={{
-                  fontSize: '14px',
-                  color: '#1e40af',
+                  fontSize: 'apos;14px'apos;,
+                  color: 'apos;#1e40af'apos;,
                   margin: 0,
-                  lineHeight: '1.5'
+                  lineHeight: 'apos;1.5'apos;
                 }}>
                   La Loi 25 du Québec nous oblige à obtenir votre consentement explicite avant de 
                   collecter et traiter vos données personnelles. Vous gardez le contrôle total.
@@ -142,56 +142,56 @@ export default function ConsentPage() {
           </div>
 
           {/* Options de consentement */}
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: 'apos;24px'apos; }}>
             <h3 style={{
-              fontSize: '18px',
-              fontWeight: '600',
-              color: '#0a2540',
-              marginBottom: '16px'
+              fontSize: 'apos;18px'apos;,
+              fontWeight: 'apos;600'apos;,
+              color: 'apos;#0a2540'apos;,
+              marginBottom: 'apos;16px'apos;
             }}>
               Vos choix de consentement
             </h3>
 
             {/* Consentement essentiel */}
             <div style={{
-              backgroundColor: '#f0fdf4',
-              border: '1px solid #bbf7d0',
-              borderRadius: '8px',
-              padding: '16px',
-              marginBottom: '12px'
+              backgroundColor: 'apos;#f0fdf4'apos;,
+              border: 'apos;1px solid #bbf7d0'apos;,
+              borderRadius: 'apos;8px'apos;,
+              padding: 'apos;16px'apos;,
+              marginBottom: 'apos;12px'apos;
             }}>
               <div style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '12px'
+                display: 'apos;flex'apos;,
+                alignItems: 'apos;flex-start'apos;,
+                gap: 'apos;12px'apos;
               }}>
                 <div style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: '#10b981',
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: '2px',
+                  width: 'apos;20px'apos;,
+                  height: 'apos;20px'apos;,
+                  backgroundColor: 'apos;#10b981'apos;,
+                  borderRadius: 'apos;4px'apos;,
+                  display: 'apos;flex'apos;,
+                  alignItems: 'apos;center'apos;,
+                  justifyContent: 'apos;center'apos;,
+                  marginTop: 'apos;2px'apos;,
                   flexShrink: 0
                 }}>
-                  <FontAwesomeIcon icon="check" style={{ color: 'white', fontSize: '12px' }} />
+                  <FontAwesomeIcon icon="check" style={{ color: 'apos;white'apos;, fontSize: 'apos;12px'apos; }} />
                 </div>
                 <div style={{ flex: 1 }}>
                   <h4 style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: '#0a2540',
-                    margin: '0 0 4px 0'
+                    fontSize: 'apos;14px'apos;,
+                    fontWeight: 'apos;600'apos;,
+                    color: 'apos;#0a2540'apos;,
+                    margin: 'apos;0 0 4px 0'apos;
                   }}>
                     ✅ Fonctionnement essentiel (requis)
                   </h4>
                   <p style={{
-                    fontSize: '13px',
-                    color: '#059669',
+                    fontSize: 'apos;13px'apos;,
+                    color: 'apos;#059669'apos;,
                     margin: 0,
-                    lineHeight: '1.4'
+                    lineHeight: 'apos;1.4'apos;
                   }}>
                     Authentification, sécurité, sauvegarde de vos missions. 
                     Nécessaire pour utiliser Beriox AI.
@@ -202,50 +202,50 @@ export default function ConsentPage() {
 
             {/* Consentement traitement des données */}
             <div style={{
-              backgroundColor: consents.dataProcessing ? '#eff6ff' : '#f8fafc',
-              border: `1px solid ${consents.dataProcessing ? '#bfdbfe' : '#e3e8ee'}`,
-              borderRadius: '8px',
-              padding: '16px',
-              marginBottom: '12px',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }} onClick={() => handleConsentChange('dataProcessing')}>
+              backgroundColor: consents.dataProcessing ? 'apos;#eff6ff'apos; : 'apos;#f8fafc'apos;,
+              border: `1px solid ${consents.dataProcessing ? 'apos;#bfdbfe'apos; : 'apos;#e3e8ee'apos;}`,
+              borderRadius: 'apos;8px'apos;,
+              padding: 'apos;16px'apos;,
+              marginBottom: 'apos;12px'apos;,
+              cursor: 'apos;pointer'apos;,
+              transition: 'apos;all 0.2s'apos;
+            }} onClick={() => handleConsentChange('apos;dataProcessing'apos;)}>
               <div style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '12px'
+                display: 'apos;flex'apos;,
+                alignItems: 'apos;flex-start'apos;,
+                gap: 'apos;12px'apos;
               }}>
                 <div style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: consents.dataProcessing ? '#3b82f6' : 'white',
-                  border: `2px solid ${consents.dataProcessing ? '#3b82f6' : '#d1d5db'}`,
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: '2px',
+                  width: 'apos;20px'apos;,
+                  height: 'apos;20px'apos;,
+                  backgroundColor: consents.dataProcessing ? 'apos;#3b82f6'apos; : 'apos;white'apos;,
+                  border: `2px solid ${consents.dataProcessing ? 'apos;#3b82f6'apos; : 'apos;#d1d5db'apos;}`,
+                  borderRadius: 'apos;4px'apos;,
+                  display: 'apos;flex'apos;,
+                  alignItems: 'apos;center'apos;,
+                  justifyContent: 'apos;center'apos;,
+                  marginTop: 'apos;2px'apos;,
                   flexShrink: 0,
-                  transition: 'all 0.2s'
+                  transition: 'apos;all 0.2s'apos;
                 }}>
                   {consents.dataProcessing && (
-                    <FontAwesomeIcon icon="check" style={{ color: 'white', fontSize: '12px' }} />
+                    <FontAwesomeIcon icon="check" style={{ color: 'apos;white'apos;, fontSize: 'apos;12px'apos; }} />
                   )}
                 </div>
                 <div style={{ flex: 1 }}>
                   <h4 style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: '#0a2540',
-                    margin: '0 0 4px 0'
+                    fontSize: 'apos;14px'apos;,
+                    fontWeight: 'apos;600'apos;,
+                    color: 'apos;#0a2540'apos;,
+                    margin: 'apos;0 0 4px 0'apos;
                   }}>
                     🤖 Traitement par IA (requis pour utiliser le service)
                   </h4>
                   <p style={{
-                    fontSize: '13px',
-                    color: '#6b7280',
+                    fontSize: 'apos;13px'apos;,
+                    color: 'apos;#6b7280'apos;,
                     margin: 0,
-                    lineHeight: '1.4'
+                    lineHeight: 'apos;1.4'apos;
                   }}>
                     Analyse de vos demandes par nos agents IA, génération de réponses personnalisées, 
                     amélioration de nos algorithmes.
@@ -256,52 +256,52 @@ export default function ConsentPage() {
 
             {/* Communications */}
             <div style={{
-              backgroundColor: consents.communications ? '#fef3c7' : '#f8fafc',
-              border: `1px solid ${consents.communications ? '#fbbf24' : '#e3e8ee'}`,
-              borderRadius: '8px',
-              padding: '16px',
-              marginBottom: '12px',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }} onClick={() => handleConsentChange('communications')}>
+              backgroundColor: consents.communications ? 'apos;#fef3c7'apos; : 'apos;#f8fafc'apos;,
+              border: `1px solid ${consents.communications ? 'apos;#fbbf24'apos; : 'apos;#e3e8ee'apos;}`,
+              borderRadius: 'apos;8px'apos;,
+              padding: 'apos;16px'apos;,
+              marginBottom: 'apos;12px'apos;,
+              cursor: 'apos;pointer'apos;,
+              transition: 'apos;all 0.2s'apos;
+            }} onClick={() => handleConsentChange('apos;communications'apos;)}>
               <div style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '12px'
+                display: 'apos;flex'apos;,
+                alignItems: 'apos;flex-start'apos;,
+                gap: 'apos;12px'apos;
               }}>
                 <div style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: consents.communications ? '#f59e0b' : 'white',
-                  border: `2px solid ${consents.communications ? '#f59e0b' : '#d1d5db'}`,
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: '2px',
+                  width: 'apos;20px'apos;,
+                  height: 'apos;20px'apos;,
+                  backgroundColor: consents.communications ? 'apos;#f59e0b'apos; : 'apos;white'apos;,
+                  border: `2px solid ${consents.communications ? 'apos;#f59e0b'apos; : 'apos;#d1d5db'apos;}`,
+                  borderRadius: 'apos;4px'apos;,
+                  display: 'apos;flex'apos;,
+                  alignItems: 'apos;center'apos;,
+                  justifyContent: 'apos;center'apos;,
+                  marginTop: 'apos;2px'apos;,
                   flexShrink: 0,
-                  transition: 'all 0.2s'
+                  transition: 'apos;all 0.2s'apos;
                 }}>
                   {consents.communications && (
-                    <FontAwesomeIcon icon="check" style={{ color: 'white', fontSize: '12px' }} />
+                    <FontAwesomeIcon icon="check" style={{ color: 'apos;white'apos;, fontSize: 'apos;12px'apos; }} />
                   )}
                 </div>
                 <div style={{ flex: 1 }}>
                   <h4 style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: '#0a2540',
-                    margin: '0 0 4px 0'
+                    fontSize: 'apos;14px'apos;,
+                    fontWeight: 'apos;600'apos;,
+                    color: 'apos;#0a2540'apos;,
+                    margin: 'apos;0 0 4px 0'apos;
                   }}>
                     📧 Communications (optionnel)
                   </h4>
                   <p style={{
-                    fontSize: '13px',
-                    color: '#6b7280',
+                    fontSize: 'apos;13px'apos;,
+                    color: 'apos;#6b7280'apos;,
                     margin: 0,
-                    lineHeight: '1.4'
+                    lineHeight: 'apos;1.4'apos;
                   }}>
-                    Nouvelles fonctionnalités, conseils d'utilisation, mises à jour importantes. 
+                    Nouvelles fonctionnalités, conseils d'apos;utilisation, mises à jour importantes. 
                     Vous pouvez vous désabonner à tout moment.
                   </p>
                 </div>
@@ -310,51 +310,51 @@ export default function ConsentPage() {
 
             {/* Améliorations */}
             <div style={{
-              backgroundColor: consents.improvements ? '#f3e8ff' : '#f8fafc',
-              border: `1px solid ${consents.improvements ? '#c4b5fd' : '#e3e8ee'}`,
-              borderRadius: '8px',
-              padding: '16px',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }} onClick={() => handleConsentChange('improvements')}>
+              backgroundColor: consents.improvements ? 'apos;#f3e8ff'apos; : 'apos;#f8fafc'apos;,
+              border: `1px solid ${consents.improvements ? 'apos;#c4b5fd'apos; : 'apos;#e3e8ee'apos;}`,
+              borderRadius: 'apos;8px'apos;,
+              padding: 'apos;16px'apos;,
+              cursor: 'apos;pointer'apos;,
+              transition: 'apos;all 0.2s'apos;
+            }} onClick={() => handleConsentChange('apos;improvements'apos;)}>
               <div style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '12px'
+                display: 'apos;flex'apos;,
+                alignItems: 'apos;flex-start'apos;,
+                gap: 'apos;12px'apos;
               }}>
                 <div style={{
-                  width: '20px',
-                  height: '20px',
-                  backgroundColor: consents.improvements ? '#8b5cf6' : 'white',
-                  border: `2px solid ${consents.improvements ? '#8b5cf6' : '#d1d5db'}`,
-                  borderRadius: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginTop: '2px',
+                  width: 'apos;20px'apos;,
+                  height: 'apos;20px'apos;,
+                  backgroundColor: consents.improvements ? 'apos;#8b5cf6'apos; : 'apos;white'apos;,
+                  border: `2px solid ${consents.improvements ? 'apos;#8b5cf6'apos; : 'apos;#d1d5db'apos;}`,
+                  borderRadius: 'apos;4px'apos;,
+                  display: 'apos;flex'apos;,
+                  alignItems: 'apos;center'apos;,
+                  justifyContent: 'apos;center'apos;,
+                  marginTop: 'apos;2px'apos;,
                   flexShrink: 0,
-                  transition: 'all 0.2s'
+                  transition: 'apos;all 0.2s'apos;
                 }}>
                   {consents.improvements && (
-                    <FontAwesomeIcon icon="check" style={{ color: 'white', fontSize: '12px' }} />
+                    <FontAwesomeIcon icon="check" style={{ color: 'apos;white'apos;, fontSize: 'apos;12px'apos; }} />
                   )}
                 </div>
                 <div style={{ flex: 1 }}>
                   <h4 style={{
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: '#0a2540',
-                    margin: '0 0 4px 0'
+                    fontSize: 'apos;14px'apos;,
+                    fontWeight: 'apos;600'apos;,
+                    color: 'apos;#0a2540'apos;,
+                    margin: 'apos;0 0 4px 0'apos;
                   }}>
                     📊 Amélioration du service (optionnel)
                   </h4>
                   <p style={{
-                    fontSize: '13px',
-                    color: '#6b7280',
+                    fontSize: 'apos;13px'apos;,
+                    color: 'apos;#6b7280'apos;,
                     margin: 0,
-                    lineHeight: '1.4'
+                    lineHeight: 'apos;1.4'apos;
                   }}>
-                    Analyse anonymisée d'utilisation pour améliorer nos services. 
+                    Analyse anonymisée d'apos;utilisation pour améliorer nos services. 
                     Aucune donnée personnelle partagée.
                   </p>
                 </div>
@@ -364,50 +364,50 @@ export default function ConsentPage() {
 
           {/* Lecture de la politique */}
           <div style={{
-            backgroundColor: '#fef7f7',
-            border: '1px solid #fecaca',
-            borderRadius: '8px',
-            padding: '16px',
-            marginBottom: '24px'
+            backgroundColor: 'apos;#fef7f7'apos;,
+            border: 'apos;1px solid #fecaca'apos;,
+            borderRadius: 'apos;8px'apos;,
+            padding: 'apos;16px'apos;,
+            marginBottom: 'apos;24px'apos;
           }}>
             <div style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '12px'
+              display: 'apos;flex'apos;,
+              alignItems: 'apos;flex-start'apos;,
+              gap: 'apos;12px'apos;
             }}>
               <div style={{
-                width: '20px',
-                height: '20px',
-                backgroundColor: hasReadPolicy ? '#ef4444' : 'white',
-                border: `2px solid ${hasReadPolicy ? '#ef4444' : '#d1d5db'}`,
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: '2px',
+                width: 'apos;20px'apos;,
+                height: 'apos;20px'apos;,
+                backgroundColor: hasReadPolicy ? 'apos;#ef4444'apos; : 'apos;white'apos;,
+                border: `2px solid ${hasReadPolicy ? 'apos;#ef4444'apos; : 'apos;#d1d5db'apos;}`,
+                borderRadius: 'apos;4px'apos;,
+                display: 'apos;flex'apos;,
+                alignItems: 'apos;center'apos;,
+                justifyContent: 'apos;center'apos;,
+                marginTop: 'apos;2px'apos;,
                 flexShrink: 0,
-                cursor: 'pointer',
-                transition: 'all 0.2s'
+                cursor: 'apos;pointer'apos;,
+                transition: 'apos;all 0.2s'apos;
               }} onClick={() => setHasReadPolicy(!hasReadPolicy)}>
                 {hasReadPolicy && (
-                  <FontAwesomeIcon icon="check" style={{ color: 'white', fontSize: '12px' }} />
+                  <FontAwesomeIcon icon="check" style={{ color: 'apos;white'apos;, fontSize: 'apos;12px'apos; }} />
                 )}
               </div>
               <div style={{ flex: 1 }}>
                 <p style={{
-                  fontSize: '14px',
-                  color: '#dc2626',
+                  fontSize: 'apos;14px'apos;,
+                  color: 'apos;#dc2626'apos;,
                   margin: 0,
-                  lineHeight: '1.4'
+                  lineHeight: 'apos;1.4'apos;
                 }}>
-                  <strong>J'ai lu et j'accepte la </strong>
+                  <strong>J'apos;ai lu et j'apos;accepte la </strong>
                   <Link 
                     href="/privacy" 
                     target="_blank"
                     style={{
-                      color: '#dc2626',
-                      textDecoration: 'underline',
-                      fontWeight: '600'
+                      color: 'apos;#dc2626'apos;,
+                      textDecoration: 'apos;underline'apos;,
+                      fontWeight: 'apos;600'apos;
                     }}
                   >
                     Politique de Confidentialité
@@ -418,25 +418,25 @@ export default function ConsentPage() {
             </div>
           </div>
 
-          {/* Boutons d'action */}
+          {/* Boutons d'apos;action */}
           <div style={{
-            display: 'flex',
-            gap: '12px',
-            marginBottom: '16px'
+            display: 'apos;flex'apos;,
+            gap: 'apos;12px'apos;,
+            marginBottom: 'apos;16px'apos;
           }}>
             <button
-              onClick={() => router.push('/')}
+              onClick={() => router.push('apos;/'apos;)}
               style={{
                 flex: 1,
-                padding: '12px 20px',
-                backgroundColor: 'white',
-                border: '1px solid #d1d5db',
-                borderRadius: '8px',
-                color: '#6b7280',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
+                padding: 'apos;12px 20px'apos;,
+                backgroundColor: 'apos;white'apos;,
+                border: 'apos;1px solid #d1d5db'apos;,
+                borderRadius: 'apos;8px'apos;,
+                color: 'apos;#6b7280'apos;,
+                fontSize: 'apos;14px'apos;,
+                fontWeight: 'apos;600'apos;,
+                cursor: 'apos;pointer'apos;,
+                transition: 'apos;all 0.2s'apos;
               }}
             >
               Annuler
@@ -447,30 +447,30 @@ export default function ConsentPage() {
               disabled={!canProceed || isSubmitting}
               style={{
                 flex: 2,
-                padding: '12px 20px',
-                backgroundColor: canProceed ? '#635bff' : '#9ca3af',
-                border: 'none',
-                borderRadius: '8px',
-                color: 'white',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: canProceed ? 'pointer' : 'not-allowed',
-                transition: 'all 0.2s',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
+                padding: 'apos;12px 20px'apos;,
+                backgroundColor: canProceed ? 'apos;#635bff'apos; : 'apos;#9ca3af'apos;,
+                border: 'apos;none'apos;,
+                borderRadius: 'apos;8px'apos;,
+                color: 'apos;white'apos;,
+                fontSize: 'apos;14px'apos;,
+                fontWeight: 'apos;600'apos;,
+                cursor: canProceed ? 'apos;pointer'apos; : 'apos;not-allowed'apos;,
+                transition: 'apos;all 0.2s'apos;,
+                display: 'apos;flex'apos;,
+                alignItems: 'apos;center'apos;,
+                justifyContent: 'apos;center'apos;,
+                gap: 'apos;8px'apos;
               }}
             >
               {isSubmitting ? (
                 <>
                   <div style={{
-                    width: '16px',
-                    height: '16px',
-                    border: '2px solid rgba(255,255,255,0.3)',
-                    borderTop: '2px solid white',
-                    borderRadius: '50%',
-                    animation: 'spin 1s linear infinite'
+                    width: 'apos;16px'apos;,
+                    height: 'apos;16px'apos;,
+                    border: 'apos;2px solid rgba(255,255,255,0.3)'apos;,
+                    borderTop: 'apos;2px solid white'apos;,
+                    borderRadius: 'apos;50%'apos;,
+                    animation: 'apos;spin 1s linear infinite'apos;
                   }}></div>
                   Validation...
                 </>
@@ -483,14 +483,14 @@ export default function ConsentPage() {
             </button>
           </div>
 
-          {/* Message d'information */}
+          {/* Message d'apos;information */}
           <div style={{
-            textAlign: 'center',
-            fontSize: '12px',
-            color: '#6b7280',
-            lineHeight: '1.4'
+            textAlign: 'apos;center'apos;,
+            fontSize: 'apos;12px'apos;,
+            color: 'apos;#6b7280'apos;,
+            lineHeight: 'apos;1.4'apos;
           }}>
-            <FontAwesomeIcon icon="info-circle" style={{ marginRight: '4px' }} />
+            <FontAwesomeIcon icon="info-circle" style={{ marginRight: 'apos;4px'apos; }} />
             Vous pouvez modifier ces consentements à tout moment dans vos paramètres.
           </div>
         </div>

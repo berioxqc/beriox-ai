@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
-import { createCustomerPortalSession } from '@/lib/stripe';
-import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { getServerSession } from 'apos;next-auth'apos;;
+import { authOptions } from 'apos;../../auth/[...nextauth]/route'apos;;
+import { createCustomerPortalSession } from 'apos;@/lib/stripe'apos;;
+import { prisma } from 'apos;@/lib/prisma'apos;;
 
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
     if (!session?.user?.email) {
-      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
+      return NextResponse.json({ error: 'apos;Non authentifié'apos; }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!user?.stripeCustomerId) {
-      return NextResponse.json({ error: 'Aucun abonnement trouvé' }, { status: 404 });
+      return NextResponse.json({ error: 'apos;Aucun abonnement trouvé'apos; }, { status: 404 });
     }
 
     const returnUrl = `${process.env.NEXTAUTH_URL}/pricing`;
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: portalSession.url });
   } catch (error: any) {
-    console.error('Erreur portail client Stripe:', error);
+    console.error('apos;Erreur portail client Stripe:'apos;, error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

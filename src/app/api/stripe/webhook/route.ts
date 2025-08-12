@@ -1,19 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { headers } from 'next/headers';
-import { validateWebhook, STRIPE_WEBHOOK_EVENTS } from '@/lib/stripe';
-import { prisma } from '@/lib/prisma';
-import { logger } from '@/lib/logger';
+import { NextRequest, NextResponse } from 'apos;next/server'apos;;
+import { headers } from 'apos;next/headers'apos;;
+import { validateWebhook, STRIPE_WEBHOOK_EVENTS } from 'apos;@/lib/stripe'apos;;
+import { prisma } from 'apos;@/lib/prisma'apos;;
+import { logger } from 'apos;@/lib/logger'apos;;
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.text();
     const headersList = await headers();
-    const signature = headersList.get('stripe-signature');
+    const signature = headersList.get('apos;stripe-signature'apos;);
 
     if (!signature) {
-      logger.error('Webhook: Missing stripe-signature header');
+      logger.error('apos;Webhook: Missing stripe-signature header'apos;);
       return NextResponse.json(
-        { error: 'Missing stripe-signature header' },
+        { error: 'apos;Missing stripe-signature header'apos; },
         { status: 400 }
       );
     }
@@ -23,62 +23,62 @@ export async function POST(request: NextRequest) {
     try {
       event = validateWebhook(body, signature);
     } catch (err) {
-      logger.error('Webhook: Invalid signature', { error: err.message });
+      logger.error('apos;Webhook: Invalid signature'apos;, { error: err.message });
       return NextResponse.json(
-        { error: 'Invalid signature' },
+        { error: 'apos;Invalid signature'apos; },
         { status: 400 }
       );
     }
 
-    logger.info('Webhook: Event received', { 
+    logger.info('apos;Webhook: Event received'apos;, { 
       type: event.type, 
       id: event.id 
     });
 
     // Traitement des événements
     switch (event.type) {
-      case 'checkout.session.completed':
+      case 'apos;checkout.session.completed'apos;:
         await handleCheckoutSessionCompleted(event.data.object);
         break;
 
-      case 'customer.subscription.created':
+      case 'apos;customer.subscription.created'apos;:
         await handleSubscriptionCreated(event.data.object);
         break;
 
-      case 'customer.subscription.updated':
+      case 'apos;customer.subscription.updated'apos;:
         await handleSubscriptionUpdated(event.data.object);
         break;
 
-      case 'customer.subscription.deleted':
+      case 'apos;customer.subscription.deleted'apos;:
         await handleSubscriptionDeleted(event.data.object);
         break;
 
-      case 'invoice.payment_succeeded':
+      case 'apos;invoice.payment_succeeded'apos;:
         await handleInvoicePaymentSucceeded(event.data.object);
         break;
 
-      case 'invoice.payment_failed':
+      case 'apos;invoice.payment_failed'apos;:
         await handleInvoicePaymentFailed(event.data.object);
         break;
 
-      case 'customer.created':
+      case 'apos;customer.created'apos;:
         await handleCustomerCreated(event.data.object);
         break;
 
-      case 'customer.updated':
+      case 'apos;customer.updated'apos;:
         await handleCustomerUpdated(event.data.object);
         break;
 
       default:
-        logger.warn('Webhook: Unhandled event type', { type: event.type });
+        logger.warn('apos;Webhook: Unhandled event type'apos;, { type: event.type });
     }
 
     return NextResponse.json({ received: true });
 
   } catch (error) {
-    logger.error('Webhook: Error processing event', { error: error.message });
+    logger.error('apos;Webhook: Error processing event'apos;, { error: error.message });
     return NextResponse.json(
-      { error: 'Webhook processing failed' },
+      { error: 'apos;Webhook processing failed'apos; },
       { status: 500 }
     );
   }
@@ -90,11 +90,11 @@ async function handleCheckoutSessionCompleted(session: any) {
     const { customer, subscription, metadata } = session;
     
     if (!customer || !subscription) {
-      logger.error('Webhook: Missing customer or subscription in checkout session');
+      logger.error('apos;Webhook: Missing customer or subscription in checkout session'apos;);
       return;
     }
 
-    // Mise à jour de l'utilisateur avec les informations Stripe
+    // Mise à jour de l'apos;utilisateur avec les informations Stripe
     await prisma.user.updateMany({
       where: { 
         email: metadata?.email || customer.email 
@@ -102,24 +102,24 @@ async function handleCheckoutSessionCompleted(session: any) {
       data: {
         stripeCustomerId: customer,
         subscriptionId: subscription,
-        subscriptionStatus: 'active',
+        subscriptionStatus: 'apos;active'apos;,
         subscriptionPlan: getPlanFromPriceId(session.line_items?.data?.[0]?.price?.id),
         updatedAt: new Date()
       }
     });
 
-    logger.info('Webhook: Checkout session completed', {
+    logger.info('apos;Webhook: Checkout session completed'apos;, {
       customerId: customer,
       subscriptionId: subscription,
       plan: getPlanFromPriceId(session.line_items?.data?.[0]?.price?.id)
     });
 
   } catch (error) {
-    logger.error('Webhook: Error handling checkout session completed', { error: error.message });
+    logger.error('apos;Webhook: Error handling checkout session completed'apos;, { error: error.message });
   }
 }
 
-// Gestion de la création d'abonnement
+// Gestion de la création d'apos;abonnement
 async function handleSubscriptionCreated(subscription: any) {
   try {
     const { id, customer, status, current_period_end } = subscription;
@@ -134,18 +134,18 @@ async function handleSubscriptionCreated(subscription: any) {
       }
     });
 
-    logger.info('Webhook: Subscription created', {
+    logger.info('apos;Webhook: Subscription created'apos;, {
       subscriptionId: id,
       customerId: customer,
       status
     });
 
   } catch (error) {
-    logger.error('Webhook: Error handling subscription created', { error: error.message });
+    logger.error('apos;Webhook: Error handling subscription created'apos;, { error: error.message });
   }
 }
 
-// Gestion de la mise à jour d'abonnement
+// Gestion de la mise à jour d'apos;abonnement
 async function handleSubscriptionUpdated(subscription: any) {
   try {
     const { id, customer, status, current_period_end, cancel_at_period_end } = subscription;
@@ -160,7 +160,7 @@ async function handleSubscriptionUpdated(subscription: any) {
       }
     });
 
-    logger.info('Webhook: Subscription updated', {
+    logger.info('apos;Webhook: Subscription updated'apos;, {
       subscriptionId: id,
       customerId: customer,
       status,
@@ -168,11 +168,11 @@ async function handleSubscriptionUpdated(subscription: any) {
     });
 
   } catch (error) {
-    logger.error('Webhook: Error handling subscription updated', { error: error.message });
+    logger.error('apos;Webhook: Error handling subscription updated'apos;, { error: error.message });
   }
 }
 
-// Gestion de la suppression d'abonnement
+// Gestion de la suppression d'apos;abonnement
 async function handleSubscriptionDeleted(subscription: any) {
   try {
     const { id, customer } = subscription;
@@ -180,23 +180,23 @@ async function handleSubscriptionDeleted(subscription: any) {
     await prisma.user.updateMany({
       where: { stripeCustomerId: customer },
       data: {
-        subscriptionStatus: 'canceled',
+        subscriptionStatus: 'apos;canceled'apos;,
         subscriptionEndDate: new Date(),
         updatedAt: new Date()
       }
     });
 
-    logger.info('Webhook: Subscription deleted', {
+    logger.info('apos;Webhook: Subscription deleted'apos;, {
       subscriptionId: id,
       customerId: customer
     });
 
   } catch (error) {
-    logger.error('Webhook: Error handling subscription deleted', { error: error.message });
+    logger.error('apos;Webhook: Error handling subscription deleted'apos;, { error: error.message });
   }
 }
 
-// Gestion du paiement d'invoice réussi
+// Gestion du paiement d'apos;invoice réussi
 async function handleInvoicePaymentSucceeded(invoice: any) {
   try {
     const { customer, subscription, amount_paid, currency } = invoice;
@@ -209,12 +209,12 @@ async function handleInvoicePaymentSucceeded(invoice: any) {
         stripeSubscriptionId: subscription,
         amount: amount_paid,
         currency: currency,
-        status: 'succeeded',
+        status: 'apos;succeeded'apos;,
         paymentDate: new Date()
       }
     });
 
-    logger.info('Webhook: Invoice payment succeeded', {
+    logger.info('apos;Webhook: Invoice payment succeeded'apos;, {
       invoiceId: invoice.id,
       customerId: customer,
       amount: amount_paid,
@@ -222,16 +222,16 @@ async function handleInvoicePaymentSucceeded(invoice: any) {
     });
 
   } catch (error) {
-    logger.error('Webhook: Error handling invoice payment succeeded', { error: error.message });
+    logger.error('apos;Webhook: Error handling invoice payment succeeded'apos;, { error: error.message });
   }
 }
 
-// Gestion du paiement d'invoice échoué
+// Gestion du paiement d'apos;invoice échoué
 async function handleInvoicePaymentFailed(invoice: any) {
   try {
     const { customer, subscription, amount_due, currency } = invoice;
     
-    // Enregistrement de l'échec de paiement
+    // Enregistrement de l'apos;échec de paiement
     await prisma.payment.create({
       data: {
         stripeInvoiceId: invoice.id,
@@ -239,12 +239,12 @@ async function handleInvoicePaymentFailed(invoice: any) {
         stripeSubscriptionId: subscription,
         amount: amount_due,
         currency: currency,
-        status: 'failed',
+        status: 'apos;failed'apos;,
         paymentDate: new Date()
       }
     });
 
-    logger.warn('Webhook: Invoice payment failed', {
+    logger.warn('apos;Webhook: Invoice payment failed'apos;, {
       invoiceId: invoice.id,
       customerId: customer,
       amount: amount_due,
@@ -252,20 +252,20 @@ async function handleInvoicePaymentFailed(invoice: any) {
     });
 
   } catch (error) {
-    logger.error('Webhook: Error handling invoice payment failed', { error: error.message });
+    logger.error('apos;Webhook: Error handling invoice payment failed'apos;, { error: error.message });
   }
 }
 
 // Gestion de la création de client
 async function handleCustomerCreated(customer: any) {
   try {
-    logger.info('Webhook: Customer created', {
+    logger.info('apos;Webhook: Customer created'apos;, {
       customerId: customer.id,
       email: customer.email
     });
 
   } catch (error) {
-    logger.error('Webhook: Error handling customer created', { error: error.message });
+    logger.error('apos;Webhook: Error handling customer created'apos;, { error: error.message });
   }
 }
 
@@ -283,26 +283,26 @@ async function handleCustomerUpdated(customer: any) {
       }
     });
 
-    logger.info('Webhook: Customer updated', {
+    logger.info('apos;Webhook: Customer updated'apos;, {
       customerId: id,
       email,
       name
     });
 
   } catch (error) {
-    logger.error('Webhook: Error handling customer updated', { error: error.message });
+    logger.error('apos;Webhook: Error handling customer updated'apos;, { error: error.message });
   }
 }
 
 // Fonction utilitaire pour déterminer le plan à partir du price ID
 function getPlanFromPriceId(priceId: string): string {
-  if (!priceId) return 'unknown';
+  if (!priceId) return 'apos;unknown'apos;;
   
-  if (priceId.includes('competitor_intelligence_yearly')) {
-    return 'competitor_intelligence_yearly';
-  } else if (priceId.includes('competitor_intelligence')) {
-    return 'competitor_intelligence';
+  if (priceId.includes('apos;competitor_intelligence_yearly'apos;)) {
+    return 'apos;competitor_intelligence_yearly'apos;;
+  } else if (priceId.includes('apos;competitor_intelligence'apos;)) {
+    return 'apos;competitor_intelligence'apos;;
   }
   
-  return 'unknown';
+  return 'apos;unknown'apos;;
 }

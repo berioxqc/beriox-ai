@@ -1,31 +1,31 @@
-import { logger } from './logger';
-import { metrics } from './metrics';
+import { logger } from 'apos;./logger'apos;;
+import { metrics } from 'apos;./metrics'apos;;
 
 export enum TimeEntryType {
-  TIMER = 'timer',
-  MANUAL = 'manual',
-  IMPORTED = 'imported'
+  TIMER = 'apos;timer'apos;,
+  MANUAL = 'apos;manual'apos;,
+  IMPORTED = 'apos;imported'apos;
 }
 
 export enum TimeEntryStatus {
-  ACTIVE = 'active',
-  PAUSED = 'paused',
-  COMPLETED = 'completed',
-  APPROVED = 'approved',
-  REJECTED = 'rejected'
+  ACTIVE = 'apos;active'apos;,
+  PAUSED = 'apos;paused'apos;,
+  COMPLETED = 'apos;completed'apos;,
+  APPROVED = 'apos;approved'apos;,
+  REJECTED = 'apos;rejected'apos;
 }
 
 export enum ProjectStatus {
-  ACTIVE = 'active',
-  COMPLETED = 'completed',
-  ON_HOLD = 'on_hold',
-  CANCELLED = 'cancelled'
+  ACTIVE = 'apos;active'apos;,
+  COMPLETED = 'apos;completed'apos;,
+  ON_HOLD = 'apos;on_hold'apos;,
+  CANCELLED = 'apos;cancelled'apos;
 }
 
 export enum ClientStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  ARCHIVED = 'archived'
+  ACTIVE = 'apos;active'apos;,
+  INACTIVE = 'apos;inactive'apos;,
+  ARCHIVED = 'apos;archived'apos;
 }
 
 export interface TimeEntry {
@@ -50,7 +50,7 @@ export interface TimeEntry {
   };
   deviceInfo?: {
     deviceId: string;
-    deviceType: 'desktop' | 'mobile' | 'tablet';
+    deviceType: 'apos;desktop'apos; | 'apos;mobile'apos; | 'apos;tablet'apos;;
     appVersion: string;
   };
   createdAt: Date;
@@ -99,8 +99,8 @@ export interface Task {
   projectId: string;
   name: string;
   description?: string;
-  status: 'todo' | 'in_progress' | 'completed';
-  priority: 'low' | 'medium' | 'high';
+  status: 'apos;todo'apos; | 'apos;in_progress'apos; | 'apos;completed'apos;;
+  priority: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
   estimatedHours?: number;
   actualHours?: number;
   assigneeId?: string;
@@ -117,7 +117,7 @@ export interface Timesheet {
   weekEnd: Date;
   totalHours: number;
   billableHours: number;
-  status: 'draft' | 'submitted' | 'approved' | 'rejected';
+  status: 'apos;draft'apos; | 'apos;submitted'apos; | 'apos;approved'apos; | 'apos;rejected'apos;;
   approvedBy?: string;
   approvedAt?: Date;
   notes?: string;
@@ -136,7 +136,7 @@ export interface Expense {
   category: string;
   receipt?: string;
   date: Date;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'apos;pending'apos; | 'apos;approved'apos; | 'apos;rejected'apos;;
   approvedBy?: string;
   approvedAt?: Date;
   notes?: string;
@@ -151,7 +151,7 @@ export interface Invoice {
   number: string;
   issueDate: Date;
   dueDate: Date;
-  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
+  status: 'apos;draft'apos; | 'apos;sent'apos; | 'apos;paid'apos; | 'apos;overdue'apos; | 'apos;cancelled'apos;;
   subtotal: number;
   tax: number;
   total: number;
@@ -169,7 +169,7 @@ export interface InvoiceItem {
   quantity: number;
   unitPrice: number;
   total: number;
-  type: 'time' | 'expense' | 'product';
+  type: 'apos;time'apos; | 'apos;expense'apos; | 'apos;product'apos;;
   timeEntryId?: string;
   expenseId?: string;
 }
@@ -206,7 +206,7 @@ export interface TimeTrackingSettings {
 
 export interface TimeTrackingStats {
   userId: string;
-  period: 'day' | 'week' | 'month' | 'year';
+  period: 'apos;day'apos; | 'apos;week'apos; | 'apos;month'apos; | 'apos;year'apos;;
   totalHours: number;
   billableHours: number;
   nonBillableHours: number;
@@ -252,9 +252,9 @@ class TimeTrackingManager {
 
   private createDefaultClient() {
     const client: Client = {
-      id: 'demo-client-1',
-      name: 'Client Démo',
-      email: 'demo@client.com',
+      id: 'apos;demo-client-1'apos;,
+      name: 'apos;Client Démo'apos;,
+      email: 'apos;demo@client.com'apos;,
       status: ClientStatus.ACTIVE,
       hourlyRate: 75,
       createdAt: new Date(),
@@ -265,16 +265,16 @@ class TimeTrackingManager {
 
   private createDefaultProject() {
     const project: Project = {
-      id: 'demo-project-1',
-      name: 'Projet Démo',
-      description: 'Projet de démonstration pour le Time Tracking',
-      clientId: 'demo-client-1',
+      id: 'apos;demo-project-1'apos;,
+      name: 'apos;Projet Démo'apos;,
+      description: 'apos;Projet de démonstration pour le Time Tracking'apos;,
+      clientId: 'apos;demo-client-1'apos;,
       status: ProjectStatus.ACTIVE,
       startDate: new Date(),
       budget: 5000,
       hourlyRate: 75,
-      color: '#3B82F6',
-      tags: ['démo', 'time-tracking'],
+      color: 'apos;#3B82F6'apos;,
+      tags: ['apos;démo'apos;, 'apos;time-tracking'apos;],
       teamMembers: [],
       createdAt: new Date(),
       updatedAt: new Date()
@@ -285,38 +285,38 @@ class TimeTrackingManager {
   private createDefaultTasks() {
     const tasks = [
       {
-        id: 'demo-task-1',
-        name: 'Configuration initiale',
-        description: 'Configuration du système de Time Tracking',
-        status: 'completed' as const,
-        priority: 'high' as const,
+        id: 'apos;demo-task-1'apos;,
+        name: 'apos;Configuration initiale'apos;,
+        description: 'apos;Configuration du système de Time Tracking'apos;,
+        status: 'apos;completed'apos; as const,
+        priority: 'apos;high'apos; as const,
         estimatedHours: 2,
-        tags: ['setup', 'configuration']
+        tags: ['apos;setup'apos;, 'apos;configuration'apos;]
       },
       {
-        id: 'demo-task-2',
-        name: 'Tests et validation',
-        description: 'Tests du système de Time Tracking',
-        status: 'in_progress' as const,
-        priority: 'medium' as const,
+        id: 'apos;demo-task-2'apos;,
+        name: 'apos;Tests et validation'apos;,
+        description: 'apos;Tests du système de Time Tracking'apos;,
+        status: 'apos;in_progress'apos; as const,
+        priority: 'apos;medium'apos; as const,
         estimatedHours: 4,
-        tags: ['testing', 'validation']
+        tags: ['apos;testing'apos;, 'apos;validation'apos;]
       },
       {
-        id: 'demo-task-3',
-        name: 'Documentation',
-        description: 'Rédaction de la documentation',
-        status: 'todo' as const,
-        priority: 'low' as const,
+        id: 'apos;demo-task-3'apos;,
+        name: 'apos;Documentation'apos;,
+        description: 'apos;Rédaction de la documentation'apos;,
+        status: 'apos;todo'apos; as const,
+        priority: 'apos;low'apos; as const,
         estimatedHours: 3,
-        tags: ['documentation']
+        tags: ['apos;documentation'apos;]
       }
     ];
 
     tasks.forEach(task => {
       const fullTask: Task = {
         ...task,
-        projectId: 'demo-project-1',
+        projectId: 'apos;demo-project-1'apos;,
         actualHours: 0,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -327,7 +327,7 @@ class TimeTrackingManager {
 
   // Gestion des entrées de temps
   startTimer(userId: string, projectId: string, description: string, taskId?: string): TimeEntry {
-    // Arrêter le timer actuel s'il y en a un
+    // Arrêter le timer actuel s'apos;il y en a un
     this.stopActiveTimer(userId);
 
     const entry: TimeEntry = {
@@ -350,14 +350,14 @@ class TimeTrackingManager {
     this.activeTimers.set(userId, entry);
 
     logger.info(`Timer started for user: ${userId}`, {
-      action: 'timer_started',
+      action: 'apos;timer_started'apos;,
       metadata: { userId, projectId, taskId, entryId: entry.id }
     });
 
-    metrics.increment('timer_started', 1, {
+    metrics.increment('apos;timer_started'apos;, 1, {
       userId,
       projectId,
-      hasTask: taskId ? 'true' : 'false'
+      hasTask: taskId ? 'apos;true'apos; : 'apos;false'apos;
     });
 
     return entry;
@@ -379,11 +379,11 @@ class TimeTrackingManager {
     this.activeTimers.delete(userId);
 
     logger.info(`Timer stopped for user: ${userId}`, {
-      action: 'timer_stopped',
+      action: 'apos;timer_stopped'apos;,
       metadata: { userId, entryId: activeEntry.id, duration }
     });
 
-    metrics.increment('timer_stopped', 1, {
+    metrics.increment('apos;timer_stopped'apos;, 1, {
       userId,
       projectId: activeEntry.projectId,
       duration: Math.floor(duration / 60) // en minutes
@@ -402,7 +402,7 @@ class TimeTrackingManager {
     this.timeEntries.set(activeEntry.id, activeEntry);
 
     logger.info(`Timer paused for user: ${userId}`, {
-      action: 'timer_paused',
+      action: 'apos;timer_paused'apos;,
       metadata: { userId, entryId: activeEntry.id }
     });
 
@@ -419,7 +419,7 @@ class TimeTrackingManager {
     this.timeEntries.set(activeEntry.id, activeEntry);
 
     logger.info(`Timer resumed for user: ${userId}`, {
-      action: 'timer_resumed',
+      action: 'apos;timer_resumed'apos;,
       metadata: { userId, entryId: activeEntry.id }
     });
 
@@ -465,11 +465,11 @@ class TimeTrackingManager {
     this.timeEntries.set(entry.id, entry);
 
     logger.info(`Manual entry added for user: ${userId}`, {
-      action: 'manual_entry_added',
+      action: 'apos;manual_entry_added'apos;,
       metadata: { userId, projectId, duration, billable }
     });
 
-    metrics.increment('manual_entry_added', 1, {
+    metrics.increment('apos;manual_entry_added'apos;, 1, {
       userId,
       projectId,
       billable: billable.toString()
@@ -486,7 +486,7 @@ class TimeTrackingManager {
     this.timeEntries.set(entryId, updatedEntry);
 
     logger.info(`Time entry updated: ${entryId}`, {
-      action: 'time_entry_updated',
+      action: 'apos;time_entry_updated'apos;,
       metadata: { entryId, userId: entry.userId }
     });
 
@@ -500,7 +500,7 @@ class TimeTrackingManager {
     this.timeEntries.delete(entryId);
 
     logger.info(`Time entry deleted: ${entryId}`, {
-      action: 'time_entry_deleted',
+      action: 'apos;time_entry_deleted'apos;,
       metadata: { entryId, userId: entry.userId }
     });
 
@@ -542,7 +542,7 @@ class TimeTrackingManager {
   }
 
   // Gestion des projets
-  createProject(project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>): Project {
+  createProject(project: Omit<Project, 'apos;id'apos; | 'apos;createdAt'apos; | 'apos;updatedAt'apos;>): Project {
     const newProject: Project = {
       ...project,
       id: `project_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -553,7 +553,7 @@ class TimeTrackingManager {
     this.projects.set(newProject.id, newProject);
 
     logger.info(`Project created: ${newProject.name}`, {
-      action: 'project_created',
+      action: 'apos;project_created'apos;,
       metadata: { projectId: newProject.id, clientId: newProject.clientId }
     });
 
@@ -574,7 +574,7 @@ class TimeTrackingManager {
     let projects = Array.from(this.projects.values());
     
     if (userId) {
-      // Filtrer par membres de l'équipe
+      // Filtrer par membres de l'apos;équipe
       projects = projects.filter(project => project.teamMembers.includes(userId));
     }
 
@@ -582,7 +582,7 @@ class TimeTrackingManager {
   }
 
   // Gestion des clients
-  createClient(client: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>): Client {
+  createClient(client: Omit<Client, 'apos;id'apos; | 'apos;createdAt'apos; | 'apos;updatedAt'apos;>): Client {
     const newClient: Client = {
       ...client,
       id: `client_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -593,7 +593,7 @@ class TimeTrackingManager {
     this.clients.set(newClient.id, newClient);
 
     logger.info(`Client created: ${newClient.name}`, {
-      action: 'client_created',
+      action: 'apos;client_created'apos;,
       metadata: { clientId: newClient.id }
     });
 
@@ -605,7 +605,7 @@ class TimeTrackingManager {
   }
 
   // Gestion des tâches
-  createTask(task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>): Task {
+  createTask(task: Omit<Task, 'apos;id'apos; | 'apos;createdAt'apos; | 'apos;updatedAt'apos;>): Task {
     const newTask: Task = {
       ...task,
       id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -616,7 +616,7 @@ class TimeTrackingManager {
     this.tasks.set(newTask.id, newTask);
 
     logger.info(`Task created: ${newTask.name}`, {
-      action: 'task_created',
+      action: 'apos;task_created'apos;,
       metadata: { taskId: newTask.id, projectId: newTask.projectId }
     });
 
@@ -655,7 +655,7 @@ class TimeTrackingManager {
       weekEnd,
       totalHours,
       billableHours,
-      status: 'draft',
+      status: 'apos;draft'apos;,
       entries,
       createdAt: new Date(),
       updatedAt: new Date()
@@ -664,7 +664,7 @@ class TimeTrackingManager {
     this.timesheets.set(timesheet.id, timesheet);
 
     logger.info(`Timesheet created for user: ${userId}`, {
-      action: 'timesheet_created',
+      action: 'apos;timesheet_created'apos;,
       metadata: { userId, timesheetId: timesheet.id, totalHours, billableHours }
     });
 
@@ -675,13 +675,13 @@ class TimeTrackingManager {
     const timesheet = this.timesheets.get(timesheetId);
     if (!timesheet) return null;
 
-    timesheet.status = 'submitted';
+    timesheet.status = 'apos;submitted'apos;;
     timesheet.updatedAt = new Date();
 
     this.timesheets.set(timesheetId, timesheet);
 
     logger.info(`Timesheet submitted: ${timesheetId}`, {
-      action: 'timesheet_submitted',
+      action: 'apos;timesheet_submitted'apos;,
       metadata: { timesheetId, userId: timesheet.userId }
     });
 
@@ -692,7 +692,7 @@ class TimeTrackingManager {
     const timesheet = this.timesheets.get(timesheetId);
     if (!timesheet) return null;
 
-    timesheet.status = 'approved';
+    timesheet.status = 'apos;approved'apos;;
     timesheet.approvedBy = approvedBy;
     timesheet.approvedAt = new Date();
     timesheet.updatedAt = new Date();
@@ -700,7 +700,7 @@ class TimeTrackingManager {
     this.timesheets.set(timesheetId, timesheet);
 
     logger.info(`Timesheet approved: ${timesheetId}`, {
-      action: 'timesheet_approved',
+      action: 'apos;timesheet_approved'apos;,
       metadata: { timesheetId, approvedBy }
     });
 
@@ -708,7 +708,7 @@ class TimeTrackingManager {
   }
 
   // Gestion des dépenses
-  addExpense(expense: Omit<Expense, 'id' | 'createdAt' | 'updatedAt'>): Expense {
+  addExpense(expense: Omit<Expense, 'apos;id'apos; | 'apos;createdAt'apos; | 'apos;updatedAt'apos;>): Expense {
     const newExpense: Expense = {
       ...expense,
       id: `expense_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -719,7 +719,7 @@ class TimeTrackingManager {
     this.expenses.set(newExpense.id, newExpense);
 
     logger.info(`Expense added: ${newExpense.description}`, {
-      action: 'expense_added',
+      action: 'apos;expense_added'apos;,
       metadata: { expenseId: newExpense.id, userId: newExpense.userId, amount: newExpense.amount }
     });
 
@@ -741,7 +741,7 @@ class TimeTrackingManager {
   }
 
   // Gestion des factures
-  createInvoice(invoice: Omit<Invoice, 'id' | 'createdAt' | 'updatedAt'>): Invoice {
+  createInvoice(invoice: Omit<Invoice, 'apos;id'apos; | 'apos;createdAt'apos; | 'apos;updatedAt'apos;>): Invoice {
     const newInvoice: Invoice = {
       ...invoice,
       id: `invoice_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -752,7 +752,7 @@ class TimeTrackingManager {
     this.invoices.set(newInvoice.id, newInvoice);
 
     logger.info(`Invoice created: ${newInvoice.number}`, {
-      action: 'invoice_created',
+      action: 'apos;invoice_created'apos;,
       metadata: { invoiceId: newInvoice.id, clientId: newInvoice.clientId, total: newInvoice.total }
     });
 
@@ -770,22 +770,22 @@ class TimeTrackingManager {
   }
 
   // Statistiques et rapports
-  getTimeTrackingStats(userId: string, period: 'day' | 'week' | 'month' | 'year'): TimeTrackingStats {
+  getTimeTrackingStats(userId: string, period: 'apos;day'apos; | 'apos;week'apos; | 'apos;month'apos; | 'apos;year'apos;): TimeTrackingStats {
     const now = new Date();
     let startDate: Date;
 
     switch (period) {
-      case 'day':
+      case 'apos;day'apos;:
         startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         break;
-      case 'week':
+      case 'apos;week'apos;:
         const dayOfWeek = now.getDay();
         startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek);
         break;
-      case 'month':
+      case 'apos;month'apos;:
         startDate = new Date(now.getFullYear(), now.getMonth(), 1);
         break;
-      case 'year':
+      case 'apos;year'apos;:
         startDate = new Date(now.getFullYear(), 0, 1);
         break;
     }
@@ -814,7 +814,7 @@ class TimeTrackingManager {
       const project = this.projects.get(projectId);
       return {
         projectId,
-        projectName: project?.name || 'Projet inconnu',
+        projectName: project?.name || 'apos;Projet inconnu'apos;,
         hours: stats.hours,
         billableHours: stats.billableHours
       };
@@ -829,8 +829,8 @@ class TimeTrackingManager {
       projects,
       productivity: {
         averageHoursPerDay: totalHours / 7, // Simplifié
-        mostProductiveDay: 'Lundi', // Simplifié
-        leastProductiveDay: 'Dimanche' // Simplifié
+        mostProductiveDay: 'apos;Lundi'apos;, // Simplifié
+        leastProductiveDay: 'apos;Dimanche'apos; // Simplifié
       },
       earnings: {
         total: billableHours * 75, // Taux horaire par défaut
@@ -845,12 +845,12 @@ class TimeTrackingManager {
     const defaultSettings: TimeTrackingSettings = {
       userId,
       defaultHourlyRate: 75,
-      currency: 'CAD',
-      timezone: 'America/Montreal',
+      currency: 'apos;CAD'apos;,
+      timezone: 'apos;America/Montreal'apos;,
       workDays: [1, 2, 3, 4, 5], // Lundi à vendredi
       workHours: {
-        start: '09:00',
-        end: '17:00'
+        start: 'apos;09:00'apos;,
+        end: 'apos;17:00'apos;
       },
       breakTime: 60,
       autoStart: false,
@@ -882,7 +882,7 @@ class TimeTrackingManager {
     this.settings.set(userId, updatedSettings);
 
     logger.info(`User settings updated: ${userId}`, {
-      action: 'user_settings_updated',
+      action: 'apos;user_settings_updated'apos;,
       metadata: { userId }
     });
 
@@ -918,7 +918,7 @@ class TimeTrackingManager {
     }
 
     logger.info(`Old data cleaned up`, {
-      action: 'old_data_cleaned',
+      action: 'apos;old_data_cleaned'apos;,
       metadata: { cutoffDate, daysToKeep }
     });
   }
@@ -1017,7 +1017,7 @@ export const getInvoices = (clientId?: string) => {
   return timeTrackingManager.getInvoices(clientId);
 };
 
-export const getTimeTrackingStats = (userId: string, period: 'day' | 'week' | 'month' | 'year') => {
+export const getTimeTrackingStats = (userId: string, period: 'apos;day'apos; | 'apos;week'apos; | 'apos;month'apos; | 'apos;year'apos;) => {
   return timeTrackingManager.getTimeTrackingStats(userId, period);
 };
 

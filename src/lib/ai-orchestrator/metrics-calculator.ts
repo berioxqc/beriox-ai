@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from 'apos;@/lib/prisma'apos;;
 
 export interface MissionMetrics {
   missionId: string;
@@ -38,7 +38,7 @@ export interface SystemMetrics {
 
 export class MetricsCalculator {
   private static readonly COST_PER_HOUR = 50; // Coût estimé par heure de travail humain
-  private static readonly AI_COST_PER_HOUR = 5; // Coût estimé par heure d'IA
+  private static readonly AI_COST_PER_HOUR = 5; // Coût estimé par heure d'apos;IA
 
   /**
    * Calcule les métriques complètes pour une mission
@@ -72,7 +72,7 @@ export class MetricsCalculator {
       // Calculer le ROI
       const roi = this.calculateROI(cost, quality, satisfaction);
 
-      // Calculer l'efficacité
+      // Calculer l'apos;efficacité
       const efficiency = this.calculateEfficiency(duration, quality);
 
       // Calculer les performances des agents
@@ -93,7 +93,7 @@ export class MetricsCalculator {
         stepMetrics,
       };
     } catch (error) {
-      console.error('Erreur lors du calcul des métriques de mission:', error);
+      console.error('apos;Erreur lors du calcul des métriques de mission:'apos;, error);
       throw error;
     }
   }
@@ -111,7 +111,7 @@ export class MetricsCalculator {
       });
 
       const totalMissions = missions.length;
-      const completedMissions = missions.filter(m => m.status === 'COMPLETED').length;
+      const completedMissions = missions.filter(m => m.status === 'apos;COMPLETED'apos;).length;
       
       const averageQuality = missions.length > 0 
         ? missions.reduce((acc, m) => acc + this.calculateQuality(m), 0) / missions.length
@@ -144,7 +144,7 @@ export class MetricsCalculator {
         performanceTrend,
       };
     } catch (error) {
-      console.error('Erreur lors du calcul des métriques d\'agent:', error);
+      console.error('apos;Erreur lors du calcul des métriques d\'apos;agent:'apos;, error);
       throw error;
     }
   }
@@ -162,7 +162,7 @@ export class MetricsCalculator {
 
       const totalMissions = missions.length;
       const activeMissions = missions.filter(m => 
-        m.status === 'PENDING' || m.status === 'IN_PROGRESS'
+        m.status === 'apos;PENDING'apos; || m.status === 'apos;IN_PROGRESS'apos;
       ).length;
 
       // Calculer le ROI moyen
@@ -173,7 +173,7 @@ export class MetricsCalculator {
         ? missionMetrics.reduce((acc, m) => acc + m.roi, 0) / missionMetrics.length
         : 0;
 
-      // Calculer l'efficacité moyenne
+      // Calculer l'apos;efficacité moyenne
       const averageEfficiency = missionMetrics.length > 0
         ? missionMetrics.reduce((acc, m) => acc + m.efficiency, 0) / missionMetrics.length
         : 0;
@@ -207,13 +207,13 @@ export class MetricsCalculator {
         productivityGain,
       };
     } catch (error) {
-      console.error('Erreur lors du calcul des métriques système:', error);
+      console.error('apos;Erreur lors du calcul des métriques système:'apos;, error);
       throw error;
     }
   }
 
   /**
-   * Calcule la durée d'une mission
+   * Calcule la durée d'apos;une mission
    */
   private static calculateDuration(mission: any): number {
     if (!mission.completedAt || !mission.createdAt) {
@@ -226,7 +226,7 @@ export class MetricsCalculator {
   }
 
   /**
-   * Calcule la qualité d'une mission
+   * Calcule la qualité d'apos;une mission
    */
   private static calculateQuality(mission: any): number {
     if (!mission.deliverables || mission.deliverables.length === 0) {
@@ -243,7 +243,7 @@ export class MetricsCalculator {
       }
 
       // Bonus pour les livrables structurés
-      if (deliverable.structure && deliverable.structure === 'good') {
+      if (deliverable.structure && deliverable.structure === 'apos;good'apos;) {
         score += 0.1;
       }
 
@@ -254,7 +254,7 @@ export class MetricsCalculator {
   }
 
   /**
-   * Calcule le coût d'une mission
+   * Calcule le coût d'apos;une mission
    */
   private static calculateCost(duration: number): number {
     const hours = duration / (1000 * 60 * 60);
@@ -262,21 +262,21 @@ export class MetricsCalculator {
   }
 
   /**
-   * Calcule le ROI d'une mission
+   * Calcule le ROI d'apos;une mission
    */
   private static calculateROI(cost: number, quality: number, satisfaction: number): number {
     if (cost === 0) return 0;
 
     // ROI basé sur la qualité, la satisfaction et les économies de temps
     const valueMultiplier = (quality + satisfaction) / 2;
-    const timeValue = this.COST_PER_HOUR * 8; // Valeur d'une journée de travail
+    const timeValue = this.COST_PER_HOUR * 8; // Valeur d'apos;une journée de travail
     const totalValue = timeValue * valueMultiplier;
 
     return ((totalValue - cost) / cost) * 100;
   }
 
   /**
-   * Calcule l'efficacité d'une mission
+   * Calcule l'apos;efficacité d'apos;une mission
    */
   private static calculateEfficiency(duration: number, quality: number): number {
     // Efficacité basée sur la durée et la qualité
@@ -303,7 +303,7 @@ export class MetricsCalculator {
       const performance = this.calculateQuality(mission);
       return { [mission.agentId]: performance };
     } catch (error) {
-      console.error('Erreur lors du calcul des performances d\'agent:', error);
+      console.error('apos;Erreur lors du calcul des performances d\'apos;agent:'apos;, error);
       return {};
     }
   }
@@ -312,22 +312,22 @@ export class MetricsCalculator {
    * Calcule les métriques des étapes
    */
   private static async calculateStepMetrics(missionId: string): Promise<Record<string, any>> {
-    // TODO: Implémenter le calcul des métriques d'étapes
-    // Pour l'instant, retourner des métriques de base
+    // TODO: Implémenter le calcul des métriques d'apos;étapes
+    // Pour l'apos;instant, retourner des métriques de base
     return {
-      'step-1': { duration: 0, quality: 0.8, status: 'completed' },
-      'step-2': { duration: 0, quality: 0.8, status: 'completed' },
+      'apos;step-1'apos;: { duration: 0, quality: 0.8, status: 'apos;completed'apos; },
+      'apos;step-2'apos;: { duration: 0, quality: 0.8, status: 'apos;completed'apos; },
     };
   }
 
   /**
-   * Calcule la tendance de performance d'un agent
+   * Calcule la tendance de performance d'apos;un agent
    */
   private static async calculatePerformanceTrend(agentId: string): Promise<number> {
     try {
       const missions = await prisma.mission.findMany({
         where: { agentId },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: 'apos;desc'apos; },
         take: 10,
       });
 
@@ -341,7 +341,7 @@ export class MetricsCalculator {
 
       return recentQuality - olderQuality;
     } catch (error) {
-      console.error('Erreur lors du calcul de la tendance de performance:', error);
+      console.error('apos;Erreur lors du calcul de la tendance de performance:'apos;, error);
       return 0;
     }
   }
@@ -352,7 +352,7 @@ export class MetricsCalculator {
   private static calculateSystemHealth(missions: any[]): number {
     if (missions.length === 0) return 1;
 
-    const completedMissions = missions.filter(m => m.status === 'COMPLETED');
+    const completedMissions = missions.filter(m => m.status === 'apos;COMPLETED'apos;);
     const completionRate = completedMissions.length / missions.length;
 
     const averageQuality = missions.reduce((acc, m) => acc + this.calculateQuality(m), 0) / missions.length;
@@ -396,12 +396,12 @@ export class MetricsCalculator {
   // Méthodes utilitaires
   private static getAgentSpecializations(agentId: string): string[] {
     const specializations: Record<string, string[]> = {
-      'karine-ai': ['Content', 'SEO', 'Marketing'],
-      'hugo-ai': ['Technical', 'Development', 'Automation'],
-      'jp-bot': ['Business', 'Strategy', 'Analysis'],
-      'elodie-ai': ['Design', 'Creative', 'Visual'],
-      'clara-la-closeuse': ['Research', 'Investigation', 'Analysis'],
-      'faucon-le-maitre-focus': ['Focus', 'Productivity', 'Optimization'],
+      'apos;karine-ai'apos;: ['apos;Content'apos;, 'apos;SEO'apos;, 'apos;Marketing'apos;],
+      'apos;hugo-ai'apos;: ['apos;Technical'apos;, 'apos;Development'apos;, 'apos;Automation'apos;],
+      'apos;jp-bot'apos;: ['apos;Business'apos;, 'apos;Strategy'apos;, 'apos;Analysis'apos;],
+      'apos;elodie-ai'apos;: ['apos;Design'apos;, 'apos;Creative'apos;, 'apos;Visual'apos;],
+      'apos;clara-la-closeuse'apos;: ['apos;Research'apos;, 'apos;Investigation'apos;, 'apos;Analysis'apos;],
+      'apos;faucon-le-maitre-focus'apos;: ['apos;Focus'apos;, 'apos;Productivity'apos;, 'apos;Optimization'apos;],
     };
 
     return specializations[agentId] || [];
@@ -409,12 +409,12 @@ export class MetricsCalculator {
 
   private static getAgentName(agentId: string): string {
     const names: Record<string, string> = {
-      'karine-ai': 'KarineAI',
-      'hugo-ai': 'HugoAI',
-      'jp-bot': 'JPBot',
-      'elodie-ai': 'ElodieAI',
-      'clara-la-closeuse': 'ClaraLaCloseuse',
-      'faucon-le-maitre-focus': 'FauconLeMaitreFocus',
+      'apos;karine-ai'apos;: 'apos;KarineAI'apos;,
+      'apos;hugo-ai'apos;: 'apos;HugoAI'apos;,
+      'apos;jp-bot'apos;: 'apos;JPBot'apos;,
+      'apos;elodie-ai'apos;: 'apos;ElodieAI'apos;,
+      'apos;clara-la-closeuse'apos;: 'apos;ClaraLaCloseuse'apos;,
+      'apos;faucon-le-maitre-focus'apos;: 'apos;FauconLeMaitreFocus'apos;,
     };
 
     return names[agentId] || agentId;

@@ -1,15 +1,15 @@
-import { ApiResponse, SecurityData } from './types';
+import { ApiResponse, SecurityData } from 'apos;./types'apos;;
 
 export class MozillaObservatoryAPI {
-  private baseUrl = 'https://http-observatory.security.mozilla.org/api/v1';
+  private baseUrl = 'apos;https://http-observatory.security.mozilla.org/api/v1'apos;;
 
   async scanWebsite(domain: string): Promise<ApiResponse<SecurityData>> {
     try {
       // Démarrer un scan
       const scanResponse = await fetch(`${this.baseUrl}/analyze?host=${domain}`, {
-        method: 'POST',
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/json',
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
       });
 
@@ -28,7 +28,7 @@ export class MozillaObservatoryAPI {
         const resultResponse = await fetch(`${this.baseUrl}/analyze?host=${domain}`);
         results = await resultResponse.json();
 
-        if (results.state === 'FINISHED') {
+        if (results.state === 'apos;FINISHED'apos;) {
           break;
         }
 
@@ -36,8 +36,8 @@ export class MozillaObservatoryAPI {
         attempts++;
       }
 
-      if (!results || results.state !== 'FINISHED') {
-        throw new Error('Scan timeout - le scan n\'a pas pu se terminer');
+      if (!results || results.state !== 'apos;FINISHED'apos;) {
+        throw new Error('apos;Scan timeout - le scan n\'apos;a pas pu se terminer'apos;);
       }
 
       // Récupérer les détails du scan
@@ -48,9 +48,9 @@ export class MozillaObservatoryAPI {
       const vulnerabilities = Object.entries(details)
         .filter(([key, value]: [string, any]) => value.pass === false)
         .map(([key, value]: [string, any]) => ({
-          type: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+          type: key.replace(/_/g, 'apos; 'apos;).replace(/\b\w/g, l => l.toUpperCase()),
           severity: this.mapSeverity(value.score_modifier),
-          description: value.score_description || 'Problème de sécurité détecté',
+          description: value.score_description || 'apos;Problème de sécurité détecté'apos;,
           recommendation: this.getRecommendation(key),
         }));
 
@@ -58,9 +58,9 @@ export class MozillaObservatoryAPI {
         success: true,
         data: {
           domain,
-          overallGrade: results.grade || 'F',
-          httpsGrade: results.grade || 'F',
-          sslGrade: 'N/A', // Mozilla Observatory ne fournit pas directement le grade SSL
+          overallGrade: results.grade || 'apos;F'apos;,
+          httpsGrade: results.grade || 'apos;F'apos;,
+          sslGrade: 'apos;N/A'apos;, // Mozilla Observatory ne fournit pas directement le grade SSL
           vulnerabilities,
           certificates: [], // Sera complété par SSL Labs
         },
@@ -73,24 +73,24 @@ export class MozillaObservatoryAPI {
     }
   }
 
-  private mapSeverity(scoreModifier: number): 'low' | 'medium' | 'high' | 'critical' {
-    if (scoreModifier <= -10) return 'critical';
-    if (scoreModifier <= -5) return 'high';
-    if (scoreModifier <= -2) return 'medium';
-    return 'low';
+  private mapSeverity(scoreModifier: number): 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos; | 'apos;critical'apos; {
+    if (scoreModifier <= -10) return 'apos;critical'apos;;
+    if (scoreModifier <= -5) return 'apos;high'apos;;
+    if (scoreModifier <= -2) return 'apos;medium'apos;;
+    return 'apos;low'apos;;
   }
 
   private getRecommendation(testName: string): string {
     const recommendations: Record<string, string> = {
-      'content_security_policy': 'Implémentez une Content Security Policy (CSP) pour prévenir les attaques XSS',
-      'strict_transport_security': 'Activez HTTP Strict Transport Security (HSTS) pour forcer HTTPS',
-      'x_frame_options': 'Configurez X-Frame-Options pour prévenir le clickjacking',
-      'x_content_type_options': 'Ajoutez X-Content-Type-Options: nosniff pour prévenir le MIME sniffing',
-      'referrer_policy': 'Définissez une Referrer Policy appropriée pour contrôler les informations de référence',
-      'cookies': 'Sécurisez vos cookies avec les attributs Secure, HttpOnly et SameSite',
+      'apos;content_security_policy'apos;: 'apos;Implémentez une Content Security Policy (CSP) pour prévenir les attaques XSS'apos;,
+      'apos;strict_transport_security'apos;: 'apos;Activez HTTP Strict Transport Security (HSTS) pour forcer HTTPS'apos;,
+      'apos;x_frame_options'apos;: 'apos;Configurez X-Frame-Options pour prévenir le clickjacking'apos;,
+      'apos;x_content_type_options'apos;: 'apos;Ajoutez X-Content-Type-Options: nosniff pour prévenir le MIME sniffing'apos;,
+      'apos;referrer_policy'apos;: 'apos;Définissez une Referrer Policy appropriée pour contrôler les informations de référence'apos;,
+      'apos;cookies'apos;: 'apos;Sécurisez vos cookies avec les attributs Secure, HttpOnly et SameSite'apos;,
     };
 
-    return recommendations[testName] || 'Consultez la documentation Mozilla Observatory pour plus de détails';
+    return recommendations[testName] || 'apos;Consultez la documentation Mozilla Observatory pour plus de détails'apos;;
   }
 
   async getHistory(domain: string): Promise<ApiResponse<any[]>> {

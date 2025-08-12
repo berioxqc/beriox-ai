@@ -12,14 +12,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Vérifier si l'utilisateur est super admin
-    if (session.user.email !== 'info@beriox.ca') {
+    // Vérifier si l'apos;utilisateur est super admin
+    if (session.user.email !== 'apos;info@beriox.ca'apos;) {
       return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
     }
 
     const { searchParams } = new URL(req.url);
-    const status = searchParams.get('status');
-    const type = searchParams.get('type');
+    const status = searchParams.get('apos;status'apos;);
+    const type = searchParams.get('apos;type'apos;);
 
     const whereClause: any = {};
     if (status) whereClause.status = status;
@@ -36,14 +36,14 @@ export async function GET(req: NextRequest) {
           }
         }
       },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'apos;desc'apos; }
     });
 
     // Calculer des statistiques
     const stats = {
       total: coupons.length,
-      active: coupons.filter(c => c.status === 'ACTIVE').length,
-      used: coupons.filter(c => c.status === 'USED').length,
+      active: coupons.filter(c => c.status === 'apos;ACTIVE'apos;).length,
+      used: coupons.filter(c => c.status === 'apos;USED'apos;).length,
       expired: coupons.filter(c => c.validUntil && c.validUntil < new Date()).length,
       totalRedemptions: coupons.reduce((acc, c) => acc + c.currentUses, 0)
     };
@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ coupons, stats });
 
   } catch (error) {
-    console.error('Erreur récupération coupons:', error);
+    console.error('apos;Erreur récupération coupons:'apos;, error);
     return NextResponse.json({ 
       error: "Erreur lors de la récupération des coupons" 
     }, { status: 500 });
@@ -67,8 +67,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    // Vérifier si l'utilisateur est super admin
-    if (session.user.email !== 'info@beriox.ca') {
+    // Vérifier si l'apos;utilisateur est super admin
+    if (session.user.email !== 'apos;info@beriox.ca'apos;) {
       return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
     }
 
@@ -97,13 +97,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Code et type sont requis" }, { status: 400 });
     }
 
-    if (type === 'PREMIUM_TRIAL' && (!planId || !duration)) {
+    if (type === 'apos;PREMIUM_TRIAL'apos; && (!planId || !duration)) {
       return NextResponse.json({ 
         error: "Plan et durée requis pour les essais premium" 
       }, { status: 400 });
     }
 
-    // Vérifier que le code n'existe pas déjà
+    // Vérifier que le code n'apos;existe pas déjà
     const existingCoupon = await prisma.coupon.findUnique({
       where: { code: code.toUpperCase() }
     });
@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Erreur création coupon:', error);
+    console.error('apos;Erreur création coupon:'apos;, error);
     return NextResponse.json({ 
       error: "Erreur lors de la création du coupon" 
     }, { status: 500 });
@@ -154,7 +154,7 @@ export async function PUT(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     
-    if (!session?.user?.email || session.user.email !== 'info@beriox.ca') {
+    if (!session?.user?.email || session.user.email !== 'apos;info@beriox.ca'apos;) {
       return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 });
     }
 
@@ -177,7 +177,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ success: true, coupon: updatedCoupon });
 
   } catch (error) {
-    console.error('Erreur mise à jour coupon:', error);
+    console.error('apos;Erreur mise à jour coupon:'apos;, error);
     return NextResponse.json({ 
       error: "Erreur lors de la mise à jour du coupon" 
     }, { status: 500 });

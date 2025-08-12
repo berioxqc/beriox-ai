@@ -1,8 +1,8 @@
-import { ApiResponse, UptimeData } from './types';
+import { ApiResponse, UptimeData } from 'apos;./types'apos;;
 
 export class UptimeRobotAPI {
   private apiKey: string;
-  private baseUrl = 'https://api.uptimerobot.com/v2';
+  private baseUrl = 'apos;https://api.uptimerobot.com/v2'apos;;
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -11,16 +11,16 @@ export class UptimeRobotAPI {
   async getMonitors(): Promise<ApiResponse<UptimeData[]>> {
     try {
       const response = await fetch(`${this.baseUrl}/getMonitors`, {
-        method: 'POST',
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'apos;Content-Type'apos;: 'apos;application/x-www-form-urlencoded'apos;,
         },
         body: new URLSearchParams({
           api_key: this.apiKey,
-          format: 'json',
-          logs: '1',
-          log_types: '1-2', // down et up events
-          logs_limit: '10',
+          format: 'apos;json'apos;,
+          logs: 'apos;1'apos;,
+          log_types: 'apos;1-2'apos;, // down et up events
+          logs_limit: 'apos;10'apos;,
         }),
       });
 
@@ -30,15 +30,15 @@ export class UptimeRobotAPI {
 
       const data = await response.json();
 
-      if (data.stat !== 'ok') {
-        throw new Error(data.error?.message || 'UptimeRobot API error');
+      if (data.stat !== 'apos;ok'apos;) {
+        throw new Error(data.error?.message || 'apos;UptimeRobot API error'apos;);
       }
 
       const monitors = data.monitors?.map((monitor: any) => {
         const incidents = monitor.logs?.map((log: any) => ({
           timestamp: new Date(log.datetime * 1000),
           duration: log.duration || 0,
-          reason: log.reason?.detail || 'Unknown',
+          reason: log.reason?.detail || 'apos;Unknown'apos;,
         })) || [];
 
         return {
@@ -65,17 +65,17 @@ export class UptimeRobotAPI {
   async createMonitor(url: string, friendlyName: string): Promise<ApiResponse<any>> {
     try {
       const response = await fetch(`${this.baseUrl}/newMonitor`, {
-        method: 'POST',
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'apos;Content-Type'apos;: 'apos;application/x-www-form-urlencoded'apos;,
         },
         body: new URLSearchParams({
           api_key: this.apiKey,
-          format: 'json',
-          type: '1', // HTTP(s)
+          format: 'apos;json'apos;,
+          type: 'apos;1'apos;, // HTTP(s)
           url: url,
           friendly_name: friendlyName,
-          interval: '300', // 5 minutes
+          interval: 'apos;300'apos;, // 5 minutes
         }),
       });
 
@@ -85,8 +85,8 @@ export class UptimeRobotAPI {
 
       const data = await response.json();
 
-      if (data.stat !== 'ok') {
-        throw new Error(data.error?.message || 'Failed to create monitor');
+      if (data.stat !== 'apos;ok'apos;) {
+        throw new Error(data.error?.message || 'apos;Failed to create monitor'apos;);
       }
 
       return {
@@ -104,13 +104,13 @@ export class UptimeRobotAPI {
   async deleteMonitor(monitorId: string): Promise<ApiResponse<boolean>> {
     try {
       const response = await fetch(`${this.baseUrl}/deleteMonitor`, {
-        method: 'POST',
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'apos;Content-Type'apos;: 'apos;application/x-www-form-urlencoded'apos;,
         },
         body: new URLSearchParams({
           api_key: this.apiKey,
-          format: 'json',
+          format: 'apos;json'apos;,
           id: monitorId,
         }),
       });
@@ -122,9 +122,9 @@ export class UptimeRobotAPI {
       const data = await response.json();
 
       return {
-        success: data.stat === 'ok',
-        data: data.stat === 'ok',
-        error: data.stat !== 'ok' ? data.error?.message : undefined,
+        success: data.stat === 'apos;ok'apos;,
+        data: data.stat === 'apos;ok'apos;,
+        error: data.stat !== 'apos;ok'apos; ? data.error?.message : undefined,
       };
     } catch (error: any) {
       return {
@@ -137,13 +137,13 @@ export class UptimeRobotAPI {
   async getAccountDetails(): Promise<ApiResponse<any>> {
     try {
       const response = await fetch(`${this.baseUrl}/getAccountDetails`, {
-        method: 'POST',
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'apos;Content-Type'apos;: 'apos;application/x-www-form-urlencoded'apos;,
         },
         body: new URLSearchParams({
           api_key: this.apiKey,
-          format: 'json',
+          format: 'apos;json'apos;,
         }),
       });
 
@@ -153,8 +153,8 @@ export class UptimeRobotAPI {
 
       const data = await response.json();
 
-      if (data.stat !== 'ok') {
-        throw new Error(data.error?.message || 'Failed to get account details');
+      if (data.stat !== 'apos;ok'apos;) {
+        throw new Error(data.error?.message || 'apos;Failed to get account details'apos;);
       }
 
       return {
@@ -169,14 +169,14 @@ export class UptimeRobotAPI {
     }
   }
 
-  private mapStatus(status: number): 'up' | 'down' | 'paused' {
+  private mapStatus(status: number): 'apos;up'apos; | 'apos;down'apos; | 'apos;paused'apos; {
     switch (status) {
-      case 0: return 'paused';
-      case 1: return 'down';
-      case 2: return 'up';
-      case 8: return 'down'; // seems down
-      case 9: return 'down'; // seems up
-      default: return 'down';
+      case 0: return 'apos;paused'apos;;
+      case 1: return 'apos;down'apos;;
+      case 2: return 'apos;up'apos;;
+      case 8: return 'apos;down'apos;; // seems down
+      case 9: return 'apos;down'apos;; // seems up
+      default: return 'apos;down'apos;;
     }
   }
 }

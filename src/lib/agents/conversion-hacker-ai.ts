@@ -1,5 +1,5 @@
 /**
- * ConversionHackerAI – L'optimisateur obsessionnel
+ * ConversionHackerAI – L'apos;optimisateur obsessionnel
  * Rôle : Teste et propose des optimisations pour augmenter les conversions
  */
 
@@ -8,8 +8,8 @@ export interface ConversionMetric {
   currentValue: number;
   targetValue: number;
   change: number;
-  impact: 'high' | 'medium' | 'low';
-  priority: 'critical' | 'high' | 'medium' | 'low';
+  impact: 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
+  priority: 'apos;critical'apos; | 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
 }
 
 export interface ABTest {
@@ -23,7 +23,7 @@ export interface ABTest {
     traffic: number; // percentage
   }[];
   metrics: string[];
-  status: 'draft' | 'running' | 'paused' | 'completed';
+  status: 'apos;draft'apos; | 'apos;running'apos; | 'apos;paused'apos; | 'apos;completed'apos;;
   startDate: string;
   endDate?: string;
   results?: {
@@ -55,8 +55,8 @@ export interface OptimizationOpportunity {
     improvement: number;
     confidence: number;
   };
-  effort: 'low' | 'medium' | 'high';
-  priority: 'critical' | 'high' | 'medium' | 'low';
+  effort: 'apos;low'apos; | 'apos;medium'apos; | 'apos;high'apos;;
+  priority: 'apos;critical'apos; | 'apos;high'apos; | 'apos;medium'apos; | 'apos;low'apos;;
   implementation: {
     steps: string[];
     timeline: string;
@@ -137,8 +137,8 @@ export class ConversionHackerAI {
       
       return report;
     } catch (error) {
-      console.error("🎯 ConversionHackerAI: Erreur lors de l'analyse:", error);
-      throw new Error("Impossible de compléter l'analyse des conversions");
+      console.error("🎯 ConversionHackerAI: Erreur lors de l'apos;analyse:", error);
+      throw new Error("Impossible de compléter l'apos;analyse des conversions");
     }
   }
 
@@ -152,48 +152,48 @@ export class ConversionHackerAI {
         currentValue: 2.8,
         targetValue: 4.0,
         change: -1.2,
-        impact: 'high',
-        priority: 'critical'
+        impact: 'apos;high'apos;,
+        priority: 'apos;critical'apos;
       },
       {
         name: "Taux de conversion page produit",
         currentValue: 4.2,
         targetValue: 6.0,
         change: -1.8,
-        impact: 'high',
-        priority: 'high'
+        impact: 'apos;high'apos;,
+        priority: 'apos;high'apos;
       },
       {
-        name: "Taux d'abandon panier",
+        name: "Taux d'apos;abandon panier",
         currentValue: 68.5,
         targetValue: 50.0,
         change: 18.5,
-        impact: 'high',
-        priority: 'critical'
+        impact: 'apos;high'apos;,
+        priority: 'apos;critical'apos;
       },
       {
         name: "Temps sur page",
         currentValue: 145,
         targetValue: 180,
         change: -35,
-        impact: 'medium',
-        priority: 'medium'
+        impact: 'apos;medium'apos;,
+        priority: 'apos;medium'apos;
       },
       {
         name: "Taux de rebond",
         currentValue: 42.3,
         targetValue: 35.0,
         change: 7.3,
-        impact: 'medium',
-        priority: 'high'
+        impact: 'apos;medium'apos;,
+        priority: 'apos;high'apos;
       },
       {
         name: "Pages vues par session",
         currentValue: 3.2,
         targetValue: 4.5,
         change: -1.3,
-        impact: 'medium',
-        priority: 'medium'
+        impact: 'apos;medium'apos;,
+        priority: 'apos;medium'apos;
       }
     ];
 
@@ -207,16 +207,16 @@ export class ConversionHackerAI {
     const tests: ABTest[] = [
       {
         id: "test-001",
-        name: "Optimisation CTA Page d'accueil",
+        name: "Optimisation CTA Page d'apos;accueil",
         description: "Test de différents textes et couleurs pour le bouton CTA principal",
         hypothesis: "Un CTA plus visible et avec un texte plus persuasif augmentera les conversions de 15%",
         variants: [
           { name: "Contrôle", description: "CTA actuel", traffic: 50 },
-          { name: "Variante A", description: "CTA rouge avec 'Commencer maintenant'", traffic: 25 },
-          { name: "Variante B", description: "CTA vert avec 'Essai gratuit'", traffic: 25 }
+          { name: "Variante A", description: "CTA rouge avec 'apos;Commencer maintenant'apos;", traffic: 25 },
+          { name: "Variante B", description: "CTA vert avec 'apos;Essai gratuit'apos;", traffic: 25 }
         ],
         metrics: ["Taux de conversion", "Clics CTA", "Temps sur page"],
-        status: 'running',
+        status: 'apos;running'apos;,
         startDate: "2024-01-15",
         results: {
           winner: "Variante A",
@@ -228,14 +228,14 @@ export class ConversionHackerAI {
       {
         id: "test-002",
         name: "Simplification formulaire",
-        description: "Réduction du nombre de champs dans le formulaire d'inscription",
+        description: "Réduction du nombre de champs dans le formulaire d'apos;inscription",
         hypothesis: "Moins de champs = plus de conversions",
         variants: [
           { name: "Contrôle", description: "Formulaire actuel (8 champs)", traffic: 50 },
           { name: "Variante A", description: "Formulaire simplifié (4 champs)", traffic: 50 }
         ],
-        metrics: ["Taux de conversion", "Taux d'abandon", "Temps de remplissage"],
-        status: 'running',
+        metrics: ["Taux de conversion", "Taux d'apos;abandon", "Temps de remplissage"],
+        status: 'apos;running'apos;,
         startDate: "2024-01-20"
       }
     ];
@@ -244,35 +244,35 @@ export class ConversionHackerAI {
   }
 
   /**
-   * Identifie les opportunités d'optimisation
+   * Identifie les opportunités d'apos;optimisation
    */
   private identifyOpportunities(metrics: ConversionMetric[]): OptimizationOpportunity[] {
     const opportunities: OptimizationOpportunity[] = [];
 
-    // Opportunité basée sur le taux d'abandon panier
-    const cartAbandonment = metrics.find(m => m.name === "Taux d'abandon panier");
+    // Opportunité basée sur le taux d'apos;abandon panier
+    const cartAbandonment = metrics.find(m => m.name === "Taux d'apos;abandon panier");
     if (cartAbandonment && cartAbandonment.change > 10) {
       opportunities.push({
         id: "opp-001",
         title: "Optimisation du processus de checkout",
-        description: "Réduire le taux d'abandon panier en simplifiant le processus de paiement",
+        description: "Réduire le taux d'apos;abandon panier en simplifiant le processus de paiement",
         page: "/checkout",
         element: "Formulaire de paiement",
         currentState: "Processus en 3 étapes avec 8 champs",
         proposedChange: "Processus en 2 étapes avec 5 champs + sauvegarde automatique",
         expectedImpact: {
-          metric: "Taux d'abandon panier",
+          metric: "Taux d'apos;abandon panier",
           improvement: -15,
           confidence: 85
         },
-        effort: 'medium',
-        priority: 'critical',
+        effort: 'apos;medium'apos;,
+        priority: 'apos;critical'apos;,
         implementation: {
           steps: [
-            "Analyser les points d'abandon actuels",
+            "Analyser les points d'apos;abandon actuels",
             "Redesign du formulaire de checkout",
             "Implémentation de la sauvegarde automatique",
-            "Test A/B avec l'ancien processus"
+            "Test A/B avec l'apos;ancien processus"
           ],
           timeline: "4-6 semaines",
           resources: ["UX Designer", "Développeur Frontend", "Analytics"]
@@ -296,13 +296,13 @@ export class ConversionHackerAI {
           improvement: 12,
           confidence: 78
         },
-        effort: 'high',
-        priority: 'high',
+        effort: 'apos;high'apos;,
+        priority: 'apos;high'apos;,
         implementation: {
           steps: [
             "Audit des pages de landing actuelles",
             "Création de variantes personnalisées",
-            "Ajout d'éléments de social proof",
+            "Ajout d'apos;éléments de social proof",
             "Tests A/B multiples"
           ],
           timeline: "6-8 semaines",
@@ -316,25 +316,25 @@ export class ConversionHackerAI {
     if (timeOnPage && timeOnPage.change < -20) {
       opportunities.push({
         id: "opp-003",
-        title: "Amélioration de l'engagement",
-        description: "Augmenter le temps passé sur les pages pour améliorer l'engagement",
+        title: "Amélioration de l'apos;engagement",
+        description: "Augmenter le temps passé sur les pages pour améliorer l'apos;engagement",
         page: "/produits",
         element: "Contenu et interactions",
-        currentState: "Pages statiques avec peu d'interactions",
+        currentState: "Pages statiques avec peu d'apos;interactions",
         proposedChange: "Contenu interactif + vidéos + FAQ dynamique",
         expectedImpact: {
           metric: "Temps sur page",
           improvement: 25,
           confidence: 82
         },
-        effort: 'medium',
-        priority: 'medium',
+        effort: 'apos;medium'apos;,
+        priority: 'apos;medium'apos;,
         implementation: {
           steps: [
             "Ajout de vidéos produits",
-            "Création d'une FAQ interactive",
+            "Création d'apos;une FAQ interactive",
             "Implémentation de micro-interactions",
-            "Mesure de l'engagement"
+            "Mesure de l'apos;engagement"
           ],
           timeline: "3-4 semaines",
           resources: ["Content Creator", "Développeur", "Videographer"]
@@ -395,7 +395,7 @@ export class ConversionHackerAI {
         insights: [
           "Les images produits génèrent 60% des interactions",
           "Zone de prix peu cliquée",
-          "Boutons d'action bien positionnés"
+          "Boutons d'apos;action bien positionnés"
         ]
       }
     ];
@@ -412,21 +412,21 @@ export class ConversionHackerAI {
     const longTerm: string[] = [];
 
     // Recommandations immédiates basées sur les métriques critiques
-    const criticalMetrics = metrics.filter(m => m.priority === 'critical');
+    const criticalMetrics = metrics.filter(m => m.priority === 'apos;critical'apos;);
     criticalMetrics.forEach(metric => {
       immediate.push(`Optimiser ${metric.name} - actuellement à ${metric.currentValue}% (objectif: ${metric.targetValue}%)`);
     });
 
     // Recommandations court terme basées sur les opportunités
-    const highPriorityOpps = opportunities.filter(o => o.priority === 'high' || o.priority === 'critical');
+    const highPriorityOpps = opportunities.filter(o => o.priority === 'apos;high'apos; || o.priority === 'apos;critical'apos;);
     highPriorityOpps.forEach(opp => {
       shortTerm.push(`Implémenter: ${opp.title} - Impact attendu: ${opp.expectedImpact.improvement}%`);
     });
 
     // Recommandations long terme
-    longTerm.push("Mettre en place un programme d'optimisation continue");
-    longTerm.push("Développer une culture de test A/B dans l'équipe");
-    longTerm.push("Investir dans des outils d'analyse avancés");
+    longTerm.push("Mettre en place un programme d'apos;optimisation continue");
+    longTerm.push("Développer une culture de test A/B dans l'apos;équipe");
+    longTerm.push("Investir dans des outils d'apos;analyse avancés");
 
     return { immediate, shortTerm, longTerm };
   }
@@ -435,7 +435,7 @@ export class ConversionHackerAI {
    * Calcule le résumé
    */
   private calculateSummary(activeTests: ABTest[], opportunities: OptimizationOpportunity[]) {
-    const completedTests = activeTests.filter(t => t.status === 'completed');
+    const completedTests = activeTests.filter(t => t.status === 'apos;completed'apos;);
     const averageImprovement = completedTests.length > 0 
       ? completedTests.reduce((sum, test) => sum + (test.results?.improvement || 0), 0) / completedTests.length
       : 0;
@@ -446,7 +446,7 @@ export class ConversionHackerAI {
 
     return {
       totalTests: activeTests.length,
-      activeTests: activeTests.filter(t => t.status === 'running').length,
+      activeTests: activeTests.filter(t => t.status === 'apos;running'apos;).length,
       completedTests: completedTests.length,
       averageImprovement: Math.round(averageImprovement * 100) / 100,
       totalRevenueImpact: Math.round(totalRevenueImpact * 100) / 100
@@ -464,8 +464,8 @@ export class ConversionHackerAI {
       hypothesis,
       variants,
       metrics: ["Taux de conversion", "Temps sur page", "Taux de rebond"],
-      status: 'draft',
-      startDate: new Date().toISOString().split('T')[0]
+      status: 'apos;draft'apos;,
+      startDate: new Date().toISOString().split('apos;T'apos;)[0]
     };
 
     console.log("🎯 ConversionHackerAI: Nouveau test A/B créé:", test.id);
@@ -481,14 +481,14 @@ export class ConversionHackerAI {
   }
 
   /**
-   * Analyse les résultats d'un test
+   * Analyse les résultats d'apos;un test
    */
   analyzeTestResults(testId: string): any {
-    // Simulation d'analyse de résultats
+    // Simulation d'apos;analyse de résultats
     return {
       testId,
-      status: 'completed',
-      winner: 'Variante A',
+      status: 'apos;completed'apos;,
+      winner: 'apos;Variante A'apos;,
       confidence: 95.2,
       improvement: 18.5,
       sampleSize: 2500,
@@ -505,7 +505,7 @@ export class ConversionHackerAI {
    */
   generateReport(): string {
     if (!this.lastReport) {
-      return "Aucun rapport disponible. Lancez d'abord une analyse des conversions.";
+      return "Aucun rapport disponible. Lancez d'apos;abord une analyse des conversions.";
     }
 
     const { summary, metrics, activeTests, opportunities, recommendations } = this.lastReport;
@@ -522,20 +522,20 @@ export class ConversionHackerAI {
 
     // Métriques critiques
     report += "## 🚨 MÉTRIQUES CRITIQUES\n";
-    const criticalMetrics = metrics.filter(m => m.priority === 'critical');
+    const criticalMetrics = metrics.filter(m => m.priority === 'apos;critical'apos;);
     criticalMetrics.forEach(metric => {
-      const emoji = metric.change > 0 ? '📈' : '📉';
+      const emoji = metric.change > 0 ? 'apos;📈'apos; : 'apos;📉'apos;;
       report += `### ${metric.name}\n`;
       report += `${emoji} **Valeur actuelle:** ${metric.currentValue}%\n`;
       report += `**Objectif:** ${metric.targetValue}%\n`;
-      report += `**Écart:** ${metric.change > 0 ? '+' : ''}${metric.change}%\n\n`;
+      report += `**Écart:** ${metric.change > 0 ? 'apos;+'apos; : 'apos;'apos;}${metric.change}%\n\n`;
     });
 
     // Tests A/B actifs
     if (activeTests.length > 0) {
       report += "## 🔬 TESTS A/B ACTIFS\n";
       activeTests.forEach(test => {
-        const statusEmoji = test.status === 'running' ? '🟢' : '🟡';
+        const statusEmoji = test.status === 'apos;running'apos; ? 'apos;🟢'apos; : 'apos;🟡'apos;;
         report += `### ${test.name}\n`;
         report += `${statusEmoji} **Statut:** ${test.status}\n`;
         report += `**Hypothèse:** ${test.hypothesis}\n`;
@@ -546,11 +546,11 @@ export class ConversionHackerAI {
       });
     }
 
-    // Opportunités d'optimisation
+    // Opportunités d'apos;optimisation
     if (opportunities.length > 0) {
-      report += "## 💡 OPPORTUNITÉS D'OPTIMISATION\n";
+      report += "## 💡 OPPORTUNITÉS D'apos;OPTIMISATION\n";
       opportunities.slice(0, 3).forEach((opp, index) => {
-        const priorityEmoji = opp.priority === 'critical' ? '🚨' : opp.priority === 'high' ? '⚡' : '📋';
+        const priorityEmoji = opp.priority === 'apos;critical'apos; ? 'apos;🚨'apos; : opp.priority === 'apos;high'apos; ? 'apos;⚡'apos; : 'apos;📋'apos;;
         report += `### ${index + 1}. ${opp.title}\n`;
         report += `${priorityEmoji} **Priorité:** ${opp.priority}\n`;
         report += `**Impact attendu:** +${opp.expectedImpact.improvement}% (${opp.expectedImpact.confidence}% confiance)\n`;

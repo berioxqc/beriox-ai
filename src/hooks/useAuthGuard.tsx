@@ -1,7 +1,7 @@
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import React from 'react';
+import { useSession } from 'apos;next-auth/react'apos;;
+import { useRouter } from 'apos;next/navigation'apos;;
+import { useEffect, useState } from 'apos;react'apos;;
+import React from 'apos;react'apos;;
 
 interface UseAuthGuardOptions {
   requireAuth?: boolean;
@@ -17,12 +17,12 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
 
   const {
     requireAuth = false,
-    redirectTo = '/auth/signin',
+    redirectTo = 'apos;/auth/signin'apos;,
     showLimitedContent: defaultShowLimited = true
   } = options;
 
   useEffect(() => {
-    if (status === 'loading') return;
+    if (status === 'apos;loading'apos;) return;
 
     if (requireAuth && !session) {
       // Redirection pour les pages qui nécessitent une authentification stricte
@@ -96,7 +96,7 @@ export function LoginPrompt({
             {showSignUp && (
               <div className="text-center">
                 <p className="text-sm text-gray-400">
-                  Pas encore de compte ?{' '}
+                  Pas encore de compte ?{'apos; 'apos;}
                   <a href="/auth/signup" className="text-purple-300 hover:text-purple-200 transition-colors">
                     Créer un compte
                   </a>

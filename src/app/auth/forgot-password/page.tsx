@@ -1,26 +1,26 @@
 "use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Icon from '@/components/ui/Icon';
+import { useState } from 'apos;react'apos;;
+import Link from 'apos;next/link'apos;;
+import Icon from 'apos;@/components/ui/Icon'apos;;
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('apos;'apos;);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('apos;'apos;);
+  const [success, setSuccess] = useState('apos;'apos;);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
-    setSuccess('');
+    setError('apos;'apos;);
+    setSuccess('apos;'apos;);
 
     try {
-      const response = await fetch('/api/auth/forgot-password', {
-        method: 'POST',
+      const response = await fetch('apos;/api/auth/forgot-password'apos;, {
+        method: 'apos;POST'apos;,
         headers: {
-          'Content-Type': 'application/json',
+          'apos;Content-Type'apos;: 'apos;application/json'apos;,
         },
         body: JSON.stringify({ email }),
       });
@@ -28,13 +28,13 @@ export default function ForgotPasswordPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Erreur lors de l\'envoi de l\'email');
+        setError(data.error || 'apos;Erreur lors de l\'apos;envoi de l\'apos;email'apos;);
       } else {
         setSuccess(data.message);
-        setEmail('');
+        setEmail('apos;'apos;);
       }
     } catch (error) {
-      setError('Erreur lors de l\'envoi de l\'email');
+      setError('apos;Erreur lors de l\'apos;envoi de l\'apos;email'apos;);
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Envoi...' : 'Envoyer le lien de réinitialisation'}
+              {isLoading ? 'apos;Envoi...'apos; : 'apos;Envoyer le lien de réinitialisation'apos;}
             </button>
           </form>
 

@@ -1,5 +1,5 @@
-import { prisma } from './prisma';
-import nodemailer from 'nodemailer';
+import { prisma } from 'apos;./prisma'apos;;
+import nodemailer from 'apos;nodemailer'apos;;
 
 export interface EmailConfig {
   host: string;
@@ -23,7 +23,7 @@ export interface MessageData {
   bccEmails?: string[];
   templateId?: string;
   variables?: Record<string, any>;
-  priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+  priority?: 'apos;LOW'apos; | 'apos;NORMAL'apos; | 'apos;HIGH'apos; | 'apos;URGENT'apos;;
   userId?: string;
   botId?: string;
   ticketId?: string;
@@ -65,32 +65,32 @@ export class MessagingService {
         }
       }
 
-      // Préparer les options d'envoi
+      // Préparer les options d'apos;envoi
       const mailOptions = {
-        from: `"${messageData.fromName || 'Beriox AI'}" <${messageData.fromEmail}>`,
+        from: `"${messageData.fromName || 'apos;Beriox AI'apos;}" <${messageData.fromEmail}>`,
         to: messageData.toEmail,
-        cc: messageData.ccEmails?.join(', '),
-        bcc: messageData.bccEmails?.join(', '),
+        cc: messageData.ccEmails?.join('apos;, 'apos;),
+        bcc: messageData.bccEmails?.join('apos;, 'apos;),
         subject,
         text: body,
         html: bodyHtml,
         priority: messageData.priority?.toLowerCase(),
         headers: {
-          'X-Beriox-Message-Type': 'outbound',
-          'X-Beriox-User-ID': messageData.userId || '',
-          'X-Beriox-Bot-ID': messageData.botId || '',
+          'apos;X-Beriox-Message-Type'apos;: 'apos;outbound'apos;,
+          'apos;X-Beriox-User-ID'apos;: messageData.userId || 'apos;'apos;,
+          'apos;X-Beriox-Bot-ID'apos;: messageData.botId || 'apos;'apos;,
         }
       };
 
-      // Envoyer l'email
+      // Envoyer l'apos;email
       const result = await this.transporter.sendMail(mailOptions);
 
       // Sauvegarder le message en base
       const message = await prisma.message.create({
         data: {
-          type: 'OUTBOUND',
-          status: 'SENT',
-          priority: messageData.priority || 'NORMAL',
+          type: 'apos;OUTBOUND'apos;,
+          status: 'apos;SENT'apos;,
+          priority: messageData.priority || 'apos;NORMAL'apos;,
           subject,
           body,
           bodyHtml,
@@ -121,15 +121,15 @@ export class MessagingService {
       return { success: true, messageId: message.id, emailId: result.messageId };
 
     } catch (error) {
-      console.error('❌ Erreur lors de l\'envoi d\'email:', error);
+      console.error('apos;❌ Erreur lors de l\'apos;envoi d\'apos;email:'apos;, error);
       
-      // Sauvegarder l'erreur en base
+      // Sauvegarder l'apos;erreur en base
       if (messageData.userId) {
         await prisma.message.create({
           data: {
-            type: 'OUTBOUND',
-            status: 'FAILED',
-            priority: messageData.priority || 'NORMAL',
+            type: 'apos;OUTBOUND'apos;,
+            status: 'apos;FAILED'apos;,
+            priority: messageData.priority || 'apos;NORMAL'apos;,
             subject: messageData.subject,
             body: messageData.body,
             bodyHtml: messageData.bodyHtml,
@@ -152,7 +152,7 @@ export class MessagingService {
   }
 
   /**
-   * Créer un template d'email
+   * Créer un template d'apos;email
    */
   async createTemplate(templateData: TemplateData, createdBy?: string): Promise<any> {
     try {
@@ -172,7 +172,7 @@ export class MessagingService {
       console.log(`✅ Template créé: ${template.id} - ${template.name}`);
       return template;
     } catch (error) {
-      console.error('❌ Erreur lors de la création du template:', error);
+      console.error('apos;❌ Erreur lors de la création du template:'apos;, error);
       throw error;
     }
   }
@@ -194,7 +194,7 @@ export class MessagingService {
     
     return await prisma.emailTemplate.findMany({
       where,
-      orderBy: { name: 'asc' }
+      orderBy: { name: 'apos;asc'apos; }
     });
   }
 
@@ -205,8 +205,8 @@ export class MessagingService {
     userId: string;
     subject: string;
     description: string;
-    category: 'TECHNICAL' | 'BILLING' | 'FEATURE_REQUEST' | 'BUG_REPORT' | 'GENERAL' | 'FEEDBACK';
-    priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+    category: 'apos;TECHNICAL'apos; | 'apos;BILLING'apos; | 'apos;FEATURE_REQUEST'apos; | 'apos;BUG_REPORT'apos; | 'apos;GENERAL'apos; | 'apos;FEEDBACK'apos;;
+    priority?: 'apos;LOW'apos; | 'apos;NORMAL'apos; | 'apos;HIGH'apos; | 'apos;URGENT'apos;;
   }): Promise<any> {
     try {
       // Générer un numéro de ticket unique
@@ -218,7 +218,7 @@ export class MessagingService {
           subject: data.subject,
           description: data.description,
           category: data.category,
-          priority: data.priority || 'NORMAL',
+          priority: data.priority || 'apos;NORMAL'apos;,
           userId: data.userId
         },
         include: {
@@ -235,17 +235,17 @@ export class MessagingService {
       console.log(`✅ Ticket créé: ${ticket.ticketNumber} - ${ticket.subject}`);
       return ticket;
     } catch (error) {
-      console.error('❌ Erreur lors de la création du ticket:', error);
+      console.error('apos;❌ Erreur lors de la création du ticket:'apos;, error);
       throw error;
     }
   }
 
   /**
-   * Obtenir les messages d'un utilisateur
+   * Obtenir les messages d'apos;un utilisateur
    */
   async getUserMessages(userId: string, filters?: {
-    type?: 'INBOUND' | 'OUTBOUND' | 'INTERNAL' | 'SUPPORT';
-    status?: 'DRAFT' | 'SENT' | 'DELIVERED' | 'READ' | 'FAILED' | 'PENDING';
+    type?: 'apos;INBOUND'apos; | 'apos;OUTBOUND'apos; | 'apos;INTERNAL'apos; | 'apos;SUPPORT'apos;;
+    status?: 'apos;DRAFT'apos; | 'apos;SENT'apos; | 'apos;DELIVERED'apos; | 'apos;READ'apos; | 'apos;FAILED'apos; | 'apos;PENDING'apos;;
     limit?: number;
     offset?: number;
   }): Promise<any[]> {
@@ -256,7 +256,7 @@ export class MessagingService {
 
     return await prisma.message.findMany({
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: 'apos;desc'apos; },
       take: filters?.limit || 50,
       skip: filters?.offset || 0,
       include: {
@@ -283,9 +283,9 @@ export class MessagingService {
    * Obtenir les tickets de support
    */
   async getSupportTickets(filters?: {
-    status?: 'OPEN' | 'IN_PROGRESS' | 'WAITING_FOR_USER' | 'RESOLVED' | 'CLOSED';
-    priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
-    category?: 'TECHNICAL' | 'BILLING' | 'FEATURE_REQUEST' | 'BUG_REPORT' | 'GENERAL' | 'FEEDBACK';
+    status?: 'apos;OPEN'apos; | 'apos;IN_PROGRESS'apos; | 'apos;WAITING_FOR_USER'apos; | 'apos;RESOLVED'apos; | 'apos;CLOSED'apos;;
+    priority?: 'apos;LOW'apos; | 'apos;NORMAL'apos; | 'apos;HIGH'apos; | 'apos;URGENT'apos;;
+    category?: 'apos;TECHNICAL'apos; | 'apos;BILLING'apos; | 'apos;FEATURE_REQUEST'apos; | 'apos;BUG_REPORT'apos; | 'apos;GENERAL'apos; | 'apos;FEEDBACK'apos;;
     assignedTo?: string;
     limit?: number;
     offset?: number;
@@ -299,7 +299,7 @@ export class MessagingService {
 
     return await prisma.supportTicket.findMany({
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: 'apos;desc'apos; },
       take: filters?.limit || 50,
       skip: filters?.offset || 0,
       include: {
@@ -318,7 +318,7 @@ export class MessagingService {
           }
         },
         messages: {
-          orderBy: { createdAt: 'asc' },
+          orderBy: { createdAt: 'apos;asc'apos; },
           take: 1 // Dernier message
         }
       }
@@ -341,22 +341,22 @@ export class MessagingService {
       });
 
       if (!ticket) {
-        throw new Error('Ticket non trouvé');
+        throw new Error('apos;Ticket non trouvé'apos;);
       }
 
       // Créer le message de réponse
       const message = await prisma.message.create({
         data: {
-          type: data.isInternal ? 'INTERNAL' : 'SUPPORT',
-          status: 'SENT',
+          type: data.isInternal ? 'apos;INTERNAL'apos; : 'apos;SUPPORT'apos;,
+          status: 'apos;SENT'apos;,
           priority: ticket.priority,
           subject: `Re: ${ticket.subject}`,
           body: data.body,
           bodyHtml: data.bodyHtml,
-          fromEmail: data.isInternal ? 'support@beriox.ai' : ticket.user.email,
-          fromName: data.isInternal ? 'Support Beriox' : ticket.user.name,
-          toEmail: data.isInternal ? ticket.user.email : 'support@beriox.ai',
-          toName: data.isInternal ? ticket.user.name : 'Support Beriox',
+          fromEmail: data.isInternal ? 'apos;support@beriox.ai'apos; : ticket.user.email,
+          fromName: data.isInternal ? 'apos;Support Beriox'apos; : ticket.user.name,
+          toEmail: data.isInternal ? ticket.user.email : 'apos;support@beriox.ai'apos;,
+          toName: data.isInternal ? ticket.user.name : 'apos;Support Beriox'apos;,
           userId: data.userId,
           ticketId: ticketId,
           sentAt: new Date(),
@@ -365,7 +365,7 @@ export class MessagingService {
       });
 
       // Mettre à jour le statut du ticket
-      const newStatus = data.isInternal ? 'IN_PROGRESS' : 'WAITING_FOR_USER';
+      const newStatus = data.isInternal ? 'apos;IN_PROGRESS'apos; : 'apos;WAITING_FOR_USER'apos;;
       await prisma.supportTicket.update({
         where: { id: ticketId },
         data: { 
@@ -377,7 +377,7 @@ export class MessagingService {
       console.log(`✅ Réponse au ticket ${ticket.ticketNumber}: ${message.id}`);
       return message;
     } catch (error) {
-      console.error('❌ Erreur lors de la réponse au ticket:', error);
+      console.error('apos;❌ Erreur lors de la réponse au ticket:'apos;, error);
       throw error;
     }
   }
@@ -386,9 +386,9 @@ export class MessagingService {
    * Générer un numéro de ticket unique
    */
   private async generateTicketNumber(): Promise<string> {
-    const prefix = 'BER';
-    const date = new Date().toISOString().slice(2, 8).replace(/-/g, ''); // YYMMDD
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    const prefix = 'apos;BER'apos;;
+    const date = new Date().toISOString().slice(2, 8).replace(/-/g, 'apos;'apos;); // YYMMDD
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, 'apos;0'apos;);
     return `${prefix}${date}${random}`;
   }
 
@@ -398,7 +398,7 @@ export class MessagingService {
   private replaceVariables(text: string, variables: Record<string, any>): string {
     let result = text;
     Object.entries(variables).forEach(([key, value]) => {
-      const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+      const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'apos;g'apos;);
       result = result.replace(regex, String(value));
     });
     return result;
@@ -417,11 +417,11 @@ export class MessagingService {
       resolvedTickets
     ] = await Promise.all([
       prisma.message.count(),
-      prisma.message.count({ where: { status: 'SENT' } }),
-      prisma.message.count({ where: { status: 'FAILED' } }),
+      prisma.message.count({ where: { status: 'apos;SENT'apos; } }),
+      prisma.message.count({ where: { status: 'apos;FAILED'apos; } }),
       prisma.supportTicket.count(),
-      prisma.supportTicket.count({ where: { status: 'OPEN' } }),
-      prisma.supportTicket.count({ where: { status: 'RESOLVED' } })
+      prisma.supportTicket.count({ where: { status: 'apos;OPEN'apos; } }),
+      prisma.supportTicket.count({ where: { status: 'apos;RESOLVED'apos; } })
     ]);
 
     return {

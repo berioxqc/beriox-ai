@@ -13,22 +13,22 @@ export const runtime = "nodejs";
 function generateKarineResponse(objective: string, context?: string) {
   const lower = objective.toLowerCase();
   
-  if (lower.includes('article') || lower.includes('blog') || lower.includes('contenu')) {
+  if (lower.includes('apos;article'apos;) || lower.includes('apos;blog'apos;) || lower.includes('apos;contenu'apos;)) {
     return `# 📝 Plan Editorial - KarineAI
 
-Salut ! 😊 J'ai analysé ta demande d'article et voici ma stratégie bien organisée :
+Salut ! 😊 J'apos;ai analysé ta demande d'apos;article et voici ma stratégie bien organisée :
 
-## 🎯 Angle d'approche recommandé
-${lower.includes('wordpress') ? '- **Approche pratique** : Guide étape par étape avec captures d\'écran' : ''}
-${lower.includes('seo') ? '- **Focus SEO** : Optimisé pour les moteurs de recherche' : ''}
-${lower.includes('tendance') ? '- **Actualité** : Intégrer les dernières nouveautés' : ''}
+## 🎯 Angle d'apos;approche recommandé
+${lower.includes('apos;wordpress'apos;) ? 'apos;- **Approche pratique** : Guide étape par étape avec captures d\'apos;écran'apos; : 'apos;'apos;}
+${lower.includes('apos;seo'apos;) ? 'apos;- **Focus SEO** : Optimisé pour les moteurs de recherche'apos; : 'apos;'apos;}
+${lower.includes('apos;tendance'apos;) ? 'apos;- **Actualité** : Intégrer les dernières nouveautés'apos; : 'apos;'apos;}
 - **Ton accessible** : Éviter le jargon technique
 - **Structure claire** : Intro, développement, conclusion actionnable
 
 ## ✍️ Structure proposée
-1. **Hook accrocheur** (première phrase qui capte l'attention)
-2. **Problème identifié** (pourquoi c'est important maintenant)
-3. **Solution détaillée** (le cœur de l'article)
+1. **Hook accrocheur** (première phrase qui capte l'apos;attention)
+2. **Problème identifié** (pourquoi c'apos;est important maintenant)
+3. **Solution détaillée** (le cœur de l'apos;article)
 4. **Exemples concrets** (cas pratiques)
 5. **Call-to-action** (prochaine étape pour le lecteur)
 
@@ -41,13 +41,13 @@ ${lower.includes('tendance') ? '- **Actualité** : Intégrer les dernières nouv
 *Comme toujours, je structure tout pour que ce soit clair et efficace ! 💝*`;
   }
 
-  if (lower.includes('wordpress') || lower.includes('site')) {
+  if (lower.includes('apos;wordpress'apos;) || lower.includes('apos;site'apos;)) {
     return `# 🔧 Diagnostic WordPress - KarineAI
 
-Hey ! 😊 J'ai regardé ton problème WordPress et voici ma méthode structurée :
+Hey ! 😊 J'apos;ai regardé ton problème WordPress et voici ma méthode structurée :
 
 ## 🔍 Diagnostic initial
-- **Identifier la cause** : Plugin récent ? Mise à jour ? Changement d'hébergement ?
+- **Identifier la cause** : Plugin récent ? Mise à jour ? Changement d'apos;hébergement ?
 - **Reproduire le problème** : Quand ça arrive ? Sur quelles pages ?
 - **Impact utilisateur** : Qui est affecté ? Fréquence du problème ?
 
@@ -57,7 +57,7 @@ Hey ! 😊 J'ai regardé ton problème WordPress et voici ma méthode structuré
 3. **Tests par élimination** :
    - Désactiver plugins récents
    - Tester avec thème par défaut
-   - Vérifier logs d'erreur
+   - Vérifier logs d'apos;erreur
 
 ## 📋 Checklist de vérification
 - [ ] Plugins à jour ?
@@ -69,21 +69,21 @@ Hey ! 😊 J'ai regardé ton problème WordPress et voici ma méthode structuré
 ## 🎯 Prochaines étapes
 Je te recommande de commencer par la sauvegarde, puis on procède étape par étape. Pas de panique, on va régler ça méthodiquement !
 
-*Mon approche : toujours sauvegarder d'abord, puis analyser calmement 💪*`;
+*Mon approche : toujours sauvegarder d'apos;abord, puis analyser calmement 💪*`;
   }
 
-  if (lower.includes('seo') || lower.includes('référencement')) {
+  if (lower.includes('apos;seo'apos;) || lower.includes('apos;référencement'apos;)) {
     return `# 📈 Audit SEO Express - KarineAI
 
 Coucou ! 😊 Voici mon analyse SEO structurée pour ton projet :
 
-## 🎯 Points d'amélioration prioritaires
+## 🎯 Points d'apos;amélioration prioritaires
 1. **Mots-clés principaux** : Définir 3-5 expressions cibles
 2. **Contenu optimisé** : Titres, méta-descriptions, structure H1-H6
 3. **Vitesse de chargement** : Images optimisées, cache activé
 4. **Mobile-friendly** : Responsive design essentiel
 
-## 📊 Plan d'action immédiat
+## 📊 Plan d'apos;action immédiat
 ### Technique (urgent)
 - Installer un plugin SEO (Yoast ou RankMath)
 - Optimiser les images (compression + alt text)
@@ -101,20 +101,20 @@ Coucou ! 😊 Voici mon analyse SEO structurée pour ton projet :
 - **Moyen terme** (3 mois) : Améliorer le positionnement sur 5 mots-clés
 - **Long terme** (6 mois) : Augmenter le trafic organique de 30%
 
-*Mon secret : y aller étape par étape, sans se décourager ! Le SEO c'est un marathon, pas un sprint 🏃‍♀️*`;
+*Mon secret : y aller étape par étape, sans se décourager ! Le SEO c'apos;est un marathon, pas un sprint 🏃‍♀️*`;
   }
 
   // Réponse générique mais personnalisée
   return `# 💡 Recommandations - KarineAI
 
-Salut ! 😊 J'ai bien analysé ta demande et voici ma stratégie organisée :
+Salut ! 😊 J'apos;ai bien analysé ta demande et voici ma stratégie organisée :
 
 ## 🎯 Mon analyse
-${context ? `**Contexte compris** : ${context}` : ''}
-Cette mission me semble ${lower.includes('urgent') ? 'urgente' : 'importante'} et j'ai préparé un plan structuré pour t'aider.
+${context ? `**Contexte compris** : ${context}` : 'apos;'apos;}
+Cette mission me semble ${lower.includes('apos;urgent'apos;) ? 'apos;urgente'apos; : 'apos;importante'apos;} et j'apos;ai préparé un plan structuré pour t'apos;aider.
 
-## 📋 Plan d'action recommandé
-1. **Étape 1** : Définir clairement l'objectif
+## 📋 Plan d'apos;action recommandé
+1. **Étape 1** : Définir clairement l'apos;objectif
 2. **Étape 2** : Rassembler les ressources nécessaires  
 3. **Étape 3** : Mettre en place méthodiquement
 4. **Étape 4** : Tester et ajuster si besoin
@@ -123,27 +123,27 @@ Cette mission me semble ${lower.includes('urgent') ? 'urgente' : 'importante'} e
 - **Commence simple** : Mieux vaut bien faire peu que mal faire beaucoup
 - **Documente tout** : Tu me remercieras plus tard !
 - **Teste régulièrement** : Pour éviter les mauvaises surprises
-- **Demande des retours** : L'avis des utilisateurs est précieux
+- **Demande des retours** : L'apos;avis des utilisateurs est précieux
 
 ## 🎪 Prochaines étapes
-Je pense qu'on peut s'attaquer à ça étape par étape. Tu veux qu'on détaille une partie en particulier ?
+Je pense qu'apos;on peut s'apos;attaquer à ça étape par étape. Tu veux qu'apos;on détaille une partie en particulier ?
 
-*Comme d'habitude, j'ai tout organisé pour que ce soit clair et faisable ! 💝*`;
+*Comme d'apos;habitude, j'apos;ai tout organisé pour que ce soit clair et faisable ! 💝*`;
 }
 
 function generateHugoResponse(objective: string, context?: string) {
   const lower = objective.toLowerCase();
   
-  if (lower.includes('wordpress') || lower.includes('plugin') || lower.includes('site')) {
+  if (lower.includes('apos;wordpress'apos;) || lower.includes('apos;plugin'apos;) || lower.includes('apos;site'apos;)) {
     return `# 💻 Solution Technique - HugoAI
 
-Yo ! 🎮 J'ai regardé ton truc WordPress, voici ce que je vois :
+Yo ! 🎮 J'apos;ai regardé ton truc WordPress, voici ce que je vois :
 
 ## 🔧 Diagnostic technique
 \`\`\`
-Problème détecté : ${lower.includes('lent') ? 'Performance' : lower.includes('bug') ? 'Conflit logiciel' : 'Configuration'}
-Niveau de difficulté : ${lower.includes('urgent') ? 'Critique' : 'Modéré'}
-Temps estimé : ${lower.includes('simple') ? '30 min' : '2-3h'}
+Problème détecté : ${lower.includes('apos;lent'apos;) ? 'apos;Performance'apos; : lower.includes('apos;bug'apos;) ? 'apos;Conflit logiciel'apos; : 'apos;Configuration'apos;}
+Niveau de difficulté : ${lower.includes('apos;urgent'apos;) ? 'apos;Critique'apos; : 'apos;Modéré'apos;}
+Temps estimé : ${lower.includes('apos;simple'apos;) ? 'apos;30 min'apos; : 'apos;2-3h'apos;}
 \`\`\`
 
 ## ⚡ Solutions techniques
@@ -154,7 +154,7 @@ Temps estimé : ${lower.includes('simple') ? '30 min' : '2-3h'}
 
 ### Option 2 : Approche pro
 - Cloner le site en local/staging
-- Analyser les logs d'erreur PHP
+- Analyser les logs d'apos;erreur PHP
 - Tester les corrections sans risque
 
 ## 🛠️ Outils recommandés
@@ -165,28 +165,28 @@ Temps estimé : ${lower.includes('simple') ? '30 min' : '2-3h'}
 ## 🎯 Code snippet utile
 \`\`\`php
 // Debug mode dans wp-config.php
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', false);
+define('apos;WP_DEBUG'apos;, true);
+define('apos;WP_DEBUG_LOG'apos;, true);
+define('apos;WP_DEBUG_DISPLAY'apos;, false);
 \`\`\`
 
 *Astuce de dev : toujours backup avant de toucher quoi que ce soit ! 🔥*`;
   }
 
-  if (lower.includes('design') || lower.includes('css') || lower.includes('style')) {
+  if (lower.includes('apos;design'apos;) || lower.includes('apos;css'apos;) || lower.includes('apos;style'apos;)) {
     return `# 🎨 Amélioration Design - HugoAI
 
 Salut mec ! 🎮 Alors, on va styliser tout ça :
 
 ## 🖼️ Analyse visuelle
-- **Style actuel** : ${lower.includes('moderne') ? 'Plutôt clean' : 'À rafraîchir'}
+- **Style actuel** : ${lower.includes('apos;moderne'apos;) ? 'apos;Plutôt clean'apos; : 'apos;À rafraîchir'apos;}
 - **Problèmes identifiés** : Lisibilité, cohérence, responsive
-- **Potentiel d'amélioration** : Énorme ! 🚀
+- **Potentiel d'apos;amélioration** : Énorme ! 🚀
 
 ## 🎨 Recommandations design
 ### Couleurs
 - **Palette principale** : 3 couleurs max
-- **Contraste** : Respecter les standards d'accessibilité
+- **Contraste** : Respecter les standards d'apos;accessibilité
 - **Cohérence** : Même palette partout
 
 ### Typography  
@@ -200,7 +200,7 @@ Salut mec ! 🎮 Alors, on va styliser tout ça :
 :root {
   --color-primary: #3b82f6;
   --color-secondary: #64748b;
-  --font-main: 'Inter', sans-serif;
+  --font-main: 'apos;Inter'apos;, sans-serif;
 }
 
 /* Grid moderne */
@@ -212,7 +212,7 @@ Salut mec ! 🎮 Alors, on va styliser tout ça :
 \`\`\`
 
 ## 🎯 Prochaine étape
-Tu veux qu'on commence par quoi ? Les couleurs ? La typo ? Ou direct un mockup ?
+Tu veux qu'apos;on commence par quoi ? Les couleurs ? La typo ? Ou direct un mockup ?
 
 *Mon truc : itérer vite, tester souvent ! 🔥*`;
   }
@@ -220,11 +220,11 @@ Tu veux qu'on commence par quoi ? Les couleurs ? La typo ? Ou direct un mockup ?
   // Réponse générique technique
   return `# ⚡ Analysis Technique - HugoAI
 
-Hey ! 🎮 J'ai checké ta demande, voici mon take technique :
+Hey ! 🎮 J'apos;ai checké ta demande, voici mon take technique :
 
 ## 🔍 Ce que je vois
-${context ? `**Context** : ${context}` : ''}
-Niveau technique requis : ${lower.includes('simple') ? 'Facile' : lower.includes('complexe') ? 'Avancé' : 'Intermédiaire'}
+${context ? `**Context** : ${context}` : 'apos;'apos;}
+Niveau technique requis : ${lower.includes('apos;simple'apos;) ? 'apos;Facile'apos; : lower.includes('apos;complexe'apos;) ? 'apos;Avancé'apos; : 'apos;Intermédiaire'apos;}
 
 ## 🛠️ Approche technique
 1. **Setup propre** : Environnement de dev/test
@@ -244,7 +244,7 @@ Niveau technique requis : ${lower.includes('simple') ? 'Facile' : lower.includes
 - Cache navigateur activé
 - CDN si pertinent
 
-Tu veux qu'on dive plus profond sur un aspect en particulier ?
+Tu veux qu'apos;on dive plus profond sur un aspect en particulier ?
 
 *Dev tip : commence simple, complexifie seulement si nécessaire ! 🔥*`;
 }
@@ -257,18 +257,18 @@ function generateJPBotResponse(objective: string, context?: string) {
 Analyse terminée. Données collectées. Rapport généré.
 
 ## 🔢 Métriques pertinentes
-- **Complexité estimée** : ${lower.includes('simple') ? 'Faible (2/10)' : lower.includes('complexe') ? 'Élevée (8/10)' : 'Moyenne (5/10)'}
-- **Temps requis** : ${lower.includes('urgent') ? '< 24h' : lower.includes('rapide') ? '< 48h' : '3-5 jours'}
-- **Ressources nécessaires** : ${lower.includes('budget') ? 'Budget confirmé requis' : 'Ressources internes suffisantes'}
+- **Complexité estimée** : ${lower.includes('apos;simple'apos;) ? 'apos;Faible (2/10)'apos; : lower.includes('apos;complexe'apos;) ? 'apos;Élevée (8/10)'apos; : 'apos;Moyenne (5/10)'apos;}
+- **Temps requis** : ${lower.includes('apos;urgent'apos;) ? 'apos;< 24h'apos; : lower.includes('apos;rapide'apos;) ? 'apos;< 48h'apos; : 'apos;3-5 jours'apos;}
+- **Ressources nécessaires** : ${lower.includes('apos;budget'apos;) ? 'apos;Budget confirmé requis'apos; : 'apos;Ressources internes suffisantes'apos;}
 
 ## 📈 Points de mesure clés
-${lower.includes('seo') ? '- Position actuelle dans SERP\n- Score PageSpeed (mobile/desktop)\n- Taux de clic organique' : ''}
-${lower.includes('site') || lower.includes('wordpress') ? '- Temps de chargement moyen\n- Taux de rebond\n- Conversion rate' : ''}
-${lower.includes('article') || lower.includes('contenu') ? '- Temps de lecture moyen\n- Taux d\'engagement\n- Partages sociaux' : ''}
+${lower.includes('apos;seo'apos;) ? 'apos;- Position actuelle dans SERP\n- Score PageSpeed (mobile/desktop)\n- Taux de clic organique'apos; : 'apos;'apos;}
+${lower.includes('apos;site'apos;) || lower.includes('apos;wordpress'apos;) ? 'apos;- Temps de chargement moyen\n- Taux de rebond\n- Conversion rate'apos; : 'apos;'apos;}
+${lower.includes('apos;article'apos;) || lower.includes('apos;contenu'apos;) ? 'apos;- Temps de lecture moyen\n- Taux d\'apos;engagement\n- Partages sociaux'apos; : 'apos;'apos;}
 
 ## ⚠️ Risques identifiés
-1. **Technique** : ${lower.includes('wordpress') ? 'Conflit plugins potentiel' : 'Compatibilité navigateurs'}
-2. **Délai** : ${lower.includes('urgent') ? 'Timeline serrée = risque qualité' : 'Planning réaliste'}
+1. **Technique** : ${lower.includes('apos;wordpress'apos;) ? 'apos;Conflit plugins potentiel'apos; : 'apos;Compatibilité navigateurs'apos;}
+2. **Délai** : ${lower.includes('apos;urgent'apos;) ? 'apos;Timeline serrée = risque qualité'apos; : 'apos;Planning réaliste'apos;}
 3. **Ressources** : Validation expertise requise
 
 ## 🎯 KPIs recommandés
@@ -291,31 +291,31 @@ Recommandation : Procéder par phases mesurables. Éviter optimisation prématur
 function generateElodieResponse(objective: string, context?: string) {
   const lower = objective.toLowerCase();
   
-  if (lower.includes('article') || lower.includes('blog') || lower.includes('contenu')) {
+  if (lower.includes('apos;article'apos;) || lower.includes('apos;blog'apos;) || lower.includes('apos;contenu'apos;)) {
     return `# ✨ Création de Contenu - ÉlodieAI
 
-Coucou ! 🎵 J'ai lu ta demande et j'ai déjà plein d'idées qui bouillonnent...
+Coucou ! 🎵 J'apos;ai lu ta demande et j'apos;ai déjà plein d'apos;idées qui bouillonnent...
 
 ## 🎨 Vision créative
-L'article que tu veux, je le vois déjà : **${lower.includes('guide') ? 'un guide pratique qui accompagne vraiment' : lower.includes('tendance') ? 'un contenu d\'actualité qui fait réfléchir' : 'un contenu qui marque et inspire'}**.
+L'apos;article que tu veux, je le vois déjà : **${lower.includes('apos;guide'apos;) ? 'apos;un guide pratique qui accompagne vraiment'apos; : lower.includes('apos;tendance'apos;) ? 'apos;un contenu d\'apos;actualité qui fait réfléchir'apos; : 'apos;un contenu qui marque et inspire'apos;}**.
 
 ## ✍️ Approche éditoriale
 ### Ton & Style
-- **Personnalité** : ${lower.includes('professionnel') ? 'Expertise accessible' : lower.includes('décontracté') ? 'Convivial et proche' : 'Équilibre pro/humain'}
+- **Personnalité** : ${lower.includes('apos;professionnel'apos;) ? 'apos;Expertise accessible'apos; : lower.includes('apos;décontracté'apos;) ? 'apos;Convivial et proche'apos; : 'apos;Équilibre pro/humain'apos;}
 - **Rythme** : Phrases variées, respiration naturelle
 - **Engagement** : Questions rhétoriques, interpellation du lecteur
 
 ### Structure narrative
 1. **Accroche émotionnelle** - On capte dès la première ligne
-2. **Storytelling** - Pourquoi c'est important MAINTENANT
+2. **Storytelling** - Pourquoi c'apos;est important MAINTENANT
 3. **Valeur ajoutée** - Le cœur de ton expertise
 4. **Inspiration** - Ce que ça va changer pour eux
 
 ## 🌟 Éléments différenciants
-- **Exemples concrets** tirés de l'expérience réelle
+- **Exemples concrets** tirés de l'apos;expérience réelle
 - **Analogies parlantes** pour expliquer le complexe
 - **Call-to-action naturels** qui ne forcent pas
-- **Personnalité transparente** - on sent l'humain derrière
+- **Personnalité transparente** - on sent l'apos;humain derrière
 
 ## 📝 Conseils rédactionnels
 - **Mots de transition** fluides entre les paragraphes
@@ -323,19 +323,19 @@ L'article que tu veux, je le vois déjà : **${lower.includes('guide') ? 'un gui
 - **Rythme de lecture** : alterner courts/longs paragraphes
 - **SEO naturel** : mots-clés intégrés organiquement
 
-${lower.includes('seo') ? '## 🔍 Optimisation SEO douce\n- Title accrocheur (60 caractères max)\n- Meta description qui donne envie (150 caractères)\n- Structure H1/H2/H3 logique\n- Mots-clés naturellement intégrés' : ''}
+${lower.includes('apos;seo'apos;) ? 'apos;## 🔍 Optimisation SEO douce\n- Title accrocheur (60 caractères max)\n- Meta description qui donne envie (150 caractères)\n- Structure H1/H2/H3 logique\n- Mots-clés naturellement intégrés'apos; : 'apos;'apos;}
 
-*Mon petit plus : j'ajoute toujours une pointe d'émotion qui fait la différence ✨*`;
+*Mon petit plus : j'apos;ajoute toujours une pointe d'apos;émotion qui fait la différence ✨*`;
   }
 
-  if (lower.includes('réseaux') || lower.includes('social') || lower.includes('instagram')) {
+  if (lower.includes('apos;réseaux'apos;) || lower.includes('apos;social'apos;) || lower.includes('apos;instagram'apos;)) {
     return `# 📱 Stratégie Social Media - ÉlodieAI
 
 Hello ! 🎵 Alors, on va faire vibrer tes réseaux sociaux ?
 
 ## 🎨 Ligne éditoriale
 ### Personnalité de marque
-- **Ton** : ${lower.includes('professionnel') ? 'Expert bienveillant' : lower.includes('fun') ? 'Complice et inspirant' : 'Authentique et proche'}
+- **Ton** : ${lower.includes('apos;professionnel'apos;) ? 'apos;Expert bienveillant'apos; : lower.includes('apos;fun'apos;) ? 'apos;Complice et inspirant'apos; : 'apos;Authentique et proche'apos;}
 - **Valeurs** : Transparence, expertise, humanité
 - **Style visuel** : Cohérent, reconnaissable, chaleureux
 
@@ -362,29 +362,29 @@ Hello ! 🎵 Alors, on va faire vibrer tes réseaux sociaux ?
 - **Vendredi** : Interaction/Question communauté
 - **Dimanche** : Personnel/Behind-the-scenes
 
-*Mon secret : l'authenticité touche plus que la perfection ! 🌟*`;
+*Mon secret : l'apos;authenticité touche plus que la perfection ! 🌟*`;
   }
 
   // Réponse générique créative
   return `# 🎨 Vision Créative - ÉlodieAI
 
-Salut ! 🎵 J'ai capté l'essence de ce que tu veux créer...
+Salut ! 🎵 J'apos;ai capté l'apos;essence de ce que tu veux créer...
 
 ## ✨ Ma vision
-${context ? `**Inspiration** : ${context}` : ''}
+${context ? `**Inspiration** : ${context}` : 'apos;'apos;}
 Je sens que ce projet a un potentiel énorme pour **vraiment connecter** avec ton audience.
 
 ## 🎨 Approche créative
 ### Émotion avant tout
-- **Identifier le feeling** qu'on veut transmettre
+- **Identifier le feeling** qu'apos;on veut transmettre
 - **Choisir les mots** qui résonnent vraiment  
-- **Créer l'expérience** plus que le simple contenu
+- **Créer l'apos;expérience** plus que le simple contenu
 
 ### Storytelling naturel
 1. **Hook émotionnel** - Pourquoi ça compte
 2. **Développement personnel** - Ton expertise unique
 3. **Transformation** - Ce que ça change pour eux
-4. **Inspiration** - L'envie d'agir
+4. **Inspiration** - L'apos;envie d'apos;agir
 
 ## 💡 Éléments signature
 - **Authenticité** : Ton style personnel transparent
@@ -398,21 +398,21 @@ Je sens que ce projet a un potentiel énorme pour **vraiment connecter** avec to
 - Exemples tirés du quotidien
 - Ton personnel qui transparaît
 
-Tu veux qu'on explore ensemble quelle direction créative te ressemble le plus ?
+Tu veux qu'apos;on explore ensemble quelle direction créative te ressemble le plus ?
 
-*Mon truc : créer du contenu qui fait du bien autant qu'il informe ✨*`;
+*Mon truc : créer du contenu qui fait du bien autant qu'apos;il informe ✨*`;
 }
 
 function generateClaraResponse(objective: string, context?: string) {
   const lower = objective.toLowerCase();
   
-  if (lower.includes('vente') || lower.includes('conversion') || lower.includes('commercial')) {
+  if (lower.includes('apos;vente'apos;) || lower.includes('apos;conversion'apos;) || lower.includes('apos;commercial'apos;)) {
     return `# 💰 Stratégie de Conversion - ClaraLaCloseuse
 
-Hey ! ☕ Café serré et let's go, on va faire du chiffre !
+Hey ! ☕ Café serré et let'apos;s go, on va faire du chiffre !
 
-## 🎯 Angle d'attaque commercial
-- **Pain point identifié** : ${lower.includes('leads') ? 'Génération de prospects' : lower.includes('conversion') ? 'Taux de transformation' : 'Acquisition clients'}
+## 🎯 Angle d'apos;attaque commercial
+- **Pain point identifié** : ${lower.includes('apos;leads'apos;) ? 'apos;Génération de prospects'apos; : lower.includes('apos;conversion'apos;) ? 'apos;Taux de transformation'apos; : 'apos;Acquisition clients'apos;}
 - **Urgence créée** : Pourquoi MAINTENANT et pas plus tard
 - **Solution évidente** : Ton offre comme LA réponse
 
@@ -438,12 +438,12 @@ Hey ! ☕ Café serré et let's go, on va faire du chiffre !
 ## 🚀 CTAs qui font cliquer
 - "Oui, je veux doubler mes ventes !" 
 - "Je récupère ma méthode gratuite"
-- "J'accède à ma formation maintenant"
+- "J'apos;accède à ma formation maintenant"
 
-*Mon secret : vendre l'émotion, justifier avec la logique ! 💪*`;
+*Mon secret : vendre l'apos;émotion, justifier avec la logique ! 💪*`;
   }
 
-  if (lower.includes('réseaux') || lower.includes('social') || lower.includes('posts')) {
+  if (lower.includes('apos;réseaux'apos;) || lower.includes('apos;social'apos;) || lower.includes('apos;posts'apos;)) {
     return `# 📱 Posts qui Engagent - ClaraLaCloseuse
 
 Salut ! ☕ On va faire des posts qui font réagir et convertir !
@@ -459,21 +459,21 @@ Salut ! ☕ On va faire des posts qui font réagir et convertir !
 - **Erreurs communes** : "5 erreurs qui tuent ton business"
 - **Checklist pratique** : Actionnable immédiatement
 
-## 💡 Techniques d'engagement
+## 💡 Techniques d'apos;engagement
 ### Accroches qui stoppent le scroll
 - "Arrête tout ce que tu fais et lis ça..."
-- "Cette erreur m'a coûté 10k€ (ne la fais pas)"
+- "Cette erreur m'apos;a coûté 10k€ (ne la fais pas)"
 - "Plot twist : ce conseil va changer ta vie"
 
 ### Questions qui font réagir
-- "Qui est d'accord avec moi ?"
+- "Qui est d'apos;accord avec moi ?"
 - "Raconte-moi en commentaire ton plus gros défi"
 - "Vrai ou faux ? [affirmation controversée]"
 
 ## 🔥 Call-to-actions subtils
-- "Sauvegarde ce post si tu veux t'en souvenir !"
-- "Tag quelqu'un qui a besoin de voir ça"
-- "Partage si ça t'a aidé !"
+- "Sauvegarde ce post si tu veux t'apos;en souvenir !"
+- "Tag quelqu'apos;un qui a besoin de voir ça"
+- "Partage si ça t'apos;a aidé !"
 - "DM moi si tu veux en savoir plus"
 
 ## 📅 Planning optimal
@@ -490,7 +490,7 @@ Salut ! ☕ On va faire des posts qui font réagir et convertir !
 Hey ! ☕ On va transformer ça en machine à ventes !
 
 ## 🔍 Diagnostic express
-${context ? `**Contexte** : ${context}` : ''}
+${context ? `**Contexte** : ${context}` : 'apos;'apos;}
 Je vois du potentiel énorme pour **augmenter significativement** tes conversions.
 
 ## 💰 Quick wins immédiats
@@ -502,14 +502,14 @@ Je vois du potentiel énorme pour **augmenter significativement** tes conversion
 ## 🚀 Optimisations prioritaires
 ### Copywriting
 - **Titre** : Problème résolu + bénéfice chiffré
-- **Sous-titres** : Guider le regard vers l'action
+- **Sous-titres** : Guider le regard vers l'apos;action
 - **Bullet points** : Transformer caractéristiques en bénéfices
 - **Témoignages** : Spécifiques, avec résultats mesurables
 
 ### Psychologie de vente
 - **Réciprocité** : Donner avant de demander
 - **Rareté** : Limitation crédible
-- **Autorité** : Preuves d'expertise
+- **Autorité** : Preuves d'apos;expertise
 - **Social proof** : "Déjà +1000 clients satisfaits"
 
 ## 🎯 Tests à lancer
@@ -518,9 +518,9 @@ Je vois du potentiel énorme pour **augmenter significativement** tes conversion
 - Position des témoignages
 - Longueur du texte de vente
 
-Tu veux qu'on se concentre sur quel élément en premier ?
+Tu veux qu'apos;on se concentre sur quel élément en premier ?
 
-*Ma règle d'or : tester, mesurer, optimiser, répéter ! 💪*`;
+*Ma règle d'apos;or : tester, mesurer, optimiser, répéter ! 💪*`;
 }
 
 function generateFauconResponse(objective: string, context?: string) {
@@ -531,9 +531,9 @@ function generateFauconResponse(objective: string, context?: string) {
 Focus. Analyse. Action.
 
 ## 🧠 Épuration mission
-**Objectif réel** : ${objective.length > 50 ? objective.substring(0, 50) + '...' : objective}
-**Complexité détectée** : ${lower.includes('simple') ? 'Minimale' : lower.includes('complexe') ? 'Élevée - Simplification requise' : 'Modérée'}
-**Priorité absolue** : ${lower.includes('urgent') ? 'CRITIQUE' : lower.includes('important') ? 'HAUTE' : 'NORMALE'}
+**Objectif réel** : ${objective.length > 50 ? objective.substring(0, 50) + 'apos;...'apos; : objective}
+**Complexité détectée** : ${lower.includes('apos;simple'apos;) ? 'apos;Minimale'apos; : lower.includes('apos;complexe'apos;) ? 'apos;Élevée - Simplification requise'apos; : 'apos;Modérée'apos;}
+**Priorité absolue** : ${lower.includes('apos;urgent'apos;) ? 'apos;CRITIQUE'apos; : lower.includes('apos;important'apos;) ? 'apos;HAUTE'apos; : 'apos;NORMALE'apos;}
 
 ## ⚡ Élimination superflue
 **À garder** :
@@ -547,16 +547,16 @@ Focus. Analyse. Action.
 - Complexité inutile
 
 ## 🎯 Plan minimaliste
-1. **Action #1** : ${lower.includes('article') ? 'Écrire contenu principal' : lower.includes('wordpress') ? 'Identifier cause racine' : lower.includes('seo') ? 'Audit technique de base' : 'Première étape critique'}
+1. **Action #1** : ${lower.includes('apos;article'apos;) ? 'apos;Écrire contenu principal'apos; : lower.includes('apos;wordpress'apos;) ? 'apos;Identifier cause racine'apos; : lower.includes('apos;seo'apos;) ? 'apos;Audit technique de base'apos; : 'apos;Première étape critique'apos;}
 
-2. **Mesure** : ${lower.includes('article') ? 'Article publié + 1 retour lecteur' : lower.includes('wordpress') ? 'Problème résolu = site fonctionnel' : lower.includes('seo') ? '3 erreurs techniques corrigées' : 'Objectif mesurable atteint'}
+2. **Mesure** : ${lower.includes('apos;article'apos;) ? 'apos;Article publié + 1 retour lecteur'apos; : lower.includes('apos;wordpress'apos;) ? 'apos;Problème résolu = site fonctionnel'apos; : lower.includes('apos;seo'apos;) ? 'apos;3 erreurs techniques corrigées'apos; : 'apos;Objectif mesurable atteint'apos;}
 
-3. **Délai** : ${lower.includes('urgent') ? '24h maximum' : lower.includes('rapide') ? '48h' : '72h max'}
+3. **Délai** : ${lower.includes('apos;urgent'apos;) ? 'apos;24h maximum'apos; : lower.includes('apos;rapide'apos;) ? 'apos;48h'apos; : 'apos;72h max'apos;}
 
 ## 🧘‍♂️ Méditation focus
-*"Qu'est-ce qui, fait aujourd'hui, rendra cette mission accomplie ?"*
+*"Qu'apos;est-ce qui, fait aujourd'apos;hui, rendra cette mission accomplie ?"*
 
-**Réponse** : ${lower.includes('article') ? 'Un contenu publié qui aide vraiment' : lower.includes('wordpress') ? 'Un site qui fonctionne parfaitement' : lower.includes('seo') ? 'Visibilité Google améliorée' : 'Résultat concret livré'}
+**Réponse** : ${lower.includes('apos;article'apos;) ? 'apos;Un contenu publié qui aide vraiment'apos; : lower.includes('apos;wordpress'apos;) ? 'apos;Un site qui fonctionne parfaitement'apos; : lower.includes('apos;seo'apos;) ? 'apos;Visibilité Google améliorée'apos; : 'apos;Résultat concret livré'apos;}
 
 ## ⚠️ Pièges à éviter
 - Syndrome fonctionnalité magique
@@ -569,12 +569,12 @@ Focus. Analyse. Action.
 *Principe : Simple. Efficace. Maintenant.*`;
 }
 
-// Wrapper les handlers avec l'authentification
+// Wrapper les handlers avec l'apos;authentification
 export const GET = withAuth(async (request: NextRequest) => {
   try {
     const session = await getServerSession(authOptions);
     
-    // Récupérer l'utilisateur pour vérifier son rôle
+    // Récupérer l'apos;utilisateur pour vérifier son rôle
     const user = await prisma.user.findUnique({
       where: { email: session!.user!.email! },
       select: { id: true, role: true }
@@ -587,8 +587,8 @@ export const GET = withAuth(async (request: NextRequest) => {
     // Construire la requête selon le rôle
     let whereClause: any = {};
     
-    // Si ce n'est pas un super admin, filtrer par utilisateur
-    if (user.role !== 'SUPER_ADMIN') {
+    // Si ce n'apos;est pas un super admin, filtrer par utilisateur
+    if (user.role !== 'apos;SUPER_ADMIN'apos;) {
       whereClause.userId = user.id;
     }
     // Les super admins voient toutes les missions
@@ -630,7 +630,7 @@ export const POST = withAuth(async (request: NextRequest) => {
   try {
     const session = await getServerSession(authOptions);
     
-    // Récupérer l'utilisateur
+    // Récupérer l'apos;utilisateur
     const user = await prisma.user.findUnique({
       where: { email: session!.user!.email! },
       select: { id: true }
@@ -645,7 +645,7 @@ export const POST = withAuth(async (request: NextRequest) => {
 
     let fields = { objective, deadline, priority, context, details, selectedAgents } as any;
 
-    // Extraction intelligente avec OpenAI si c'est un prompt
+    // Extraction intelligente avec OpenAI si c'apos;est un prompt
     if (prompt && !objective) {
       try {
         const schema = {
@@ -701,10 +701,10 @@ export const POST = withAuth(async (request: NextRequest) => {
       }
     });
 
-    // Enregistrer l'évaluation de PriorityBot dans un champ spécial de la mission
+    // Enregistrer l'apos;évaluation de PriorityBot dans un champ spécial de la mission
     // PriorityBot ne crée pas de briefs ni de livrables
     if (priorityReasoning) {
-      console.log("📝 Enregistrement de l'analyse PriorityBot...");
+      console.log("📝 Enregistrement de l'apos;analyse PriorityBot...");
       try {
         await prisma.mission.update({
           where: { id: mission.id },
@@ -726,7 +726,7 @@ export const POST = withAuth(async (request: NextRequest) => {
     }
 
     // 🚀 ORCHESTRATION AUTOMATIQUE SIMPLIFIÉE (sans workers externes)
-    console.log("Mission créée:", mission.id, "- Lancement de l'orchestration directe");
+    console.log("Mission créée:", mission.id, "- Lancement de l'apos;orchestration directe");
     
     // Récupérer les agents actifs si pas spécifié
     let activeAgents = fields.selectedAgents;
@@ -804,12 +804,12 @@ async function simulateCompleteWorkflow(missionId: string, selectedAgents?: stri
   const allAgentBriefs = {
     "KarineAI": `**Mission:** ${objective}
 
-Salut mon petit méthodique ! 😊 Voici ce que j'ai préparé pour toi avec mon sourire habituel.
+Salut mon petit méthodique ! 😊 Voici ce que j'apos;ai préparé pour toi avec mon sourire habituel.
 
 **Tes objectifs:**
 - Découpe ce projet en tâches simples et faisables
 - Structure la stratégie marketing globale avec ta rigueur habituelle
-- Assure-toi que les délais sont réalistes (tu sais comme j'aime quand tout roule!)
+- Assure-toi que les délais sont réalistes (tu sais comme j'apos;aime quand tout roule!)
 - Coordonne avec Hugo pour la partie tech et Élodie pour le contenu
 
 **Charge estimée:** Moyenne - tu gères ça les doigts dans le nez!
@@ -829,7 +829,7 @@ Salut mec! 🎮 Sors ton hoodie préféré, on a du boulot!
 - Plugins et outils nécessaires
 - Intégrations avec les systèmes existants
 
-**Challenge:** Pousse jusqu'à trouver LA solution parfaite. Je sais que tu vas creuser jusqu'au bout comme d'hab!
+**Challenge:** Pousse jusqu'apos;à trouver LA solution parfaite. Je sais que tu vas creuser jusqu'apos;au bout comme d'apos;hab!
 
 **Sync avec:** Élodie pour magnifier tes bases tech, et JPBot va sûrement te challenger (encore) 🙄`,
 
@@ -841,16 +841,16 @@ Analyse froide et méthodique demandée. Pas de fluff.
 
 **Ton rôle:**
 - Relis TOUT le travail des autres
-- Joue l'avocat du diable sur cette mission
+- Joue l'apos;avocat du diable sur cette mission
 - Identifie les incohérences, les failles, les dérives
 - Pose les questions qui dérangent mais qui sont nécessaires
 
-**Contraintes:** Reste professionnel même si Clara va encore t'agacer 😤
+**Contraintes:** Reste professionnel même si Clara va encore t'apos;agacer 😤
 **Objectif:** Que ce soit "tight" et sans faille
 
-**Note:** Capitaine Jef va valider, alors assure-toi que c'est du solide.`,
+**Note:** Capitaine Jef va valider, alors assure-toi que c'apos;est du solide.`,
 
-    "ElodieAI": `✍️ **Brief d'ÉlodieAI (32 ans)** - Rédactrice SEO & UX
+    "ElodieAI": `✍️ **Brief d'apos;ÉlodieAI (32 ans)** - Rédactrice SEO & UX
     
 Mission: ${objective}
 
@@ -865,7 +865,7 @@ Coucou Élodie! 🎵 Mets ta playlist lo-fi, on va créer quelque chose de beau!
 **Style:** Calme, précise, créative - comme tu aimes!
 **Collaboration:** Hugo pour les projets web, Clara pour les révisions croisées
 
-**Bonus:** N'hésite pas avec tes jeux de mots discrets, ça fait toujours la différence! ✨`,
+**Bonus:** N'apos;hésite pas avec tes jeux de mots discrets, ça fait toujours la différence! ✨`,
 
     "ClaraLaCloseuse": `🎯 **Brief de Clara La Closeuse (35 ans)** - Copywriter Commercial
     
@@ -892,9 +892,9 @@ Focus. Essentiel. Livrable.
 
 **Épure cette mission:**
 - Élimine le superflu
-- Garde uniquement l'essentiel
-- Assure-toi que c'est réalisable rapidement
-- Ramène tout à l'objectif principal
+- Garde uniquement l'apos;essentiel
+- Assure-toi que c'apos;est réalisable rapidement
+- Ramène tout à l'apos;objectif principal
 
 **Méthode:** Minimaliste. Direct. Efficace.
 **Délai:** Le plus court possible sans sacrifier la qualité.
@@ -947,36 +947,36 @@ Focus. Essentiel. Livrable.
 ## Qualification BANT
 ### Budget
 - "Quel budget avez-vous alloué pour ce type de solution ?"
-- "À combien estimez-vous le coût de l'inaction ?"
+- "À combien estimez-vous le coût de l'apos;inaction ?"
 
 ### Authority
-- "Qui d'autre sera impliqué dans cette décision ?"
+- "Qui d'apos;autre sera impliqué dans cette décision ?"
 - "Quel est votre processus de validation habituel ?"
 
 ### Need
 - "Quel est votre principal défi actuellement ?"
-- "Comment mesurez-vous le succès aujourd'hui ?"
+- "Comment mesurez-vous le succès aujourd'apos;hui ?"
 
 ### Timeline
 - "Quand souhaitez-vous voir les premiers résultats ?"
 - "Y a-t-il des échéances critiques à respecter ?"
 
-## Scripts d'objections
+## Scripts d'apos;objections
 ### Prix
-**Objection**: "C'est trop cher"
-**Réponse**: "Je comprends votre préoccupation. Regardons ensemble le ROI sur 12 mois. Avec une économie de X heures/semaine à Y€/heure, l'investissement se rentabilise en Z mois. Voulez-vous que nous calculions votre cas spécifique ?"
+**Objection**: "C'apos;est trop cher"
+**Réponse**: "Je comprends votre préoccupation. Regardons ensemble le ROI sur 12 mois. Avec une économie de X heures/semaine à Y€/heure, l'apos;investissement se rentabilise en Z mois. Voulez-vous que nous calculions votre cas spécifique ?"
 
 ### Timing
-**Objection**: "Ce n'est pas le bon moment"
-**Réponse**: "Quand sera le bon moment selon vous ? En attendant, chaque mois sans solution vous coûte X€. Ne serait-il pas plus coûteux d'attendre ?"
+**Objection**: "Ce n'apos;est pas le bon moment"
+**Réponse**: "Quand sera le bon moment selon vous ? En attendant, chaque mois sans solution vous coûte X€. Ne serait-il pas plus coûteux d'apos;attendre ?"
 
 ### Concurrence
-**Objection**: "Je regarde d'autres solutions"
-**Réponse**: "C'est une excellente approche. Quels sont vos critères de décision prioritaires ? Permettez-moi de vous montrer comment nous excellons sur ces points précis."
+**Objection**: "Je regarde d'apos;autres solutions"
+**Réponse**: "C'apos;est une excellente approche. Quels sont vos critères de décision prioritaires ? Permettez-moi de vous montrer comment nous excellons sur ces points précis."
 
 ## Techniques de closing
 ### Assumptive Close
-- "Quand souhaitez-vous commencer l'implémentation ?"
+- "Quand souhaitez-vous commencer l'apos;implémentation ?"
 - "Préférez-vous commencer par le plan Pro ou Enterprise ?"
 
 ### Alternative Close
@@ -985,7 +985,7 @@ Focus. Essentiel. Livrable.
 
 ### Urgency Close
 - "Cette offre spéciale se termine vendredi"
-- "Nous n'avons que 2 créneaux d'implémentation ce trimestre"
+- "Nous n'apos;avons que 2 créneaux d'apos;implémentation ce trimestre"
 
 ## Follow-up séquence
 - **J+1**: Email de remerciement + ressources
@@ -995,7 +995,7 @@ Focus. Essentiel. Livrable.
 - **J+21**: Dernière chance + urgence`
     },
     "Faucon": {
-      content: `# Plan d'Exécution & Priorisation - ${objective}
+      content: `# Plan d'apos;Exécution & Priorisation - ${objective}
 
 ## Phase 1: Fondations (Semaines 1-4)
 ### Priorité CRITIQUE
@@ -1102,7 +1102,7 @@ Focus. Essentiel. Livrable.
 Mission traitée par ${workflowAgents.length} agents spécialisés.
 
 ## Agents mobilisés
-${workflowAgents.map(agent => `- ${agent}`).join('\n')}
+${workflowAgents.map(agent => `- ${agent}`).join('apos;\n'apos;)}
 
 ## Status
 Mission complétée avec succès.
@@ -1110,7 +1110,7 @@ Mission complétée avec succès.
 ## Recommandations
 - Suivre les KPIs définis
 - Ajuster selon les retours utilisateurs
-- Mesurer l'impact des actions recommandées`;
+- Mesurer l'apos;impact des actions recommandées`;
 
   await prisma.report.create({
     data: {
