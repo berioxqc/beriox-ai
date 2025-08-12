@@ -5,6 +5,26 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { redisUtils } from './redis'
+
+// Vérifier si nous sommes dans un environnement compatible avec Redis
+const isCompatibleEnvironment = () => {
+  try {
+    return (
+      typeof window === 'undefined' && 
+      process.env.NODE_ENV !== 'test' &&
+      typeof process !== 'undefined' &&
+      // Éviter d'accéder à process.versions dans l'Edge Runtime
+      process.env.NEXT_RUNTIME !== 'edge' &&
+      process.env.NEXT_RUNTIME !== 'edge-server'
+    )
+  } catch {
+    return false
+  }
+}
+
+// Store en mémoire pour l'Edge Runtime (fallback)
+const memoryStore = new Map<string, { count: number; resetTime: number }>()
+
 // Types
 interface RateLimitConfig {
   windowMs: number; // Fenêtre de temps en millisecondes
@@ -34,13 +54,14 @@ const DEFAULT_CONFIG: RateLimitConfig = {
   statusCode: 429,
   headers: true
 }
+
 // Générateurs de clés par type de route
 const keyGenerators = {
   // Clé basée sur l'IP
   ip: (req: NextRequest) => {
     const forwarded = req.headers.get('x-forwarded-for')
     const realIp = req.headers.get('x-real-ip')
-    const ip = forwarded?.split(',')[0] || realIp || req.ip || 'unknown'
+    const ip = forwarded?.split(',')[0] || realIp || 'unknown'
     return `rate_limit:ip:${ip}`
   },
 
@@ -64,6 +85,7 @@ const keyGenerators = {
     return `rate_limit:combined:${ip}:${user}:${route}`
   }
 }
+
 // Configuration par route
 const routeConfigs: Record<string, RateLimitConfig> = {
   // Routes sensibles - plus restrictives
@@ -118,6 +140,7 @@ const routeConfigs: Record<string, RateLimitConfig> = {
     message: 'Limite d\'intégrations atteinte.'
   }
 }
+
 /**
  * Vérifie et applique le rate limiting
  */
@@ -126,8 +149,10 @@ export async function checkRateLimit(
   customConfig?: Partial<RateLimitConfig>
 ): Promise<RateLimitResult> {
   const pathname = req.nextUrl?.pathname || ''
+  
   // Trouver la configuration appropriée
   let config = { ...DEFAULT_CONFIG }
+  
   // Chercher une configuration spécifique pour cette route
   for (const [route, routeConfig] of Object.entries(routeConfigs)) {
     if (pathname.startsWith(route)) {
@@ -144,38 +169,85 @@ export async function checkRateLimit(
   // Générer la clé de rate limiting
   const keyGenerator = config.keyGenerator || keyGenerators.ip
   const key = keyGenerator(req)
+  
   try {
-    // Vérifier le rate limit dans Redis
-    const current = await redisUtils.get(key)
-    const currentCount = current ? parseInt(current, 10) : 0
-    if (currentCount >= config.maxRequests) {
-      // Limite atteinte - utiliser une estimation du TTL
-      const resetTime = Date.now() + config.windowMs
-      const retryAfter = Math.ceil(config.windowMs / 1000)
+    // Utiliser Redis si disponible, sinon utiliser le store en mémoire
+    if (isCompatibleEnvironment()) {
+      // Vérifier le rate limit dans Redis
+      const current = await redisUtils.get(key)
+      const currentCount = current ? parseInt(current, 10) : 0
+      
+      if (currentCount >= config.maxRequests) {
+        // Limite atteinte - utiliser une estimation du TTL
+        const resetTime = Date.now() + config.windowMs
+        const retryAfter = Math.ceil(config.windowMs / 1000)
+        return {
+          success: false,
+          remaining: 0,
+          resetTime,
+          retryAfter,
+          limit: config.maxRequests,
+          windowMs: config.windowMs
+        }
+      }
+
+      // Incrémenter le compteur
+      const newCount = currentCount + 1
+      await redisUtils.set(key, newCount.toString(), Math.ceil(config.windowMs / 1000))
       return {
-        success: false,
-        remaining: 0,
-        resetTime,
-        retryAfter,
+        success: true,
+        remaining: Math.max(0, config.maxRequests - newCount),
+        resetTime: Date.now() + config.windowMs,
+        retryAfter: Math.ceil(config.windowMs / 1000),
         limit: config.maxRequests,
         windowMs: config.windowMs
       }
-    }
-
-    // Incrémenter le compteur
-    const newCount = currentCount + 1
-    await redisUtils.set(key, newCount.toString(), Math.ceil(config.windowMs / 1000))
-    return {
-      success: true,
-      remaining: Math.max(0, config.maxRequests - newCount),
-      resetTime: Date.now() + config.windowMs,
-      retryAfter: Math.ceil(config.windowMs / 1000),
-      limit: config.maxRequests,
-      windowMs: config.windowMs
+    } else {
+      // Utiliser le store en mémoire pour l'Edge Runtime
+      const now = Date.now()
+      const existing = memoryStore.get(key)
+      
+      if (existing && now < existing.resetTime) {
+        // Fenêtre active
+        if (existing.count >= config.maxRequests) {
+          return {
+            success: false,
+            remaining: 0,
+            resetTime: existing.resetTime,
+            retryAfter: Math.ceil((existing.resetTime - now) / 1000),
+            limit: config.maxRequests,
+            windowMs: config.windowMs
+          }
+        }
+        
+        // Incrémenter le compteur
+        existing.count++
+        memoryStore.set(key, existing)
+        return {
+          success: true,
+          remaining: Math.max(0, config.maxRequests - existing.count),
+          resetTime: existing.resetTime,
+          retryAfter: Math.ceil((existing.resetTime - now) / 1000),
+          limit: config.maxRequests,
+          windowMs: config.windowMs
+        }
+      } else {
+        // Nouvelle fenêtre
+        const resetTime = now + config.windowMs
+        memoryStore.set(key, { count: 1, resetTime })
+        return {
+          success: true,
+          remaining: config.maxRequests - 1,
+          resetTime,
+          retryAfter: Math.ceil(config.windowMs / 1000),
+          limit: config.maxRequests,
+          windowMs: config.windowMs
+        }
+      }
     }
   } catch (error) {
-    console.error('Erreur Redis pour rate limiting:', error)
-    // En cas d'erreur Redis, permettre la requête
+    console.error('Erreur rate limiting:', error)
+    // En cas d'erreur, permettre la requête
     return {
       success: true,
       remaining: config.maxRequests - 1,
@@ -230,7 +302,11 @@ export function createRateLimiter(config: RateLimitConfig) {
  */
 export async function resetRateLimit(key: string): Promise<void> {
   try {
-    await redisUtils.del(key)
+    if (isCompatibleEnvironment()) {
+      await redisUtils.del(key)
+    } else {
+      memoryStore.delete(key)
+    }
   } catch (error) {
     console.error('Erreur lors de la réinitialisation du rate limit:', error)
   }
@@ -241,24 +317,6 @@ export async function resetRateLimit(key: string): Promise<void> {
  */
 export async function getRateLimitStats(): Promise<Record<string, any>> {
   // Désactivé car redis.keys n'est pas disponible dans le wrapper
-  // try {
-  //   const keys = await redis.keys('rate_limit:*')
-  //   const stats: Record<string, any> = {}
-  //   for (const key of keys) {
-  //     const count = await redis.get(key)
-  //     const ttl = await redis.ttl(key)
-  //     stats[key] = {
-  //       count: parseInt(count || '0', 10),
-  //       ttl,
-  //       expiresAt: Date.now() + (ttl * 1000)
-  //     }
-  //   }
-
-  //   return stats
-  // } catch (error) {
-  //   console.error('Erreur lors de la récupération des stats:', error)
-  //   return {}
-  // }
   return {}
 }
 
@@ -266,23 +324,18 @@ export async function getRateLimitStats(): Promise<Record<string, any>> {
  * Fonction pour nettoyer les anciens rate limits expirés
  */
 export async function cleanupExpiredRateLimits(): Promise<number> {
-  // Désactivé car redis.keys et redis.ttl ne sont pas disponibles dans le wrapper
-  // try {
-  //   const keys = await redis.keys('rate_limit:*')
-  //   let cleaned = 0
-  //   for (const key of keys) {
-  //     const ttl = await redis.ttl(key)
-  //     if (ttl <= 0) {
-  //       await redis.del(key)
-  //       cleaned++
-  //     }
-  //   }
-
-  //   return cleaned
-  // } catch (error) {
-  //   console.error('Erreur lors du nettoyage:', error)
-  //   return 0
-  // }
+  if (!isCompatibleEnvironment()) {
+    // Nettoyer le store en mémoire
+    const now = Date.now()
+    let cleaned = 0
+    for (const [key, value] of memoryStore.entries()) {
+      if (now >= value.resetTime) {
+        memoryStore.delete(key)
+        cleaned++
+      }
+    }
+    return cleaned
+  }
   return 0
 }
 

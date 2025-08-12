@@ -1,11 +1,29 @@
 // Redis configuration - seulement côté serveur
 let redis: any = null
 let bullConnection: any = null
-// Vérifier si nous sommes côté serveur (pas dans Edge Runtime)
-if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
+
+// Vérifier si nous sommes dans un environnement compatible avec ioredis
+const isCompatibleEnvironment = () => {
+  try {
+    return (
+      typeof window === 'undefined' && 
+      process.env.NODE_ENV !== 'test' &&
+      typeof process !== 'undefined' &&
+      // Éviter d'accéder à process.versions dans l'Edge Runtime
+      process.env.NEXT_RUNTIME !== 'edge' &&
+      process.env.NEXT_RUNTIME !== 'edge-server'
+    )
+  } catch {
+    return false
+  }
+}
+
+// Initialiser Redis seulement dans un environnement compatible
+if (isCompatibleEnvironment()) {
   try {
     const IORedis = require("ioredis")
     const redisUrl = process.env.REDIS_URL || "redis://localhost:6379"
+    
     // Vérifier si l'URL Redis est valide
     if (redisUrl && redisUrl !== "redis://localhost:6379") {
       redis = new IORedis(redisUrl, {
@@ -34,7 +52,7 @@ if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
 // Fonctions utilitaires pour Redis avec gestion d'erreur
 export const redisUtils = {
   async get(key: string): Promise<string | null> {
-    if (!redis) return null
+    if (!redis || !isCompatibleEnvironment()) return null
     try {
       return await redis.get(key)
     } catch (error) {
@@ -44,7 +62,7 @@ export const redisUtils = {
   },
 
   async set(key: string, value: string, ttl?: number): Promise<void> {
-    if (!redis) return
+    if (!redis || !isCompatibleEnvironment()) return
     try {
       if (ttl) {
         await redis.setex(key, ttl, value)
@@ -57,7 +75,7 @@ export const redisUtils = {
   },
 
   async del(key: string): Promise<void> {
-    if (!redis) return
+    if (!redis || !isCompatibleEnvironment()) return
     try {
       await redis.del(key)
     } catch (error) {
@@ -66,7 +84,7 @@ export const redisUtils = {
   },
 
   async exists(key: string): Promise<boolean> {
-    if (!redis) return false
+    if (!redis || !isCompatibleEnvironment()) return false
     try {
       const result = await redis.exists(key)
       return result === 1
@@ -77,7 +95,7 @@ export const redisUtils = {
   },
 
   async expire(key: string, ttl: number): Promise<void> {
-    if (!redis) return
+    if (!redis || !isCompatibleEnvironment()) return
     try {
       await redis.expire(key, ttl)
     } catch (error) {
@@ -85,4 +103,5 @@ export const redisUtils = {
     }
   }
 }
+
 export { redis, bullConnection }
