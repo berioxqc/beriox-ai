@@ -1,8 +1,7 @@
-import Script from 'next/script';
-
+import Script from 'next/script'
 interface SchemaMarkupProps {
-  type: 'organization' | 'website' | 'article' | 'product' | 'breadcrumb';
-  data: any;
+  type: 'organization' | 'website' | 'article' | 'product' | 'breadcrumb'
+  data: any
 }
 
 export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
@@ -25,8 +24,7 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
             contactType: 'customer service',
             email: 'contact@beriox-ai.com',
           },
-        };
-
+        }
       case 'website':
         return {
           '@context': 'https://schema.org',
@@ -39,8 +37,7 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
             target: 'https://beriox-ai.vercel.app/search?q={search_term_string}',
             'query-input': 'required name=search_term_string',
           },
-        };
-
+        }
       case 'article':
         return {
           '@context': 'https://schema.org',
@@ -66,8 +63,7 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
             '@type': 'WebPage',
             '@id': `https://beriox-ai.vercel.app/blog/${data.id}`,
           },
-        };
-
+        }
       case 'product':
         return {
           '@context': 'https://schema.org',
@@ -88,8 +84,7 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
             ratingValue: '4.8',
             ratingCount: '127',
           },
-        };
-
+        }
       case 'breadcrumb':
         return {
           '@context': 'https://schema.org',
@@ -100,21 +95,18 @@ export default function SchemaMarkup({ type, data }: SchemaMarkupProps) {
             name: item.name,
             item: item.url,
           })),
-        };
-
+        }
       default:
-        return null;
+        return null
     }
-  };
-
-  const schema = getSchema();
-  if (!schema) return null;
-
+  }
+  const schema = getSchema()
+  if (!schema) return null
   return (
     <Script
       id={`schema-${type}`}
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
-  );
+  )
 }

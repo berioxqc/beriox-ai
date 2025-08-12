@@ -1,27 +1,26 @@
-import { AgentScoringEngine, MissionContext } from './agent-scoring';
-
+import { AgentScoringEngine, MissionContext } from './agent-scoring'
 export interface WorkflowStep {
-  id: string;
-  name: string;
-  description: string;
-  agentId: string;
-  agentName: string;
-  type: 'analysis' | 'creation' | 'review' | 'optimization' | 'validation';
-  dependencies: string[];
-  estimatedDuration: number;
-  priority: 'low' | 'medium' | 'high';
-  parameters: Record<string, any>;
+  id: string
+  name: string
+  description: string
+  agentId: string
+  agentName: string
+  type: 'analysis' | 'creation' | 'review' | 'optimization' | 'validation'
+  dependencies: string[]
+  estimatedDuration: number
+  priority: 'low' | 'medium' | 'high'
+  parameters: Record<string, any>
 }
 
 export interface AdaptiveWorkflow {
-  id: string;
-  name: string;
-  description: string;
-  steps: WorkflowStep[];
-  totalEstimatedDuration: number;
-  complexity: 'low' | 'medium' | 'high';
-  parallelSteps: string[][];
-  fallbackSteps: Record<string, string[]>;
+  id: string
+  name: string
+  description: string
+  steps: WorkflowStep[]
+  totalEstimatedDuration: number
+  complexity: 'low' | 'medium' | 'high'
+  parallelSteps: string[][]
+  fallbackSteps: Record<string, string[]>
 }
 
 export class AdaptiveWorkflowGenerator {
@@ -116,8 +115,7 @@ export class AdaptiveWorkflowGenerator {
         },
       ],
     },
-  };
-
+  }
   /**
    * Génère un workflow adaptatif basé sur le contexte de la mission
    */
@@ -126,23 +124,17 @@ export class AdaptiveWorkflowGenerator {
     missionId: string
   ): Promise<AdaptiveWorkflow> {
     // Sélectionner le template de base
-    const template = this.selectTemplate(context);
-    
+    const template = this.selectTemplate(context)
     // Calculer les scores des agents
-    const agentScores = await AgentScoringEngine.calculateAgentScores(context, missionId);
-    
+    const agentScores = await AgentScoringEngine.calculateAgentScores(context, missionId)
     // Générer les étapes du workflow
-    const steps = await this.generateSteps(template.steps, agentScores, context);
-    
+    const steps = await this.generateSteps(template.steps, agentScores, context)
     // Calculer les étapes parallèles
-    const parallelSteps = this.calculateParallelSteps(steps);
-    
+    const parallelSteps = this.calculateParallelSteps(steps)
     // Générer les étapes de fallback
-    const fallbackSteps = this.generateFallbackSteps(steps, agentScores);
-    
+    const fallbackSteps = this.generateFallbackSteps(steps, agentScores)
     // Calculer la durée totale
-    const totalDuration = steps.reduce((acc, step) => acc + step.estimatedDuration, 0);
-    
+    const totalDuration = steps.reduce((acc, step) => acc + step.estimatedDuration, 0)
     return {
       id: `workflow-${missionId}`,
       name: template.name,
@@ -152,7 +144,7 @@ export class AdaptiveWorkflowGenerator {
       complexity: context.complexity,
       parallelSteps,
       fallbackSteps,
-    };
+    }
   }
 
   /**
@@ -161,15 +153,15 @@ export class AdaptiveWorkflowGenerator {
   private static selectTemplate(context: MissionContext) {
     // Logique de sélection basée sur le type et les domaines
     if (context.type === 'content' || context.domain.includes('content')) {
-      return this.WORKFLOW_TEMPLATES.content;
+      return this.WORKFLOW_TEMPLATES.content
     } else if (context.type === 'automation' || context.domain.includes('automation')) {
-      return this.WORKFLOW_TEMPLATES.automation;
+      return this.WORKFLOW_TEMPLATES.automation
     } else if (context.type === 'research' || context.domain.includes('research')) {
-      return this.WORKFLOW_TEMPLATES.research;
+      return this.WORKFLOW_TEMPLATES.research
     }
     
     // Template par défaut
-    return this.WORKFLOW_TEMPLATES.content;
+    return this.WORKFLOW_TEMPLATES.content
   }
 
   /**
@@ -180,23 +172,17 @@ export class AdaptiveWorkflowGenerator {
     agentScores: any[],
     context: MissionContext
   ): Promise<WorkflowStep[]> {
-    const steps: WorkflowStep[] = [];
-    
+    const steps: WorkflowStep[] = []
     for (let i = 0; i < templateSteps.length; i++) {
-      const templateStep = templateSteps[i];
-      
+      const templateStep = templateSteps[i]
       // Sélectionner l'agent optimal pour cette étape
-      const optimalAgent = this.selectOptimalAgent(templateStep, agentScores, context);
-      
+      const optimalAgent = this.selectOptimalAgent(templateStep, agentScores, context)
       // Calculer la durée estimée
-      const estimatedDuration = this.calculateStepDuration(templateStep, context);
-      
+      const estimatedDuration = this.calculateStepDuration(templateStep, context)
       // Définir les dépendances
-      const dependencies = this.calculateDependencies(i, templateSteps);
-      
+      const dependencies = this.calculateDependencies(i, templateSteps)
       // Générer les paramètres
-      const parameters = this.generateStepParameters(templateStep, context);
-      
+      const parameters = this.generateStepParameters(templateStep, context)
       const step: WorkflowStep = {
         id: `step-${i + 1}`,
         name: templateStep.name,
@@ -208,12 +194,11 @@ export class AdaptiveWorkflowGenerator {
         estimatedDuration,
         priority: templateStep.priority,
         parameters,
-      };
-      
-      steps.push(step);
+      }
+      steps.push(step)
     }
     
-    return steps;
+    return steps
   }
 
   /**
@@ -222,56 +207,52 @@ export class AdaptiveWorkflowGenerator {
   private static selectOptimalAgent(step: any, agentScores: any[], context: MissionContext) {
     // Filtrer les agents par type d'étape
     const suitableAgents = agentScores.filter(agent => {
-      const agentExpertise = this.getAgentExpertise(agent.agentId);
-      
+      const agentExpertise = this.getAgentExpertise(agent.agentId)
       switch (step.type) {
         case 'analysis':
           return agentExpertise.domains.includes('analysis') || 
-                 agentExpertise.domains.includes('research');
+                 agentExpertise.domains.includes('research')
         case 'creation':
           return agentExpertise.domains.includes('content') || 
                  agentExpertise.domains.includes('creative') ||
-                 agentExpertise.domains.includes('development');
+                 agentExpertise.domains.includes('development')
         case 'review':
           return agentExpertise.domains.includes('content') || 
-                 agentExpertise.domains.includes('analysis');
+                 agentExpertise.domains.includes('analysis')
         case 'optimization':
           return agentExpertise.domains.includes('optimization') || 
-                 agentExpertise.domains.includes('technical');
+                 agentExpertise.domains.includes('technical')
         case 'validation':
           return agentExpertise.domains.includes('analysis') || 
-                 agentExpertise.domains.includes('technical');
+                 agentExpertise.domains.includes('technical')
         default:
-          return true;
+          return true
       }
-    });
-    
+    })
     // Retourner l'agent avec le meilleur score
-    return suitableAgents.length > 0 ? suitableAgents[0] : agentScores[0];
+    return suitableAgents.length > 0 ? suitableAgents[0] : agentScores[0]
   }
 
   /**
    * Calcule la durée estimée d'une étape
    */
   private static calculateStepDuration(step: any, context: MissionContext): number {
-    const baseDuration = this.getBaseDuration(step.type);
-    const complexityMultiplier = this.getComplexityMultiplier(context.complexity);
-    const urgencyMultiplier = this.getUrgencyMultiplier(context.urgency);
-    
-    return baseDuration * complexityMultiplier * urgencyMultiplier;
+    const baseDuration = this.getBaseDuration(step.type)
+    const complexityMultiplier = this.getComplexityMultiplier(context.complexity)
+    const urgencyMultiplier = this.getUrgencyMultiplier(context.urgency)
+    return baseDuration * complexityMultiplier * urgencyMultiplier
   }
 
   /**
    * Calcule les dépendances entre les étapes
    */
   private static calculateDependencies(stepIndex: number, steps: any[]): string[] {
-    const dependencies: string[] = [];
-    
+    const dependencies: string[] = []
     // Les étapes de création dépendent généralement de l'analyse
     if (steps[stepIndex].type === 'creation') {
       for (let i = 0; i < stepIndex; i++) {
         if (steps[i].type === 'analysis') {
-          dependencies.push(`step-${i + 1}`);
+          dependencies.push(`step-${i + 1}`)
         }
       }
     }
@@ -280,7 +261,7 @@ export class AdaptiveWorkflowGenerator {
     if (steps[stepIndex].type === 'review') {
       for (let i = 0; i < stepIndex; i++) {
         if (steps[i].type === 'creation') {
-          dependencies.push(`step-${i + 1}`);
+          dependencies.push(`step-${i + 1}`)
         }
       }
     }
@@ -289,12 +270,12 @@ export class AdaptiveWorkflowGenerator {
     if (steps[stepIndex].type === 'optimization') {
       for (let i = 0; i < stepIndex; i++) {
         if (steps[i].type === 'creation') {
-          dependencies.push(`step-${i + 1}`);
+          dependencies.push(`step-${i + 1}`)
         }
       }
     }
     
-    return dependencies;
+    return dependencies
   }
 
   /**
@@ -308,86 +289,78 @@ export class AdaptiveWorkflowGenerator {
       domains: context.domain,
       keywords: context.keywords,
       requirements: context.requirements,
-    };
-    
+    }
     // Paramètres spécifiques par type d'étape
     switch (step.type) {
       case 'analysis':
-        parameters.analysisDepth = context.complexity === 'high' ? 'deep' : 'standard';
-        parameters.includeMetrics = true;
-        break;
+        parameters.analysisDepth = context.complexity === 'high' ? 'deep' : 'standard'
+        parameters.includeMetrics = true
+        break
       case 'creation':
-        parameters.creativeFreedom = context.complexity === 'high' ? 'high' : 'medium';
-        parameters.includeExamples = true;
-        break;
+        parameters.creativeFreedom = context.complexity === 'high' ? 'high' : 'medium'
+        parameters.includeExamples = true
+        break
       case 'optimization':
-        parameters.optimizationLevel = context.complexity === 'high' ? 'comprehensive' : 'standard';
-        break;
+        parameters.optimizationLevel = context.complexity === 'high' ? 'comprehensive' : 'standard'
+        break
       case 'validation':
-        parameters.validationCriteria = context.requirements;
-        break;
+        parameters.validationCriteria = context.requirements
+        break
     }
     
-    return parameters;
+    return parameters
   }
 
   /**
    * Calcule les étapes qui peuvent être exécutées en parallèle
    */
   private static calculateParallelSteps(steps: WorkflowStep[]): string[][] {
-    const parallelGroups: string[][] = [];
-    const visited = new Set<string>();
-    
+    const parallelGroups: string[][] = []
+    const visited = new Set<string>()
     for (const step of steps) {
-      if (visited.has(step.id)) continue;
-      
-      const parallelGroup = [step.id];
-      visited.add(step.id);
-      
+      if (visited.has(step.id)) continue
+      const parallelGroup = [step.id]
+      visited.add(step.id)
       // Chercher les étapes qui peuvent être exécutées en parallèle
       for (const otherStep of steps) {
-        if (visited.has(otherStep.id)) continue;
-        
+        if (visited.has(otherStep.id)) continue
         // Vérifier s'il n'y a pas de dépendances entre les étapes
         const canRunInParallel = !step.dependencies.includes(otherStep.id) &&
-                                !otherStep.dependencies.includes(step.id);
-        
+                                !otherStep.dependencies.includes(step.id)
         if (canRunInParallel) {
-          parallelGroup.push(otherStep.id);
-          visited.add(otherStep.id);
+          parallelGroup.push(otherStep.id)
+          visited.add(otherStep.id)
         }
       }
       
       if (parallelGroup.length > 1) {
-        parallelGroups.push(parallelGroup);
+        parallelGroups.push(parallelGroup)
       }
     }
     
-    return parallelGroups;
+    return parallelGroups
   }
 
   /**
    * Génère les étapes de fallback
    */
   private static generateFallbackSteps(steps: WorkflowStep[], agentScores: any[]): Record<string, string[]> {
-    const fallbackSteps: Record<string, string[]> = {};
-    
+    const fallbackSteps: Record<string, string[]> = {}
     for (const step of steps) {
-      const fallbacks: string[] = [];
-      
+      const fallbacks: string[] = []
       // Trouver des agents alternatifs pour cette étape
       const alternativeAgents = agentScores
         .filter(agent => agent.agentId !== step.agentId)
         .slice(0, 2); // Prendre les 2 meilleurs agents alternatifs
       
       for (const agent of alternativeAgents) {
-        fallbacks.push(agent.agentId);
+        fallbacks.push(agent.agentId)
       }
       
-      fallbackSteps[step.id] = fallbacks;
+      fallbackSteps[step.id] = fallbacks
     }
     
-    return fallbackSteps;
+    return fallbackSteps
   }
 
   // Méthodes utilitaires
@@ -399,9 +372,8 @@ export class AdaptiveWorkflowGenerator {
       'elodie-ai': { domains: ['design', 'creative', 'visual'] },
       'clara-la-closeuse': { domains: ['research', 'investigation', 'analysis'] },
       'faucon-le-maitre-focus': { domains: ['focus', 'productivity', 'optimization'] },
-    };
-    
-    return expertiseMap[agentId] || { domains: [] };
+    }
+    return expertiseMap[agentId] || { domains: [] }
   }
 
   private static getBaseDuration(stepType: string): number {
@@ -411,9 +383,8 @@ export class AdaptiveWorkflowGenerator {
       review: 1 * 60 * 60 * 1000,   // 1 heure
       optimization: 2 * 60 * 60 * 1000, // 2 heures
       validation: 1.5 * 60 * 60 * 1000, // 1.5 heures
-    };
-    
-    return durationMap[stepType] || 2 * 60 * 60 * 1000;
+    }
+    return durationMap[stepType] || 2 * 60 * 60 * 1000
   }
 
   private static getComplexityMultiplier(complexity: string): number {
@@ -421,9 +392,8 @@ export class AdaptiveWorkflowGenerator {
       low: 0.7,
       medium: 1.0,
       high: 1.5,
-    };
-    
-    return multipliers[complexity] || 1.0;
+    }
+    return multipliers[complexity] || 1.0
   }
 
   private static getUrgencyMultiplier(urgency: string): number {
@@ -431,8 +401,7 @@ export class AdaptiveWorkflowGenerator {
       low: 1.2,
       medium: 1.0,
       high: 0.8,
-    };
-    
-    return multipliers[urgency] || 1.0;
+    }
+    return multipliers[urgency] || 1.0
   }
 }

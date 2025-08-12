@@ -1,8 +1,7 @@
-"use client";
-import Layout from "@/components/Layout";
-import ComponentsOverview from "./components-overview";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+"use client"
+import Layout from "@/components/Layout"
+import ComponentsOverview from "./components-overview"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export default function MenuDemoPage() {
   return (
     <Layout 
@@ -124,7 +123,7 @@ export default function MenuDemoPage() {
                 Breadcrumb
               </div>
               <div style={{ fontSize: "13px", color: "#6b7280" }}>
-                Navigation contextuelle avec fil d&apos;Ariane
+                Navigation contextuelle avec fil d'Ariane
               </div>
             </div>
 
@@ -296,7 +295,7 @@ export default function MenuDemoPage() {
                   Accessibilité
                 </div>
                 <div style={{ fontSize: "13px", color: "#6b7280" }}>
-                  Navigation au clavier et lecteurs d&apos;écran
+                  Navigation au clavier et lecteurs d'écran
                 </div>
               </div>
             </div>
@@ -353,12 +352,12 @@ export default function MenuDemoPage() {
                 Navigation
               </div>
               <div style={{ fontSize: "13px", opacity: 0.9 }}>
-                Utilisez les breadcrumbs pour comprendre votre position dans l&apos;application
+                Utilisez les breadcrumbs pour comprendre votre position dans l'application
               </div>
             </div>
           </div>
         </div>
       </div>
     </Layout>
-  );
+  )
 }

@@ -1,41 +1,33 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-
-export const runtime = "nodejs";
-
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+export const runtime = "nodejs"
 export async function POST(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const missionId = params.id;
-
-    console.log(`🔄 Régénération du rapport pour la mission ${missionId}`);
-
+    const missionId = params.id
+    console.log(`🔄 Régénération du rapport pour la mission ${missionId}`)
     // Récupérer la mission et les livrables
     const mission = await prisma.mission.findUnique({ 
       where: { id: missionId },
       include: {
         deliverables: true
       }
-    });
-
+    })
     if (!mission) {
-      return NextResponse.json({ error: "Mission non trouvée" }, { status: 404 });
+      return NextResponse.json({ error: "Mission non trouvée" }, { status: 404 })
     }
 
     // Supprimer l'ancien rapport s'il existe
     await prisma.report.deleteMany({
       where: { missionId }
-    });
-
+    })
     // Agents ayant produit des livrables
     const activeAgents = mission.deliverables
       .filter(d => d.agent !== "PriorityBot")
-      .map(d => d.agent);
-
-    const uniqueAgents = [...new Set(activeAgents)];
-
+      .map(d => d.agent)
+    const uniqueAgents = [...new Set(activeAgents)]
     // Créer un nouveau rapport basé sur les livrables existants
     const report = await prisma.report.create({
       data: {
@@ -52,11 +44,11 @@ export async function POST(
 ## 🎯 Résultats par équipe
 
 ${uniqueAgents.map(agent => {
-  const agentInfo = getAgentInfo(agent);
+  const agentInfo = getAgentInfo(agent)
   return `### ${agentInfo.emoji} ${agent} - ${agentInfo.role}
 **Spécialité :** ${agentInfo.specialty}
 ✅ Livrable produit et validé
-`;
+`
 }).join('\n')}
 
 ---
@@ -86,29 +78,26 @@ Cette mission a été traitée par ${uniqueAgents.length} spécialiste${uniqueAg
   minute: '2-digit'
 })}*`
       }
-    });
-
+    })
     // Mettre à jour le statut de la mission si nécessaire
     if (mission.status !== "notified") {
       await prisma.mission.update({
         where: { id: missionId },
         data: { status: "notified" }
-      });
+      })
     }
 
-    console.log(`✅ Rapport régénéré avec succès pour la mission ${missionId}`);
-
+    console.log(`✅ Rapport régénéré avec succès pour la mission ${missionId}`)
     return NextResponse.json({ 
       success: true, 
       message: "Rapport régénéré avec succès",
       report 
-    });
-
+    })
   } catch (error) {
-    console.error("Regenerate Report Error:", error);
+    console.error("Regenerate Report Error:", error)
     return NextResponse.json({ 
       error: "Erreur lors de la régénération du rapport" 
-    }, { status: 500 });
+    }, { status: 500 })
   }
 }
 
@@ -145,10 +134,10 @@ function getAgentInfo(agentName: string) {
       role: "Coach Productivité",
       specialty: "Focus & Optimisation"
     }
-  };
+  }
   return agents[agentName as keyof typeof agents] || { 
     emoji: "❓", 
     role: "Inconnu", 
     specialty: "Inconnu" 
-  };
+  }
 }

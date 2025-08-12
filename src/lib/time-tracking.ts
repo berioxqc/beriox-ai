@@ -1,6 +1,5 @@
-import { logger } from './logger';
-import { metrics } from './metrics';
-
+import { logger } from './logger'
+import { metrics } from './metrics'
 export enum TimeEntryType {
   TIMER = 'timer',
   MANUAL = 'manual',
@@ -29,225 +28,224 @@ export enum ClientStatus {
 }
 
 export interface TimeEntry {
-  id: string;
-  userId: string;
-  projectId: string;
-  taskId?: string;
-  description: string;
-  startTime: Date;
-  endTime?: Date;
+  id: string
+  userId: string
+  projectId: string
+  taskId?: string
+  description: string
+  startTime: Date
+  endTime?: Date
   duration: number; // en secondes
-  type: TimeEntryType;
-  status: TimeEntryStatus;
-  billable: boolean;
-  hourlyRate?: number;
-  tags: string[];
-  notes?: string;
+  type: TimeEntryType
+  status: TimeEntryStatus
+  billable: boolean
+  hourlyRate?: number
+  tags: string[]
+  notes?: string
   location?: {
-    latitude: number;
-    longitude: number;
-    address?: string;
-  };
+    latitude: number
+    longitude: number
+    address?: string
+  }
   deviceInfo?: {
-    deviceId: string;
-    deviceType: 'desktop' | 'mobile' | 'tablet';
-    appVersion: string;
-  };
-  createdAt: Date;
-  updatedAt: Date;
+    deviceId: string
+    deviceType: 'desktop' | 'mobile' | 'tablet'
+    appVersion: string
+  }
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Project {
-  id: string;
-  name: string;
-  description?: string;
-  clientId: string;
-  status: ProjectStatus;
-  startDate: Date;
-  endDate?: Date;
-  budget?: number;
-  hourlyRate?: number;
-  color?: string;
-  tags: string[];
-  teamMembers: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  name: string
+  description?: string
+  clientId: string
+  status: ProjectStatus
+  startDate: Date
+  endDate?: Date
+  budget?: number
+  hourlyRate?: number
+  color?: string
+  tags: string[]
+  teamMembers: string[]
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Client {
-  id: string;
-  name: string;
-  email: string;
-  phone?: string;
+  id: string
+  name: string
+  email: string
+  phone?: string
   address?: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-  status: ClientStatus;
-  hourlyRate?: number;
-  paymentTerms?: string;
-  notes?: string;
-  createdAt: Date;
-  updatedAt: Date;
+    street: string
+    city: string
+    state: string
+    zipCode: string
+    country: string
+  }
+  status: ClientStatus
+  hourlyRate?: number
+  paymentTerms?: string
+  notes?: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Task {
-  id: string;
-  projectId: string;
-  name: string;
-  description?: string;
-  status: 'todo' | 'in_progress' | 'completed';
-  priority: 'low' | 'medium' | 'high';
-  estimatedHours?: number;
-  actualHours?: number;
-  assigneeId?: string;
-  dueDate?: Date;
-  tags: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  projectId: string
+  name: string
+  description?: string
+  status: 'todo' | 'in_progress' | 'completed'
+  priority: 'low' | 'medium' | 'high'
+  estimatedHours?: number
+  actualHours?: number
+  assigneeId?: string
+  dueDate?: Date
+  tags: string[]
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Timesheet {
-  id: string;
-  userId: string;
-  weekStart: Date;
-  weekEnd: Date;
-  totalHours: number;
-  billableHours: number;
-  status: 'draft' | 'submitted' | 'approved' | 'rejected';
-  approvedBy?: string;
-  approvedAt?: Date;
-  notes?: string;
-  entries: TimeEntry[];
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  userId: string
+  weekStart: Date
+  weekEnd: Date
+  totalHours: number
+  billableHours: number
+  status: 'draft' | 'submitted' | 'approved' | 'rejected'
+  approvedBy?: string
+  approvedAt?: Date
+  notes?: string
+  entries: TimeEntry[]
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Expense {
-  id: string;
-  userId: string;
-  projectId: string;
-  description: string;
-  amount: number;
-  currency: string;
-  category: string;
-  receipt?: string;
-  date: Date;
-  status: 'pending' | 'approved' | 'rejected';
-  approvedBy?: string;
-  approvedAt?: Date;
-  notes?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  userId: string
+  projectId: string
+  description: string
+  amount: number
+  currency: string
+  category: string
+  receipt?: string
+  date: Date
+  status: 'pending' | 'approved' | 'rejected'
+  approvedBy?: string
+  approvedAt?: Date
+  notes?: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface Invoice {
-  id: string;
-  clientId: string;
-  projectId?: string;
-  number: string;
-  issueDate: Date;
-  dueDate: Date;
-  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
-  subtotal: number;
-  tax: number;
-  total: number;
-  currency: string;
-  items: InvoiceItem[];
-  notes?: string;
-  paidAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string
+  clientId: string
+  projectId?: string
+  number: string
+  issueDate: Date
+  dueDate: Date
+  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled'
+  subtotal: number
+  tax: number
+  total: number
+  currency: string
+  items: InvoiceItem[]
+  notes?: string
+  paidAt?: Date
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface InvoiceItem {
-  id: string;
-  description: string;
-  quantity: number;
-  unitPrice: number;
-  total: number;
-  type: 'time' | 'expense' | 'product';
-  timeEntryId?: string;
-  expenseId?: string;
+  id: string
+  description: string
+  quantity: number
+  unitPrice: number
+  total: number
+  type: 'time' | 'expense' | 'product'
+  timeEntryId?: string
+  expenseId?: string
 }
 
 export interface TimeTrackingSettings {
-  userId: string;
-  defaultHourlyRate: number;
-  currency: string;
-  timezone: string;
+  userId: string
+  defaultHourlyRate: number
+  currency: string
+  timezone: string
   workDays: number[]; // 0-6 (dimanche-samedi)
   workHours: {
     start: string; // HH:MM
     end: string; // HH:MM
-  };
+  }
   breakTime: number; // en minutes
-  autoStart: boolean;
-  idleDetection: boolean;
+  autoStart: boolean
+  idleDetection: boolean
   idleThreshold: number; // en minutes
   reminders: {
-    enabled: boolean;
+    enabled: boolean
     interval: number; // en minutes
-  };
+  }
   integrations: {
-    calendar: boolean;
-    projectManagement: boolean;
-    accounting: boolean;
-  };
+    calendar: boolean
+    projectManagement: boolean
+    accounting: boolean
+  }
   notifications: {
-    timesheetReminder: boolean;
-    approvalNotification: boolean;
-    invoiceReminder: boolean;
-  };
+    timesheetReminder: boolean
+    approvalNotification: boolean
+    invoiceReminder: boolean
+  }
 }
 
 export interface TimeTrackingStats {
-  userId: string;
-  period: 'day' | 'week' | 'month' | 'year';
-  totalHours: number;
-  billableHours: number;
-  nonBillableHours: number;
+  userId: string
+  period: 'day' | 'week' | 'month' | 'year'
+  totalHours: number
+  billableHours: number
+  nonBillableHours: number
   projects: {
-    projectId: string;
-    projectName: string;
-    hours: number;
-    billableHours: number;
-  }[];
+    projectId: string
+    projectName: string
+    hours: number
+    billableHours: number
+  }[]
   productivity: {
-    averageHoursPerDay: number;
-    mostProductiveDay: string;
-    leastProductiveDay: string;
-  };
+    averageHoursPerDay: number
+    mostProductiveDay: string
+    leastProductiveDay: string
+  }
   earnings: {
-    total: number;
-    billable: number;
-    pending: number;
-  };
+    total: number
+    billable: number
+    pending: number
+  }
 }
 
 class TimeTrackingManager {
-  private timeEntries: Map<string, TimeEntry> = new Map();
-  private projects: Map<string, Project> = new Map();
-  private clients: Map<string, Client> = new Map();
-  private tasks: Map<string, Task> = new Map();
-  private timesheets: Map<string, Timesheet> = new Map();
-  private expenses: Map<string, Expense> = new Map();
-  private invoices: Map<string, Invoice> = new Map();
-  private settings: Map<string, TimeTrackingSettings> = new Map();
-  private activeTimers: Map<string, TimeEntry> = new Map();
-
+  private timeEntries: Map<string, TimeEntry> = new Map()
+  private projects: Map<string, Project> = new Map()
+  private clients: Map<string, Client> = new Map()
+  private tasks: Map<string, Task> = new Map()
+  private timesheets: Map<string, Timesheet> = new Map()
+  private expenses: Map<string, Expense> = new Map()
+  private invoices: Map<string, Invoice> = new Map()
+  private settings: Map<string, TimeTrackingSettings> = new Map()
+  private activeTimers: Map<string, TimeEntry> = new Map()
   constructor() {
-    this.initializeDefaultData();
+    this.initializeDefaultData()
   }
 
   private initializeDefaultData() {
     // Créer des données de démonstration
-    this.createDefaultClient();
-    this.createDefaultProject();
-    this.createDefaultTasks();
+    this.createDefaultClient()
+    this.createDefaultProject()
+    this.createDefaultTasks()
   }
 
   private createDefaultClient() {
@@ -259,8 +257,8 @@ class TimeTrackingManager {
       hourlyRate: 75,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-    this.clients.set(client.id, client);
+    }
+    this.clients.set(client.id, client)
   }
 
   private createDefaultProject() {
@@ -278,8 +276,8 @@ class TimeTrackingManager {
       teamMembers: [],
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-    this.projects.set(project.id, project);
+    }
+    this.projects.set(project.id, project)
   }
 
   private createDefaultTasks() {
@@ -311,8 +309,7 @@ class TimeTrackingManager {
         estimatedHours: 3,
         tags: ['documentation']
       }
-    ];
-
+    ]
     tasks.forEach(task => {
       const fullTask: Task = {
         ...task,
@@ -320,16 +317,15 @@ class TimeTrackingManager {
         actualHours: 0,
         createdAt: new Date(),
         updatedAt: new Date()
-      };
-      this.tasks.set(fullTask.id, fullTask);
-    });
+      }
+      this.tasks.set(fullTask.id, fullTask)
+    })
   }
 
   // Gestion des entrées de temps
   startTimer(userId: string, projectId: string, description: string, taskId?: string): TimeEntry {
     // Arrêter le timer actuel s'il y en a un
-    this.stopActiveTimer(userId);
-
+    this.stopActiveTimer(userId)
     const entry: TimeEntry = {
       id: `entry_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       userId,
@@ -344,92 +340,74 @@ class TimeTrackingManager {
       tags: [],
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-
-    this.timeEntries.set(entry.id, entry);
-    this.activeTimers.set(userId, entry);
-
+    }
+    this.timeEntries.set(entry.id, entry)
+    this.activeTimers.set(userId, entry)
     logger.info(`Timer started for user: ${userId}`, {
       action: 'timer_started',
       metadata: { userId, projectId, taskId, entryId: entry.id }
-    });
-
+    })
     metrics.increment('timer_started', 1, {
       userId,
       projectId,
       hasTask: taskId ? 'true' : 'false'
-    });
-
-    return entry;
+    })
+    return entry
   }
 
   stopTimer(userId: string): TimeEntry | null {
-    const activeEntry = this.activeTimers.get(userId);
-    if (!activeEntry) return null;
-
-    const endTime = new Date();
-    const duration = Math.floor((endTime.getTime() - activeEntry.startTime.getTime()) / 1000);
-
-    activeEntry.endTime = endTime;
-    activeEntry.duration = duration;
-    activeEntry.status = TimeEntryStatus.COMPLETED;
-    activeEntry.updatedAt = new Date();
-
-    this.timeEntries.set(activeEntry.id, activeEntry);
-    this.activeTimers.delete(userId);
-
+    const activeEntry = this.activeTimers.get(userId)
+    if (!activeEntry) return null
+    const endTime = new Date()
+    const duration = Math.floor((endTime.getTime() - activeEntry.startTime.getTime()) / 1000)
+    activeEntry.endTime = endTime
+    activeEntry.duration = duration
+    activeEntry.status = TimeEntryStatus.COMPLETED
+    activeEntry.updatedAt = new Date()
+    this.timeEntries.set(activeEntry.id, activeEntry)
+    this.activeTimers.delete(userId)
     logger.info(`Timer stopped for user: ${userId}`, {
       action: 'timer_stopped',
       metadata: { userId, entryId: activeEntry.id, duration }
-    });
-
+    })
     metrics.increment('timer_stopped', 1, {
       userId,
       projectId: activeEntry.projectId,
       duration: Math.floor(duration / 60) // en minutes
-    });
-
-    return activeEntry;
+    })
+    return activeEntry
   }
 
   pauseTimer(userId: string): TimeEntry | null {
-    const activeEntry = this.activeTimers.get(userId);
-    if (!activeEntry) return null;
-
-    activeEntry.status = TimeEntryStatus.PAUSED;
-    activeEntry.updatedAt = new Date();
-
-    this.timeEntries.set(activeEntry.id, activeEntry);
-
+    const activeEntry = this.activeTimers.get(userId)
+    if (!activeEntry) return null
+    activeEntry.status = TimeEntryStatus.PAUSED
+    activeEntry.updatedAt = new Date()
+    this.timeEntries.set(activeEntry.id, activeEntry)
     logger.info(`Timer paused for user: ${userId}`, {
       action: 'timer_paused',
       metadata: { userId, entryId: activeEntry.id }
-    });
-
-    return activeEntry;
+    })
+    return activeEntry
   }
 
   resumeTimer(userId: string): TimeEntry | null {
-    const activeEntry = this.activeTimers.get(userId);
-    if (!activeEntry || activeEntry.status !== TimeEntryStatus.PAUSED) return null;
-
-    activeEntry.status = TimeEntryStatus.ACTIVE;
-    activeEntry.updatedAt = new Date();
-
-    this.timeEntries.set(activeEntry.id, activeEntry);
-
+    const activeEntry = this.activeTimers.get(userId)
+    if (!activeEntry || activeEntry.status !== TimeEntryStatus.PAUSED) return null
+    activeEntry.status = TimeEntryStatus.ACTIVE
+    activeEntry.updatedAt = new Date()
+    this.timeEntries.set(activeEntry.id, activeEntry)
     logger.info(`Timer resumed for user: ${userId}`, {
       action: 'timer_resumed',
       metadata: { userId, entryId: activeEntry.id }
-    });
-
-    return activeEntry;
+    })
+    return activeEntry
   }
 
   private stopActiveTimer(userId: string): void {
-    const activeEntry = this.activeTimers.get(userId);
+    const activeEntry = this.activeTimers.get(userId)
     if (activeEntry) {
-      this.stopTimer(userId);
+      this.stopTimer(userId)
     }
   }
 
@@ -443,8 +421,7 @@ class TimeTrackingManager {
     billable: boolean = true,
     tags: string[] = []
   ): TimeEntry {
-    const duration = Math.floor((endTime.getTime() - startTime.getTime()) / 1000);
-
+    const duration = Math.floor((endTime.getTime() - startTime.getTime()) / 1000)
     const entry: TimeEntry = {
       id: `entry_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       userId,
@@ -460,85 +437,74 @@ class TimeTrackingManager {
       tags,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-
-    this.timeEntries.set(entry.id, entry);
-
+    }
+    this.timeEntries.set(entry.id, entry)
     logger.info(`Manual entry added for user: ${userId}`, {
       action: 'manual_entry_added',
       metadata: { userId, projectId, duration, billable }
-    });
-
+    })
     metrics.increment('manual_entry_added', 1, {
       userId,
       projectId,
       billable: billable.toString()
-    });
-
-    return entry;
+    })
+    return entry
   }
 
   updateTimeEntry(entryId: string, updates: Partial<TimeEntry>): TimeEntry | null {
-    const entry = this.timeEntries.get(entryId);
-    if (!entry) return null;
-
-    const updatedEntry = { ...entry, ...updates, updatedAt: new Date() };
-    this.timeEntries.set(entryId, updatedEntry);
-
+    const entry = this.timeEntries.get(entryId)
+    if (!entry) return null
+    const updatedEntry = { ...entry, ...updates, updatedAt: new Date() }
+    this.timeEntries.set(entryId, updatedEntry)
     logger.info(`Time entry updated: ${entryId}`, {
       action: 'time_entry_updated',
       metadata: { entryId, userId: entry.userId }
-    });
-
-    return updatedEntry;
+    })
+    return updatedEntry
   }
 
   deleteTimeEntry(entryId: string): boolean {
-    const entry = this.timeEntries.get(entryId);
-    if (!entry) return false;
-
-    this.timeEntries.delete(entryId);
-
+    const entry = this.timeEntries.get(entryId)
+    if (!entry) return false
+    this.timeEntries.delete(entryId)
     logger.info(`Time entry deleted: ${entryId}`, {
       action: 'time_entry_deleted',
       metadata: { entryId, userId: entry.userId }
-    });
-
-    return true;
+    })
+    return true
   }
 
   getTimeEntries(userId: string, filters?: {
-    projectId?: string;
-    startDate?: Date;
-    endDate?: Date;
-    status?: TimeEntryStatus;
-    billable?: boolean;
+    projectId?: string
+    startDate?: Date
+    endDate?: Date
+    status?: TimeEntryStatus
+    billable?: boolean
   }): TimeEntry[] {
-    let entries = Array.from(this.timeEntries.values()).filter(entry => entry.userId === userId);
-
+    let entries = Array.from(this.timeEntries.values()).filter(entry => entry.userId === userId)
     if (filters) {
       if (filters.projectId) {
-        entries = entries.filter(entry => entry.projectId === filters.projectId);
+        entries = entries.filter(entry => entry.projectId === filters.projectId)
       }
       if (filters.startDate) {
-        entries = entries.filter(entry => entry.startTime >= filters.startDate!);
+        entries = entries.filter(entry => entry.startTime >= filters.startDate!)
       }
       if (filters.endDate) {
-        entries = entries.filter(entry => entry.startTime <= filters.endDate!);
+        entries = entries.filter(entry => entry.startTime <= filters.endDate!)
       }
       if (filters.status) {
-        entries = entries.filter(entry => entry.status === filters.status);
+        entries = entries.filter(entry => entry.status === filters.status)
       }
       if (filters.billable !== undefined) {
-        entries = entries.filter(entry => entry.billable === filters.billable);
+        entries = entries.filter(entry => entry.billable === filters.billable)
       }
     }
 
-    return entries.sort((a, b) => b.startTime.getTime() - a.startTime.getTime());
+    return entries.sort((a, b) => b.startTime.getTime() - a.startTime.getTime())
   }
 
   getActiveTimer(userId: string): TimeEntry | null {
-    return this.activeTimers.get(userId) || null;
+    return this.activeTimers.get(userId) || null
   }
 
   // Gestion des projets
@@ -548,37 +514,31 @@ class TimeTrackingManager {
       id: `project_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-
-    this.projects.set(newProject.id, newProject);
-
+    }
+    this.projects.set(newProject.id, newProject)
     logger.info(`Project created: ${newProject.name}`, {
       action: 'project_created',
       metadata: { projectId: newProject.id, clientId: newProject.clientId }
-    });
-
-    return newProject;
+    })
+    return newProject
   }
 
   updateProject(projectId: string, updates: Partial<Project>): Project | null {
-    const project = this.projects.get(projectId);
-    if (!project) return null;
-
-    const updatedProject = { ...project, ...updates, updatedAt: new Date() };
-    this.projects.set(projectId, updatedProject);
-
-    return updatedProject;
+    const project = this.projects.get(projectId)
+    if (!project) return null
+    const updatedProject = { ...project, ...updates, updatedAt: new Date() }
+    this.projects.set(projectId, updatedProject)
+    return updatedProject
   }
 
   getProjects(userId?: string): Project[] {
-    let projects = Array.from(this.projects.values());
-    
+    let projects = Array.from(this.projects.values())
     if (userId) {
       // Filtrer par membres de l'équipe
-      projects = projects.filter(project => project.teamMembers.includes(userId));
+      projects = projects.filter(project => project.teamMembers.includes(userId))
     }
 
-    return projects.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    return projects.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
   }
 
   // Gestion des clients
@@ -588,20 +548,17 @@ class TimeTrackingManager {
       id: `client_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-
-    this.clients.set(newClient.id, newClient);
-
+    }
+    this.clients.set(newClient.id, newClient)
     logger.info(`Client created: ${newClient.name}`, {
       action: 'client_created',
       metadata: { clientId: newClient.id }
-    });
-
-    return newClient;
+    })
+    return newClient
   }
 
   getClients(): Client[] {
-    return Array.from(this.clients.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    return Array.from(this.clients.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
   }
 
   // Gestion des tâches
@@ -611,43 +568,36 @@ class TimeTrackingManager {
       id: `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-
-    this.tasks.set(newTask.id, newTask);
-
+    }
+    this.tasks.set(newTask.id, newTask)
     logger.info(`Task created: ${newTask.name}`, {
       action: 'task_created',
       metadata: { taskId: newTask.id, projectId: newTask.projectId }
-    });
-
-    return newTask;
+    })
+    return newTask
   }
 
   getTasks(projectId?: string): Task[] {
-    let tasks = Array.from(this.tasks.values());
-    
+    let tasks = Array.from(this.tasks.values())
     if (projectId) {
-      tasks = tasks.filter(task => task.projectId === projectId);
+      tasks = tasks.filter(task => task.projectId === projectId)
     }
 
-    return tasks.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    return tasks.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
   }
 
   // Gestion des feuilles de temps
   createTimesheet(userId: string, weekStart: Date): Timesheet {
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekEnd.getDate() + 6);
-
+    const weekEnd = new Date(weekStart)
+    weekEnd.setDate(weekEnd.getDate() + 6)
     const entries = this.getTimeEntries(userId, {
       startDate: weekStart,
       endDate: weekEnd
-    });
-
-    const totalHours = entries.reduce((sum, entry) => sum + entry.duration, 0) / 3600;
+    })
+    const totalHours = entries.reduce((sum, entry) => sum + entry.duration, 0) / 3600
     const billableHours = entries
       .filter(entry => entry.billable)
-      .reduce((sum, entry) => sum + entry.duration, 0) / 3600;
-
+      .reduce((sum, entry) => sum + entry.duration, 0) / 3600
     const timesheet: Timesheet = {
       id: `timesheet_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       userId,
@@ -659,52 +609,41 @@ class TimeTrackingManager {
       entries,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-
-    this.timesheets.set(timesheet.id, timesheet);
-
+    }
+    this.timesheets.set(timesheet.id, timesheet)
     logger.info(`Timesheet created for user: ${userId}`, {
       action: 'timesheet_created',
       metadata: { userId, timesheetId: timesheet.id, totalHours, billableHours }
-    });
-
-    return timesheet;
+    })
+    return timesheet
   }
 
   submitTimesheet(timesheetId: string): Timesheet | null {
-    const timesheet = this.timesheets.get(timesheetId);
-    if (!timesheet) return null;
-
-    timesheet.status = 'submitted';
-    timesheet.updatedAt = new Date();
-
-    this.timesheets.set(timesheetId, timesheet);
-
+    const timesheet = this.timesheets.get(timesheetId)
+    if (!timesheet) return null
+    timesheet.status = 'submitted'
+    timesheet.updatedAt = new Date()
+    this.timesheets.set(timesheetId, timesheet)
     logger.info(`Timesheet submitted: ${timesheetId}`, {
       action: 'timesheet_submitted',
       metadata: { timesheetId, userId: timesheet.userId }
-    });
-
-    return timesheet;
+    })
+    return timesheet
   }
 
   approveTimesheet(timesheetId: string, approvedBy: string): Timesheet | null {
-    const timesheet = this.timesheets.get(timesheetId);
-    if (!timesheet) return null;
-
-    timesheet.status = 'approved';
-    timesheet.approvedBy = approvedBy;
-    timesheet.approvedAt = new Date();
-    timesheet.updatedAt = new Date();
-
-    this.timesheets.set(timesheetId, timesheet);
-
+    const timesheet = this.timesheets.get(timesheetId)
+    if (!timesheet) return null
+    timesheet.status = 'approved'
+    timesheet.approvedBy = approvedBy
+    timesheet.approvedAt = new Date()
+    timesheet.updatedAt = new Date()
+    this.timesheets.set(timesheetId, timesheet)
     logger.info(`Timesheet approved: ${timesheetId}`, {
       action: 'timesheet_approved',
       metadata: { timesheetId, approvedBy }
-    });
-
-    return timesheet;
+    })
+    return timesheet
   }
 
   // Gestion des dépenses
@@ -714,30 +653,26 @@ class TimeTrackingManager {
       id: `expense_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-
-    this.expenses.set(newExpense.id, newExpense);
-
+    }
+    this.expenses.set(newExpense.id, newExpense)
     logger.info(`Expense added: ${newExpense.description}`, {
       action: 'expense_added',
       metadata: { expenseId: newExpense.id, userId: newExpense.userId, amount: newExpense.amount }
-    });
-
-    return newExpense;
+    })
+    return newExpense
   }
 
   getExpenses(userId?: string, projectId?: string): Expense[] {
-    let expenses = Array.from(this.expenses.values());
-    
+    let expenses = Array.from(this.expenses.values())
     if (userId) {
-      expenses = expenses.filter(expense => expense.userId === userId);
+      expenses = expenses.filter(expense => expense.userId === userId)
     }
     
     if (projectId) {
-      expenses = expenses.filter(expense => expense.projectId === projectId);
+      expenses = expenses.filter(expense => expense.projectId === projectId)
     }
 
-    return expenses.sort((a, b) => b.date.getTime() - a.date.getTime());
+    return expenses.sort((a, b) => b.date.getTime() - a.date.getTime())
   }
 
   // Gestion des factures
@@ -747,79 +682,70 @@ class TimeTrackingManager {
       id: `invoice_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       createdAt: new Date(),
       updatedAt: new Date()
-    };
-
-    this.invoices.set(newInvoice.id, newInvoice);
-
+    }
+    this.invoices.set(newInvoice.id, newInvoice)
     logger.info(`Invoice created: ${newInvoice.number}`, {
       action: 'invoice_created',
       metadata: { invoiceId: newInvoice.id, clientId: newInvoice.clientId, total: newInvoice.total }
-    });
-
-    return newInvoice;
+    })
+    return newInvoice
   }
 
   getInvoices(clientId?: string): Invoice[] {
-    let invoices = Array.from(this.invoices.values());
-    
+    let invoices = Array.from(this.invoices.values())
     if (clientId) {
-      invoices = invoices.filter(invoice => invoice.clientId === clientId);
+      invoices = invoices.filter(invoice => invoice.clientId === clientId)
     }
 
-    return invoices.sort((a, b) => b.issueDate.getTime() - a.issueDate.getTime());
+    return invoices.sort((a, b) => b.issueDate.getTime() - a.issueDate.getTime())
   }
 
   // Statistiques et rapports
   getTimeTrackingStats(userId: string, period: 'day' | 'week' | 'month' | 'year'): TimeTrackingStats {
-    const now = new Date();
-    let startDate: Date;
-
+    const now = new Date()
+    let startDate: Date
     switch (period) {
       case 'day':
-        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        break;
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        break
       case 'week':
-        const dayOfWeek = now.getDay();
-        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek);
-        break;
+        const dayOfWeek = now.getDay()
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dayOfWeek)
+        break
       case 'month':
-        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-        break;
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1)
+        break
       case 'year':
-        startDate = new Date(now.getFullYear(), 0, 1);
-        break;
+        startDate = new Date(now.getFullYear(), 0, 1)
+        break
     }
 
-    const entries = this.getTimeEntries(userId, { startDate, endDate: now });
-    const totalHours = entries.reduce((sum, entry) => sum + entry.duration, 0) / 3600;
+    const entries = this.getTimeEntries(userId, { startDate, endDate: now })
+    const totalHours = entries.reduce((sum, entry) => sum + entry.duration, 0) / 3600
     const billableHours = entries
       .filter(entry => entry.billable)
-      .reduce((sum, entry) => sum + entry.duration, 0) / 3600;
-
+      .reduce((sum, entry) => sum + entry.duration, 0) / 3600
     // Grouper par projet
-    const projectStats = new Map<string, { hours: number; billableHours: number }>();
+    const projectStats = new Map<string, { hours: number; billableHours: number }>()
     entries.forEach(entry => {
-      const project = this.projects.get(entry.projectId);
-      if (!project) return;
-
-      const current = projectStats.get(entry.projectId) || { hours: 0, billableHours: 0 };
-      current.hours += entry.duration / 3600;
+      const project = this.projects.get(entry.projectId)
+      if (!project) return
+      const current = projectStats.get(entry.projectId) || { hours: 0, billableHours: 0 }
+      current.hours += entry.duration / 3600
       if (entry.billable) {
-        current.billableHours += entry.duration / 3600;
+        current.billableHours += entry.duration / 3600
       }
-      projectStats.set(entry.projectId, current);
-    });
-
+      projectStats.set(entry.projectId, current)
+    })
     const projects = Array.from(projectStats.entries()).map(([projectId, stats]) => {
-      const project = this.projects.get(projectId);
+      const project = this.projects.get(projectId)
       return {
         projectId,
         projectName: project?.name || 'Projet inconnu',
         hours: stats.hours,
         billableHours: stats.billableHours
-      };
-    });
-
+      }
+    })
     return {
       userId,
       period,
@@ -837,7 +763,7 @@ class TimeTrackingManager {
         billable: billableHours * 75,
         pending: 0 // À calculer selon les factures
       }
-    };
+    }
   }
 
   // Paramètres utilisateur
@@ -870,80 +796,69 @@ class TimeTrackingManager {
         approvalNotification: true,
         invoiceReminder: true
       }
-    };
-
-    return this.settings.get(userId) || defaultSettings;
+    }
+    return this.settings.get(userId) || defaultSettings
   }
 
   updateUserSettings(userId: string, updates: Partial<TimeTrackingSettings>): TimeTrackingSettings {
-    const currentSettings = this.getUserSettings(userId);
-    const updatedSettings = { ...currentSettings, ...updates };
-    
-    this.settings.set(userId, updatedSettings);
-
+    const currentSettings = this.getUserSettings(userId)
+    const updatedSettings = { ...currentSettings, ...updates }
+    this.settings.set(userId, updatedSettings)
     logger.info(`User settings updated: ${userId}`, {
       action: 'user_settings_updated',
       metadata: { userId }
-    });
-
-    return updatedSettings;
+    })
+    return updatedSettings
   }
 
   // Utilitaires
   formatDuration(seconds: number): string {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
     if (hours > 0) {
-      return `${hours}h ${minutes}m`;
+      return `${hours}h ${minutes}m`
     }
-    return `${minutes}m`;
+    return `${minutes}m`
   }
 
   calculateBillableAmount(entry: TimeEntry, hourlyRate?: number): number {
-    const rate = hourlyRate || entry.hourlyRate || 75;
-    return (entry.duration / 3600) * rate;
+    const rate = hourlyRate || entry.hourlyRate || 75
+    return (entry.duration / 3600) * rate
   }
 
   // Nettoyage et maintenance
   cleanupOldData(daysToKeep: number = 365): void {
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - daysToKeep);
-
+    const cutoffDate = new Date()
+    cutoffDate.setDate(cutoffDate.getDate() - daysToKeep)
     // Nettoyer les entrées de temps anciennes
     for (const [id, entry] of this.timeEntries.entries()) {
       if (entry.createdAt < cutoffDate) {
-        this.timeEntries.delete(id);
+        this.timeEntries.delete(id)
       }
     }
 
     logger.info(`Old data cleaned up`, {
       action: 'old_data_cleaned',
       metadata: { cutoffDate, daysToKeep }
-    });
+    })
   }
 }
 
 // Instance globale
-export const timeTrackingManager = new TimeTrackingManager();
-
+export const timeTrackingManager = new TimeTrackingManager()
 // Fonctions utilitaires
 export const startTimer = (userId: string, projectId: string, description: string, taskId?: string) => {
-  return timeTrackingManager.startTimer(userId, projectId, description, taskId);
-};
-
+  return timeTrackingManager.startTimer(userId, projectId, description, taskId)
+}
 export const stopTimer = (userId: string) => {
-  return timeTrackingManager.stopTimer(userId);
-};
-
+  return timeTrackingManager.stopTimer(userId)
+}
 export const pauseTimer = (userId: string) => {
-  return timeTrackingManager.pauseTimer(userId);
-};
-
+  return timeTrackingManager.pauseTimer(userId)
+}
 export const resumeTimer = (userId: string) => {
-  return timeTrackingManager.resumeTimer(userId);
-};
-
+  return timeTrackingManager.resumeTimer(userId)
+}
 export const addManualEntry = (
   userId: string,
   projectId: string,
@@ -954,81 +869,62 @@ export const addManualEntry = (
   billable?: boolean,
   tags?: string[]
 ) => {
-  return timeTrackingManager.addManualEntry(userId, projectId, description, startTime, endTime, taskId, billable, tags);
-};
-
+  return timeTrackingManager.addManualEntry(userId, projectId, description, startTime, endTime, taskId, billable, tags)
+}
 export const getTimeEntries = (userId: string, filters?: any) => {
-  return timeTrackingManager.getTimeEntries(userId, filters);
-};
-
+  return timeTrackingManager.getTimeEntries(userId, filters)
+}
 export const getActiveTimer = (userId: string) => {
-  return timeTrackingManager.getActiveTimer(userId);
-};
-
+  return timeTrackingManager.getActiveTimer(userId)
+}
 export const createProject = (project: any) => {
-  return timeTrackingManager.createProject(project);
-};
-
+  return timeTrackingManager.createProject(project)
+}
 export const getProjects = (userId?: string) => {
-  return timeTrackingManager.getProjects(userId);
-};
-
+  return timeTrackingManager.getProjects(userId)
+}
 export const createClient = (client: any) => {
-  return timeTrackingManager.createClient(client);
-};
-
+  return timeTrackingManager.createClient(client)
+}
 export const getClients = () => {
-  return timeTrackingManager.getClients();
-};
-
+  return timeTrackingManager.getClients()
+}
 export const createTask = (task: any) => {
-  return timeTrackingManager.createTask(task);
-};
-
+  return timeTrackingManager.createTask(task)
+}
 export const getTasks = (projectId?: string) => {
-  return timeTrackingManager.getTasks(projectId);
-};
-
+  return timeTrackingManager.getTasks(projectId)
+}
 export const createTimesheet = (userId: string, weekStart: Date) => {
-  return timeTrackingManager.createTimesheet(userId, weekStart);
-};
-
+  return timeTrackingManager.createTimesheet(userId, weekStart)
+}
 export const submitTimesheet = (timesheetId: string) => {
-  return timeTrackingManager.submitTimesheet(timesheetId);
-};
-
+  return timeTrackingManager.submitTimesheet(timesheetId)
+}
 export const approveTimesheet = (timesheetId: string, approvedBy: string) => {
-  return timeTrackingManager.approveTimesheet(timesheetId, approvedBy);
-};
-
+  return timeTrackingManager.approveTimesheet(timesheetId, approvedBy)
+}
 export const addExpense = (expense: any) => {
-  return timeTrackingManager.addExpense(expense);
-};
-
+  return timeTrackingManager.addExpense(expense)
+}
 export const getExpenses = (userId?: string, projectId?: string) => {
-  return timeTrackingManager.getExpenses(userId, projectId);
-};
-
+  return timeTrackingManager.getExpenses(userId, projectId)
+}
 export const createInvoice = (invoice: any) => {
-  return timeTrackingManager.createInvoice(invoice);
-};
-
+  return timeTrackingManager.createInvoice(invoice)
+}
 export const getInvoices = (clientId?: string) => {
-  return timeTrackingManager.getInvoices(clientId);
-};
-
+  return timeTrackingManager.getInvoices(clientId)
+}
 export const getTimeTrackingStats = (userId: string, period: 'day' | 'week' | 'month' | 'year') => {
-  return timeTrackingManager.getTimeTrackingStats(userId, period);
-};
-
+  return timeTrackingManager.getTimeTrackingStats(userId, period)
+}
 export const getUserSettings = (userId: string) => {
-  return timeTrackingManager.getUserSettings(userId);
-};
-
+  return timeTrackingManager.getUserSettings(userId)
+}
 export const updateUserSettings = (userId: string, updates: any) => {
-  return timeTrackingManager.updateUserSettings(userId, updates);
-};
-
+  return timeTrackingManager.updateUserSettings(userId, updates)
+}
 export const formatDuration = (seconds: number) => {
-  return timeTrackingManager.formatDuration(seconds);
-};
+  return timeTrackingManager.formatDuration(seconds)
+}

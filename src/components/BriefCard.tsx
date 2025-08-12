@@ -1,43 +1,41 @@
-"use client";
-import React from 'react';
-import Icon from '@/components/ui/Icon';
-
+"use client"
+import React from 'react'
+import Icon from '@/components/ui/Icon'
 interface BriefCardProps {
   brief: {
-    id: string;
-    agent: string;
-    contentJson: any;
-    status: string;
-    createdAt: string;
-  };
+    id: string
+    agent: string
+    contentJson: any
+    status: string
+    createdAt: string
+  }
   agentInfo: {
-    name: string;
-    role: string;
-    color: string;
-    icon: string;
-    age: number;
-  };
-  onRestart?: (agentName: string) => void;
+    name: string
+    role: string
+    color: string
+    icon: string
+    age: number
+  }
+  onRestart?: (agentName: string) => void
 }
 
 export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestart }) => {
   // Fonction pour formater le contenu du brief
   const formatBriefContent = (contentJson: any): string => {
     if (typeof contentJson === 'string') {
-      return contentJson;
+      return contentJson
     }
     if (contentJson.brief) {
-      return contentJson.brief;
+      return contentJson.brief
     }
     if (contentJson.content) {
-      return contentJson.content;
+      return contentJson.content
     }
-    return JSON.stringify(contentJson, null, 2);
-  };
-
+    return JSON.stringify(contentJson, null, 2)
+  }
   // Fonction pour formater le contenu en HTML avec style
   const formatAsStyledHtml = (content: string): JSX.Element => {
-    const lines = content.split('\n');
+    const lines = content.split('\n')
     return (
       <div style={{ lineHeight: '1.6' }}>
         {lines.map((line, index) => {
@@ -49,13 +47,13 @@ export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestar
                 fontWeight: '700', 
                 color: '#0a2540', 
                 marginBottom: '12px', 
-                marginTop: index > 0 ? &apos;24px&apos; : &apos;0&apos;,
+                marginTop: index > 0 ? '24px' : '0',
                 borderBottom: `2px solid ${agentInfo.color}`,
-                paddingBottom: &apos;4px&apos;
+                paddingBottom: '4px'
               }}>
                 {line.substring(2)}
               </h3>
-            );
+            )
           }
           if (line.startsWith('## ')) {
             return (
@@ -68,7 +66,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestar
               }}>
                 {line.substring(3)}
               </h4>
-            );
+            )
           }
           if (line.startsWith('### ')) {
             return (
@@ -81,7 +79,7 @@ export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestar
               }}>
                 {line.substring(4)}
               </h5>
-            );
+            )
           }
           
           // Listes
@@ -101,12 +99,12 @@ export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestar
                 }}>•</span>
                 <span>{line.substring(2)}</span>
               </div>
-            );
+            )
           }
           
           // Gras
           if (line.includes('**')) {
-            const parts = line.split('**');
+            const parts = line.split('**')
             return (
               <div key={index} style={{ marginBottom: '8px' }}>
                 {parts.map((part, i) => 
@@ -115,12 +113,12 @@ export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestar
                     part
                 )}
               </div>
-            );
+            )
           }
           
           // Ligne vide
           if (line.trim() === '') {
-            return <div key={index} style={{ height: '12px' }} />;
+            return <div key={index} style={{ height: '12px' }} />
           }
           
           // Texte normal
@@ -132,38 +130,34 @@ export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestar
             }}>
               {line}
             </div>
-          );
+          )
         })}
       </div>
-    );
-  };
-
-  const content = formatBriefContent(brief.contentJson);
+    )
+  }
+  const content = formatBriefContent(brief.contentJson)
   const formattedDate = new Date(brief.createdAt).toLocaleString('fr-FR', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  });
-
+  })
   const getStatusInfo = (status: string) => {
     switch (status) {
       case 'completed':
-        return { label: 'Terminé', color: '#10b981', bgColor: '#d1fae5' };
+        return { label: 'Terminé', color: '#10b981', bgColor: '#d1fae5' }
       case 'in_progress':
-        return { label: 'En cours', color: '#f59e0b', bgColor: '#fef3c7' };
+        return { label: 'En cours', color: '#f59e0b', bgColor: '#fef3c7' }
       case 'queued':
-        return { label: 'En attente', color: '#6b7280', bgColor: '#f3f4f6' };
+        return { label: 'En attente', color: '#6b7280', bgColor: '#f3f4f6' }
       case 'failed':
-        return { label: 'Échoué', color: '#ef4444', bgColor: '#fee2e2' };
+        return { label: 'Échoué', color: '#ef4444', bgColor: '#fee2e2' }
       default:
-        return { label: status, color: '#6b7280', bgColor: '#f3f4f6' };
+        return { label: status, color: '#6b7280', bgColor: '#f3f4f6' }
     }
-  };
-
-  const statusInfo = getStatusInfo(brief.status);
-
+  }
+  const statusInfo = getStatusInfo(brief.status)
   return (
     <div style={{
       backgroundColor: 'white',
@@ -266,10 +260,10 @@ export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestar
                 gap: '6px'
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = `${agentInfo.color}dd`;
+                e.currentTarget.style.backgroundColor = `${agentInfo.color}dd`
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = agentInfo.color;
+                e.currentTarget.style.backgroundColor = agentInfo.color
               }}
             >
               <Icon name="refresh" size="xs" />
@@ -305,28 +299,26 @@ export const BriefCard: React.FC<BriefCardProps> = ({ brief, agentInfo, onRestar
         </div>
       </div>
     </div>
-  );
-};
-
+  )
+}
 // Styles CSS pour l'animation
 const styles = `
   @keyframes slideIn {
     from {
-      opacity: 0;
-      transform: translateY(20px);
+      opacity: 0
+      transform: translateY(20px)
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
+      opacity: 1
+      transform: translateY(0)
     }
   }
-`;
-
+`
 // Injecter les styles
 if (typeof document !== 'undefined') {
-  const styleSheet = document.createElement('style');
-  styleSheet.textContent = styles;
-  document.head.appendChild(styleSheet);
+  const styleSheet = document.createElement('style')
+  styleSheet.textContent = styles
+  document.head.appendChild(styleSheet)
 }
 
-export default BriefCard;
+export default BriefCard

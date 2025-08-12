@@ -1,37 +1,34 @@
-"use client";
-import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import { useState, useEffect } from "react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import Icon from "@/components/ui/Icon"
 type Agent = {
-  id: string;
-  name: string;
-  role: string;
-  description: string;
-  active: boolean;
-  icon: string;
-  color: string;
-  category: 'marketing' | 'creative' | 'analytics' | 'content' | 'sales' | 'productivity' | 'technical' | 'system';
-  skills: string[];
-  performance: number;
-  lastUsed?: Date;
-};
-
+  id: string
+  name: string
+  role: string
+  description: string
+  active: boolean
+  icon: string
+  color: string
+  category: 'marketing' | 'creative' | 'analytics' | 'content' | 'sales' | 'productivity' | 'technical' | 'system'
+  skills: string[]
+  performance: number
+  lastUsed?: Date
+}
 type SpecializedAgent = {
-  id: string;
-  name: string;
-  role: string;
-  description: string;
-  status: 'beta' | 'premium' | 'enterprise';
-  icon: string;
-  color: string;
-  category: 'intelligence' | 'automation' | 'analysis' | 'optimization';
-  capabilities: string[];
-  complexity: 'basic' | 'advanced' | 'expert';
-  lastUpdated: Date;
-};
-
+  id: string
+  name: string
+  role: string
+  description: string
+  status: 'beta' | 'premium' | 'enterprise'
+  icon: string
+  color: string
+  category: 'intelligence' | 'automation' | 'analysis' | 'optimization'
+  capabilities: string[]
+  complexity: 'basic' | 'advanced' | 'expert'
+  lastUpdated: Date
+}
 const defaultAgents: Agent[] = [
   {
     id: "karine",
@@ -163,8 +160,7 @@ const defaultAgents: Agent[] = [
     performance: 88,
     lastUsed: new Date(Date.now() - 1000 * 60 * 60 * 24 * 4)
   }
-];
-
+]
 // Nouveaux agents spécialisés avancés
 const specializedAgents: SpecializedAgent[] = [
   {
@@ -232,8 +228,7 @@ const specializedAgents: SpecializedAgent[] = [
     complexity: "advanced",
     lastUpdated: new Date(Date.now() - 1000 * 60 * 60 * 8)
   }
-];
-
+]
 const agentPackages = [
   {
     id: "startup",
@@ -263,8 +258,7 @@ const agentPackages = [
     agents: ["karine", "hugo", "jpbot", "elodie", "clara", "faucon", "speedbot", "securitybot"],
     color: "#0570de"
   }
-];
-
+]
 const categories = [
   { id: 'all', name: 'Tous', color: '#6b7280' },
   { id: 'marketing', name: 'Marketing', color: '#635bff' },
@@ -275,130 +269,115 @@ const categories = [
   { id: 'productivity', name: 'Productivité', color: '#8898aa' },
   { id: 'technical', name: 'Technique', color: '#e74c3c' },
   { id: 'system', name: 'Système', color: '#ff6b35' }
-];
-
+]
 export default function AgentsPage() {
-  const [agents, setAgents] = useState<Agent[]>(defaultAgents);
-  const [specializedAgentsList, setSpecializedAgentsList] = useState<SpecializedAgent[]>(specializedAgents);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState<"name" | "performance" | "lastUsed" | "category">("name");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
-  const [activeTab, setActiveTab] = useState<"workflow" | "specialized">("workflow");
-
+  const [agents, setAgents] = useState<Agent[]>(defaultAgents)
+  const [specializedAgentsList, setSpecializedAgentsList] = useState<SpecializedAgent[]>(specializedAgents)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [sortBy, setSortBy] = useState<"name" | "performance" | "lastUsed" | "category">("name")
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
+  const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
+  const [activeTab, setActiveTab] = useState<"workflow" | "specialized">("workflow")
   const toggleAgent = (agentId: string) => {
     setAgents(prev => prev.map(agent => 
       agent.id === agentId ? { ...agent, active: !agent.active } : agent
-    ));
-  };
-
+    ))
+  }
   const applyPackage = (packageId: string) => {
-    const package_ = agentPackages.find(p => p.id === packageId);
+    const package_ = agentPackages.find(p => p.id === packageId)
     if (package_) {
       setAgents(prev => prev.map(agent => ({
         ...agent,
         active: package_.agents.includes(agent.id)
-      })));
+      })))
     }
-  };
-
+  }
   const saveConfiguration = async () => {
     try {
-      const activeAgents = agents.filter(agent => agent.active).map(agent => agent.name);
-      
+      const activeAgents = agents.filter(agent => agent.active).map(agent => agent.name)
       const response = await fetch('/api/agents/config', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ agents: activeAgents }),
-      });
-
+      })
       if (response.ok) {
-        console.log('Configuration sauvegardée avec succès');
+        console.log('Configuration sauvegardée avec succès')
       } else {
-        console.error('Erreur lors de la sauvegarde');
+        console.error('Erreur lors de la sauvegarde')
       }
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde:', error);
+      console.error('Erreur lors de la sauvegarde:', error)
     }
-  };
-
+  }
   // Filtrage et tri des agents
   const filteredAgents = agents.filter(agent => {
     const matchesSearch = agent.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          agent.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         agent.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(agent.category);
-    
-    return matchesSearch && matchesCategory;
+                         agent.description.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(agent.category)
+    return matchesSearch && matchesCategory
   }).sort((a, b) => {
-    let comparison = 0;
+    let comparison = 0
     switch (sortBy) {
       case "name":
-        comparison = a.name.localeCompare(b.name);
-        break;
+        comparison = a.name.localeCompare(b.name)
+        break
       case "performance":
-        comparison = b.performance - a.performance;
-        break;
+        comparison = b.performance - a.performance
+        break
       case "lastUsed":
-        comparison = (b.lastUsed?.getTime() || 0) - (a.lastUsed?.getTime() || 0);
-        break;
+        comparison = (b.lastUsed?.getTime() || 0) - (a.lastUsed?.getTime() || 0)
+        break
       case "category":
-        comparison = a.category.localeCompare(b.category);
-        break;
+        comparison = a.category.localeCompare(b.category)
+        break
     }
-    return sortOrder === "asc" ? comparison : -comparison;
-  });
-
+    return sortOrder === "asc" ? comparison : -comparison
+  })
   const getPerformanceColor = (performance: number) => {
-    if (performance >= 95) return "text-green-600";
-    if (performance >= 85) return "text-blue-600";
-    if (performance >= 75) return "text-yellow-600";
-    return "text-red-600";
-  };
-
+    if (performance >= 95) return "text-green-600"
+    if (performance >= 85) return "text-blue-600"
+    if (performance >= 75) return "text-yellow-600"
+    return "text-red-600"
+  }
   const formatLastUsed = (date?: Date) => {
-    if (!date) return "Jamais";
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-    if (minutes < 60) return `Il y a ${minutes}min`;
-    if (hours < 24) return `Il y a ${hours}h`;
-    return `Il y a ${days}j`;
-  };
-
+    if (!date) return "Jamais"
+    const now = new Date()
+    const diff = now.getTime() - date.getTime()
+    const minutes = Math.floor(diff / (1000 * 60))
+    const hours = Math.floor(diff / (1000 * 60 * 60))
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    if (minutes < 60) return `Il y a ${minutes}min`
+    if (hours < 24) return `Il y a ${hours}h`
+    return `Il y a ${days}j`
+  }
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'beta':
-        return <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">BETA</span>;
+        return <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">BETA</span>
       case 'premium':
-        return <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">PREMIUM</span>;
+        return <span className="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">PREMIUM</span>
       case 'enterprise':
-        return <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">ENTERPRISE</span>;
+        return <span className="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">ENTERPRISE</span>
       default:
-        return null;
+        return null
     }
-  };
-
+  }
   const getComplexityBadge = (complexity: string) => {
     switch (complexity) {
       case 'basic':
-        return <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">BASIC</span>;
+        return <span className="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full">BASIC</span>
       case 'advanced':
-        return <span className="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-800 rounded-full">ADVANCED</span>;
+        return <span className="px-2 py-1 text-xs font-medium bg-orange-100 text-orange-800 rounded-full">ADVANCED</span>
       case 'expert':
-        return <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">EXPERT</span>;
+        return <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">EXPERT</span>
       default:
-        return null;
+        return null
     }
-  };
-
+  }
   return (
     <AuthGuard>
       <Layout 
@@ -552,7 +531,7 @@ export default function AgentsPage() {
                     <p className="text-sm text-gray-600 mb-3">{package_.description}</p>
                     <div className="flex flex-wrap gap-1">
                       {package_.agents.map(agentId => {
-                        const agent = agents.find(a => a.id === agentId);
+                        const agent = agents.find(a => a.id === agentId)
                         return agent ? (
                           <span
                             key={agentId}
@@ -560,7 +539,7 @@ export default function AgentsPage() {
                           >
                             {agent.name}
                           </span>
-                        ) : null;
+                        ) : null
                       })}
                     </div>
                   </div>
@@ -596,7 +575,7 @@ export default function AgentsPage() {
                           onChange={() => toggleAgent(agent.id)}
                           className="sr-only peer"
                         />
-                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&apos;"] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                       </label>
                     </div>
                     
@@ -693,7 +672,7 @@ export default function AgentsPage() {
                               onChange={() => toggleAgent(agent.id)}
                               className="sr-only peer"
                             />
-                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[&apos;"] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                           </label>
                         </td>
                       </tr>
@@ -713,8 +692,8 @@ export default function AgentsPage() {
                   <div>
                     <h3 className="font-medium text-blue-900 mb-1">Agents Spécialisés Avancés</h3>
                     <p className="text-sm text-blue-700">
-                      Ces agents utilisent des algorithmes d&apos;IA avancés pour des tâches spécialisées. 
-                      Ils sont disponibles selon votre plan d&apos;abonnement.
+                      Ces agents utilisent des algorithmes d'IA avancés pour des tâches spécialisées. 
+                      Ils sont disponibles selon votre plan d'abonnement.
                     </p>
                   </div>
                 </div>
@@ -774,7 +753,7 @@ export default function AgentsPage() {
                         className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
                         disabled={agent.status === 'enterprise'}
                       >
-                        {agent.status === &apos;enterprise&apos; ? &apos;Plan Enterprise requis&apos; : &apos;Activer l\&apos;agent&apos;}
+                        {agent.status === 'enterprise' ? 'Plan Enterprise requis' : 'Activer l\'agent'}
                       </button>
                     </div>
                   </div>
@@ -785,5 +764,5 @@ export default function AgentsPage() {
         )}
       </Layout>
     </AuthGuard>
-  );
+  )
 }

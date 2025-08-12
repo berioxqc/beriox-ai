@@ -1,19 +1,16 @@
-import Stripe from 'stripe';
-
+import Stripe from 'stripe'
 // Configuration Stripe
 export const stripeConfig = {
   publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || '',
   secretKey: process.env.STRIPE_SECRET_KEY || '',
   currency: 'cad', // Devise canadienne
   apiVersion: '2023-10-16' as const
-};
-
+}
 // Instance Stripe côté serveur
 export const stripe = new Stripe(stripeConfig.secretKey, {
   apiVersion: stripeConfig.apiVersion,
   typescript: true
-});
-
+})
 // Plans de tarification
 export const pricingPlans = {
   basic: {
@@ -59,8 +56,7 @@ export const pricingPlans = {
       'Déploiement privé possible'
     ]
   }
-};
-
+}
 // Webhook events à gérer
 export const webhookEvents = [
   'payment_intent.succeeded',
@@ -70,8 +66,7 @@ export const webhookEvents = [
   'customer.subscription.deleted',
   'invoice.payment_succeeded',
   'invoice.payment_failed'
-];
-
+]
 // Configuration des produits Stripe
 export const stripeProducts = {
   basic: {
@@ -101,8 +96,7 @@ export const stripeProducts = {
       features: 'all_agents,dedicated_support,sla,custom_integrations'
     }
   }
-};
-
+}
 // Utilitaires pour Stripe
 export const stripeUtils = {
   // Formater le prix pour l'affichage
@@ -110,7 +104,7 @@ export const stripeUtils = {
     return new Intl.NumberFormat('fr-CA', {
       style: 'currency',
       currency: currency.toUpperCase()
-    }).format(amount / 100);
+    }).format(amount / 100)
   },
 
   // Créer un PaymentIntent
@@ -122,7 +116,7 @@ export const stripeUtils = {
       automatic_payment_methods: {
         enabled: true,
       },
-    });
+    })
   },
 
   // Créer un client Stripe
@@ -131,7 +125,7 @@ export const stripeUtils = {
       email,
       name,
       metadata
-    });
+    })
   },
 
   // Créer un abonnement
@@ -143,22 +137,22 @@ export const stripeUtils = {
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
       expand: ['latest_invoice.payment_intent'],
-    });
+    })
   },
 
   // Récupérer un client
   getCustomer: async (customerId: string) => {
-    return await stripe.customers.retrieve(customerId);
+    return await stripe.customers.retrieve(customerId)
   },
 
   // Mettre à jour un client
   updateCustomer: async (customerId: string, data: Partial<Stripe.CustomerUpdateParams>) => {
-    return await stripe.customers.update(customerId, data);
+    return await stripe.customers.update(customerId, data)
   },
 
   // Annuler un abonnement
   cancelSubscription: async (subscriptionId: string) => {
-    return await stripe.subscriptions.cancel(subscriptionId);
+    return await stripe.subscriptions.cancel(subscriptionId)
   },
 
   // Récupérer les factures d'un client
@@ -166,7 +160,7 @@ export const stripeUtils = {
     return await stripe.invoices.list({
       customer: customerId,
       limit
-    });
+    })
   },
 
   // Créer un remboursement
@@ -175,44 +169,43 @@ export const stripeUtils = {
       payment_intent: paymentIntentId,
       amount,
       reason
-    });
+    })
   }
-};
-
+}
 // Types pour les événements Stripe
 export interface StripeWebhookEvent {
-  id: string;
-  object: string;
-  api_version: string;
-  created: number;
+  id: string
+  object: string
+  api_version: string
+  created: number
   data: {
-    object: any;
-  };
-  livemode: boolean;
-  pending_webhooks: number;
+    object: any
+  }
+  livemode: boolean
+  pending_webhooks: number
   request: {
-    id: string;
-    idempotency_key: string | null;
-  };
-  type: string;
+    id: string
+    idempotency_key: string | null
+  }
+  type: string
 }
 
 // Interface pour les données de paiement
 export interface PaymentData {
-  amount: number;
-  currency: string;
-  customerId?: string;
-  paymentMethodId?: string;
-  metadata?: Record<string, string>;
-  description?: string;
+  amount: number
+  currency: string
+  customerId?: string
+  paymentMethodId?: string
+  metadata?: Record<string, string>
+  description?: string
 }
 
 // Interface pour les données d'abonnement
 export interface SubscriptionData {
-  customerId: string;
-  priceId: string;
-  metadata?: Record<string, string>;
-  trialPeriodDays?: number;
+  customerId: string
+  priceId: string
+  metadata?: Record<string, string>
+  trialPeriodDays?: number
 }
 
-export default stripe;
+export default stripe

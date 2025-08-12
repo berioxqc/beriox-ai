@@ -1,45 +1,40 @@
-"use client";
-
-import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-
+"use client"
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 function ResetPasswordForm() {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [token, setToken] = useState('');
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [token, setToken] = useState('')
+  const router = useRouter()
+  const searchParams = useSearchParams()
   useEffect(() => {
-    const tokenParam = searchParams.get('token');
+    const tokenParam = searchParams.get('token')
     if (!tokenParam) {
-      setError('Token de réinitialisation manquant');
-      return;
+      setError('Token de réinitialisation manquant')
+      return
     }
-    setToken(tokenParam);
-  }, [searchParams]);
-
+    setToken(tokenParam)
+  }, [searchParams])
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    setSuccess('');
-
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
+    setSuccess('')
     // Validation
     if (password !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
-      setIsLoading(false);
-      return;
+      setError('Les mots de passe ne correspondent pas')
+      setIsLoading(false)
+      return
     }
 
     if (password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères');
-      setIsLoading(false);
-      return;
+      setError('Le mot de passe doit contenir au moins 8 caractères')
+      setIsLoading(false)
+      return
     }
 
     try {
@@ -49,35 +44,32 @@ function ResetPasswordForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ token, password }),
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (!response.ok) {
-        setError(data.error || 'Erreur lors de la réinitialisation');
+        setError(data.error || 'Erreur lors de la réinitialisation')
       } else {
-        setSuccess(data.message);
-        setPassword('');
-        setConfirmPassword('');
+        setSuccess(data.message)
+        setPassword('')
+        setConfirmPassword('')
         // Rediriger vers la page de connexion après 3 secondes
         setTimeout(() => {
-          router.push('/auth/signin');
-        }, 3000);
+          router.push('/auth/signin')
+        }, 3000)
       }
     } catch (error) {
-      setError('Erreur lors de la réinitialisation');
+      setError('Erreur lors de la réinitialisation')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
+  }
   if (!token && !error) {
     return (
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
         <p className="mt-4 text-white">Chargement...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -131,7 +123,7 @@ function ResetPasswordForm() {
             disabled={isLoading}
             className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? &apos;Mise à jour...&apos; : &apos;Mettre à jour le mot de passe&apos;}
+            {isLoading ? 'Mise à jour...' : 'Mettre à jour le mot de passe'}
           </button>
         </form>
       )}
@@ -142,7 +134,7 @@ function ResetPasswordForm() {
         </Link>
       </div>
     </div>
-  );
+  )
 }
 
 export default function ResetPasswordPage() {
@@ -164,5 +156,5 @@ export default function ResetPasswordPage() {
         </Suspense>
       </div>
     </div>
-  );
+  )
 }

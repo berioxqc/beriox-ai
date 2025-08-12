@@ -1,46 +1,44 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import AccessGuard from "@/components/AccessGuard";
-import { Icon } from "@/components/ui/Icon";
-import { useTheme, useStyles } from "@/hooks/useTheme";
-
+"use client"
+import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import AccessGuard from "@/components/AccessGuard"
+import { Icon } from "@/components/ui/Icon"
+import { useTheme, useStyles } from "@/hooks/useTheme"
 interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
-  emailVerified: boolean;
-  createdAt: string;
-  lastLogin?: string;
-  credits?: number;
-  plan?: string;
+  id: string
+  name: string
+  email: string
+  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN'
+  emailVerified: boolean
+  createdAt: string
+  lastLogin?: string
+  credits?: number
+  plan?: string
 }
 
 interface UserManagementStats {
-  total: number;
-  users: number;
-  admins: number;
-  superAdmins: number;
-  active: number;
-  premium: number;
+  total: number
+  users: number
+  admins: number
+  superAdmins: number
+  active: number
+  premium: number
 }
 
 export default function UserManagementPage() {
-  const { data: session } = useSession();
-  const { theme } = useTheme();
-  const styles = useStyles();
-  const [users, setUsers] = useState<User[]>([]);
-  const [stats, setStats] = useState<UserManagementStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [roleFilter, setRoleFilter] = useState<string>('all');
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [showRoleModal, setShowRoleModal] = useState(false);
-  const [updatingRole, setUpdatingRole] = useState(false);
-
+  const { data: session } = useSession()
+  const { theme } = useTheme()
+  const styles = useStyles()
+  const [users, setUsers] = useState<User[]>([])
+  const [stats, setStats] = useState<UserManagementStats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [roleFilter, setRoleFilter] = useState<string>('all')
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [showRoleModal, setShowRoleModal] = useState(false)
+  const [updatingRole, setUpdatingRole] = useState(false)
   // Vérifier si l'utilisateur est super admin
   if (session?.user?.email !== 'info@beriox.ca') {
     return (
@@ -69,83 +67,75 @@ export default function UserManagementPage() {
           </Layout>
         </AccessGuard>
       </AuthGuard>
-    );
+    )
   }
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
-
+    fetchUsers()
+  }, [])
   const fetchUsers = async () => {
     try {
-      setLoading(true);
-      const response = await fetch('/api/super-admin/users');
-      
+      setLoading(true)
+      const response = await fetch('/api/super-admin/users')
       if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des utilisateurs');
+        throw new Error('Erreur lors de la récupération des utilisateurs')
       }
       
-      const data = await response.json();
-      setUsers(data.users);
-      setStats(data.stats);
+      const data = await response.json()
+      setUsers(data.users)
+      setStats(data.stats)
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('Erreur:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const updateUserRole = async (userId: string, newRole: string) => {
     try {
-      setUpdatingRole(true);
+      setUpdatingRole(true)
       const response = await fetch('/api/super-admin/users/role', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ userId, role: newRole }),
-      });
-
+      })
       if (!response.ok) {
-        throw new Error('Erreur lors de la mise à jour du rôle');
+        throw new Error('Erreur lors de la mise à jour du rôle')
       }
 
       // Mettre à jour la liste des utilisateurs
-      await fetchUsers();
-      setShowRoleModal(false);
-      setSelectedUser(null);
+      await fetchUsers()
+      setShowRoleModal(false)
+      setSelectedUser(null)
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('Erreur:', error)
     } finally {
-      setUpdatingRole(false);
+      setUpdatingRole(false)
     }
-  };
-
+  }
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === 'all' || user.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
-
+                         user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesRole = roleFilter === 'all' || user.role === roleFilter
+    return matchesSearch && matchesRole
+  })
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'SUPER_ADMIN': return '#dc2626';
-      case 'ADMIN': return '#ea580c';
-      case 'USER': return '#059669';
-      default: return '#6b7280';
+      case 'SUPER_ADMIN': return '#dc2626'
+      case 'ADMIN': return '#ea580c'
+      case 'USER': return '#059669'
+      default: return '#6b7280'
     }
-  };
-
+  }
   const getRoleLabel = (role: string) => {
     switch (role) {
-      case 'SUPER_ADMIN': return 'Super Admin';
-      case 'ADMIN': return 'Admin';
-      case 'USER': return 'Utilisateur';
-      default: return role;
+      case 'SUPER_ADMIN': return 'Super Admin'
+      case 'ADMIN': return 'Admin'
+      case 'USER': return 'Utilisateur'
+      default: return role
     }
-  };
-
+  }
   if (loading) {
     return (
       <AuthGuard>
@@ -160,7 +150,7 @@ export default function UserManagementPage() {
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   return (
@@ -179,7 +169,7 @@ export default function UserManagementPage() {
             <div>
               <h1 style={styles.h1}>Gestion des Utilisateurs</h1>
               <p style={styles.subtitle}>
-                Gérez les utilisateurs et assignez les rôles d&apos;administration
+                Gérez les utilisateurs et assignez les rôles d'administration
               </p>
             </div>
             <div style={{
@@ -261,7 +251,7 @@ export default function UserManagementPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
                   ...styles.input,
-                  width: &apos;100%&apos;
+                  width: '100%'
                 }}
               />
             </div>
@@ -366,7 +356,7 @@ export default function UserManagementPage() {
                             fontWeight: '600',
                             color: theme.text
                           }}>
-                            {user.name || &apos;Sans nom&apos;}
+                            {user.name || 'Sans nom'}
                           </div>
                           <div style={{
                             color: theme.textSecondary,
@@ -404,7 +394,7 @@ export default function UserManagementPage() {
                             fontSize: '14px',
                             color: theme.textSecondary
                           }}>
-                            {user.emailVerified ? &apos;Vérifié&apos; : &apos;Non vérifié&apos;}
+                            {user.emailVerified ? 'Vérifié' : 'Non vérifié'}
                           </span>
                         </div>
                       </td>
@@ -419,7 +409,7 @@ export default function UserManagementPage() {
                           color: theme.textSecondary,
                           fontSize: '12px'
                         }}>
-                          {user.plan || &apos;Gratuit&apos;}
+                          {user.plan || 'Gratuit'}
                         </div>
                       </td>
                       <td style={{ padding: '16px' }}>
@@ -427,14 +417,14 @@ export default function UserManagementPage() {
                           color: theme.textSecondary,
                           fontSize: '14px'
                         }}>
-                          {new Date(user.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
+                          {new Date(user.createdAt).toLocaleDateString('fr-FR')}
                         </div>
                       </td>
                       <td style={{ padding: '16px', textAlign: 'center' }}>
                         <button
                           onClick={() => {
-                            setSelectedUser(user);
-                            setShowRoleModal(true);
+                            setSelectedUser(user)
+                            setShowRoleModal(true)
                           }}
                           style={{
                             ...styles.button,
@@ -514,8 +504,8 @@ export default function UserManagementPage() {
               }}>
                 <button
                   onClick={() => {
-                    setShowRoleModal(false);
-                    setSelectedUser(null);
+                    setShowRoleModal(false)
+                    setSelectedUser(null)
                   }}
                   style={{
                     ...styles.button,
@@ -528,8 +518,8 @@ export default function UserManagementPage() {
                 </button>
                 <button
                   onClick={() => {
-                    const select = document.getElementById('roleSelect') as HTMLSelectElement;
-                    updateUserRole(selectedUser.id, select.value);
+                    const select = document.getElementById('roleSelect') as HTMLSelectElement
+                    updateUserRole(selectedUser.id, select.value)
                   }}
                   style={{
                     ...styles.button,
@@ -543,7 +533,7 @@ export default function UserManagementPage() {
                       Mise à jour...
                     </>
                   ) : (
-                    &apos;Mettre à jour&apos;
+                    'Mettre à jour'
                   )}
                 </button>
               </div>
@@ -552,5 +542,5 @@ export default function UserManagementPage() {
         )}
       </Layout>
     </AuthGuard>
-  );
+  )
 }

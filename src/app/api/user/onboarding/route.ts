@@ -1,19 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { prisma } from "@/lib/prisma";
-
+import { NextRequest, NextResponse } from "next/server"
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { prisma } from "@/lib/prisma"
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
+    const session = await getServerSession(authOptions)
     if (!session?.user?.email) {
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 })
     }
 
-    const data = await request.json();
-    const { industry, company, role, experience, goals, preferredAgents } = data;
-
+    const data = await request.json()
+    const { industry, company, role, experience, goals, preferredAgents } = data
     // Mettre à jour le profil utilisateur avec les données d'onboarding
     const updatedUser = await prisma.user.update({
       where: { email: session.user.email },
@@ -24,8 +21,7 @@ export async function POST(request: NextRequest) {
         // Pour cet exemple, on utilise un champ JSON générique
         // En production, vous pourriez vouloir des champs séparés dans le schéma
       }
-    });
-
+    })
     // Créer un enregistrement d'onboarding séparé pour tracking
     await prisma.$executeRaw`
       INSERT INTO "OnboardingData" (
@@ -57,9 +53,8 @@ export async function POST(request: NextRequest) {
     `.catch(() => {
       // Si la table n'existe pas, on ignore l'erreur pour le moment
       // En production, vous devriez créer cette table dans le schéma Prisma
-      console.log("Table OnboardingData non trouvée - données sauvegardées dans les logs");
-    });
-
+      console.log("Table OnboardingData non trouvée - données sauvegardées dans les logs")
+    })
     // Log pour le moment (à remplacer par la vraie sauvegarde)
     console.log("Données d'onboarding sauvegardées:", {
       userId: updatedUser.id,
@@ -71,28 +66,25 @@ export async function POST(request: NextRequest) {
       goals,
       preferredAgents,
       completedAt: new Date().toISOString()
-    });
-
+    })
     return NextResponse.json({ 
       success: true,
       message: "Onboarding complété avec succès"
-    });
-
+    })
   } catch (error) {
-    console.error("Erreur lors de l'onboarding:", error);
+    console.error("Erreur lors de l'onboarding:", error)
     return NextResponse.json(
       { error: "Erreur lors de la sauvegarde des données d'onboarding" },
       { status: 500 }
-    );
+    )
   }
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
+    const session = await getServerSession(authOptions)
     if (!session?.user?.email) {
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 })
     }
 
     // Récupérer les données d'onboarding de l'utilisateur
@@ -104,15 +96,13 @@ export async function GET(request: NextRequest) {
         createdAt: true,
         name: true
       }
-    });
-
+    })
     if (!user) {
-      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
+      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 })
     }
 
     // Vérifier si c'est un nouvel utilisateur (créé il y a moins de 5 minutes)
-    const isNewUser = new Date().getTime() - new Date(user.createdAt).getTime() < 5 * 60 * 1000;
-    
+    const isNewUser = new Date().getTime() - new Date(user.createdAt).getTime() < 5 * 60 * 1000
     // Vérifier si l'onboarding a été complété (via localStorage côté client pour le moment)
     return NextResponse.json({
       isNewUser,
@@ -122,13 +112,12 @@ export async function GET(request: NextRequest) {
         name: user.name,
         createdAt: user.createdAt
       }
-    });
-
+    })
   } catch (error) {
-    console.error("Erreur lors de la récupération des données d'onboarding:", error);
+    console.error("Erreur lors de la récupération des données d'onboarding:", error)
     return NextResponse.json(
       { error: "Erreur lors de la récupération des données" },
       { status: 500 }
-    );
+    )
   }
 }

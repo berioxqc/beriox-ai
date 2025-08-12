@@ -1,5 +1,4 @@
-import { NextResponse } from 'next/server';
-
+import { NextResponse } from 'next/server'
 export async function GET() {
   return NextResponse.json({
     status: "healthy",
@@ -7,7 +6,7 @@ export async function GET() {
     version: "0.1.0",
     environment: "development",
     uptime: process.uptime()
-  });
+  })
 }
 
 

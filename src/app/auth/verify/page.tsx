@@ -1,51 +1,45 @@
-"use client";
-import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-
+"use client"
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 function VerifyForm() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const router = useRouter()
+  const searchParams = useSearchParams()
   useEffect(() => {
     const verifyEmail = async () => {
-      const token = searchParams.get('token');
-      
+      const token = searchParams.get('token')
       if (!token) {
-        setError('Token de vérification manquant');
-        setIsLoading(false);
-        return;
+        setError('Token de vérification manquant')
+        setIsLoading(false)
+        return
       }
 
       try {
-        const response = await fetch(`/api/auth/verify?token=${token}`);
-        const data = await response.json();
-
+        const response = await fetch(`/api/auth/verify?token=${token}`)
+        const data = await response.json()
         if (!response.ok) {
-          setError(data.error || 'Erreur lors de la vérification');
+          setError(data.error || 'Erreur lors de la vérification')
         } else {
-          setSuccess(data.message);
+          setSuccess(data.message)
         }
       } catch (error) {
-        setError('Erreur lors de la vérification');
+        setError('Erreur lors de la vérification')
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
-
-    verifyEmail();
-  }, [searchParams, router]);
-
+    }
+    verifyEmail()
+  }, [searchParams, router])
   if (isLoading) {
     return (
       <div className="text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
         <p className="mt-4 text-white">Vérification en cours...</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -71,7 +65,7 @@ function VerifyForm() {
         </Link>
       </div>
     </div>
-  );
+  )
 }
 
 export default function VerifyPage() {
@@ -93,5 +87,5 @@ export default function VerifyPage() {
         </Suspense>
       </div>
     </div>
-  );
+  )
 }

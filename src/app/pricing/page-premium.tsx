@@ -1,47 +1,40 @@
-'use client';
-
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import Layout from '@/components/Layout';
-
+'use client'
+import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useTheme } from '@/hooks/useTheme'
+import Layout from '@/components/Layout'
 export default function PremiumPricingPage() {
-  const { data: session } = useSession();
-  const theme = useTheme();
-  const [loading, setLoading] = useState<string | null>(null);
-  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
-
+  const { data: session } = useSession()
+  const theme = useTheme()
+  const [loading, setLoading] = useState<string | null>(null)
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly')
   const handleSubscribe = async (planId: string) => {
     if (!session) {
-      alert('Veuillez vous connecter pour souscrire');
-      return;
+      alert('Veuillez vous connecter pour souscrire')
+      return
     }
 
-    setLoading(planId);
-
+    setLoading(planId)
     try {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ planId }),
-      });
-
-      const data = await res.json();
-      
+      })
+      const data = await res.json()
       if (data.url) {
-        window.location.href = data.url;
+        window.location.href = data.url
       } else {
-        throw new Error(data.error || 'Erreur lors de la redirection');
+        throw new Error(data.error || 'Erreur lors de la redirection')
       }
     } catch (error: any) {
-      console.error('Erreur souscription:', error);
-      alert('Erreur lors de la souscription: ' + error.message);
+      console.error('Erreur souscription:', error)
+      alert('Erreur lors de la souscription: ' + error.message)
     } finally {
-      setLoading(null);
+      setLoading(null)
     }
-  };
-
+  }
   const plans = [
     {
       id: 'free',
@@ -121,8 +114,7 @@ export default function PremiumPricingPage() {
       buttonText: 'Passer à Enterprise',
       buttonColor: theme.colors.secondary
     }
-  ];
-
+  ]
   return (
     <Layout>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: theme.spacing.xl }}>
@@ -294,7 +286,7 @@ export default function PremiumPricingPage() {
                       fontWeight: 'bold',
                       color: plan.price === 0 ? theme.colors.neutral[600] : theme.colors.primary.main
                     }}>
-                      {plan.price === 0 ? &apos;Gratuit&apos; : `${plan.price} CAD`}
+                      {plan.price === 0 ? 'Gratuit' : `${plan.price} CAD`}
                     </span>
                   </div>
                   {plan.price > 0 && (
@@ -427,7 +419,7 @@ export default function PremiumPricingPage() {
           }}>
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Qu&apos;est-ce que le Beriox Performance Index (BPI) ?
+                Qu'est-ce que le Beriox Performance Index (BPI) ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Le BPI est notre score propriétaire qui combine SEO (30%), Performance (25%), Conversion (25%) et Sécurité (20%) 
@@ -437,7 +429,7 @@ export default function PremiumPricingPage() {
 
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Comment fonctionne l&apos;Opportunity Radar ?
+                Comment fonctionne l'Opportunity Radar ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Notre IA analyse vos données et identifie automatiquement les 5 actions prioritaires avec le meilleur ROI 
@@ -459,7 +451,7 @@ export default function PremiumPricingPage() {
                 Les APIs sont-elles incluses dans le prix ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
-                Oui, tous les coûts d&apos;APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
+                Oui, tous les coûts d'APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
                 pour vous offrir le meilleur service au meilleur prix.
               </p>
             </div>
@@ -490,17 +482,17 @@ export default function PremiumPricingPage() {
             Rejoignez les professionnels qui font confiance à Beriox AI pour leurs analyses.
           </p>
           <button
-            onClick={() => handleSubscribe(&apos;pro&apos;)}
+            onClick={() => handleSubscribe('pro')}
             style={{
               padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-              borderRadius: &apos;12px&apos;,
-              border: &apos;none&apos;,
+              borderRadius: '12px',
+              border: 'none',
               backgroundColor: theme.colors.primary.main,
-              color: &apos;white&apos;,
-              fontSize: &apos;18px&apos;,
-              fontWeight: &apos;600&apos;,
-              cursor: &apos;pointer&apos;,
-              boxShadow: &apos;0 4px 12px rgba(90, 95, 202, 0.3)&apos;
+              color: 'white',
+              fontSize: '18px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(90, 95, 202, 0.3)'
             }}
           >
             Commencer avec Pro - 25 CAD/mois
@@ -508,5 +500,5 @@ export default function PremiumPricingPage() {
         </div>
       </div>
     </Layout>
-  );
+  )
 }

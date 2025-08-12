@@ -1,70 +1,69 @@
-import { prisma } from './prisma';
-import { logger } from './logger';
-
+import { prisma } from './prisma'
+import { logger } from './logger'
 // Types pour l'orchestration IA
 export interface AgentCapability {
-  id: string;
-  name: string;
-  description: string;
-  specialties: string[];
-  complexity: 'basic' | 'intermediate' | 'advanced';
+  id: string
+  name: string
+  description: string
+  specialties: string[]
+  complexity: 'basic' | 'intermediate' | 'advanced'
   performance: number; // 0-100
-  availability: boolean;
+  availability: boolean
   estimatedTime: number; // en minutes
 }
 
 export interface MissionContext {
-  objective: string;
-  context?: string;
-  deadline?: Date;
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  budget?: number;
-  constraints?: string[];
-  expectedOutcome?: string;
+  objective: string
+  context?: string
+  deadline?: Date
+  priority: 'low' | 'medium' | 'high' | 'critical'
+  budget?: number
+  constraints?: string[]
+  expectedOutcome?: string
 }
 
 export interface OrchestrationPlan {
-  missionId: string;
-  agents: AgentCapability[];
-  workflow: WorkflowStep[];
-  estimatedDuration: number;
+  missionId: string
+  agents: AgentCapability[]
+  workflow: WorkflowStep[]
+  estimatedDuration: number
   confidence: number; // 0-100
-  risks: string[];
-  alternatives: AgentCapability[][];
+  risks: string[]
+  alternatives: AgentCapability[][]
 }
 
 export interface WorkflowStep {
-  step: number;
-  agentId: string;
-  action: string;
-  dependencies: number[];
-  estimatedTime: number;
-  critical: boolean;
+  step: number
+  agentId: string
+  action: string
+  dependencies: number[]
+  estimatedTime: number
+  critical: boolean
 }
 
 export interface OrchestrationResult {
-  success: boolean;
-  plan?: OrchestrationPlan;
-  error?: string;
-  recommendations?: string[];
+  success: boolean
+  plan?: OrchestrationPlan
+  error?: string
+  recommendations?: string[]
 }
 
 // Types pour les besoins et métriques
 export interface MissionRequirements {
-  marketing: number;
-  technical: number;
-  content: number;
-  analysis: number;
-  conversion: number;
-  productivity: number;
+  marketing: number
+  technical: number
+  content: number
+  analysis: number
+  conversion: number
+  productivity: number
   [key: string]: number; // Index signature pour permettre l'accès dynamique
 }
 
 export interface PerformanceMetrics {
-  totalTime: number;
-  confidence: number;
-  efficiency: number;
-  cost: number;
+  totalTime: number
+  confidence: number
+  efficiency: number
+  cost: number
 }
 
 /**
@@ -75,11 +74,10 @@ export interface PerformanceMetrics {
  * et des capacités des agents.
  */
 export class AIOrchestrator {
-  private agents: Map<string, AgentCapability> = new Map();
-  private missionHistory: Map<string, unknown[]> = new Map();
-
+  private agents: Map<string, AgentCapability> = new Map()
+  private missionHistory: Map<string, unknown[]> = new Map()
   constructor() {
-    this.initializeAgents();
+    this.initializeAgents()
   }
 
   /**
@@ -147,11 +145,10 @@ export class AIOrchestrator {
         availability: true,
         estimatedTime: 25
       }
-    ];
-
+    ]
     agentDefinitions.forEach(agent => {
-      this.agents.set(agent.id, agent);
-    });
+      this.agents.set(agent.id, agent)
+    })
   }
 
   /**
@@ -159,24 +156,18 @@ export class AIOrchestrator {
    */
   async orchestrateMission(missionId: string, context: MissionContext): Promise<OrchestrationResult> {
     try {
-      logger.info(`🎯 Début orchestration pour mission: ${missionId}`);
-
+      logger.info(`🎯 Début orchestration pour mission: ${missionId}`)
       // 1. Analyser le contexte et les besoins
-      const requirements = this.analyzeRequirements(context);
-      
+      const requirements = this.analyzeRequirements(context)
       // 2. Sélectionner les agents optimaux
-      const selectedAgents = this.selectOptimalAgents(requirements, context);
-      
+      const selectedAgents = this.selectOptimalAgents(requirements, context)
       // 3. Créer le workflow d'exécution
-      const workflow = this.createWorkflow(selectedAgents, context);
-      
+      const workflow = this.createWorkflow(selectedAgents, context)
       // 4. Calculer les métriques de performance
-      const metrics = this.calculateMetrics(selectedAgents, workflow);
-      
+      const metrics = this.calculateMetrics(selectedAgents, workflow)
       // 5. Identifier les risques et alternatives
-      const risks = this.identifyRisks(selectedAgents, workflow, context);
-      const alternatives = this.generateAlternatives(requirements, context);
-
+      const risks = this.identifyRisks(selectedAgents, workflow, context)
+      const alternatives = this.generateAlternatives(requirements, context)
       const plan: OrchestrationPlan = {
         missionId,
         agents: selectedAgents,
@@ -185,25 +176,21 @@ export class AIOrchestrator {
         confidence: metrics.confidence,
         risks,
         alternatives
-      };
-
+      }
       // 6. Sauvegarder le plan dans la base de données
-      await this.saveOrchestrationPlan(plan);
-
-      logger.info(`✅ Orchestration terminée pour mission: ${missionId}`);
-
+      await this.saveOrchestrationPlan(plan)
+      logger.info(`✅ Orchestration terminée pour mission: ${missionId}`)
       return {
         success: true,
         plan,
         recommendations: this.generateRecommendations(plan, context)
-      };
-
+      }
     } catch (error) {
-      logger.error(`❌ Erreur orchestration mission ${missionId}:`, error as Error);
+      logger.error(`❌ Erreur orchestration mission ${missionId}:`, error as Error)
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Erreur inconnue'
-      };
+      }
     }
   }
 
@@ -218,28 +205,26 @@ export class AIOrchestrator {
       analysis: 0,
       conversion: 0,
       productivity: 0
-    };
-
-    const text = `${context.objective} ${context.context || ''}`.toLowerCase();
-
+    }
+    const text = `${context.objective} ${context.context || ''}`.toLowerCase()
     // Analyse sémantique simple basée sur les mots-clés
     if (text.includes('marketing') || text.includes('stratégie') || text.includes('campagne')) {
-      requirements.marketing += 3;
+      requirements.marketing += 3
     }
     if (text.includes('développement') || text.includes('technique') || text.includes('web')) {
-      requirements.technical += 3;
+      requirements.technical += 3
     }
     if (text.includes('contenu') || text.includes('rédaction') || text.includes('seo')) {
-      requirements.content += 3;
+      requirements.content += 3
     }
     if (text.includes('analyse') || text.includes('data') || text.includes('performance')) {
-      requirements.analysis += 3;
+      requirements.analysis += 3
     }
     if (text.includes('conversion') || text.includes('vente') || text.includes('cta')) {
-      requirements.conversion += 3;
+      requirements.conversion += 3
     }
     if (text.includes('productivité') || text.includes('optimisation') || text.includes('processus')) {
-      requirements.productivity += 3;
+      requirements.productivity += 3
     }
 
     // Ajuster selon la priorité
@@ -248,57 +233,49 @@ export class AIOrchestrator {
       medium: 1.0,
       high: 1.3,
       critical: 1.5
-    }[context.priority] || 1.0;
-
+    }[context.priority] || 1.0
     Object.keys(requirements).forEach(key => {
-      requirements[key] *= priorityMultiplier;
-    });
-
-    return requirements;
+      requirements[key] *= priorityMultiplier
+    })
+    return requirements
   }
 
   /**
    * Sélectionne les agents optimaux basés sur les besoins
    */
   private selectOptimalAgents(requirements: MissionRequirements, context: MissionContext): AgentCapability[] {
-    const agentScores = new Map<string, number>();
-
+    const agentScores = new Map<string, number>()
     // Calculer les scores pour chaque agent
     this.agents.forEach((agent, agentId) => {
-      let score = 0;
-
+      let score = 0
       // Score basé sur les spécialités
       agent.specialties.forEach(specialty => {
-        const specialtyKey = this.mapSpecialtyToRequirement(specialty);
+        const specialtyKey = this.mapSpecialtyToRequirement(specialty)
         if (requirements[specialtyKey]) {
-          score += requirements[specialtyKey] * agent.performance / 100;
+          score += requirements[specialtyKey] * agent.performance / 100
         }
-      });
-
+      })
       // Bonus pour la performance
-      score += agent.performance / 10;
-
+      score += agent.performance / 10
       // Bonus pour la disponibilité
       if (agent.availability) {
-        score += 10;
+        score += 10
       }
 
       // Ajuster selon la complexité de la mission
       if (context.priority === 'critical' && agent.complexity === 'advanced') {
-        score += 20;
+        score += 20
       }
 
-      agentScores.set(agentId, score);
-    });
-
+      agentScores.set(agentId, score)
+    })
     // Sélectionner les 3-4 meilleurs agents
     const sortedAgents = Array.from(agentScores.entries())
       .sort(([,a], [,b]) => b - a)
       .slice(0, 4)
       .map(([agentId]) => this.agents.get(agentId)!)
-      .filter(Boolean);
-
-    return sortedAgents;
+      .filter(Boolean)
+    return sortedAgents
   }
 
   /**
@@ -319,20 +296,18 @@ export class AIOrchestrator {
       'vente': 'conversion',
       'productivité': 'productivity',
       'optimisation': 'productivity'
-    };
-
-    return mapping[specialty] || 'analysis';
+    }
+    return mapping[specialty] || 'analysis'
   }
 
   /**
    * Crée un workflow d'exécution optimal
    */
   private createWorkflow(agents: AgentCapability[], context: MissionContext): WorkflowStep[] {
-    const workflow: WorkflowStep[] = [];
-    let stepNumber = 1;
-
+    const workflow: WorkflowStep[] = []
+    let stepNumber = 1
     // Étape 1: Analyse et planification (toujours en premier)
-    const analyst = agents.find(a => a.specialties.includes('analyse') || a.specialties.includes('stratégie'));
+    const analyst = agents.find(a => a.specialties.includes('analyse') || a.specialties.includes('stratégie'))
     if (analyst) {
       workflow.push({
         step: stepNumber++,
@@ -341,11 +316,11 @@ export class AIOrchestrator {
         dependencies: [],
         estimatedTime: analyst.estimatedTime,
         critical: true
-      });
+      })
     }
 
     // Étape 2: Développement technique (si nécessaire)
-    const developer = agents.find(a => a.specialties.includes('développement') || a.specialties.includes('technique'));
+    const developer = agents.find(a => a.specialties.includes('développement') || a.specialties.includes('technique'))
     if (developer && context.objective.toLowerCase().includes('développement')) {
       workflow.push({
         step: stepNumber++,
@@ -354,11 +329,11 @@ export class AIOrchestrator {
         dependencies: [1],
         estimatedTime: developer.estimatedTime,
         critical: true
-      });
+      })
     }
 
     // Étape 3: Création de contenu
-    const contentCreator = agents.find(a => a.specialties.includes('rédaction') || a.specialties.includes('contenu'));
+    const contentCreator = agents.find(a => a.specialties.includes('rédaction') || a.specialties.includes('contenu'))
     if (contentCreator) {
       workflow.push({
         step: stepNumber++,
@@ -367,11 +342,11 @@ export class AIOrchestrator {
         dependencies: [1],
         estimatedTime: contentCreator.estimatedTime,
         critical: false
-      });
+      })
     }
 
     // Étape 4: Optimisation conversion
-    const conversionExpert = agents.find(a => a.specialties.includes('conversion') || a.specialties.includes('vente'));
+    const conversionExpert = agents.find(a => a.specialties.includes('conversion') || a.specialties.includes('vente'))
     if (conversionExpert) {
       workflow.push({
         step: stepNumber++,
@@ -380,11 +355,11 @@ export class AIOrchestrator {
         dependencies: [1, 3],
         estimatedTime: conversionExpert.estimatedTime,
         critical: false
-      });
+      })
     }
 
     // Étape 5: Validation et critique
-    const validator = agents.find(a => a.specialties.includes('analyse') && a.id !== analyst?.id);
+    const validator = agents.find(a => a.specialties.includes('analyse') && a.id !== analyst?.id)
     if (validator) {
       workflow.push({
         step: stepNumber++,
@@ -393,115 +368,111 @@ export class AIOrchestrator {
         dependencies: workflow.map(w => w.step),
         estimatedTime: validator.estimatedTime,
         critical: true
-      });
+      })
     }
 
-    return workflow;
+    return workflow
   }
 
   /**
    * Calcule les métriques de performance du plan
    */
   private calculateMetrics(agents: AgentCapability[], workflow: WorkflowStep[]): PerformanceMetrics {
-    const totalTime = workflow.reduce((sum, step) => sum + step.estimatedTime, 0);
-    const avgPerformance = agents.reduce((sum, agent) => sum + agent.performance, 0) / agents.length;
-    const confidence = Math.min(100, avgPerformance + (workflow.length * 5));
-
+    const totalTime = workflow.reduce((sum, step) => sum + step.estimatedTime, 0)
+    const avgPerformance = agents.reduce((sum, agent) => sum + agent.performance, 0) / agents.length
+    const confidence = Math.min(100, avgPerformance + (workflow.length * 5))
     return {
       totalTime,
       confidence,
       efficiency: totalTime > 0 ? (agents.length * 100) / totalTime : 0,
       cost: 0 // Placeholder for cost calculation
-    };
+    }
   }
 
   /**
    * Identifie les risques potentiels
    */
   private identifyRisks(agents: AgentCapability[], workflow: WorkflowStep[], context: MissionContext): string[] {
-    const risks: string[] = [];
-
+    const risks: string[] = []
     // Risque de délai
-    const totalTime = workflow.reduce((sum, step) => sum + step.estimatedTime, 0);
+    const totalTime = workflow.reduce((sum, step) => sum + step.estimatedTime, 0)
     if (context.deadline && totalTime > this.getTimeUntilDeadline(context.deadline)) {
-      risks.push('Délai insuffisant pour compléter la mission');
+      risks.push('Délai insuffisant pour compléter la mission')
     }
 
     // Risque de dépendance
-    const criticalSteps = workflow.filter(step => step.critical);
+    const criticalSteps = workflow.filter(step => step.critical)
     if (criticalSteps.length > 2) {
-      risks.push('Trop d\'étapes critiques - risque de blocage');
+      risks.push('Trop d\'étapes critiques - risque de blocage')
     }
 
     // Risque de performance
-    const lowPerformanceAgents = agents.filter(agent => agent.performance < 80);
+    const lowPerformanceAgents = agents.filter(agent => agent.performance < 80)
     if (lowPerformanceAgents.length > 0) {
-      risks.push('Agents avec performance faible détectés');
+      risks.push('Agents avec performance faible détectés')
     }
 
     // Risque de disponibilité
-    const unavailableAgents = agents.filter(agent => !agent.availability);
+    const unavailableAgents = agents.filter(agent => !agent.availability)
     if (unavailableAgents.length > 0) {
-      risks.push('Agents non disponibles détectés');
+      risks.push('Agents non disponibles détectés')
     }
 
-    return risks;
+    return risks
   }
 
   /**
    * Génère des alternatives au plan principal
    */
   private generateAlternatives(requirements: MissionRequirements, context: MissionContext): AgentCapability[][] {
-    const alternatives: AgentCapability[][] = [];
-
+    const alternatives: AgentCapability[][] = []
     // Alternative 1: Approche minimaliste (2 agents)
-    const minimalAgents = this.selectOptimalAgents(requirements, context).slice(0, 2);
+    const minimalAgents = this.selectOptimalAgents(requirements, context).slice(0, 2)
     if (minimalAgents.length >= 2) {
-      alternatives.push(minimalAgents);
+      alternatives.push(minimalAgents)
     }
 
     // Alternative 2: Approche spécialisée (agents experts uniquement)
     const expertAgents = Array.from(this.agents.values())
       .filter(agent => agent.complexity === 'advanced' && agent.performance > 85)
-      .slice(0, 3);
+      .slice(0, 3)
     if (expertAgents.length >= 2) {
-      alternatives.push(expertAgents);
+      alternatives.push(expertAgents)
     }
 
-    return alternatives;
+    return alternatives
   }
 
   /**
    * Génère des recommandations pour optimiser le plan
    */
   private generateRecommendations(plan: OrchestrationPlan, context: MissionContext): string[] {
-    const recommendations: string[] = [];
-
+    const recommendations: string[] = []
     if (plan.estimatedDuration > 120) {
-      recommendations.push('Considérer diviser la mission en sous-missions pour réduire le délai');
+      recommendations.push('Considérer diviser la mission en sous-missions pour réduire le délai')
     }
 
     if (plan.confidence < 80) {
-      recommendations.push('Ajouter des agents de validation pour améliorer la confiance');
+      recommendations.push('Ajouter des agents de validation pour améliorer la confiance')
     }
 
     if (plan.risks.length > 2) {
-      recommendations.push('Réviser le plan pour réduire les risques identifiés');
+      recommendations.push('Réviser le plan pour réduire les risques identifiés')
     }
 
     if (context.priority === 'critical' && plan.agents.length < 3) {
-      recommendations.push('Ajouter des agents pour les missions critiques');
+      recommendations.push('Ajouter des agents pour les missions critiques')
     }
 
-    return recommendations;
+    return recommendations
   }
 
   /**
    * Calcule le temps jusqu'à la deadline
    */
   private getTimeUntilDeadline(deadline: Date): number {
-    const now = new Date();
-    const diffMs = deadline.getTime() - now.getTime();
+    const now = new Date()
+    const diffMs = deadline.getTime() - now.getTime()
     return Math.max(0, diffMs / (1000 * 60)); // en minutes
   }
 
@@ -522,9 +493,9 @@ export class AIOrchestrator {
       //     alternatives: plan.alternatives.map(alt => alt.map(a => a.id)),
       //     createdAt: new Date()
       //   }
-      // });
+      // })
     } catch (error) {
-      logger.error('Erreur sauvegarde plan orchestration:', error as Error);
+      logger.error('Erreur sauvegarde plan orchestration:', error as Error)
       // Ne pas faire échouer l'orchestration si la sauvegarde échoue
     }
   }
@@ -534,28 +505,25 @@ export class AIOrchestrator {
    */
   async executePlan(plan: OrchestrationPlan): Promise<boolean> {
     try {
-      logger.info(`🚀 Exécution du plan d'orchestration pour mission: ${plan.missionId}`);
-
+      logger.info(`🚀 Exécution du plan d'orchestration pour mission: ${plan.missionId}`)
       // Mettre à jour le statut de la mission
       await prisma.mission.update({
         where: { id: plan.missionId },
         data: { status: 'orchestrated' }
-      });
-
+      })
       // Créer les briefs pour chaque agent
       for (const step of plan.workflow) {
-        const agent = plan.agents.find(a => a.id === step.agentId);
+        const agent = plan.agents.find(a => a.id === step.agentId)
         if (agent) {
-          await this.createBrief(plan.missionId, agent, step);
+          await this.createBrief(plan.missionId, agent, step)
         }
       }
 
-      logger.info(`✅ Plan d'orchestration exécuté avec succès pour mission: ${plan.missionId}`);
-      return true;
-
+      logger.info(`✅ Plan d'orchestration exécuté avec succès pour mission: ${plan.missionId}`)
+      return true
     } catch (error) {
-      logger.error(`❌ Erreur exécution plan orchestration ${plan.missionId}:`, error as Error);
-      return false;
+      logger.error(`❌ Erreur exécution plan orchestration ${plan.missionId}:`, error as Error)
+      return false
     }
   }
 
@@ -563,8 +531,7 @@ export class AIOrchestrator {
    * Crée un brief pour un agent
    */
   private async createBrief(missionId: string, agent: AgentCapability, step: WorkflowStep): Promise<void> {
-    const brief = this.generateBrief(agent, step);
-    
+    const brief = this.generateBrief(agent, step)
     await prisma.brief.create({
       data: {
         missionId,
@@ -580,7 +547,7 @@ export class AIOrchestrator {
         },
         status: 'queued'
       }
-    });
+    })
   }
 
   /**
@@ -600,11 +567,10 @@ export class AIOrchestrator {
 - Livre un résultat de qualité professionnelle
 - Structure ta réponse de manière claire et exploitable
 
-**Objectif:** ${step.action}`;
-
-    return baseBrief;
+**Objectif:** ${step.action}`
+    return baseBrief
   }
 }
 
 // Instance singleton
-export const aiOrchestrator = new AIOrchestrator();
+export const aiOrchestrator = new AIOrchestrator()

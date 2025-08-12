@@ -1,10 +1,10 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+"use client"
+import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import Link from "next/link"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { 
   faUsers, 
   faCrown, 
@@ -16,28 +16,26 @@ import {
   faEdit,
   faTrash,
   faArrowLeft
-} from "@fortawesome/free-solid-svg-icons";
-
+} from "@fortawesome/free-solid-svg-icons"
 interface User {
-  id: string;
-  email: string;
-  name: string;
-  createdAt: string;
-  lastLogin: string;
-  isActive: boolean;
-  isPremium: boolean;
-  planId?: string;
-  missionsCount: number;
-  credits: number;
+  id: string
+  email: string
+  name: string
+  createdAt: string
+  lastLogin: string
+  isActive: boolean
+  isPremium: boolean
+  planId?: string
+  missionsCount: number
+  credits: number
 }
 
 export default function UsersAdminPage() {
-  const { data: session } = useSession();
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filter, setFilter] = useState("all");
-
+  const { data: session } = useSession()
+  const [users, setUsers] = useState<User[]>([])
+  const [loading, setLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [filter, setFilter] = useState("all")
   // Vérifier si l'utilisateur est admin
   if (session?.user?.email !== 'info@beriox.ca') {
     return (
@@ -58,7 +56,7 @@ export default function UsersAdminPage() {
                 Accès Refusé
               </h2>
               <p style={{ color: '#6b7280', fontSize: '16px', margin: '0 0 32px 0' }}>
-                Vous n&apos;avez pas les permissions nécessaires pour accéder à cette page.
+                Vous n'avez pas les permissions nécessaires pour accéder à cette page.
               </p>
               <Link
                 href="/"
@@ -71,19 +69,18 @@ export default function UsersAdminPage() {
                   fontWeight: '600'
                 }}
               >
-                Retour à l&apos;accueil
+                Retour à l'accueil
               </Link>
             </div>
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
-
+    fetchUsers()
+  }, [])
   const fetchUsers = async () => {
     try {
       // Simuler des données d'utilisateurs pour la démo
@@ -134,28 +131,23 @@ export default function UsersAdminPage() {
           missionsCount: 5,
           credits: 50
         }
-      ];
-      
-      setUsers(mockUsers);
+      ]
+      setUsers(mockUsers)
     } catch (error) {
-      console.error('Erreur lors du chargement des utilisateurs:', error);
+      console.error('Erreur lors du chargement des utilisateurs:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    
+                         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesFilter = filter === 'all' ||
                          (filter === 'premium' && user.isPremium) ||
                          (filter === 'active' && user.isActive) ||
-                         (filter === 'inactive' && !user.isActive);
-    
-    return matchesSearch && matchesFilter;
-  });
-
+                         (filter === 'inactive' && !user.isActive)
+    return matchesSearch && matchesFilter
+  })
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
@@ -163,9 +155,8 @@ export default function UsersAdminPage() {
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
-    });
-  };
-
+    })
+  }
   if (loading) {
     return (
       <AuthGuard>
@@ -175,7 +166,7 @@ export default function UsersAdminPage() {
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   return (
@@ -266,9 +257,9 @@ export default function UsersAdminPage() {
               <div style={{ fontSize: '12px', color: '#6b7280', marginBottom: '4px' }}>Nouveaux ce mois</div>
               <div style={{ fontSize: '24px', fontWeight: '700', color: '#3b82f6' }}>
                 {users.filter(u => {
-                  const createdAt = new Date(u.createdAt);
-                  const now = new Date();
-                  return createdAt.getMonth() === now.getMonth() && createdAt.getFullYear() === now.getFullYear();
+                  const createdAt = new Date(u.createdAt)
+                  const now = new Date()
+                  return createdAt.getMonth() === now.getMonth() && createdAt.getFullYear() === now.getFullYear()
                 }).length}
               </div>
             </div>
@@ -400,8 +391,8 @@ export default function UsersAdminPage() {
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <FontAwesomeIcon icon={faCrown} style={{ color: '#f59e0b' }} />
                             <span style={{ fontSize: '14px', fontWeight: '600' }}>
-                              {user.planId === &apos;enterprise&apos; ? &apos;Enterprise&apos; : 
-                               user.planId === &apos;competitor-intelligence&apos; ? &apos;Competitor Intelligence&apos; : &apos;Premium&apos;}
+                              {user.planId === 'enterprise' ? 'Enterprise' : 
+                               user.planId === 'competitor-intelligence' ? 'Competitor Intelligence' : 'Premium'}
                             </span>
                           </div>
                         ) : (
@@ -463,5 +454,5 @@ export default function UsersAdminPage() {
         </div>
       </Layout>
     </AuthGuard>
-  );
+  )
 }

@@ -15,12 +15,9 @@ export const jackSplitPrompt = {
     required: ["KarineAI", "HugoAI", "JPBot", "ElodieAI", "Clara", "Faucon"],
     additionalProperties: false
   }
-} as const;
-
+} as const
 export const jackCompiler = {
   system: "Tu es Capitaine Jack, chef de mission AI chez Beriox.",
   user: (objective: string, sections: Record<string, unknown>) =>
     `Objectif: ${objective}\nLivrables: ${JSON.stringify(sections, null, 2)}\nCrée un rapport final avec: 1) Résumé 2) Détail par IA 3) Points de vigilance 4) Prochaines étapes. Réponds en Markdown.`
-} as const;
-
-
+} as const

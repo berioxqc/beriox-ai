@@ -4,107 +4,100 @@
  */
 
 export interface DataInsight {
-  metric: string;
-  value: number;
-  previousValue: number;
-  change: number;
-  trend: 'up' | 'down' | 'stable';
-  significance: 'high' | 'medium' | 'low';
-  context: string;
+  metric: string
+  value: number
+  previousValue: number
+  change: number
+  trend: 'up' | 'down' | 'stable'
+  significance: 'high' | 'medium' | 'low'
+  context: string
 }
 
 export interface ActionableInsight {
-  insight: string;
-  metric: string;
-  currentValue: number;
-  impact: string;
-  action: string;
-  priority: 'critical' | 'high' | 'medium' | 'low';
-  effort: 'low' | 'medium' | 'high';
-  timeframe: string;
-  expectedOutcome: string;
+  insight: string
+  metric: string
+  currentValue: number
+  impact: string
+  action: string
+  priority: 'critical' | 'high' | 'medium' | 'low'
+  effort: 'low' | 'medium' | 'high'
+  timeframe: string
+  expectedOutcome: string
 }
 
 export interface InsightPulseReport {
   summary: {
-    totalInsights: number;
-    criticalActions: number;
-    highImpactOpportunities: number;
-    keyMetrics: string[];
-  };
-  majorFindings: DataInsight[];
-  actionableInsights: ActionableInsight[];
+    totalInsights: number
+    criticalActions: number
+    highImpactOpportunities: number
+    keyMetrics: string[]
+  }
+  majorFindings: DataInsight[]
+  actionableInsights: ActionableInsight[]
   recommendations: {
-    immediate: string[];
-    shortTerm: string[];
-    longTerm: string[];
-  };
+    immediate: string[]
+    shortTerm: string[]
+    longTerm: string[]
+  }
   dataQuality: {
-    completeness: number;
-    accuracy: number;
-    freshness: number;
-    recommendations: string[];
-  };
+    completeness: number
+    accuracy: number
+    freshness: number
+    recommendations: string[]
+  }
 }
 
 export interface InsightPulseConfig {
   dataSources: {
-    googleAnalytics: boolean;
-    searchConsole: boolean;
-    internalReports: boolean;
-    customAPIs: boolean;
-  };
+    googleAnalytics: boolean
+    searchConsole: boolean
+    internalReports: boolean
+    customAPIs: boolean
+  }
   thresholds: {
-    significantChange: number;
-    criticalThreshold: number;
-    minimumDataPoints: number;
-  };
-  focusAreas: string[];
+    significantChange: number
+    criticalThreshold: number
+    minimumDataPoints: number
+  }
+  focusAreas: string[]
 }
 
 export class InsightPulseBot {
-  private config: InsightPulseConfig;
-  private lastReport: InsightPulseReport | null = null;
-
+  private config: InsightPulseConfig
+  private lastReport: InsightPulseReport | null = null
   constructor(config: InsightPulseConfig) {
-    this.config = config;
+    this.config = config
   }
 
   /**
    * Analyse les données et génère des insights actionnables
    */
   async analyzeData(rawData: any): Promise<InsightPulseReport> {
-    console.log("💡 InsightPulseBot: Analyse des données en cours...");
-
+    console.log("💡 InsightPulseBot: Analyse des données en cours...")
     try {
-      const majorFindings = this.extractMajorFindings(rawData);
-      const actionableInsights = this.generateActionableInsights(majorFindings);
-      const recommendations = this.generateRecommendations(actionableInsights);
-      const dataQuality = this.assessDataQuality(rawData);
-
+      const majorFindings = this.extractMajorFindings(rawData)
+      const actionableInsights = this.generateActionableInsights(majorFindings)
+      const recommendations = this.generateRecommendations(actionableInsights)
+      const dataQuality = this.assessDataQuality(rawData)
       const summary = {
         totalInsights: actionableInsights.length,
         criticalActions: actionableInsights.filter(insight => insight.priority === 'critical').length,
         highImpactOpportunities: actionableInsights.filter(insight => insight.impact.includes('forte')).length,
         keyMetrics: majorFindings.map(finding => finding.metric)
-      };
-
+      }
       const report: InsightPulseReport = {
         summary,
         majorFindings,
         actionableInsights,
         recommendations,
         dataQuality
-      };
-
-      this.lastReport = report;
-      
-      console.log("💡 InsightPulseBot: Analyse terminée. Insights générés:", actionableInsights.length);
-      
-      return report;
+      }
+      this.lastReport = report
+      console.log("💡 InsightPulseBot: Analyse terminée. Insights générés:", actionableInsights.length)
+      return report
     } catch (error) {
-      console.error("💡 InsightPulseBot: Erreur lors de l'analyse:", error);
-      throw new Error("Impossible de traiter les données et générer des insights");
+      console.error("💡 InsightPulseBot: Erreur lors de l'analyse:", error)
+      throw new Error("Impossible de traiter les données et générer des insights")
     }
   }
 
@@ -112,8 +105,7 @@ export class InsightPulseBot {
    * Extrait les constats majeurs des données brutes
    */
   private extractMajorFindings(rawData: any): DataInsight[] {
-    const findings: DataInsight[] = [];
-
+    const findings: DataInsight[] = []
     // Simulation d'extraction de données
     const mockData = [
       {
@@ -152,17 +144,15 @@ export class InsightPulseBot {
         significance: 'medium' as const,
         context: "Croissance stable du référencement naturel"
       }
-    ];
-
-    return mockData;
+    ]
+    return mockData
   }
 
   /**
    * Génère des insights actionnables basés sur les constats
    */
   private generateActionableInsights(findings: DataInsight[]): ActionableInsight[] {
-    const insights: ActionableInsight[] = [];
-
+    const insights: ActionableInsight[] = []
     findings.forEach(finding => {
       if (finding.significance === 'high') {
         // Insight sur le taux de conversion
@@ -177,7 +167,7 @@ export class InsightPulseBot {
             effort: 'medium' as const,
             timeframe: "2-3 semaines",
             expectedOutcome: "Augmentation de 10-15% du taux de conversion global"
-          });
+          })
         }
 
         // Insight sur le temps de chargement
@@ -192,7 +182,7 @@ export class InsightPulseBot {
             effort: 'high' as const,
             timeframe: "4-6 semaines",
             expectedOutcome: "Réduction de 15-20% du temps de chargement global"
-          });
+          })
         }
       }
 
@@ -209,33 +199,30 @@ export class InsightPulseBot {
             effort: 'medium' as const,
             timeframe: "1-2 mois",
             expectedOutcome: "Augmentation de 10-15% du trafic organique"
-          });
+          })
         }
       }
-    });
-
-    return insights;
+    })
+    return insights
   }
 
   /**
    * Génère des recommandations basées sur les insights
    */
   private generateRecommendations(insights: ActionableInsight[]) {
-    const immediate: string[] = [];
-    const shortTerm: string[] = [];
-    const longTerm: string[] = [];
-
+    const immediate: string[] = []
+    const shortTerm: string[] = []
+    const longTerm: string[] = []
     insights.forEach(insight => {
       if (insight.priority === 'critical') {
-        immediate.push(insight.action);
+        immediate.push(insight.action)
       } else if (insight.priority === 'high') {
-        shortTerm.push(insight.action);
+        shortTerm.push(insight.action)
       } else {
-        longTerm.push(insight.action);
+        longTerm.push(insight.action)
       }
-    });
-
-    return { immediate, shortTerm, longTerm };
+    })
+    return { immediate, shortTerm, longTerm }
   }
 
   /**
@@ -251,7 +238,7 @@ export class InsightPulseBot {
         "Mettre en place un monitoring en temps réel des métriques clés",
         "Standardiser le format des rapports internes"
       ]
-    };
+    }
   }
 
   /**
@@ -259,119 +246,109 @@ export class InsightPulseBot {
    */
   generateReport(): string {
     if (!this.lastReport) {
-      return "Aucun rapport disponible. Lancez d'abord une analyse de données.";
+      return "Aucun rapport disponible. Lancez d'abord une analyse de données."
     }
 
-    const { summary, majorFindings, actionableInsights, recommendations, dataQuality } = this.lastReport;
-
-    let report = "💡 **RAPPORT INSIGHTPULSE - ANALYSE DE DONNÉES**\n\n";
-    
+    const { summary, majorFindings, actionableInsights, recommendations, dataQuality } = this.lastReport
+    let report = "💡 **RAPPORT INSIGHTPULSE - ANALYSE DE DONNÉES**\n\n"
     // Résumé exécutif
-    report += "## 📊 RÉSUMÉ EXÉCUTIF\n";
-    report += `• ${summary.totalInsights} insights actionnables identifiés\n`;
-    report += `• ${summary.criticalActions} actions critiques à entreprendre\n`;
-    report += `• ${summary.highImpactOpportunities} opportunités à fort impact\n\n`;
-
+    report += "## 📊 RÉSUMÉ EXÉCUTIF\n"
+    report += `• ${summary.totalInsights} insights actionnables identifiés\n`
+    report += `• ${summary.criticalActions} actions critiques à entreprendre\n`
+    report += `• ${summary.highImpactOpportunities} opportunités à fort impact\n\n`
     // 3 constats majeurs
-    report += "## 🎯 3 CONSTATS MAJEURS\n";
+    report += "## 🎯 3 CONSTATS MAJEURS\n"
     majorFindings.slice(0, 3).forEach((finding, index) => {
-      const emoji = finding.trend === 'up' ? '📈' : finding.trend === 'down' ? '📉' : '➡️';
-      report += `### ${index + 1}. ${finding.metric}\n`;
-      report += `${emoji} **Valeur actuelle:** ${finding.value}\n`;
-      report += `**Évolution:** ${finding.change > 0 ? '+' : ''}${finding.change.toFixed(1)}%\n`;
-      report += `**Contexte:** ${finding.context}\n\n`;
-    });
-
+      const emoji = finding.trend === 'up' ? '📈' : finding.trend === 'down' ? '📉' : '➡️'
+      report += `### ${index + 1}. ${finding.metric}\n`
+      report += `${emoji} **Valeur actuelle:** ${finding.value}\n`
+      report += `**Évolution:** ${finding.change > 0 ? '+' : ''}${finding.change.toFixed(1)}%\n`
+      report += `**Contexte:** ${finding.context}\n\n`
+    })
     // 3 actions à entreprendre
-    report += "## ⚡ 3 ACTIONS À ENTREPRENDRE\n";
+    report += "## ⚡ 3 ACTIONS À ENTREPRENDRE\n"
     actionableInsights.slice(0, 3).forEach((insight, index) => {
-      const priorityEmoji = insight.priority === 'critical' ? '🚨' : insight.priority === 'high' ? '⚡' : '📋';
-      report += `### ${index + 1}. ${insight.insight}\n`;
-      report += `${priorityEmoji} **Action:** ${insight.action}\n`;
-      report += `**Impact:** ${insight.impact}\n`;
-      report += `**Délai:** ${insight.timeframe}\n`;
-      report += `**Résultat attendu:** ${insight.expectedOutcome}\n\n`;
-    });
-
+      const priorityEmoji = insight.priority === 'critical' ? '🚨' : insight.priority === 'high' ? '⚡' : '📋'
+      report += `### ${index + 1}. ${insight.insight}\n`
+      report += `${priorityEmoji} **Action:** ${insight.action}\n`
+      report += `**Impact:** ${insight.impact}\n`
+      report += `**Délai:** ${insight.timeframe}\n`
+      report += `**Résultat attendu:** ${insight.expectedOutcome}\n\n`
+    })
     // Recommandations
     if (recommendations.immediate.length > 0) {
-      report += "## 🚨 ACTIONS IMMÉDIATES\n";
+      report += "## 🚨 ACTIONS IMMÉDIATES\n"
       recommendations.immediate.forEach(rec => {
-        report += `• ${rec}\n`;
-      });
-      report += "\n";
+        report += `• ${rec}\n`
+      })
+      report += "\n"
     }
 
     if (recommendations.shortTerm.length > 0) {
-      report += "## 📅 ACTIONS COURT TERME\n";
+      report += "## 📅 ACTIONS COURT TERME\n"
       recommendations.shortTerm.forEach(rec => {
-        report += `• ${rec}\n`;
-      });
-      report += "\n";
+        report += `• ${rec}\n`
+      })
+      report += "\n"
     }
 
     // Qualité des données
-    report += "## 🔍 QUALITÉ DES DONNÉES\n";
-    report += `**Complétude:** ${dataQuality.completeness}%\n`;
-    report += `**Précision:** ${dataQuality.accuracy}%\n`;
-    report += `**Fraîcheur:** ${dataQuality.freshness}%\n\n`;
-
+    report += "## 🔍 QUALITÉ DES DONNÉES\n"
+    report += `**Complétude:** ${dataQuality.completeness}%\n`
+    report += `**Précision:** ${dataQuality.accuracy}%\n`
+    report += `**Fraîcheur:** ${dataQuality.freshness}%\n\n`
     if (dataQuality.recommendations.length > 0) {
-      report += "**Recommandations d'amélioration:**\n";
+      report += "**Recommandations d'amélioration:**\n"
       dataQuality.recommendations.forEach(rec => {
-        report += `• ${rec}\n`;
-      });
+        report += `• ${rec}\n`
+      })
     }
 
-    report += "\n---\n";
-    report += "*Rapport généré par InsightPulseBot - Ce chiffre est intéressant, mais voici ce qu'il faut en faire.*";
-
-    return report;
+    report += "\n---\n"
+    report += "*Rapport généré par InsightPulseBot - Ce chiffre est intéressant, mais voici ce qu'il faut en faire.*"
+    return report
   }
 
   /**
    * Identifie les anomalies dans les données
    */
   detectAnomalies(data: any[]): string[] {
-    const anomalies: string[] = [];
-    
+    const anomalies: string[] = []
     // Simulation de détection d'anomalies
-    const conversionRate = data.find(d => d.metric === "Taux de conversion");
+    const conversionRate = data.find(d => d.metric === "Taux de conversion")
     if (conversionRate && conversionRate.change > 50) {
-      anomalies.push("🚨 Augmentation anormale du taux de conversion (+50%) - Vérifier la source du trafic");
+      anomalies.push("🚨 Augmentation anormale du taux de conversion (+50%) - Vérifier la source du trafic")
     }
 
-    const bounceRate = data.find(d => d.metric === "Taux de rebond");
+    const bounceRate = data.find(d => d.metric === "Taux de rebond")
     if (bounceRate && bounceRate.change > 30) {
-      anomalies.push("⚠️ Hausse importante du taux de rebond (+30%) - Analyser les pages d'entrée");
+      anomalies.push("⚠️ Hausse importante du taux de rebond (+30%) - Analyser les pages d'entrée")
     }
 
-    return anomalies;
+    return anomalies
   }
 
   /**
    * Compare les performances avec les objectifs
    */
   compareWithTargets(data: any[], targets: any): string[] {
-    const gaps: string[] = [];
-    
+    const gaps: string[] = []
     data.forEach(metric => {
-      const target = targets[metric.metric];
+      const target = targets[metric.metric]
       if (target && metric.value < target) {
-        const gap = ((target - metric.value) / target * 100).toFixed(1);
-        gaps.push(`📊 ${metric.metric}: ${gap}% en dessous de l'objectif (${metric.value} vs ${target})`);
+        const gap = ((target - metric.value) / target * 100).toFixed(1)
+        gaps.push(`📊 ${metric.metric}: ${gap}% en dessous de l'objectif (${metric.value} vs ${target})`)
       }
-    });
-    
-    return gaps;
+    })
+    return gaps
   }
 
   /**
    * Met à jour la configuration
    */
   updateConfig(newConfig: Partial<InsightPulseConfig>) {
-    this.config = { ...this.config, ...newConfig };
-    console.log("💡 InsightPulseBot: Configuration mise à jour");
+    this.config = { ...this.config, ...newConfig }
+    console.log("💡 InsightPulseBot: Configuration mise à jour")
   }
 }
 
@@ -389,4 +366,4 @@ export const insightPulseBot = new InsightPulseBot({
     minimumDataPoints: 30
   },
   focusAreas: ["conversion", "performance", "trafic", "engagement"]
-});
+})

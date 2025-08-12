@@ -1,13 +1,12 @@
-"use client";
-import { useState, useEffect } from 'react';
-import Layout from "@/components/Layout";
-import Icon from '@/components/ui/Icon';
-
+"use client"
+import { useState, useEffect } from 'react'
+import Layout from "@/components/Layout"
+import Icon from '@/components/ui/Icon'
 interface CookiePreferences {
-  necessary: boolean;
-  analytics: boolean;
-  marketing: boolean;
-  preferences: boolean;
+  necessary: boolean
+  analytics: boolean
+  marketing: boolean
+  preferences: boolean
 }
 
 export default function CookiesPage() {
@@ -16,50 +15,45 @@ export default function CookiesPage() {
     analytics: false,
     marketing: false,
     preferences: false
-  });
-  const [saved, setSaved] = useState(false);
-
+  })
+  const [saved, setSaved] = useState(false)
   useEffect(() => {
     // Charger les préférences existantes
-    const consent = localStorage.getItem('cookie-consent');
+    const consent = localStorage.getItem('cookie-consent')
     if (consent) {
       try {
-        const savedPreferences = JSON.parse(consent);
-        setPreferences(savedPreferences);
+        const savedPreferences = JSON.parse(consent)
+        setPreferences(savedPreferences)
       } catch (error) {
-        console.error('Erreur lors du chargement des préférences:', error);
+        console.error('Erreur lors du chargement des préférences:', error)
       }
     }
-  }, []);
-
+  }, [])
   const savePreferences = () => {
-    localStorage.setItem('cookie-consent', JSON.stringify(preferences));
-    setSaved(true);
-    
+    localStorage.setItem('cookie-consent', JSON.stringify(preferences))
+    setSaved(true)
     // Activer Google Analytics si accepté
     if (preferences.analytics) {
       if (typeof window !== 'undefined' && window.gtag) {
         window.gtag('consent', 'update', {
           analytics_storage: 'granted'
-        });
+        })
       }
     }
     
-    setTimeout(() => setSaved(false), 3000);
-  };
-
+    setTimeout(() => setSaved(false), 3000)
+  }
   const resetPreferences = () => {
-    localStorage.removeItem('cookie-consent');
+    localStorage.removeItem('cookie-consent')
     setPreferences({
       necessary: true,
       analytics: false,
       marketing: false,
       preferences: false
-    });
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
-  };
-
+    })
+    setSaved(true)
+    setTimeout(() => setSaved(false), 3000)
+  }
   return (
     <Layout>
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -124,7 +118,7 @@ export default function CookiesPage() {
             <div className="border border-gray-200 rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="font-semibold text-gray-900">Cookies d&apos;analyse</h3>
+                  <h3 className="font-semibold text-gray-900">Cookies d'analyse</h3>
                   <p className="text-sm text-gray-600">
                     Nous aident à comprendre comment vous utilisez notre site
                   </p>
@@ -144,7 +138,7 @@ export default function CookiesPage() {
                   <li>Analyser le trafic du site</li>
                   <li>Comprendre les pages les plus visitées</li>
                   <li>Mesurer les performances du site</li>
-                  <li>Améliorer l&apos;expérience utilisateur</li>
+                  <li>Améliorer l'expérience utilisateur</li>
                 </ul>
                 <p className="mt-2 text-xs text-gray-400">
                   <strong>Services :</strong> Google Analytics, statistiques de visite
@@ -175,7 +169,7 @@ export default function CookiesPage() {
                 <ul className="list-disc list-inside space-y-1 text-gray-500">
                   <li>Personnaliser les publicités</li>
                   <li>Suivre les conversions</li>
-                  <li>Analyser l&apos;efficacité des campagnes</li>
+                  <li>Analyser l'efficacité des campagnes</li>
                   <li>Proposer du contenu pertinent</li>
                 </ul>
                 <p className="mt-2 text-xs text-gray-400">
@@ -206,8 +200,8 @@ export default function CookiesPage() {
                 <p className="mb-2"><strong>Utilisation :</strong></p>
                 <ul className="list-disc list-inside space-y-1 text-gray-500">
                   <li>Mémoriser votre langue préférée</li>
-                  <li>Sauvegarder vos paramètres d&apos;affichage</li>
-                  <li>Personnaliser l&apos;interface</li>
+                  <li>Sauvegarder vos paramètres d'affichage</li>
+                  <li>Personnaliser l'interface</li>
                   <li>Rappeler vos préférences de contenu</li>
                 </ul>
               </div>
@@ -258,5 +252,5 @@ export default function CookiesPage() {
         </div>
       </div>
     </Layout>
-  );
+  )
 }

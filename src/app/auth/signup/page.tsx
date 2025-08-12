@@ -1,62 +1,55 @@
-"use client";
-
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Icon from '@/components/ui/Icon';
-
+"use client"
+import { useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import Icon from '@/components/ui/Icon'
 export default function SignUpPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: ''
-  });
-  const router = useRouter();
-
+  })
+  const router = useRouter()
   const handleGoogleSignUp = async () => {
-    setIsLoading(true);
-    setError('');
-    
+    setIsLoading(true)
+    setError('')
     try {
       const result = await signIn('google', { 
         callbackUrl: '/missions',
         redirect: false 
-      });
-      
+      })
       if (result?.error) {
-        setError('Erreur lors de l\'inscription avec Google');
+        setError('Erreur lors de l\'inscription avec Google')
       } else if (result?.ok) {
-        router.push('/missions');
+        router.push('/missions')
       }
     } catch (error) {
-      setError('Erreur lors de l\'inscription');
+      setError('Erreur lors de l\'inscription')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
+  }
   const handleEmailSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    setSuccess('');
-
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
+    setSuccess('')
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
-      setIsLoading(false);
-      return;
+      setError('Les mots de passe ne correspondent pas')
+      setIsLoading(false)
+      return
     }
 
     if (formData.password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères');
-      setIsLoading(false);
-      return;
+      setError('Le mot de passe doit contenir au moins 8 caractères')
+      setIsLoading(false)
+      return
     }
 
     try {
@@ -70,30 +63,26 @@ export default function SignUpPage() {
           email: formData.email,
           password: formData.password,
         }),
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (!response.ok) {
-        setError(data.error || 'Erreur lors de l\'inscription');
+        setError(data.error || 'Erreur lors de l\'inscription')
       } else {
-        setSuccess(data.message);
-        setFormData({ name: '', email: '', password: '', confirmPassword: '' });
+        setSuccess(data.message)
+        setFormData({ name: '', email: '', password: '', confirmPassword: '' })
       }
     } catch (error) {
-      setError('Erreur lors de l\'inscription');
+      setError('Erreur lors de l\'inscription')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
+  }
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    });
-  };
-
+    })
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
@@ -205,7 +194,7 @@ export default function SignUpPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? &apos;Création du compte...&apos; : &apos;Créer mon compte&apos;}
+              {isLoading ? 'Création du compte...' : 'Créer mon compte'}
             </button>
           </form>
 
@@ -223,5 +212,5 @@ export default function SignUpPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

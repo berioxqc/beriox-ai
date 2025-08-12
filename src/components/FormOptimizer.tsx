@@ -1,14 +1,13 @@
-"use client";
-
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+"use client"
+import { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCheck, faTimes, faExclamationTriangle, faInfoCircle,
   faSave, faPlay, faPause, faStop, faChartLine, faLightbulb,
   faUser, faEnvelope, faBuilding, faFileAlt, faLock,
   faEye, faEyeSlash, faSpinner, faCheckCircle, faTimesCircle
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/free-solid-svg-icons'
 import {
   FormConfig,
   FormField,
@@ -16,27 +15,26 @@ import {
   FormData,
   FormAnalytics,
   FormOptimization
-} from '@/lib/form-optimization';
-
+} from '@/lib/form-optimization'
 interface FormOptimizerProps {
-  formId?: string;
-  className?: string;
+  formId?: string
+  className?: string
 }
 
 interface FormState {
-  form: FormConfig | null;
-  formData: FormData | null;
-  analytics: FormAnalytics | null;
-  optimization: FormOptimization | null;
-  loading: boolean;
-  error: string | null;
-  currentStep: number;
-  showAnalytics: boolean;
-  showOptimization: boolean;
+  form: FormConfig | null
+  formData: FormData | null
+  analytics: FormAnalytics | null
+  optimization: FormOptimization | null
+  loading: boolean
+  error: string | null
+  currentStep: number
+  showAnalytics: boolean
+  showOptimization: boolean
 }
 
 export default function FormOptimizer({ formId = 'contact-form', className = '' }: FormOptimizerProps) {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   const [state, setState] = useState<FormState>({
     form: null,
     formData: null,
@@ -47,68 +45,59 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
     currentStep: 0,
     showAnalytics: false,
     showOptimization: false
-  });
-
+  })
   // Charger le formulaire
   const loadForm = async () => {
-    if (!session?.user?.id) return;
-
-    setState(prev => ({ ...prev, loading: true, error: null }));
-
+    if (!session?.user?.id) return
+    setState(prev => ({ ...prev, loading: true, error: null }))
     try {
-      const response = await fetch(`/api/form-optimization?action=forms&formId=${formId}`);
+      const response = await fetch(`/api/form-optimization?action=forms&formId=${formId}`)
       if (response.ok) {
-        const data = await response.json();
-        setState(prev => ({ ...prev, form: data.form, loading: false }));
+        const data = await response.json()
+        setState(prev => ({ ...prev, form: data.form, loading: false }))
       } else {
-        throw new Error('Failed to load form');
+        throw new Error('Failed to load form')
       }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
         error: 'Erreur lors du chargement du formulaire', 
         loading: false 
-      }));
+      }))
     }
-  };
-
+  }
   // Démarrer le formulaire
   const startForm = async () => {
-    if (!session?.user?.id || !state.form) return;
-
-    setState(prev => ({ ...prev, loading: true, error: null }));
-
+    if (!session?.user?.id || !state.form) return
+    setState(prev => ({ ...prev, loading: true, error: null }))
     try {
       const response = await fetch('/api/form-optimization?action=start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ formId: state.form.id })
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         setState(prev => ({ 
           ...prev, 
           formData: data.formData, 
           loading: false,
           currentStep: 0
-        }));
+        }))
       } else {
-        throw new Error('Failed to start form');
+        throw new Error('Failed to start form')
       }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
         error: 'Erreur lors du démarrage du formulaire', 
         loading: false 
-      }));
+      }))
     }
-  };
-
+  }
   // Mettre à jour un champ
   const updateField = async (fieldId: string, value: any) => {
-    if (!state.formData) return;
-
+    if (!state.formData) return
     try {
       const response = await fetch('/api/form-optimization?action=update', {
         method: 'PUT',
@@ -118,181 +107,158 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           fieldId,
           value
         })
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
-        setState(prev => ({ ...prev, formData: data.formData }));
+        const data = await response.json()
+        setState(prev => ({ ...prev, formData: data.formData }))
       }
     } catch (error) {
-      console.error('Failed to update field:', error);
+      console.error('Failed to update field:', error)
     }
-  };
-
+  }
   // Valider le formulaire
   const validateForm = async () => {
-    if (!state.formData) return;
-
+    if (!state.formData) return
     try {
       const response = await fetch('/api/form-optimization?action=validate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId: state.formData.sessionId })
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         setState(prev => ({ 
           ...prev, 
           formData: { ...prev.formData!, errors: data.errors }
-        }));
-        return data.isValid;
+        }))
+        return data.isValid
       }
     } catch (error) {
-      console.error('Failed to validate form:', error);
+      console.error('Failed to validate form:', error)
     }
-    return false;
-  };
-
+    return false
+  }
   // Soumettre le formulaire
   const submitForm = async () => {
-    if (!state.formData) return;
-
-    const isValid = await validateForm();
-    if (!isValid) return;
-
-    setState(prev => ({ ...prev, loading: true, error: null }));
-
+    if (!state.formData) return
+    const isValid = await validateForm()
+    if (!isValid) return
+    setState(prev => ({ ...prev, loading: true, error: null }))
     try {
       const response = await fetch('/api/form-optimization?action=submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId: state.formData.sessionId })
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         if (data.success) {
           setState(prev => ({ 
             ...prev, 
             formData: data.data, 
             loading: false,
             currentStep: state.form?.fields.length || 0
-          }));
+          }))
           // Charger les analytics après soumission
-          loadAnalytics();
+          loadAnalytics()
         } else {
           setState(prev => ({ 
             ...prev, 
             formData: { ...prev.formData!, errors: data.errors },
             loading: false
-          }));
+          }))
         }
       } else {
-        throw new Error('Failed to submit form');
+        throw new Error('Failed to submit form')
       }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
         error: 'Erreur lors de la soumission', 
         loading: false 
-      }));
+      }))
     }
-  };
-
+  }
   // Sauvegarder le brouillon
   const saveDraft = async () => {
-    if (!state.formData) return;
-
+    if (!state.formData) return
     try {
       const response = await fetch('/api/form-optimization?action=save-draft', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId: state.formData.sessionId })
-      });
-
+      })
       if (response.ok) {
         // Afficher une notification de succès
-        console.log('Brouillon sauvegardé');
+        console.log('Brouillon sauvegardé')
       }
     } catch (error) {
-      console.error('Failed to save draft:', error);
+      console.error('Failed to save draft:', error)
     }
-  };
-
+  }
   // Charger les analytics
   const loadAnalytics = async () => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     try {
-      const response = await fetch(`/api/form-optimization?action=analytics&formId=${formId}`);
+      const response = await fetch(`/api/form-optimization?action=analytics&formId=${formId}`)
       if (response.ok) {
-        const data = await response.json();
-        setState(prev => ({ ...prev, analytics: data.analytics }));
+        const data = await response.json()
+        setState(prev => ({ ...prev, analytics: data.analytics }))
       }
     } catch (error) {
-      console.error('Failed to load analytics:', error);
+      console.error('Failed to load analytics:', error)
     }
-  };
-
+  }
   // Générer les optimisations
   const generateOptimizations = async () => {
-    if (!session?.user?.id) return;
-
-    setState(prev => ({ ...prev, loading: true, error: null }));
-
+    if (!session?.user?.id) return
+    setState(prev => ({ ...prev, loading: true, error: null }))
     try {
       const response = await fetch('/api/form-optimization?action=optimizations', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ formId })
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         setState(prev => ({ 
           ...prev, 
           optimization: data.optimization, 
           loading: false,
           showOptimization: true
-        }));
+        }))
       } else {
-        throw new Error('Failed to generate optimizations');
+        throw new Error('Failed to generate optimizations')
       }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
         error: 'Erreur lors de la génération des optimisations', 
         loading: false 
-      }));
+      }))
     }
-  };
-
+  }
   // Rendu d'un champ
   const renderField = (field: FormField) => {
-    const value = state.formData?.data[field.id] || '';
-    const errors = state.formData?.errors[field.id] || [];
-    const isActive = state.currentStep === field.order - 1;
-
+    const value = state.formData?.data[field.id] || ''
+    const errors = state.formData?.errors[field.id] || []
+    const isActive = state.currentStep === field.order - 1
     const handleChange = (newValue: any) => {
-      updateField(field.id, newValue);
-    };
-
+      updateField(field.id, newValue)
+    }
     const handleBlur = () => {
       if (state.form?.validationMode === 'onBlur') {
-        validateForm();
+        validateForm()
       }
-    };
-
+    }
     const getFieldIcon = () => {
       switch (field.type) {
-        case FormFieldType.EMAIL: return faEnvelope;
-        case FormFieldType.PASSWORD: return faLock;
-        case FormFieldType.TEXTAREA: return faFileAlt;
-        default: return faUser;
+        case FormFieldType.EMAIL: return faEnvelope
+        case FormFieldType.PASSWORD: return faLock
+        case FormFieldType.TEXTAREA: return faFileAlt
+        default: return faUser
       }
-    };
-
+    }
     return (
       <div 
         key={field.id}
@@ -401,13 +367,13 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
               placeholder={field.placeholder}
               disabled={field.disabled}
               style={{
-                width: &apos;100%&apos;,
-                padding: &apos;12px 12px 12px 40px&apos;,
-                border: errors.length > 0 ? &apos;2px solid #ef4444&apos; : &apos;2px solid #e5e7eb&apos;,
-                borderRadius: &apos;8px&apos;,
-                fontSize: &apos;14px&apos;,
-                transition: &apos;border-color 0.2s ease&apos;,
-                backgroundColor: field.disabled ? &apos;#f9fafb&apos; : &apos;#ffffff&apos;
+                width: '100%',
+                padding: '12px 12px 12px 40px',
+                border: errors.length > 0 ? '2px solid #ef4444' : '2px solid #e5e7eb',
+                borderRadius: '8px',
+                fontSize: '14px',
+                transition: 'border-color 0.2s ease',
+                backgroundColor: field.disabled ? '#f9fafb' : '#ffffff'
               }}
             />
           )}
@@ -438,13 +404,11 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           </div>
         )}
       </div>
-    );
-  };
-
+    )
+  }
   // Rendu des analytics
   const renderAnalytics = () => {
-    if (!state.analytics) return null;
-
+    if (!state.analytics) return null
     return (
       <div style={{
         background: '#ffffff',
@@ -530,7 +494,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
             marginBottom: '8px',
             color: '#374151'
           }}>
-            Points d&apos;abandon principaux
+            Points d'abandon principaux
           </h4>
           {state.analytics.topAbandonmentPoints.length > 0 ? (
             <ul style={{ margin: 0, paddingLeft: '20px' }}>
@@ -542,7 +506,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
             </ul>
           ) : (
             <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>
-              Aucun point d&apos;abandon identifié
+              Aucun point d'abandon identifié
             </p>
           )}
         </div>
@@ -573,13 +537,11 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           Générer les optimisations
         </button>
       </div>
-    );
-  };
-
+    )
+  }
   // Rendu des optimisations
   const renderOptimizations = () => {
-    if (!state.optimization) return null;
-
+    if (!state.optimization) return null
     return (
       <div style={{
         background: '#ffffff',
@@ -595,7 +557,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           color: '#111827'
         }}>
           <FontAwesomeIcon icon={faLightbulb} style={{ marginRight: '8px', color: '#f59e0b' }} />
-          Suggestions d&apos;Optimisation
+          Suggestions d'Optimisation
         </h3>
 
         {state.optimization.suggestions.length > 0 ? (
@@ -662,7 +624,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           </div>
         ) : (
           <p style={{ fontSize: '14px', color: '#6b7280', fontStyle: 'italic' }}>
-            Aucune suggestion d&apos;optimisation pour le moment
+            Aucune suggestion d'optimisation pour le moment
           </p>
         )}
 
@@ -705,7 +667,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
               }}>
                 {Object.entries(variant.changes).map(([key, value]) => (
                   <li key={key}>
-                    {key}: {typeof value === &apos;boolean&apos; ? (value ? &apos;Oui&apos; : &apos;Non&apos;) : value}
+                    {key}: {typeof value === 'boolean' ? (value ? 'Oui' : 'Non') : value}
                   </li>
                 ))}
               </ul>
@@ -713,15 +675,12 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           ))}
         </div>
       </div>
-    );
-  };
-
+    )
+  }
   useEffect(() => {
-    loadForm();
-  }, [session?.user?.id, formId]);
-
-  if (!session?.user?.id) return null;
-
+    loadForm()
+  }, [session?.user?.id, formId])
+  if (!session?.user?.id) return null
   if (state.loading && !state.form) {
     return (
       <div style={{
@@ -735,7 +694,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
         <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: '8px' }} />
         Chargement du formulaire...
       </div>
-    );
+    )
   }
 
   if (state.error) {
@@ -751,7 +710,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
         <FontAwesomeIcon icon={faTimesCircle} style={{ marginRight: '8px' }} />
         {state.error}
       </div>
-    );
+    )
   }
 
   if (!state.form) {
@@ -763,7 +722,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
       }}>
         Formulaire non trouvé
       </div>
-    );
+    )
   }
 
   return (
@@ -934,7 +893,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
                 ) : (
                   <FontAwesomeIcon icon={faCheck} />
                 )}
-                {state.formData.submitted ? &apos;Soumis&apos; : state.form.submitButtonText || &apos;Soumettre&apos;}
+                {state.formData.submitted ? 'Soumis' : state.form.submitButtonText || 'Soumettre'}
               </button>
             </div>
           </form>
@@ -984,7 +943,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           }}
         >
           <FontAwesomeIcon icon={faChartLine} />
-          {state.showAnalytics ? &apos;Masquer&apos; : &apos;Afficher&apos;} Analytics
+          {state.showAnalytics ? 'Masquer' : 'Afficher'} Analytics
         </button>
 
         <button
@@ -1004,7 +963,7 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
           }}
         >
           <FontAwesomeIcon icon={faLightbulb} />
-          {state.showOptimization ? &apos;Masquer&apos; : &apos;Afficher&apos;} Optimisations
+          {state.showOptimization ? 'Masquer' : 'Afficher'} Optimisations
         </button>
       </div>
 
@@ -1014,5 +973,5 @@ export default function FormOptimizer({ formId = 'contact-form', className = '' 
       {/* Optimisations */}
       {state.showOptimization && renderOptimizations()}
     </div>
-  );
+  )
 }

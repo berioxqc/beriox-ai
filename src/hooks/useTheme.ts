@@ -1,17 +1,14 @@
-import { useMemo } from 'react';
-import theme, { createStyles } from '@/styles/theme';
-
+import { useMemo } from 'react'
+import theme, { createStyles } from '@/styles/theme'
 export const useTheme = () => {
   return useMemo(() => ({
     ...theme,
     styles: createStyles
-  }), []);
-};
-
+  }), [])
+}
 // Hook pour créer des styles inline facilement
 export const useStyles = () => {
-  const t = useTheme();
-  
+  const t = useTheme()
   return {
     // Layouts
     container: {
@@ -118,7 +115,6 @@ export const useStyles = () => {
     gridCols4: {
       gridTemplateColumns: 'repeat(4, 1fr)'
     }
-  };
-};
-
-export default useTheme;
+  }
+}
+export default useTheme

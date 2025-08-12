@@ -1,5 +1,4 @@
-import { MessagingService } from './messaging-service';
-
+import { MessagingService } from './messaging-service'
 export const defaultEmailTemplates = [
   {
     name: 'Bienvenue Beriox',
@@ -43,7 +42,7 @@ L'équipe Beriox AI`,
         
         <p>Bienvenue chez Beriox AI ! Nous sommes ravis de vous compter parmi nos utilisateurs.</p>
         
-        <p>Beriox AI vous offre une équipe d&apos;agents IA spécialisés pour automatiser et optimiser vos processus business :</p>
+        <p>Beriox AI vous offre une équipe d'agents IA spécialisés pour automatiser et optimiser vos processus business :</p>
         
         <h2 style="color: #6366f1;">🤖 Nos Agents IA :</h2>
         <ul>
@@ -64,11 +63,11 @@ L'équipe Beriox AI`,
         <p>Si vous avez des questions, notre équipe support est là pour vous aider.</p>
         
         <p style="text-align: center; font-weight: bold; color: #6366f1;">
-            Bienvenue dans l&apos;avenir de l&apos;automatisation !
+            Bienvenue dans l'avenir de l'automatisation !
         </p>
         
         <p style="text-align: center;">
-            L&apos;équipe Beriox AI
+            L'équipe Beriox AI
         </p>
     </div>
 </body>
@@ -164,19 +163,17 @@ L'équipe Beriox AI`,
     variables: ['userName', 'missionTitle', 'agentName', 'missionObjective', 'missionDuration', 'missionResults'],
     category: 'missions'
   }
-];
-
+]
 export async function createDefaultTemplates(messagingService: MessagingService, createdBy?: string) {
-  console.log('📧 Création des templates d\'emails par défaut...');
-  
+  console.log('📧 Création des templates d\'emails par défaut...')
   for (const template of defaultEmailTemplates) {
     try {
-      await messagingService.createTemplate(template, createdBy);
-      console.log(`✅ Template créé: ${template.name}`);
+      await messagingService.createTemplate(template, createdBy)
+      console.log(`✅ Template créé: ${template.name}`)
     } catch (error) {
-      console.error(`❌ Erreur lors de la création du template ${template.name}:`, error);
+      console.error(`❌ Erreur lors de la création du template ${template.name}:`, error)
     }
   }
   
-  console.log('✅ Templates d\'emails par défaut créés');
+  console.log('✅ Templates d\'emails par défaut créés')
 }

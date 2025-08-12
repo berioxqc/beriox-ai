@@ -1,27 +1,22 @@
-"use client";
-import { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "@/hooks/useTheme";
-
+"use client"
+import { useState, useEffect } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useTheme } from "@/hooks/useTheme"
 interface RefundNotificationProps {
-  onClose: () => void;
+  onClose: () => void
 }
 
 export default function RefundNotification({ onClose }: RefundNotificationProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const theme = useTheme();
-
+  const [isVisible, setIsVisible] = useState(false)
+  const theme = useTheme()
   useEffect(() => {
     // Afficher la notification après 2 secondes
     const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!isVisible) return null;
-
+      setIsVisible(true)
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [])
+  if (!isVisible) return null
   return (
     <div style={{
       position: "fixed",
@@ -72,7 +67,7 @@ export default function RefundNotification({ onClose }: RefundNotificationProps)
             lineHeight: "1.4",
             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
           }}>
-            Pas satisfait d&apos;une réponse ? Demandez un remboursement de vos crédits en quelques clics !
+            Pas satisfait d'une réponse ? Demandez un remboursement de vos crédits en quelques clics !
           </p>
           
           <div style={{
@@ -82,8 +77,8 @@ export default function RefundNotification({ onClose }: RefundNotificationProps)
           }}>
             <button
               onClick={() => {
-                window.location.href = "/refunds";
-                onClose();
+                window.location.href = "/refunds"
+                onClose()
               }}
               style={{
                 background: "rgba(255, 255, 255, 0.2)",
@@ -95,13 +90,13 @@ export default function RefundNotification({ onClose }: RefundNotificationProps)
                 color: "white",
                 cursor: "pointer",
                 transition: "all 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.background = "rgba(255, 255, 255, 0.3)";
+                e.currentTarget.style.background = "rgba(255, 255, 255, 0.3)"
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)";
+                e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)"
               }}
             >
               Voir les détails
@@ -120,10 +115,10 @@ export default function RefundNotification({ onClose }: RefundNotificationProps)
                 transition: "color 0.2s"
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.color = "white";
+                e.currentTarget.style.color = "white"
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
+                e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)"
               }}
             >
               <FontAwesomeIcon icon="times" />
@@ -135,15 +130,15 @@ export default function RefundNotification({ onClose }: RefundNotificationProps)
       <style jsx>{`
         @keyframes slideInRight {
           from {
-            transform: translateX(100%);
-            opacity: 0;
+            transform: translateX(100%)
+            opacity: 0
           }
           to {
-            transform: translateX(0);
-            opacity: 1;
+            transform: translateX(0)
+            opacity: 1
           }
         }
       `}</style>
     </div>
-  );
+  )
 }

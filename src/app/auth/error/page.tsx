@@ -1,71 +1,67 @@
-"use client";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
-
+"use client"
+import { useSearchParams, useRouter } from "next/navigation"
+import { useEffect, useState, Suspense } from "react"
 function AuthErrorContent() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [error, setError] = useState<string>("Une erreur inattendue s'est produite");
-  const [details, setDetails] = useState<string>("");
-
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const [error, setError] = useState<string>("Une erreur inattendue s'est produite")
+  const [details, setDetails] = useState<string>("")
   useEffect(() => {
-    const errorType = searchParams?.get("error");
-    
+    const errorType = searchParams?.get("error")
     switch (errorType) {
       case "Configuration":
-        setError("Erreur de configuration");
-        setDetails("Il y a un problème avec la configuration du serveur. Veuillez contacter l'administrateur.");
-        break;
+        setError("Erreur de configuration")
+        setDetails("Il y a un problème avec la configuration du serveur. Veuillez contacter l'administrateur.")
+        break
       case "AccessDenied":
-        setError("Accès refusé");
-        setDetails("Vous n'avez pas l'autorisation d'accéder à cette application.");
-        break;
+        setError("Accès refusé")
+        setDetails("Vous n'avez pas l'autorisation d'accéder à cette application.")
+        break
       case "Verification":
-        setError("Erreur de vérification");
-        setDetails("Le token de vérification a expiré ou est invalide.");
-        break;
+        setError("Erreur de vérification")
+        setDetails("Le token de vérification a expiré ou est invalide.")
+        break
       case "OAuthSignin":
-        setError("Erreur d'authentification");
-        setDetails("Impossible d'initialiser l'authentification avec Google.");
-        break;
+        setError("Erreur d'authentification")
+        setDetails("Impossible d'initialiser l'authentification avec Google.")
+        break
       case "OAuthCallback":
-        setError("Erreur de callback");
-        setDetails("Erreur lors de la réception de la réponse de Google.");
-        break;
+        setError("Erreur de callback")
+        setDetails("Erreur lors de la réception de la réponse de Google.")
+        break
       case "OAuthCreateAccount":
-        setError("Création de compte impossible");
-        setDetails("Impossible de créer votre compte. Vérifiez que votre email Google est valide.");
-        break;
+        setError("Création de compte impossible")
+        setDetails("Impossible de créer votre compte. Vérifiez que votre email Google est valide.")
+        break
       case "EmailCreateAccount":
-        setError("Email invalide");
-        setDetails("Impossible de créer le compte avec cet email.");
-        break;
+        setError("Email invalide")
+        setDetails("Impossible de créer le compte avec cet email.")
+        break
       case "Callback":
-        setError("Erreur de connexion");
-        setDetails("Une erreur s'est produite lors de la finalisation de votre connexion.");
-        break;
+        setError("Erreur de connexion")
+        setDetails("Une erreur s'est produite lors de la finalisation de votre connexion.")
+        break
       case "OAuthAccountNotLinked":
-        setError("Compte déjà existant");
-        setDetails("Un compte existe déjà avec cet email mais avec un autre fournisseur d'authentification.");
-        break;
+        setError("Compte déjà existant")
+        setDetails("Un compte existe déjà avec cet email mais avec un autre fournisseur d'authentification.")
+        break
       case "EmailSignin":
-        setError("Envoi d'email impossible");
-        setDetails("Impossible d'envoyer l'email de connexion.");
-        break;
+        setError("Envoi d'email impossible")
+        setDetails("Impossible d'envoyer l'email de connexion.")
+        break
       case "CredentialsSignin":
-        setError("Identifiants incorrects");
-        setDetails("Les identifiants fournis ne sont pas valides.");
-        break;
+        setError("Identifiants incorrects")
+        setDetails("Les identifiants fournis ne sont pas valides.")
+        break
       case "SessionRequired":
-        setError("Session requise");
-        setDetails("Vous devez être connecté pour accéder à cette page.");
-        break;
+        setError("Session requise")
+        setDetails("Vous devez être connecté pour accéder à cette page.")
+        break
       default:
-        setError("Erreur inconnue");
-        setDetails("Une erreur inattendue s'est produite lors de l'authentification.");
+        setError("Erreur inconnue")
+        setDetails("Une erreur inattendue s'est produite lors de l'authentification.")
     }
-  }, [searchParams]);
-
+  }, [searchParams])
   return (
     <div style={{
       minHeight: "100vh",
@@ -152,15 +148,15 @@ function AuthErrorContent() {
               transition: "all 0.2s"
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.background = "#f9fafb";
-              e.currentTarget.style.borderColor = "#9ca3af";
+              e.currentTarget.style.background = "#f9fafb"
+              e.currentTarget.style.borderColor = "#9ca3af"
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.background = "white";
-              e.currentTarget.style.borderColor = "#d1d5db";
+              e.currentTarget.style.background = "white"
+              e.currentTarget.style.borderColor = "#d1d5db"
             }}
           >
-            Retour à l&apos;accueil
+            Retour à l'accueil
           </button>
         </div>
 
@@ -173,12 +169,12 @@ function AuthErrorContent() {
           fontSize: "14px",
           color: "#4b5563"
         }}>
-          <strong>Besoin d&apos;aide ?</strong><br />
-          Si le problème persiste, veuillez contacter le support technique avec le code d&apos;erreur affiché ci-dessus.
+          <strong>Besoin d'aide ?</strong><br />
+          Si le problème persiste, veuillez contacter le support technique avec le code d'erreur affiché ci-dessus.
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default function AuthErrorPage() {
@@ -203,5 +199,5 @@ export default function AuthErrorPage() {
     }>
       <AuthErrorContent />
     </Suspense>
-  );
+  )
 }

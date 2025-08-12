@@ -57,18 +57,16 @@ export const API_KEYS = {
   VERCEL_TOKEN: process.env.VERCEL_TOKEN,
   VERCEL_ORG_ID: process.env.VERCEL_ORG_ID,
   VERCEL_PROJECT_ID: process.env.VERCEL_PROJECT_ID,
-} as const;
-
+} as const
 // Types pour les clés API
-export type ApiKeyName = keyof typeof API_KEYS;
-export type ApiKeyValue = string | undefined;
-
+export type ApiKeyName = keyof typeof API_KEYS
+export type ApiKeyValue = string | undefined
 // Interface pour la validation des clés
 export interface ApiKeyValidation {
-  name: ApiKeyName;
-  required: boolean;
-  pattern?: RegExp;
-  description: string;
+  name: ApiKeyName
+  required: boolean
+  pattern?: RegExp
+  description: string
 }
 
 // Configuration de validation des clés
@@ -216,82 +214,76 @@ export const API_KEY_VALIDATION: Record<ApiKeyName, ApiKeyValidation> = {
     required: false,
     description: 'ID de projet Vercel'
   }
-};
-
+}
 // Fonction pour obtenir une clé API
 export function getApiKey(name: ApiKeyName): string | undefined {
-  return API_KEYS[name];
+  return API_KEYS[name]
 }
 
 // Fonction pour vérifier si une clé est définie
 export function hasApiKey(name: ApiKeyName): boolean {
-  return !!API_KEYS[name];
+  return !!API_KEYS[name]
 }
 
 // Fonction pour valider une clé API
 export function validateApiKey(name: ApiKeyName): { isValid: boolean; error?: string } {
-  const key = API_KEYS[name];
-  const validation = API_KEY_VALIDATION[name];
-  
+  const key = API_KEYS[name]
+  const validation = API_KEY_VALIDATION[name]
   if (validation.required && !key) {
     return {
       isValid: false,
       error: `Clé API requise manquante: ${name}`
-    };
+    }
   }
   
   if (key && validation.pattern && !validation.pattern.test(key)) {
     return {
       isValid: false,
       error: `Format de clé API invalide pour ${name}`
-    };
+    }
   }
   
-  return { isValid: true };
+  return { isValid: true }
 }
 
 // Fonction pour valider toutes les clés API
 export function validateAllApiKeys(): { valid: boolean; errors: string[] } {
-  const errors: string[] = [];
-  
+  const errors: string[] = []
   Object.keys(API_KEYS).forEach((key) => {
-    const validation = validateApiKey(key as ApiKeyName);
+    const validation = validateApiKey(key as ApiKeyName)
     if (!validation.isValid && validation.error) {
-      errors.push(validation.error);
+      errors.push(validation.error)
     }
-  });
-  
+  })
   return {
     valid: errors.length === 0,
     errors
-  };
+  }
 }
 
 // Fonction pour obtenir les clés manquantes
 export function getMissingApiKeys(): ApiKeyName[] {
   return Object.keys(API_KEYS).filter((key) => {
-    const validation = API_KEY_VALIDATION[key as ApiKeyName];
-    return validation.required && !API_KEYS[key as ApiKeyName];
-  }) as ApiKeyName[];
+    const validation = API_KEY_VALIDATION[key as ApiKeyName]
+    return validation.required && !API_KEYS[key as ApiKeyName]
+  }) as ApiKeyName[]
 }
 
 // Fonction pour masquer une clé API (pour les logs)
 export function maskApiKey(key: string | undefined): string {
-  if (!key) return 'undefined';
-  if (key.length <= 8) return '*'.repeat(key.length);
-  return key.substring(0, 4) + '*'.repeat(key.length - 8) + key.substring(key.length - 4);
+  if (!key) return 'undefined'
+  if (key.length <= 8) return '*'.repeat(key.length)
+  return key.substring(0, 4) + '*'.repeat(key.length - 8) + key.substring(key.length - 4)
 }
 
 // Fonction pour obtenir un objet avec les clés masquées (pour les logs)
 export function getMaskedApiKeys(): Record<string, string> {
-  const masked: Record<string, string> = {};
-  
+  const masked: Record<string, string> = {}
   Object.keys(API_KEYS).forEach((key) => {
-    masked[key] = maskApiKey(API_KEYS[key as ApiKeyName]);
-  });
-  
-  return masked;
+    masked[key] = maskApiKey(API_KEYS[key as ApiKeyName])
+  })
+  return masked
 }
 
 // Export par défaut pour faciliter l'import
-export default API_KEYS;
+export default API_KEYS

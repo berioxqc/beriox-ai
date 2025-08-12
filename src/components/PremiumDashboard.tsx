@@ -1,44 +1,39 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import { BerioxKPIs, OpportunityItem, RiskAlert } from '@/lib/premium-analytics';
-
+'use client'
+import { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useTheme } from '@/hooks/useTheme'
+import { BerioxKPIs, OpportunityItem, RiskAlert } from '@/lib/premium-analytics'
 interface PremiumDashboardProps {
-  missionId: string;
-  userPlan: 'free' | 'pro' | 'enterprise';
+  missionId: string
+  userPlan: 'free' | 'pro' | 'enterprise'
 }
 
 export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboardProps) {
-  const theme = useTheme();
-  const [kpis, setKpis] = useState<BerioxKPIs | null>(null);
-  const [loading, setLoading] = useState(true);
-
+  const theme = useTheme()
+  const [kpis, setKpis] = useState<BerioxKPIs | null>(null)
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
-    fetchPremiumData();
-  }, [missionId, userPlan]);
-
+    fetchPremiumData()
+  }, [missionId, userPlan])
   const fetchPremiumData = async () => {
     try {
-      const response = await fetch(`/api/missions/${missionId}/premium-analytics?plan=${userPlan}`);
+      const response = await fetch(`/api/missions/${missionId}/premium-analytics?plan=${userPlan}`)
       if (response.ok) {
-        const data = await response.json();
-        setKpis(data);
+        const data = await response.json()
+        setKpis(data)
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des analytics premium:', error);
+      console.error('Erreur lors du chargement des analytics premium:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', padding: theme.spacing.xl }}>
         <FontAwesomeIcon icon="spinner" spin style={{ fontSize: '32px', color: theme.colors.primary.main }} />
       </div>
-    );
+    )
   }
 
   if (!kpis) {
@@ -50,7 +45,7 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
       }}>
         Aucune donnée premium disponible
       </div>
-    );
+    )
   }
 
   return (
@@ -94,13 +89,13 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
           <div style={{
             marginTop: theme.spacing.sm,
             padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
-            backgroundColor: kpis.bpi >= 80 ? theme.colors.success + &apos;20&apos; : kpis.bpi >= 60 ? theme.colors.warning + &apos;20&apos; : theme.colors.error + &apos;20&apos;,
-            borderRadius: &apos;20px&apos;,
-            fontSize: &apos;12px&apos;,
+            backgroundColor: kpis.bpi >= 80 ? theme.colors.success + '20' : kpis.bpi >= 60 ? theme.colors.warning + '20' : theme.colors.error + '20',
+            borderRadius: '20px',
+            fontSize: '12px',
             color: kpis.bpi >= 80 ? theme.colors.success : kpis.bpi >= 60 ? theme.colors.warning : theme.colors.error,
-            fontWeight: &apos;500&apos;
+            fontWeight: '500'
           }}>
-            {kpis.bpi >= 80 ? &apos;Excellent&apos; : kpis.bpi >= 60 ? &apos;Bon&apos; : &apos;À améliorer&apos;}
+            {kpis.bpi >= 80 ? 'Excellent' : kpis.bpi >= 60 ? 'Bon' : 'À améliorer'}
           </div>
         </div>
 
@@ -226,7 +221,7 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
               Alertes Actives
             </div>
             <div style={{ fontSize: '12px', color: theme.colors.neutral[600] }}>
-              {kpis.riskAlerts.length === 0 ? &apos;Tout va bien !&apos; : &apos;Action requise&apos;}
+              {kpis.riskAlerts.length === 0 ? 'Tout va bien !' : 'Action requise'}
             </div>
           </div>
         )}
@@ -439,7 +434,7 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
                   color: theme.colors.neutral[500],
                   textAlign: 'right'
                 }}>
-                  Détectée le {alert.detectedAt.toLocaleDateString(&apos;fr-FR&apos;)}
+                  Détectée le {alert.detectedAt.toLocaleDateString('fr-FR')}
                 </div>
               </div>
             ))}
@@ -534,7 +529,7 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
                 Score Risque SEO
               </div>
               <div style={{ fontSize: '12px', color: theme.colors.neutral[600] }}>
-                {kpis.predictiveMetrics.seoRiskScore.score > 50 ? &apos;Attention requise&apos; : &apos;Situation stable&apos;}
+                {kpis.predictiveMetrics.seoRiskScore.score > 50 ? 'Attention requise' : 'Situation stable'}
               </div>
             </div>
           </div>
@@ -568,5 +563,5 @@ export default function PremiumDashboard({ missionId, userPlan }: PremiumDashboa
         </div>
       )}
     </div>
-  );
+  )
 }

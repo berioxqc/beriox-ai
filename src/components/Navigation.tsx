@@ -1,55 +1,48 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import MobileMenu from "./MobileMenu";
-import UserStatus from "./UserStatus";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
+import MobileMenu from "./MobileMenu"
+import UserStatus from "./UserStatus"
+import Icon from "@/components/ui/Icon"
 export default function Navigation() {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   const [userPermissions, setUserPermissions] = useState<{
-    role: string;
-    plan?: string;
-    hasAccess: boolean;
-  } | null>(null);
-
+    role: string
+    plan?: string
+    hasAccess: boolean
+  } | null>(null)
   // Récupérer les permissions utilisateur
   useEffect(() => {
     const fetchUserPermissions = async () => {
       if (session?.user?.email) {
         try {
           // Récupérer les informations du profil utilisateur
-          const profileRes = await fetch('/api/user/profile');
-          const profile = profileRes.ok ? await profileRes.json() : null;
-
+          const profileRes = await fetch('/api/user/profile')
+          const profile = profileRes.ok ? await profileRes.json() : null
           // Vérifier l'accès premium basé sur le rôle et les crédits
-          let hasAccess = false;
-          let plan = undefined;
-
+          let hasAccess = false
+          let plan = undefined
           if (profile?.user?.role === 'SUPER_ADMIN' || profile?.user?.role === 'ADMIN') {
-            hasAccess = true;
-            plan = 'enterprise';
+            hasAccess = true
+            plan = 'enterprise'
           } else if (profile?.user?.credits && profile.user.credits > 0) {
-            hasAccess = true;
-            plan = 'basic';
+            hasAccess = true
+            plan = 'basic'
           }
 
           const permissions = {
             role: profile?.user?.role || 'USER',
             plan: plan,
             hasAccess: hasAccess
-          };
-
-          setUserPermissions(permissions);
+          }
+          setUserPermissions(permissions)
         } catch (error) {
-          console.error('Erreur lors de la récupération des permissions:', error);
+          console.error('Erreur lors de la récupération des permissions:', error)
         }
       }
-    };
-
-    fetchUserPermissions();
-  }, [session]);
-
+    }
+    fetchUserPermissions()
+  }, [session])
   return (
     <nav className="bg-white border-b border-gray-200 px-4 py-3 sm:px-6 lg:px-10">
       <div className="flex items-center justify-between">
@@ -90,5 +83,5 @@ export default function Navigation() {
         </div>
       </div>
     </nav>
-  );
+  )
 }

@@ -1,43 +1,38 @@
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import React from 'react';
-
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import React from 'react'
 interface UseAuthGuardOptions {
-  requireAuth?: boolean;
-  redirectTo?: string;
-  showLimitedContent?: boolean;
+  requireAuth?: boolean
+  redirectTo?: string
+  showLimitedContent?: boolean
 }
 
 export function useAuthGuard(options: UseAuthGuardOptions = {}) {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const [showLimitedContent, setShowLimitedContent] = useState(false);
-
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
+  const [showLimitedContent, setShowLimitedContent] = useState(false)
   const {
     requireAuth = false,
     redirectTo = '/auth/signin',
     showLimitedContent: defaultShowLimited = true
-  } = options;
-
+  } = options
   useEffect(() => {
-    if (status === 'loading') return;
-
+    if (status === 'loading') return
     if (requireAuth && !session) {
       // Redirection pour les pages qui nécessitent une authentification stricte
-      router.push(redirectTo);
-      return;
+      router.push(redirectTo)
+      return
     }
 
     if (!session && defaultShowLimited) {
       // Afficher le contenu limité pour les utilisateurs non connectés
-      setShowLimitedContent(true);
+      setShowLimitedContent(true)
     }
 
-    setIsLoading(false);
-  }, [session, status, requireAuth, redirectTo, router, defaultShowLimited]);
-
+    setIsLoading(false)
+  }, [session, status, requireAuth, redirectTo, router, defaultShowLimited])
   return {
     session,
     status,
@@ -45,7 +40,7 @@ export function useAuthGuard(options: UseAuthGuardOptions = {}) {
     isAuthenticated: !!session,
     showLimitedContent,
     user: session?.user
-  };
+  }
 }
 
 // Composant pour afficher le contenu limité
@@ -54,15 +49,15 @@ export function LimitedContentWrapper({
   limitedContent,
   isAuthenticated 
 }: {
-  children: React.ReactNode;
-  limitedContent: React.ReactNode;
-  isAuthenticated: boolean;
+  children: React.ReactNode
+  limitedContent: React.ReactNode
+  isAuthenticated: boolean
 }) {
   if (!isAuthenticated) {
-    return <>{limitedContent}</>;
+    return <>{limitedContent}</>
   }
 
-  return <>{children}</>;
+  return <>{children}</>
 }
 
 // Composant pour afficher un message de connexion
@@ -70,8 +65,8 @@ export function LoginPrompt({
   message = "Connectez-vous pour accéder à toutes les fonctionnalités",
   showSignUp = true 
 }: {
-  message?: string;
-  showSignUp?: boolean;
+  message?: string
+  showSignUp?: boolean
 }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
@@ -107,5 +102,5 @@ export function LoginPrompt({
         </div>
       </div>
     </div>
-  );
+  )
 }

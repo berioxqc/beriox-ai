@@ -1,21 +1,20 @@
-"use client";
-import Image from "next/image";
-import { useState } from "react";
-
+"use client"
+import Image from "next/image"
+import { useState } from "react"
 interface OptimizedImageProps {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  className?: string;
-  style?: React.CSSProperties;
-  priority?: boolean;
-  quality?: number;
-  placeholder?: "blur" | "empty";
-  blurDataURL?: string;
-  fallbackSrc?: string;
-  onLoad?: () => void;
-  onError?: () => void;
+  src: string
+  alt: string
+  width: number
+  height: number
+  className?: string
+  style?: React.CSSProperties
+  priority?: boolean
+  quality?: number
+  placeholder?: "blur" | "empty"
+  blurDataURL?: string
+  fallbackSrc?: string
+  onLoad?: () => void
+  onError?: () => void
 }
 
 export default function OptimizedImage({
@@ -33,23 +32,20 @@ export default function OptimizedImage({
   onLoad,
   onError
 }: OptimizedImageProps) {
-  const [imageSrc, setImageSrc] = useState(src);
-  const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [imageSrc, setImageSrc] = useState(src)
+  const [hasError, setHasError] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const handleError = () => {
     if (!hasError && imageSrc !== fallbackSrc) {
-      setImageSrc(fallbackSrc);
-      setHasError(true);
+      setImageSrc(fallbackSrc)
+      setHasError(true)
     }
-    onError?.();
-  };
-
+    onError?.()
+  }
   const handleLoad = () => {
-    setIsLoading(false);
-    onLoad?.();
-  };
-
+    setIsLoading(false)
+    onLoad?.()
+  }
   return (
     <div 
       className={`relative ${className}`}
@@ -97,7 +93,7 @@ export default function OptimizedImage({
         }
       `}</style>
     </div>
-  );
+  )
 }
 
 // Composant spécialisé pour les avatars
@@ -108,10 +104,10 @@ export function AvatarImage({
   className = "",
   ...props
 }: {
-  src: string;
-  alt: string;
-  size?: number;
-  className?: string;
+  src: string
+  alt: string
+  size?: number
+  className?: string
 } & Omit<OptimizedImageProps, "width" | "height" | "src" | "alt">) {
   return (
     <OptimizedImage
@@ -123,7 +119,7 @@ export function AvatarImage({
       fallbackSrc="/default-avatar.png"
       {...props}
     />
-  );
+  )
 }
 
 // Composant spécialisé pour les logos
@@ -135,11 +131,11 @@ export function LogoImage({
   className = "",
   ...props
 }: {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  className?: string;
+  src: string
+  alt: string
+  width: number
+  height: number
+  className?: string
 } & Omit<OptimizedImageProps, "width" | "height" | "src" | "alt">) {
   return (
     <OptimizedImage
@@ -151,7 +147,7 @@ export function LogoImage({
       fallbackSrc="/default-logo.png"
       {...props}
     />
-  );
+  )
 }
 
 // Composant spécialisé pour les images de fond
@@ -163,11 +159,11 @@ export function BackgroundImage({
   className = "",
   ...props
 }: {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-  className?: string;
+  src: string
+  alt: string
+  width: number
+  height: number
+  className?: string
 } & Omit<OptimizedImageProps, "width" | "height" | "src" | "alt">) {
   return (
     <OptimizedImage
@@ -179,5 +175,5 @@ export function BackgroundImage({
       fallbackSrc="/default-background.png"
       {...props}
     />
-  );
+  )
 }

@@ -1,17 +1,14 @@
-import { Client } from "@notionhq/client";
-
-const token = process.env.NOTION_TOKEN;
-const databaseId = process.env.NOTION_DATABASE_ID;
-
-export const notion = new Client({ auth: token });
-
+import { Client } from "@notionhq/client"
+const token = process.env.NOTION_TOKEN
+const databaseId = process.env.NOTION_DATABASE_ID
+export const notion = new Client({ auth: token })
 export async function createMissionPage(args: {
-  objective: string;
-  deadline?: Date;
-  status: string;
-  markdown: string;
+  objective: string
+  deadline?: Date
+  status: string
+  markdown: string
 }) {
-  if (!databaseId) throw new Error("NOTION_DATABASE_ID is not set");
+  if (!databaseId) throw new Error("NOTION_DATABASE_ID is not set")
   const res = await notion.pages.create({
     parent: { database_id: databaseId },
     properties: {
@@ -27,8 +24,8 @@ export async function createMissionPage(args: {
         paragraph: { rich_text: [{ type: "text", text: { content: args.markdown.slice(0, 1900) } }] }
       }
     ]
-  });
-  return res.id;
+  })
+  return res.id
 }
 
 

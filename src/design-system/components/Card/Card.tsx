@@ -1,14 +1,13 @@
-import React from 'react';
-import { designTokens } from '../../tokens';
-
+import React from 'react'
+import { designTokens } from '../../tokens'
 export interface CardProps {
-  variant?: 'default' | 'elevated' | 'outlined' | 'interactive';
-  padding?: 'none' | 'sm' | 'md' | 'lg';
-  children: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
-  onClick?: () => void;
-  hover?: boolean;
+  variant?: 'default' | 'elevated' | 'outlined' | 'interactive'
+  padding?: 'none' | 'sm' | 'md' | 'lg'
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+  onClick?: () => void
+  hover?: boolean
 }
 
 const Card: React.FC<CardProps> = ({
@@ -26,8 +25,7 @@ const Card: React.FC<CardProps> = ({
     fontFamily: designTokens.typography.fontFamily,
     transition: 'all 0.2s ease-in-out',
     ...style,
-  };
-
+  }
   const variantStyles = {
     default: {
       border: `1px solid ${designTokens.colors.border.light}`,
@@ -46,35 +44,30 @@ const Card: React.FC<CardProps> = ({
       boxShadow: designTokens.shadows.sm,
       cursor: 'pointer',
     },
-  };
-
+  }
   const paddingStyles = {
     none: { padding: '0' },
     sm: { padding: designTokens.spacing[4] },
     md: { padding: designTokens.spacing[6] },
     lg: { padding: designTokens.spacing[8] },
-  };
-
+  }
   const cardStyles: React.CSSProperties = {
     ...baseStyles,
     ...variantStyles[variant],
     ...paddingStyles[padding],
-  };
-
+  }
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     if (hover || variant === 'interactive') {
-      e.currentTarget.style.transform = 'translateY(-2px)';
-      e.currentTarget.style.boxShadow = designTokens.shadows.xl;
+      e.currentTarget.style.transform = 'translateY(-2px)'
+      e.currentTarget.style.boxShadow = designTokens.shadows.xl
     }
-  };
-
+  }
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     if (hover || variant === 'interactive') {
-      e.currentTarget.style.transform = 'translateY(0)';
-      e.currentTarget.style.boxShadow = variantStyles[variant].boxShadow;
+      e.currentTarget.style.transform = 'translateY(0)'
+      e.currentTarget.style.boxShadow = variantStyles[variant].boxShadow
     }
-  };
-
+  }
   return (
     <div
       style={cardStyles}
@@ -85,7 +78,6 @@ const Card: React.FC<CardProps> = ({
     >
       {children}
     </div>
-  );
-};
-
-export default Card;
+  )
+}
+export default Card

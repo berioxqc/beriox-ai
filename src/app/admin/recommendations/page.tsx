@@ -1,35 +1,32 @@
-"use client";
-import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "@/hooks/useTheme";
-
+"use client"
+import { useState, useEffect } from "react"
+import Layout from "@/components/Layout"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useTheme } from "@/hooks/useTheme"
 interface CostMetrics {
-  totalTokens: number;
-  totalCost: number;
-  averageCostPerUser: number;
+  totalTokens: number
+  totalCost: number
+  averageCostPerUser: number
   topUsers: Array<{
-    email: string;
-    tokens: number;
-    cost: number;
-  }>;
+    email: string
+    tokens: number
+    cost: number
+  }>
 }
 
 interface UsageMetrics {
-  totalUsers: number;
-  activeUsers: number;
-  premiumUsers: number;
-  averageUsagePerUser: number;
+  totalUsers: number
+  activeUsers: number
+  premiumUsers: number
+  averageUsagePerUser: number
 }
 
 export default function AdminRecommendationsPage() {
-  const [costMetrics, setCostMetrics] = useState<CostMetrics | null>(null);
-  const [usageMetrics, setUsageMetrics] = useState<UsageMetrics | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'monitoring' | 'limits' | 'billing'>('monitoring');
-  
-  const theme = useTheme();
-
+  const [costMetrics, setCostMetrics] = useState<CostMetrics | null>(null)
+  const [usageMetrics, setUsageMetrics] = useState<UsageMetrics | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<'monitoring' | 'limits' | 'billing'>('monitoring')
+  const theme = useTheme()
   useEffect(() => {
     // Simuler le chargement des données
     setTimeout(() => {
@@ -42,19 +39,16 @@ export default function AdminRecommendationsPage() {
           { email: "user2@example.com", tokens: 98000, cost: 1.47 },
           { email: "user3@example.com", tokens: 75000, cost: 1.13 }
         ]
-      });
-      
+      })
       setUsageMetrics({
         totalUsers: 125,
         activeUsers: 89,
         premiumUsers: 34,
         averageUsagePerUser: 12336
-      });
-      
-      setLoading(false);
-    }, 1000);
-  }, []);
-
+      })
+      setLoading(false)
+    }, 1000)
+  }, [])
   const recommendations = {
     monitoring: [
       {
@@ -134,39 +128,36 @@ export default function AdminRecommendationsPage() {
         status: "Idée"
       }
     ]
-  };
-
+  }
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "Haute": return "#ef4444";
-      case "Moyenne": return "#f59e0b";
-      case "Basse": return "#10b981";
-      default: return "#6b7280";
+      case "Haute": return "#ef4444"
+      case "Moyenne": return "#f59e0b"
+      case "Basse": return "#10b981"
+      default: return "#6b7280"
     }
-  };
-
+  }
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "À implémenter": return "#ef4444";
-      case "Planifié": return "#f59e0b";
-      case "Idée": return "#6b7280";
-      default: return "#6b7280";
+      case "À implémenter": return "#ef4444"
+      case "Planifié": return "#f59e0b"
+      case "Idée": return "#6b7280"
+      default: return "#6b7280"
     }
-  };
-
+  }
   if (loading) {
     return (
-      <Layout title="Recommandations d&apos;Implémentation" subtitle="Stratégies de monétisation et optimisation">
+      <Layout title="Recommandations d'Implémentation" subtitle="Stratégies de monétisation et optimisation">
         <div style={{ textAlign: "center", padding: "40px" }}>
           <FontAwesomeIcon icon="spinner" spin style={{ fontSize: "24px", color: theme.colors.primary.main }} />
           <p style={{ marginTop: "16px", color: theme.colors.neutral[600] }}>Chargement des recommandations...</p>
         </div>
       </Layout>
-    );
+    )
   }
 
   return (
-    <Layout title="Recommandations d&apos;Implémentation" subtitle="Stratégies de monétisation et optimisation">
+    <Layout title="Recommandations d'Implémentation" subtitle="Stratégies de monétisation et optimisation">
       <div style={{ display: "grid", gap: theme.spacing.xl }}>
         {/* Métriques actuelles */}
         <div style={{
@@ -260,11 +251,11 @@ export default function AdminRecommendationsPage() {
             paddingBottom: theme.spacing.md
           }}>
             <button
-              onClick={() => setActiveTab(&apos;monitoring&apos;)}
+              onClick={() => setActiveTab('monitoring')}
               style={{
                 padding: "8px 16px",
-                background: activeTab === &apos;monitoring&apos; ? theme.colors.primary.main : "transparent",
-                color: activeTab === &apos;monitoring&apos; ? "white" : theme.colors.neutral[600],
+                background: activeTab === 'monitoring' ? theme.colors.primary.main : "transparent",
+                color: activeTab === 'monitoring' ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",
@@ -277,11 +268,11 @@ export default function AdminRecommendationsPage() {
             </button>
             
             <button
-              onClick={() => setActiveTab(&apos;limits&apos;)}
+              onClick={() => setActiveTab('limits')}
               style={{
                 padding: "8px 16px",
-                background: activeTab === &apos;limits&apos; ? theme.colors.primary.main : "transparent",
-                color: activeTab === &apos;limits&apos; ? "white" : theme.colors.neutral[600],
+                background: activeTab === 'limits' ? theme.colors.primary.main : "transparent",
+                color: activeTab === 'limits' ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",
@@ -294,11 +285,11 @@ export default function AdminRecommendationsPage() {
             </button>
             
             <button
-              onClick={() => setActiveTab(&apos;billing&apos;)}
+              onClick={() => setActiveTab('billing')}
               style={{
                 padding: "8px 16px",
-                background: activeTab === &apos;billing&apos; ? theme.colors.primary.main : "transparent",
-                color: activeTab === &apos;billing&apos; ? "white" : theme.colors.neutral[600],
+                background: activeTab === 'billing' ? theme.colors.primary.main : "transparent",
+                color: activeTab === 'billing' ? "white" : theme.colors.neutral[600],
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "14px",
@@ -616,5 +607,5 @@ export default function AdminRecommendationsPage() {
         </div>
       </div>
     </Layout>
-  );
+  )
 }

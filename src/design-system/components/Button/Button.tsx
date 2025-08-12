@@ -1,14 +1,13 @@
-import React from 'react';
-import { designTokens } from '../../tokens';
-
+import React from 'react'
+import { designTokens } from '../../tokens'
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'ghost' | 'outline';
-  size?: 'sm' | 'md' | 'lg';
-  loading?: boolean;
-  icon?: React.ReactNode;
-  iconPosition?: 'left' | 'right';
-  fullWidth?: boolean;
-  children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'ghost' | 'outline'
+  size?: 'sm' | 'md' | 'lg'
+  loading?: boolean
+  icon?: React.ReactNode
+  iconPosition?: 'left' | 'right'
+  fullWidth?: boolean
+  children: React.ReactNode
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -38,8 +37,7 @@ const Button: React.FC<ButtonProps> = ({
     outline: 'none',
     width: fullWidth ? '100%' : 'auto',
     ...style,
-  };
-
+  }
   const sizeStyles = {
     sm: {
       padding: `${designTokens.spacing[2]} ${designTokens.spacing[4]}`,
@@ -53,8 +51,7 @@ const Button: React.FC<ButtonProps> = ({
       padding: `${designTokens.spacing[4]} ${designTokens.spacing[6]}`,
       fontSize: designTokens.typography.fontSize.lg,
     },
-  };
-
+  }
   const variantStyles = {
     primary: {
       background: designTokens.colors.beriox.gradient,
@@ -110,29 +107,25 @@ const Button: React.FC<ButtonProps> = ({
         borderColor: designTokens.colors.border.dark,
       },
     },
-  };
-
+  }
   const buttonStyles: React.CSSProperties = {
     ...baseStyles,
     ...sizeStyles[size],
     ...variantStyles[variant],
     opacity: disabled || loading ? 0.6 : 1,
-  };
-
+  }
   const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!disabled && !loading && variant === 'primary') {
-      e.currentTarget.style.boxShadow = designTokens.shadows.berioxHover;
-      e.currentTarget.style.transform = 'translateY(-1px)';
+      e.currentTarget.style.boxShadow = designTokens.shadows.berioxHover
+      e.currentTarget.style.transform = 'translateY(-1px)'
     }
-  };
-
+  }
   const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!disabled && !loading && variant === 'primary') {
-      e.currentTarget.style.boxShadow = designTokens.shadows.beriox;
-      e.currentTarget.style.transform = 'translateY(0)';
+      e.currentTarget.style.boxShadow = designTokens.shadows.beriox
+      e.currentTarget.style.transform = 'translateY(0)'
     }
-  };
-
+  }
   return (
     <button
       style={buttonStyles}
@@ -147,11 +140,10 @@ const Button: React.FC<ButtonProps> = ({
           ⟳
         </span>
       )}
-      {!loading && icon && iconPosition === &apos;left&apos; && icon}
+      {!loading && icon && iconPosition === 'left' && icon}
       {children}
-      {!loading && icon && iconPosition === &apos;right&apos; && icon}
+      {!loading && icon && iconPosition === 'right' && icon}
     </button>
-  );
-};
-
-export default Button;
+  )
+}
+export default Button

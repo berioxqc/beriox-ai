@@ -1,6 +1,5 @@
-import { logger } from './logger';
-import { metrics } from './metrics';
-
+import { logger } from './logger'
+import { metrics } from './metrics'
 export enum OnboardingStepType {
   WELCOME = 'welcome',
   PROFILE_SETUP = 'profile_setup',
@@ -20,68 +19,67 @@ export enum OnboardingStatus {
 }
 
 export interface OnboardingStep {
-  id: string;
-  type: OnboardingStepType;
-  title: string;
-  description: string;
-  isRequired: boolean;
-  isSkippable: boolean;
+  id: string
+  type: OnboardingStepType
+  title: string
+  description: string
+  isRequired: boolean
+  isSkippable: boolean
   estimatedTime: number; // en secondes
   dependencies?: string[]; // IDs des étapes requises
-  config: OnboardingStepConfig;
-  validation?: (data: any) => boolean | Promise<boolean>;
+  config: OnboardingStepConfig
+  validation?: (data: any) => boolean | Promise<boolean>
 }
 
 export interface OnboardingStepConfig {
-  component: string;
-  props?: Record<string, any>;
-  actions?: OnboardingAction[];
-  hints?: string[];
-  successMessage?: string;
-  errorMessage?: string;
+  component: string
+  props?: Record<string, any>
+  actions?: OnboardingAction[]
+  hints?: string[]
+  successMessage?: string
+  errorMessage?: string
 }
 
 export interface OnboardingAction {
-  id: string;
-  label: string;
-  type: 'primary' | 'secondary' | 'skip';
-  action: string;
-  url?: string;
-  data?: Record<string, any>;
+  id: string
+  label: string
+  type: 'primary' | 'secondary' | 'skip'
+  action: string
+  url?: string
+  data?: Record<string, any>
 }
 
 export interface OnboardingProgress {
-  userId: string;
-  currentStep: string;
-  completedSteps: string[];
-  skippedSteps: string[];
-  startDate: Date;
-  lastActivity: Date;
-  status: OnboardingStatus;
-  data: Record<string, any>;
+  userId: string
+  currentStep: string
+  completedSteps: string[]
+  skippedSteps: string[]
+  startDate: Date
+  lastActivity: Date
+  status: OnboardingStatus
+  data: Record<string, any>
   timeSpent: number; // en secondes
   completionRate: number; // 0-100
 }
 
 export interface OnboardingSession {
-  id: string;
-  userId: string;
-  stepId: string;
-  startTime: Date;
-  endTime?: Date;
-  duration?: number;
-  actions: OnboardingAction[];
-  data: Record<string, any>;
-  errors: string[];
+  id: string
+  userId: string
+  stepId: string
+  startTime: Date
+  endTime?: Date
+  duration?: number
+  actions: OnboardingAction[]
+  data: Record<string, any>
+  errors: string[]
 }
 
 class OnboardingManager {
-  private steps: Map<string, OnboardingStep> = new Map();
-  private progress: Map<string, OnboardingProgress> = new Map();
-  private sessions: Map<string, OnboardingSession[]> = new Map();
-
+  private steps: Map<string, OnboardingStep> = new Map()
+  private progress: Map<string, OnboardingProgress> = new Map()
+  private sessions: Map<string, OnboardingSession[]> = new Map()
   constructor() {
-    this.initializeDefaultSteps();
+    this.initializeDefaultSteps()
   }
 
   private initializeDefaultSteps() {
@@ -114,8 +112,7 @@ class OnboardingManager {
         ],
         successMessage: 'Parfait ! Vous êtes prêt à commencer votre voyage avec Beriox AI.'
       }
-    });
-
+    })
     // Étape 2: Configuration du profil
     this.addStep({
       id: 'profile-setup',
@@ -153,10 +150,9 @@ class OnboardingManager {
         successMessage: 'Profil configuré avec succès !'
       },
       validation: async (data) => {
-        return data.name && data.company && data.role;
+        return data.name && data.company && data.role
       }
-    });
-
+    })
     // Étape 3: Préférences
     this.addStep({
       id: 'preferences',
@@ -193,8 +189,7 @@ class OnboardingManager {
         ],
         successMessage: 'Préférences enregistrées !'
       }
-    });
-
+    })
     // Étape 4: Première mission
     this.addStep({
       id: 'first-mission',
@@ -233,8 +228,7 @@ class OnboardingManager {
         ],
         successMessage: 'Félicitations ! Votre première mission est en cours.'
       }
-    });
-
+    })
     // Étape 5: Tour des fonctionnalités
     this.addStep({
       id: 'features-tour',
@@ -272,8 +266,7 @@ class OnboardingManager {
         ],
         successMessage: 'Excellent ! Vous connaissez maintenant les principales fonctionnalités.'
       }
-    });
-
+    })
     // Étape 6: Intégrations
     this.addStep({
       id: 'integrations',
@@ -310,8 +303,7 @@ class OnboardingManager {
         ],
         successMessage: 'Intégrations configurées avec succès !'
       }
-    });
-
+    })
     // Étape 7: Facturation
     this.addStep({
       id: 'billing',
@@ -350,8 +342,7 @@ class OnboardingManager {
         ],
         successMessage: 'Plan configuré ! Profitez de votre essai gratuit.'
       }
-    });
-
+    })
     // Étape 8: Finalisation
     this.addStep({
       id: 'completion',
@@ -391,13 +382,12 @@ class OnboardingManager {
         ],
         successMessage: 'Onboarding terminé avec succès !'
       }
-    });
+    })
   }
 
   // Ajouter une étape
   addStep(step: OnboardingStep): void {
-    this.steps.set(step.id, step);
-
+    this.steps.set(step.id, step)
     logger.info(`Onboarding step added: ${step.title}`, {
       action: 'onboarding_step_added',
       metadata: {
@@ -405,20 +395,18 @@ class OnboardingManager {
         type: step.type,
         isRequired: step.isRequired
       }
-    });
-
+    })
     metrics.increment('onboarding_step_added', 1, {
       type: step.type,
       required: step.isRequired.toString()
-    });
+    })
   }
 
   // Démarrer l'onboarding pour un utilisateur
   startOnboarding(userId: string): OnboardingProgress {
-    const firstStep = Array.from(this.steps.values()).find(step => !step.dependencies || step.dependencies.length === 0);
-    
+    const firstStep = Array.from(this.steps.values()).find(step => !step.dependencies || step.dependencies.length === 0)
     if (!firstStep) {
-      throw new Error('No initial step found');
+      throw new Error('No initial step found')
     }
 
     const progress: OnboardingProgress = {
@@ -432,72 +420,64 @@ class OnboardingManager {
       data: {},
       timeSpent: 0,
       completionRate: 0
-    };
-
-    this.progress.set(userId, progress);
-
+    }
+    this.progress.set(userId, progress)
     logger.info(`Onboarding started for user: ${userId}`, {
       action: 'onboarding_started',
       metadata: { userId, firstStep: firstStep.id }
-    });
-
-    metrics.increment('onboarding_started', 1);
-
-    return progress;
+    })
+    metrics.increment('onboarding_started', 1)
+    return progress
   }
 
   // Obtenir le progrès d'un utilisateur
   getProgress(userId: string): OnboardingProgress | null {
-    return this.progress.get(userId) || null;
+    return this.progress.get(userId) || null
   }
 
   // Obtenir l'étape actuelle
   getCurrentStep(userId: string): OnboardingStep | null {
-    const progress = this.getProgress(userId);
-    if (!progress) return null;
-
-    return this.steps.get(progress.currentStep) || null;
+    const progress = this.getProgress(userId)
+    if (!progress) return null
+    return this.steps.get(progress.currentStep) || null
   }
 
   // Passer à l'étape suivante
   async nextStep(userId: string, stepData?: Record<string, any>): Promise<OnboardingStep | null> {
-    const progress = this.getProgress(userId);
+    const progress = this.getProgress(userId)
     if (!progress) {
-      throw new Error('No onboarding progress found');
+      throw new Error('No onboarding progress found')
     }
 
-    const currentStep = this.steps.get(progress.currentStep);
+    const currentStep = this.steps.get(progress.currentStep)
     if (!currentStep) {
-      throw new Error('Current step not found');
+      throw new Error('Current step not found')
     }
 
     // Sauvegarder les données de l'étape
     if (stepData) {
-      progress.data[progress.currentStep] = stepData;
+      progress.data[progress.currentStep] = stepData
     }
 
     // Marquer l'étape comme complétée
     if (!progress.completedSteps.includes(progress.currentStep)) {
-      progress.completedSteps.push(progress.currentStep);
+      progress.completedSteps.push(progress.currentStep)
     }
 
     // Calculer le taux de complétion
-    progress.completionRate = (progress.completedSteps.length / this.steps.size) * 100;
-
+    progress.completionRate = (progress.completedSteps.length / this.steps.size) * 100
     // Trouver la prochaine étape
-    const nextStep = this.findNextStep(progress.currentStep, progress.completedSteps);
-    
+    const nextStep = this.findNextStep(progress.currentStep, progress.completedSteps)
     if (nextStep) {
-      progress.currentStep = nextStep.id;
-      progress.lastActivity = new Date();
+      progress.currentStep = nextStep.id
+      progress.lastActivity = new Date()
     } else {
       // Onboarding terminé
-      progress.status = OnboardingStatus.COMPLETED;
-      progress.completionRate = 100;
+      progress.status = OnboardingStatus.COMPLETED
+      progress.completionRate = 100
     }
 
-    this.progress.set(userId, progress);
-
+    this.progress.set(userId, progress)
     logger.info(`Onboarding step completed: ${currentStep.title}`, {
       action: 'onboarding_step_completed',
       metadata: {
@@ -505,116 +485,103 @@ class OnboardingManager {
         stepId: currentStep.id,
         completionRate: progress.completionRate
       }
-    });
-
+    })
     metrics.increment('onboarding_step_completed', 1, {
       stepId: currentStep.id,
       type: currentStep.type
-    });
-
-    return nextStep;
+    })
+    return nextStep
   }
 
   // Passer une étape
   skipStep(userId: string): OnboardingStep | null {
-    const progress = this.getProgress(userId);
+    const progress = this.getProgress(userId)
     if (!progress) {
-      throw new Error('No onboarding progress found');
+      throw new Error('No onboarding progress found')
     }
 
-    const currentStep = this.steps.get(progress.currentStep);
+    const currentStep = this.steps.get(progress.currentStep)
     if (!currentStep) {
-      throw new Error('Current step not found');
+      throw new Error('Current step not found')
     }
 
     if (!currentStep.isSkippable) {
-      throw new Error('Step cannot be skipped');
+      throw new Error('Step cannot be skipped')
     }
 
     // Marquer l'étape comme passée
     if (!progress.skippedSteps.includes(progress.currentStep)) {
-      progress.skippedSteps.push(progress.currentStep);
+      progress.skippedSteps.push(progress.currentStep)
     }
 
     // Trouver la prochaine étape
-    const nextStep = this.findNextStep(progress.currentStep, [...progress.completedSteps, ...progress.skippedSteps]);
-    
+    const nextStep = this.findNextStep(progress.currentStep, [...progress.completedSteps, ...progress.skippedSteps])
     if (nextStep) {
-      progress.currentStep = nextStep.id;
-      progress.lastActivity = new Date();
+      progress.currentStep = nextStep.id
+      progress.lastActivity = new Date()
     } else {
       // Onboarding terminé
-      progress.status = OnboardingStatus.COMPLETED;
-      progress.completionRate = 100;
+      progress.status = OnboardingStatus.COMPLETED
+      progress.completionRate = 100
     }
 
-    this.progress.set(userId, progress);
-
+    this.progress.set(userId, progress)
     logger.info(`Onboarding step skipped: ${currentStep.title}`, {
       action: 'onboarding_step_skipped',
       metadata: {
         userId,
         stepId: currentStep.id
       }
-    });
-
+    })
     metrics.increment('onboarding_step_skipped', 1, {
       stepId: currentStep.id,
       type: currentStep.type
-    });
-
-    return nextStep;
+    })
+    return nextStep
   }
 
   // Trouver la prochaine étape
   private findNextStep(currentStepId: string, completedSteps: string[]): OnboardingStep | null {
-    const currentStep = this.steps.get(currentStepId);
-    if (!currentStep) return null;
-
+    const currentStep = this.steps.get(currentStepId)
+    if (!currentStep) return null
     // Trouver toutes les étapes qui peuvent suivre
     const possibleNextSteps = Array.from(this.steps.values()).filter(step => {
       // Vérifier les dépendances
-      if (!step.dependencies) return true;
-      
-      return step.dependencies.every(dep => completedSteps.includes(dep));
-    });
-
+      if (!step.dependencies) return true
+      return step.dependencies.every(dep => completedSteps.includes(dep))
+    })
     // Trouver l'étape avec le moins de dépendances non satisfaites
     const nextStep = possibleNextSteps
       .filter(step => step.id !== currentStepId)
       .sort((a, b) => {
-        const aDeps = a.dependencies?.length || 0;
-        const bDeps = b.dependencies?.length || 0;
-        return aDeps - bDeps;
-      })[0];
-
-    return nextStep || null;
+        const aDeps = a.dependencies?.length || 0
+        const bDeps = b.dependencies?.length || 0
+        return aDeps - bDeps
+      })[0]
+    return nextStep || null
   }
 
   // Valider une étape
   async validateStep(userId: string, stepData: any): Promise<boolean> {
-    const progress = this.getProgress(userId);
-    if (!progress) return false;
-
-    const currentStep = this.steps.get(progress.currentStep);
-    if (!currentStep || !currentStep.validation) return true;
-
+    const progress = this.getProgress(userId)
+    if (!progress) return false
+    const currentStep = this.steps.get(progress.currentStep)
+    if (!currentStep || !currentStep.validation) return true
     try {
-      const isValid = await currentStep.validation(stepData);
-      return isValid;
+      const isValid = await currentStep.validation(stepData)
+      return isValid
     } catch (error) {
       logger.error('Step validation failed', error as Error, {
         action: 'onboarding_step_validation_error',
         metadata: { userId, stepId: progress.currentStep }
-      });
-      return false;
+      })
+      return false
     }
   }
 
   // Enregistrer une session d'étape
   startStepSession(userId: string, stepId: string): string {
-    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     const session: OnboardingSession = {
       id: sessionId,
       userId,
@@ -623,45 +590,41 @@ class OnboardingManager {
       actions: [],
       data: {},
       errors: []
-    };
-
-    const userSessions = this.sessions.get(userId) || [];
-    userSessions.push(session);
-    this.sessions.set(userId, userSessions);
-
-    return sessionId;
+    }
+    const userSessions = this.sessions.get(userId) || []
+    userSessions.push(session)
+    this.sessions.set(userId, userSessions)
+    return sessionId
   }
 
   // Terminer une session d'étape
   endStepSession(userId: string, sessionId: string, data?: Record<string, any>): void {
-    const userSessions = this.sessions.get(userId) || [];
-    const session = userSessions.find(s => s.id === sessionId);
-    
+    const userSessions = this.sessions.get(userId) || []
+    const session = userSessions.find(s => s.id === sessionId)
     if (session) {
-      session.endTime = new Date();
-      session.duration = session.endTime.getTime() - session.startTime.getTime();
+      session.endTime = new Date()
+      session.duration = session.endTime.getTime() - session.startTime.getTime()
       if (data) {
-        session.data = { ...session.data, ...data };
+        session.data = { ...session.data, ...data }
       }
 
       // Mettre à jour le temps total passé
-      const progress = this.getProgress(userId);
+      const progress = this.getProgress(userId)
       if (progress) {
-        progress.timeSpent += session.duration || 0;
-        this.progress.set(userId, progress);
+        progress.timeSpent += session.duration || 0
+        this.progress.set(userId, progress)
       }
     }
   }
 
   // Obtenir toutes les étapes
   getAllSteps(): OnboardingStep[] {
-    return Array.from(this.steps.values());
+    return Array.from(this.steps.values())
   }
 
   // Obtenir les statistiques d'onboarding
   getOnboardingStats(): Record<string, any> {
-    const allProgress = Array.from(this.progress.values());
-    
+    const allProgress = Array.from(this.progress.values())
     return {
       totalUsers: allProgress.length,
       completedUsers: allProgress.filter(p => p.status === OnboardingStatus.COMPLETED).length,
@@ -674,51 +637,42 @@ class OnboardingManager {
         completed: allProgress.filter(p => p.completedSteps.includes(step.id)).length,
         skipped: allProgress.filter(p => p.skippedSteps.includes(step.id)).length
       }))
-    };
+    }
   }
 
   // Réinitialiser l'onboarding pour un utilisateur
   resetOnboarding(userId: string): void {
-    this.progress.delete(userId);
-    this.sessions.delete(userId);
-
+    this.progress.delete(userId)
+    this.sessions.delete(userId)
     logger.info(`Onboarding reset for user: ${userId}`, {
       action: 'onboarding_reset',
       metadata: { userId }
-    });
-
-    metrics.increment('onboarding_reset', 1);
+    })
+    metrics.increment('onboarding_reset', 1)
   }
 }
 
 // Instance globale
-export const onboardingManager = new OnboardingManager();
-
+export const onboardingManager = new OnboardingManager()
 // Fonctions utilitaires
 export const startOnboarding = (userId: string) => {
-  return onboardingManager.startOnboarding(userId);
-};
-
+  return onboardingManager.startOnboarding(userId)
+}
 export const getOnboardingProgress = (userId: string) => {
-  return onboardingManager.getProgress(userId);
-};
-
+  return onboardingManager.getProgress(userId)
+}
 export const getCurrentOnboardingStep = (userId: string) => {
-  return onboardingManager.getCurrentStep(userId);
-};
-
+  return onboardingManager.getCurrentStep(userId)
+}
 export const nextOnboardingStep = (userId: string, stepData?: Record<string, any>) => {
-  return onboardingManager.nextStep(userId, stepData);
-};
-
+  return onboardingManager.nextStep(userId, stepData)
+}
 export const skipOnboardingStep = (userId: string) => {
-  return onboardingManager.skipStep(userId);
-};
-
+  return onboardingManager.skipStep(userId)
+}
 export const validateOnboardingStep = (userId: string, stepData: any) => {
-  return onboardingManager.validateStep(userId, stepData);
-};
-
+  return onboardingManager.validateStep(userId, stepData)
+}
 export const getOnboardingStats = () => {
-  return onboardingManager.getOnboardingStats();
-};
+  return onboardingManager.getOnboardingStats()
+}

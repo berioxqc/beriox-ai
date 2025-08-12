@@ -1,7 +1,6 @@
-import { prisma } from './prisma';
-import { logger } from './logger';
-import { redisUtils } from './redis';
-
+import { prisma } from './prisma'
+import { logger } from './logger'
+import { redisUtils } from './redis'
 // ============================================================================
 // TYPES ET INTERFACES
 // ============================================================================
@@ -14,46 +13,46 @@ export enum HealthStatus {
 }
 
 export interface HealthCheck {
-  name: string;
-  status: HealthStatus;
-  responseTime: number;
-  lastCheck: Date;
-  error?: string;
-  details?: unknown;
+  name: string
+  status: HealthStatus
+  responseTime: number
+  lastCheck: Date
+  error?: string
+  details?: unknown
 }
 
 export interface HealthReport {
-  status: HealthStatus;
-  timestamp: Date;
-  uptime: number;
-  version: string;
-  environment: string;
-  checks: HealthCheck[];
+  status: HealthStatus
+  timestamp: Date
+  uptime: number
+  version: string
+  environment: string
+  checks: HealthCheck[]
   summary: {
-    total: number;
-    healthy: number;
-    degraded: number;
-    unhealthy: number;
-    critical: number;
-  };
+    total: number
+    healthy: number
+    degraded: number
+    unhealthy: number
+    critical: number
+  }
   metrics: {
     responseTime: {
-      avg: number;
-      min: number;
-      max: number;
-    };
-    errorRate: number;
-    throughput: number;
-  };
+      avg: number
+      min: number
+      max: number
+    }
+    errorRate: number
+    throughput: number
+  }
 }
 
 export interface HealthCheckConfig {
-  name: string;
-  check: () => Promise<HealthCheck>;
+  name: string
+  check: () => Promise<HealthCheck>
   interval: number; // en millisecondes
   timeout: number; // en millisecondes
   critical: boolean; // si true, l'échec de ce check rend le système unhealthy
-  retries: number;
+  retries: number
 }
 
 // ============================================================================
@@ -64,19 +63,15 @@ export interface HealthCheckConfig {
  * Vérification de la base de données PostgreSQL
  */
 async function checkDatabase(): Promise<HealthCheck> {
-  const startTime = Date.now();
-  
+  const startTime = Date.now()
   try {
     // Test de connexion simple
-    await prisma.$queryRaw`SELECT 1`;
-    
+    await prisma.$queryRaw`SELECT 1`
     // Test de performance
-    const startPerf = Date.now();
-    await prisma.user.count();
-    const dbPerf = Date.now() - startPerf;
-    
-    const responseTime = Date.now() - startTime;
-    
+    const startPerf = Date.now()
+    await prisma.user.count()
+    const dbPerf = Date.now() - startPerf
+    const responseTime = Date.now() - startTime
     return {
       name: 'database',
       status: dbPerf < 1000 ? HealthStatus.HEALTHY : HealthStatus.DEGRADED,
@@ -86,7 +81,7 @@ async function checkDatabase(): Promise<HealthCheck> {
         performance: dbPerf,
         connectionPool: 'active'
       }
-    };
+    }
   } catch (error) {
     return {
       name: 'database',
@@ -95,7 +90,7 @@ async function checkDatabase(): Promise<HealthCheck> {
       lastCheck: new Date(),
       error: error instanceof Error ? error.message : 'Unknown database error',
       details: { error }
-    };
+    }
   }
 }
 
@@ -103,21 +98,17 @@ async function checkDatabase(): Promise<HealthCheck> {
  * Vérification du cache Redis
  */
 async function checkRedis(): Promise<HealthCheck> {
-  const startTime = Date.now();
-  
+  const startTime = Date.now()
   try {
     // Test de connexion
-    await redisUtils.ping();
-    
+    await redisUtils.ping()
     // Test de performance
-    const startPerf = Date.now();
-    await redisUtils.set('health_check', 'test', 10);
-    await redisUtils.get('health_check');
-    await redisUtils.del('health_check');
-    const redisPerf = Date.now() - startPerf;
-    
-    const responseTime = Date.now() - startTime;
-    
+    const startPerf = Date.now()
+    await redisUtils.set('health_check', 'test', 10)
+    await redisUtils.get('health_check')
+    await redisUtils.del('health_check')
+    const redisPerf = Date.now() - startPerf
+    const responseTime = Date.now() - startTime
     return {
       name: 'redis',
       status: redisPerf < 100 ? HealthStatus.HEALTHY : HealthStatus.DEGRADED,
@@ -127,7 +118,7 @@ async function checkRedis(): Promise<HealthCheck> {
         performance: redisPerf,
         memory: 'available'
       }
-    };
+    }
   } catch (error) {
     return {
       name: 'redis',
@@ -136,7 +127,7 @@ async function checkRedis(): Promise<HealthCheck> {
       lastCheck: new Date(),
       error: error instanceof Error ? error.message : 'Redis connection failed',
       details: { error }
-    };
+    }
   }
 }
 
@@ -144,13 +135,12 @@ async function checkRedis(): Promise<HealthCheck> {
  * Vérification des services externes
  */
 async function checkExternalServices(): Promise<HealthCheck> {
-  const startTime = Date.now();
+  const startTime = Date.now()
   const services = [
     { name: 'stripe', url: 'https://api.stripe.com/v1/account' },
     { name: 'openai', url: 'https://api.openai.com/v1/models' },
     { name: 'google_oauth', url: 'https://www.googleapis.com/oauth2/v1/tokeninfo' }
-  ];
-  
+  ]
   const results = await Promise.allSettled(
     services.map(async (service) => {
       const response = await fetch(service.url, {
@@ -158,23 +148,20 @@ async function checkExternalServices(): Promise<HealthCheck> {
         headers: {
           'User-Agent': 'Beriox-Health-Check/1.0'
         }
-      });
-      return { name: service.name, status: response.status };
+      })
+      return { name: service.name, status: response.status }
     })
-  );
-  
+  )
   const failedServices = results.filter(
     (result) => result.status === 'rejected' || 
     (result.status === 'fulfilled' && result.value.status >= 500)
-  );
-  
-  const responseTime = Date.now() - startTime;
-  let status = HealthStatus.HEALTHY;
-  
+  )
+  const responseTime = Date.now() - startTime
+  let status = HealthStatus.HEALTHY
   if (failedServices.length === services.length) {
-    status = HealthStatus.CRITICAL;
+    status = HealthStatus.CRITICAL
   } else if (failedServices.length > 0) {
-    status = HealthStatus.DEGRADED;
+    status = HealthStatus.DEGRADED
   }
   
   return {
@@ -190,26 +177,22 @@ async function checkExternalServices(): Promise<HealthCheck> {
         status: result.status === 'fulfilled' ? 'ok' : 'failed'
       }))
     }
-  };
+  }
 }
 
 /**
  * Vérification de l'espace disque et mémoire
  */
 async function checkSystemResources(): Promise<HealthCheck> {
-  const startTime = Date.now();
-  
+  const startTime = Date.now()
   try {
     // Simulation des métriques système
     // En production, utilisez des bibliothèques comme 'systeminformation'
-    const memoryUsage = process.memoryUsage();
-    const cpuUsage = process.cpuUsage();
-    
-    const memoryPercent = (memoryUsage.heapUsed / memoryUsage.heapTotal) * 100;
-    const isMemoryHealthy = memoryPercent < 80;
-    
-    const responseTime = Date.now() - startTime;
-    
+    const memoryUsage = process.memoryUsage()
+    const cpuUsage = process.cpuUsage()
+    const memoryPercent = (memoryUsage.heapUsed / memoryUsage.heapTotal) * 100
+    const isMemoryHealthy = memoryPercent < 80
+    const responseTime = Date.now() - startTime
     return {
       name: 'system_resources',
       status: isMemoryHealthy ? HealthStatus.HEALTHY : HealthStatus.DEGRADED,
@@ -226,7 +209,7 @@ async function checkSystemResources(): Promise<HealthCheck> {
           system: Math.round(cpuUsage.system / 1000)
         }
       }
-    };
+    }
   } catch (error) {
     return {
       name: 'system_resources',
@@ -235,7 +218,7 @@ async function checkSystemResources(): Promise<HealthCheck> {
       lastCheck: new Date(),
       error: error instanceof Error ? error.message : 'System check failed',
       details: { error }
-    };
+    }
   }
 }
 
@@ -243,35 +226,31 @@ async function checkSystemResources(): Promise<HealthCheck> {
  * Vérification des APIs internes
  */
 async function checkInternalAPIs(): Promise<HealthCheck> {
-  const startTime = Date.now();
+  const startTime = Date.now()
   const apis = [
     '/api/health',
     '/api/missions',
     '/api/user/stats'
-  ];
-  
+  ]
   const results = await Promise.allSettled(
     apis.map(async (api) => {
       const response = await fetch(`http://localhost:3000${api}`, {
         method: 'GET',
         headers: { 'User-Agent': 'Beriox-Health-Check/1.0' }
-      });
-      return { name: api, status: response.status };
+      })
+      return { name: api, status: response.status }
     })
-  );
-  
+  )
   const failedAPIs = results.filter(
     (result) => result.status === 'rejected' || 
     (result.status === 'fulfilled' && result.value.status >= 500)
-  );
-  
-  const responseTime = Date.now() - startTime;
-  let status = HealthStatus.HEALTHY;
-  
+  )
+  const responseTime = Date.now() - startTime
+  let status = HealthStatus.HEALTHY
   if (failedAPIs.length === apis.length) {
-    status = HealthStatus.CRITICAL;
+    status = HealthStatus.CRITICAL
   } else if (failedAPIs.length > 0) {
-    status = HealthStatus.DEGRADED;
+    status = HealthStatus.DEGRADED
   }
   
   return {
@@ -287,7 +266,7 @@ async function checkInternalAPIs(): Promise<HealthCheck> {
         status: result.status === 'fulfilled' ? 'ok' : 'failed'
       }))
     }
-  };
+  }
 }
 
 // ============================================================================
@@ -295,22 +274,21 @@ async function checkInternalAPIs(): Promise<HealthCheck> {
 // ============================================================================
 
 export class HealthMonitor {
-  private static instance: HealthMonitor;
-  private checks: Map<string, HealthCheck> = new Map();
-  private configs: HealthCheckConfig[] = [];
-  private isRunning = false;
-  private startTime = Date.now();
-  private checkIntervals: NodeJS.Timeout[] = [];
-
+  private static instance: HealthMonitor
+  private checks: Map<string, HealthCheck> = new Map()
+  private configs: HealthCheckConfig[] = []
+  private isRunning = false
+  private startTime = Date.now()
+  private checkIntervals: NodeJS.Timeout[] = []
   private constructor() {
-    this.initializeChecks();
+    this.initializeChecks()
   }
 
   static getInstance(): HealthMonitor {
     if (!HealthMonitor.instance) {
-      HealthMonitor.instance = new HealthMonitor();
+      HealthMonitor.instance = new HealthMonitor()
     }
-    return HealthMonitor.instance;
+    return HealthMonitor.instance
   }
 
   /**
@@ -358,7 +336,7 @@ export class HealthMonitor {
         critical: false,
         retries: 2
       }
-    ];
+    ]
   }
 
   /**
@@ -366,20 +344,18 @@ export class HealthMonitor {
    */
   start(): void {
     if (this.isRunning) {
-      logger.warn('Health monitor is already running');
-      return;
+      logger.warn('Health monitor is already running')
+      return
     }
 
-    logger.info('Starting health monitor');
-    this.isRunning = true;
-
+    logger.info('Starting health monitor')
+    this.isRunning = true
     // Démarrer toutes les vérifications
     this.configs.forEach(config => {
-      this.startCheck(config);
-    });
-
+      this.startCheck(config)
+    })
     // Vérification initiale
-    this.runAllChecks();
+    this.runAllChecks()
   }
 
   /**
@@ -387,15 +363,14 @@ export class HealthMonitor {
    */
   stop(): void {
     if (!this.isRunning) {
-      return;
+      return
     }
 
-    logger.info('Stopping health monitor');
-    this.isRunning = false;
-
+    logger.info('Stopping health monitor')
+    this.isRunning = false
     // Arrêter tous les intervalles
-    this.checkIntervals.forEach(interval => clearInterval(interval));
-    this.checkIntervals = [];
+    this.checkIntervals.forEach(interval => clearInterval(interval))
+    this.checkIntervals = []
   }
 
   /**
@@ -403,20 +378,17 @@ export class HealthMonitor {
    */
   private startCheck(config: HealthCheckConfig): void {
     const interval = setInterval(async () => {
-      if (!this.isRunning) return;
-      
-      await this.runCheck(config);
-    }, config.interval);
-
-    this.checkIntervals.push(interval);
+      if (!this.isRunning) return
+      await this.runCheck(config)
+    }, config.interval)
+    this.checkIntervals.push(interval)
   }
 
   /**
    * Exécute une vérification avec retry
    */
   private async runCheck(config: HealthCheckConfig): Promise<void> {
-    let lastError: Error | null = null;
-
+    let lastError: Error | null = null
     for (let attempt = 1; attempt <= config.retries; attempt++) {
       try {
         const check = await Promise.race([
@@ -424,16 +396,14 @@ export class HealthMonitor {
           new Promise<never>((_, reject) => 
             setTimeout(() => reject(new Error('Timeout')), config.timeout)
           )
-        ]);
-
-        this.checks.set(config.name, check);
-        
+        ])
+        this.checks.set(config.name, check)
         // Log du résultat
         if (check.status === HealthStatus.HEALTHY) {
           logger.debug(`Health check ${config.name} passed`, {
             action: 'health_check_success',
             metadata: { check: config.name, responseTime: check.responseTime }
-          });
+          })
         } else {
           logger.warn(`Health check ${config.name} failed`, {
             action: 'health_check_failed',
@@ -443,21 +413,19 @@ export class HealthMonitor {
               error: check.error,
               responseTime: check.responseTime 
             }
-          });
+          })
         }
 
-        return;
+        return
       } catch (error) {
-        lastError = error instanceof Error ? error : new Error('Unknown error');
-        
+        lastError = error instanceof Error ? error : new Error('Unknown error')
         if (attempt < config.retries) {
           logger.debug(`Health check ${config.name} attempt ${attempt} failed, retrying...`, {
             action: 'health_check_retry',
             metadata: { check: config.name, attempt, error: lastError.message }
-          });
-          
+          })
           // Attendre avant de réessayer
-          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt))
         }
       }
     }
@@ -470,10 +438,8 @@ export class HealthMonitor {
       lastCheck: new Date(),
       error: lastError?.message || 'All retry attempts failed',
       details: { attempts: config.retries, lastError }
-    };
-
-    this.checks.set(config.name, failedCheck);
-    
+    }
+    this.checks.set(config.name, failedCheck)
     logger.error(`Health check ${config.name} failed after ${config.retries} attempts`, {
       action: 'health_check_critical_failure',
       metadata: { 
@@ -482,26 +448,24 @@ export class HealthMonitor {
         error: failedCheck.error,
         critical: config.critical 
       }
-    });
+    })
   }
 
   /**
    * Exécute toutes les vérifications immédiatement
    */
   async runAllChecks(): Promise<void> {
-    logger.info('Running all health checks');
-    
-    const promises = this.configs.map(config => this.runCheck(config));
-    await Promise.allSettled(promises);
+    logger.info('Running all health checks')
+    const promises = this.configs.map(config => this.runCheck(config))
+    await Promise.allSettled(promises)
   }
 
   /**
    * Génère un rapport de santé complet
    */
   generateReport(): HealthReport {
-    const checks = Array.from(this.checks.values());
-    const now = new Date();
-    
+    const checks = Array.from(this.checks.values())
+    const now = new Date()
     // Calculer les statistiques
     const summary = {
       total: checks.length,
@@ -509,28 +473,25 @@ export class HealthMonitor {
       degraded: checks.filter(c => c.status === HealthStatus.DEGRADED).length,
       unhealthy: checks.filter(c => c.status === HealthStatus.UNHEALTHY).length,
       critical: checks.filter(c => c.status === HealthStatus.CRITICAL).length
-    };
-
+    }
     // Déterminer le statut global
-    let overallStatus = HealthStatus.HEALTHY;
+    let overallStatus = HealthStatus.HEALTHY
     if (summary.critical > 0) {
-      overallStatus = HealthStatus.CRITICAL;
+      overallStatus = HealthStatus.CRITICAL
     } else if (summary.unhealthy > 0) {
-      overallStatus = HealthStatus.UNHEALTHY;
+      overallStatus = HealthStatus.UNHEALTHY
     } else if (summary.degraded > 0) {
-      overallStatus = HealthStatus.DEGRADED;
+      overallStatus = HealthStatus.DEGRADED
     }
 
     // Calculer les métriques de performance
-    const responseTimes = checks.map(c => c.responseTime).filter(t => t > 0);
+    const responseTimes = checks.map(c => c.responseTime).filter(t => t > 0)
     const avgResponseTime = responseTimes.length > 0 
       ? responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length 
-      : 0;
-
+      : 0
     const errorRate = summary.total > 0 
       ? ((summary.unhealthy + summary.critical) / summary.total) * 100 
-      : 0;
-
+      : 0
     return {
       status: overallStatus,
       timestamp: now,
@@ -548,38 +509,38 @@ export class HealthMonitor {
         errorRate: Math.round(errorRate * 100) / 100,
         throughput: summary.total // nombre de checks par cycle
       }
-    };
+    }
   }
 
   /**
    * Obtient le statut d'un check spécifique
    */
   getCheckStatus(name: string): HealthCheck | null {
-    return this.checks.get(name) || null;
+    return this.checks.get(name) || null
   }
 
   /**
    * Vérifie si le système est en bonne santé
    */
   isHealthy(): boolean {
-    const report = this.generateReport();
-    return report.status === HealthStatus.HEALTHY || report.status === HealthStatus.DEGRADED;
+    const report = this.generateReport()
+    return report.status === HealthStatus.HEALTHY || report.status === HealthStatus.DEGRADED
   }
 
   /**
    * Obtient les statistiques de monitoring
    */
   getStats(): Record<string, any> {
-    const report = this.generateReport();
+    const report = this.generateReport()
     return {
       status: report.status,
       uptime: report.uptime,
       checks: report.summary,
       metrics: report.metrics,
       lastUpdate: report.timestamp
-    };
+    }
   }
 }
 
 // Instance globale
-export const healthMonitor = HealthMonitor.getInstance();
+export const healthMonitor = HealthMonitor.getInstance()

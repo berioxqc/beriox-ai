@@ -1,8 +1,7 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Layout from '@/components/Layout';
-import SchemaMarkup from '@/components/seo/SchemaMarkup';
-
+import { Metadata } from 'next'
+import Link from 'next/link'
+import Layout from '@/components/Layout'
+import SchemaMarkup from '@/components/seo/SchemaMarkup'
 export const metadata: Metadata = {
   title: 'Guide Complet IA et Automatisation 2024 - Beriox AI',
   description: 'Téléchargez gratuitement notre guide complet sur l\'IA et l\'automatisation. Découvrez comment transformer votre productivité avec l\'intelligence artificielle.',
@@ -13,8 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://beriox-ai.vercel.app/ai-automation-guide',
   },
-};
-
+}
 const benefits = [
   {
     icon: '🚀',
@@ -36,8 +34,7 @@ const benefits = [
     title: 'Amélioration de 60% de la qualité',
     description: 'L\'IA élimine les erreurs humaines et améliore la précision.',
   },
-];
-
+]
 const chapters = [
   'Introduction à l\'IA d\'automatisation',
   'Les agents IA : KarineAI, HugoAI, JPBot et plus',
@@ -46,8 +43,7 @@ const chapters = [
   'Mise en place étape par étape',
   'Outils et plateformes recommandés',
   'Tendances 2024 et au-delà',
-];
-
+]
 export default function AIAutomationGuidePage() {
   return (
     <>
@@ -78,7 +74,7 @@ export default function AIAutomationGuidePage() {
               Guide Complet IA et Automatisation 2024
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Découvrez comment l&apos;intelligence artificielle révolutionne l&apos;automatisation 
+              Découvrez comment l'intelligence artificielle révolutionne l'automatisation 
               et transforme la productivité des entreprises. Un guide pratique avec 
               des exemples concrets et des stratégies actionnables.
             </p>
@@ -90,7 +86,7 @@ export default function AIAutomationGuidePage() {
                     Guide Gratuit
                   </h3>
                   <p className="text-gray-600 text-sm">
-                    47 pages d&apos;experts • PDF + EPUB • Mise à jour 2024
+                    47 pages d'experts • PDF + EPUB • Mise à jour 2024
                   </p>
                 </div>
                 <form className="space-y-4">
@@ -204,5 +200,5 @@ export default function AIAutomationGuidePage() {
         </div>
       </Layout>
     </>
-  );
+  )
 }

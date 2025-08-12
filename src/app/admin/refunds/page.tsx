@@ -1,71 +1,64 @@
-"use client";
-import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "@/hooks/useTheme";
-
+"use client"
+import { useState, useEffect } from "react"
+import Layout from "@/components/Layout"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useTheme } from "@/hooks/useTheme"
 interface RefundRequest {
-  id: string;
-  userId: string;
-  missionId?: string;
-  amount: number;
-  reason: string;
-  description: string;
-  status: string;
-  createdAt: string;
-  reviewedAt?: string;
-  adminNotes?: string;
+  id: string
+  userId: string
+  missionId?: string
+  amount: number
+  reason: string
+  description: string
+  status: string
+  createdAt: string
+  reviewedAt?: string
+  adminNotes?: string
   user: {
-    id: string;
-    name: string;
-    email: string;
-    planId: string;
-  };
+    id: string
+    name: string
+    email: string
+    planId: string
+  }
   userCredits: {
-    creditsUsed: number;
-    creditsLimit: number;
-  };
+    creditsUsed: number
+    creditsLimit: number
+  }
 }
 
 export default function AdminRefundsPage() {
-  const [refunds, setRefunds] = useState<RefundRequest[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [processing, setProcessing] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [filter, setFilter] = useState("ALL");
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  
-  const theme = useTheme();
-
+  const [refunds, setRefunds] = useState<RefundRequest[]>([])
+  const [loading, setLoading] = useState(true)
+  const [processing, setProcessing] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  const [filter, setFilter] = useState("ALL")
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const theme = useTheme()
   useEffect(() => {
-    fetchRefunds();
-  }, [filter, page]);
-
+    fetchRefunds()
+  }, [filter, page])
   const fetchRefunds = async () => {
     try {
-      const response = await fetch(`/api/admin/refunds?status=${filter}&page=${page}`);
-      const data = await response.json();
-      
+      const response = await fetch(`/api/admin/refunds?status=${filter}&page=${page}`)
+      const data = await response.json()
       if (response.ok) {
-        setRefunds(data.refunds);
-        setTotalPages(data.pagination.pages);
+        setRefunds(data.refunds)
+        setTotalPages(data.pagination.pages)
       } else {
-        setError(data.error);
+        setError(data.error)
       }
     } catch (error) {
-      setError("Erreur lors du chargement des données");
+      setError("Erreur lors du chargement des données")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const processRefund = async (refundId: string, status: "APPROVED" | "REJECTED", adminNotes?: string) => {
-    setProcessing(refundId);
-    setError(null);
-    setSuccess(null);
-
+    setProcessing(refundId)
+    setError(null)
+    setSuccess(null)
     try {
       const response = await fetch("/api/admin/refunds", {
         method: "POST",
@@ -75,54 +68,48 @@ export default function AdminRefundsPage() {
           status,
           adminNotes
         })
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (response.ok) {
-        setSuccess(data.message);
+        setSuccess(data.message)
         fetchRefunds(); // Recharger les données
       } else {
-        setError(data.error);
+        setError(data.error)
       }
     } catch (error) {
-      setError("Erreur lors du traitement");
+      setError("Erreur lors du traitement")
     } finally {
-      setProcessing(null);
+      setProcessing(null)
     }
-  };
-
+  }
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "PENDING": return "#f59e0b";
-      case "APPROVED": return "#10b981";
-      case "REJECTED": return "#ef4444";
-      case "CANCELLED": return "#6b7280";
-      default: return "#6b7280";
+      case "PENDING": return "#f59e0b"
+      case "APPROVED": return "#10b981"
+      case "REJECTED": return "#ef4444"
+      case "CANCELLED": return "#6b7280"
+      default: return "#6b7280"
     }
-  };
-
+  }
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case "PENDING": return "En attente";
-      case "APPROVED": return "Approuvé";
-      case "REJECTED": return "Rejeté";
-      case "CANCELLED": return "Annulé";
-      default: return status;
+      case "PENDING": return "En attente"
+      case "APPROVED": return "Approuvé"
+      case "REJECTED": return "Rejeté"
+      case "CANCELLED": return "Annulé"
+      default: return status
     }
-  };
-
+  }
   const getReasonLabel = (reason: string) => {
     switch (reason) {
-      case "QUALITY_ISSUE": return "Problème de qualité";
-      case "TECHNICAL_PROBLEM": return "Problème technique";
-      case "NOT_SATISFIED": return "Non satisfait";
-      case "DUPLICATE_CHARGE": return "Facturation en double";
-      case "OTHER": return "Autre";
-      default: return reason;
+      case "QUALITY_ISSUE": return "Problème de qualité"
+      case "TECHNICAL_PROBLEM": return "Problème technique"
+      case "NOT_SATISFIED": return "Non satisfait"
+      case "DUPLICATE_CHARGE": return "Facturation en double"
+      case "OTHER": return "Autre"
+      default: return reason
     }
-  };
-
+  }
   if (loading) {
     return (
       <Layout title="Gestion des Remboursements" subtitle="Traitez les demandes de remboursement">
@@ -131,7 +118,7 @@ export default function AdminRefundsPage() {
           <p style={{ marginTop: "16px", color: theme.colors.neutral[600] }}>Chargement...</p>
         </div>
       </Layout>
-    );
+    )
   }
 
   return (
@@ -311,7 +298,7 @@ export default function AdminRefundsPage() {
                           {getStatusLabel(refund.status)}
                         </span>
                         <span style={{ fontSize: "14px", color: theme.colors.neutral[600] }}>
-                          {refund.amount} crédit{refund.amount > 1 ? &apos;s&apos; : &apos;&apos;}
+                          {refund.amount} crédit{refund.amount > 1 ? 's' : ''}
                         </span>
                       </div>
                       
@@ -331,7 +318,7 @@ export default function AdminRefundsPage() {
                     <div style={{ fontSize: "12px", color: theme.colors.neutral[500], textAlign: "right" }}>
                       {new Date(refund.createdAt).toLocaleDateString('fr-FR')}
                       <br />
-                      {new Date(refund.createdAt).toLocaleTimeString(&apos;fr-FR&apos;)}
+                      {new Date(refund.createdAt).toLocaleTimeString('fr-FR')}
                     </div>
                   </div>
                   
@@ -370,9 +357,9 @@ export default function AdminRefundsPage() {
                     }}>
                       <button
                         onClick={() => {
-                          const notes = prompt("Notes admin (optionnel):");
+                          const notes = prompt("Notes admin (optionnel):")
                           if (notes !== null) {
-                            processRefund(refund.id, "REJECTED", notes);
+                            processRefund(refund.id, "REJECTED", notes)
                           }
                         }}
                         disabled={processing === refund.id}
@@ -397,9 +384,9 @@ export default function AdminRefundsPage() {
                       
                       <button
                         onClick={() => {
-                          const notes = prompt("Notes admin (optionnel):");
+                          const notes = prompt("Notes admin (optionnel):")
                           if (notes !== null) {
-                            processRefund(refund.id, "APPROVED", notes);
+                            processRefund(refund.id, "APPROVED", notes)
                           }
                         }}
                         disabled={processing === refund.id}
@@ -430,5 +417,5 @@ export default function AdminRefundsPage() {
         </div>
       </div>
     </Layout>
-  );
+  )
 }

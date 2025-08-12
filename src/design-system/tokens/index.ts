@@ -1,7 +1,6 @@
-export * from './colors';
-export * from './typography';
-export * from './spacing';
-
+export * from './colors'
+export * from './typography'
+export * from './spacing'
 // Système de design unifié
 export const designTokens = {
   colors: {
@@ -112,4 +111,4 @@ export const designTokens = {
     beriox: '0 4px 6px -1px rgba(99, 91, 255, 0.2)',
     berioxHover: '0 6px 12px -1px rgba(99, 91, 255, 0.3)',
   },
-} as const;
+} as const

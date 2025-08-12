@@ -1,67 +1,62 @@
 // Service d'analyse de sécurité web avec Mozilla Observatory et SSL Labs
 
 export interface SecurityResult {
-  url: string;
-  timestamp: string;
-  overallScore: number;
-  grade: 'A+' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+  url: string
+  timestamp: string
+  overallScore: number
+  grade: 'A+' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
   ssl: {
-    grade: string;
-    score: number;
+    grade: string
+    score: number
     issues: Array<{
-      severity: 'critical' | 'high' | 'medium' | 'low';
-      title: string;
-      description: string;
-    }>;
-  };
+      severity: 'critical' | 'high' | 'medium' | 'low'
+      title: string
+      description: string
+    }>
+  }
   headers: {
-    score: number;
-    missing: string[];
-    present: string[];
+    score: number
+    missing: string[]
+    present: string[]
     recommendations: Array<{
-      header: string;
-      description: string;
-      priority: 'high' | 'medium' | 'low';
-    }>;
-  };
+      header: string
+      description: string
+      priority: 'high' | 'medium' | 'low'
+    }>
+  }
   vulnerabilities: Array<{
-    id: string;
-    severity: 'critical' | 'high' | 'medium' | 'low';
-    title: string;
-    description: string;
-    fix: string;
-  }>;
+    id: string
+    severity: 'critical' | 'high' | 'medium' | 'low'
+    title: string
+    description: string
+    fix: string
+  }>
 }
 
 class SecurityService {
-  private observatoryBaseUrl = 'https://http-observatory.security.mozilla.org/api/v1';
-  private sslLabsBaseUrl = 'https://api.ssllabs.com/api/v3';
-
+  private observatoryBaseUrl = 'https://http-observatory.security.mozilla.org/api/v1'
+  private sslLabsBaseUrl = 'https://api.ssllabs.com/api/v3'
   /**
    * Analyse complète de sécurité d'un site
    */
   async analyzeSecurity(url: string): Promise<SecurityResult | null> {
     try {
-      const domain = this.extractDomain(url);
-      
+      const domain = this.extractDomain(url)
       // Lancer les analyses en parallèle
       const [observatoryResult, sslResult] = await Promise.allSettled([
         this.analyzeWithObservatory(domain),
         this.analyzeSSL(domain)
-      ]);
-
-      const observatory = observatoryResult.status === 'fulfilled' ? observatoryResult.value : null;
-      const ssl = sslResult.status === 'fulfilled' ? sslResult.value : null;
-
+      ])
+      const observatory = observatoryResult.status === 'fulfilled' ? observatoryResult.value : null
+      const ssl = sslResult.status === 'fulfilled' ? sslResult.value : null
       if (!observatory && !ssl) {
-        throw new Error('Aucune analyse n\'a pu être effectuée');
+        throw new Error('Aucune analyse n\'a pu être effectuée')
       }
 
-      return this.combineResults(url, observatory, ssl);
-
+      return this.combineResults(url, observatory, ssl)
     } catch (error) {
-      console.error('❌ Error analyzing security:', error);
-      return null;
+      console.error('❌ Error analyzing security:', error)
+      return null
     }
   }
 
@@ -74,39 +69,35 @@ class SecurityService {
       const scanResponse = await fetch(`${this.observatoryBaseUrl}/analyze?host=${domain}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
-      });
-
+      })
       if (!scanResponse.ok) {
-        throw new Error(`Observatory scan failed: ${scanResponse.status}`);
+        throw new Error(`Observatory scan failed: ${scanResponse.status}`)
       }
 
-      const scanData = await scanResponse.json();
-      
+      const scanData = await scanResponse.json()
       // Attendre les résultats (avec polling)
-      let attempts = 0;
+      let attempts = 0
       const maxAttempts = 30; // 5 minutes max
       
       while (attempts < maxAttempts) {
-        const resultResponse = await fetch(`${this.observatoryBaseUrl}/analyze?host=${domain}`);
-        const resultData = await resultResponse.json();
-        
+        const resultResponse = await fetch(`${this.observatoryBaseUrl}/analyze?host=${domain}`)
+        const resultData = await resultResponse.json()
         if (resultData.state === 'FINISHED') {
-          return resultData;
+          return resultData
         }
         
         if (resultData.state === 'FAILED') {
-          throw new Error('Observatory analysis failed');
+          throw new Error('Observatory analysis failed')
         }
         
         await new Promise(resolve => setTimeout(resolve, 10000)); // Attendre 10s
-        attempts++;
+        attempts++
       }
       
-      throw new Error('Observatory analysis timeout');
-
+      throw new Error('Observatory analysis timeout')
     } catch (error) {
-      console.error('❌ Observatory analysis error:', error);
-      throw error;
+      console.error('❌ Observatory analysis error:', error)
+      throw error
     }
   }
 
@@ -118,39 +109,35 @@ class SecurityService {
       // Démarrer l'analyse SSL
       const scanResponse = await fetch(
         `${this.sslLabsBaseUrl}/analyze?host=${domain}&publish=off&startNew=on&all=done`
-      );
-
+      )
       if (!scanResponse.ok) {
-        throw new Error(`SSL Labs scan failed: ${scanResponse.status}`);
+        throw new Error(`SSL Labs scan failed: ${scanResponse.status}`)
       }
 
-      const scanData = await scanResponse.json();
-      
+      const scanData = await scanResponse.json()
       // Polling pour les résultats
-      let attempts = 0;
+      let attempts = 0
       const maxAttempts = 60; // 10 minutes max
       
       while (attempts < maxAttempts) {
-        const resultResponse = await fetch(`${this.sslLabsBaseUrl}/analyze?host=${domain}`);
-        const resultData = await resultResponse.json();
-        
+        const resultResponse = await fetch(`${this.sslLabsBaseUrl}/analyze?host=${domain}`)
+        const resultData = await resultResponse.json()
         if (resultData.status === 'READY') {
-          return resultData;
+          return resultData
         }
         
         if (resultData.status === 'ERROR') {
-          throw new Error('SSL Labs analysis failed');
+          throw new Error('SSL Labs analysis failed')
         }
         
         await new Promise(resolve => setTimeout(resolve, 10000)); // Attendre 10s
-        attempts++;
+        attempts++
       }
       
-      throw new Error('SSL Labs analysis timeout');
-
+      throw new Error('SSL Labs analysis timeout')
     } catch (error) {
-      console.error('❌ SSL Labs analysis error:', error);
-      throw error;
+      console.error('❌ SSL Labs analysis error:', error)
+      throw error
     }
   }
 
@@ -158,11 +145,9 @@ class SecurityService {
    * Combine les résultats des deux analyses
    */
   private combineResults(url: string, observatory: any, ssl: any): SecurityResult {
-    const observatoryScore = observatory?.score || 0;
-    const sslScore = ssl?.endpoints?.[0]?.grade ? this.gradeToScore(ssl.endpoints[0].grade) : 0;
-    
-    const overallScore = Math.round((observatoryScore + sslScore) / 2);
-
+    const observatoryScore = observatory?.score || 0
+    const sslScore = ssl?.endpoints?.[0]?.grade ? this.gradeToScore(ssl.endpoints[0].grade) : 0
+    const overallScore = Math.round((observatoryScore + sslScore) / 2)
     return {
       url,
       timestamp: new Date().toISOString(),
@@ -171,7 +156,7 @@ class SecurityService {
       ssl: this.formatSSLResults(ssl),
       headers: this.formatHeaderResults(observatory),
       vulnerabilities: this.extractVulnerabilities(observatory, ssl)
-    };
+    }
   }
 
   /**
@@ -183,12 +168,11 @@ class SecurityService {
         grade: 'F',
         score: 0,
         issues: [{ severity: 'critical', title: 'SSL non configuré', description: 'Aucun certificat SSL détecté' }]
-      };
+      }
     }
 
-    const endpoint = ssl.endpoints[0];
-    const issues: Array<{severity: 'critical' | 'high' | 'medium' | 'low', title: string, description: string}> = [];
-
+    const endpoint = ssl.endpoints[0]
+    const issues: Array<{severity: 'critical' | 'high' | 'medium' | 'low', title: string, description: string}> = []
     // Analyser les problèmes SSL
     if (endpoint.details?.cert?.issues) {
       endpoint.details.cert.issues.forEach((issue: any) => {
@@ -196,15 +180,15 @@ class SecurityService {
           severity: this.mapSSLSeverity(issue.severity),
           title: issue.name,
           description: issue.description
-        });
-      });
+        })
+      })
     }
 
     return {
       grade: endpoint.grade || 'F',
       score: this.gradeToScore(endpoint.grade),
       issues
-    };
+    }
   }
 
   /**
@@ -212,7 +196,7 @@ class SecurityService {
    */
   private formatHeaderResults(observatory: any): SecurityResult['headers'] {
     if (!observatory) {
-      return { score: 0, missing: [], present: [], recommendations: [] };
+      return { score: 0, missing: [], present: [], recommendations: [] }
     }
 
     const recommendations = [
@@ -236,22 +220,20 @@ class SecurityService {
         description: 'Empêche le MIME type sniffing',
         priority: 'medium' as const
       }
-    ];
-
+    ]
     return {
       score: observatory.score || 0,
       missing: observatory.tests_failed || [],
       present: observatory.tests_passed || [],
       recommendations
-    };
+    }
   }
 
   /**
    * Extrait les vulnérabilités détectées
    */
   private extractVulnerabilities(observatory: any, ssl: any): SecurityResult['vulnerabilities'] {
-    const vulnerabilities: SecurityResult['vulnerabilities'] = [];
-
+    const vulnerabilities: SecurityResult['vulnerabilities'] = []
     // Vulnérabilités Observatory
     if (observatory?.tests_failed) {
       observatory.tests_failed.forEach((test: string) => {
@@ -261,8 +243,8 @@ class SecurityService {
           title: `En-tête manquant: ${test}`,
           description: `L'en-tête de sécurité ${test} n'est pas configuré`,
           fix: `Configurer l'en-tête ${test} sur votre serveur web`
-        });
-      });
+        })
+      })
     }
 
     // Vulnérabilités SSL
@@ -274,8 +256,8 @@ class SecurityService {
           title: vuln.name,
           description: vuln.description,
           fix: vuln.fix || 'Mettre à jour la configuration SSL'
-        });
-      });
+        })
+      })
     }
 
     return vulnerabilities.slice(0, 10); // Top 10 vulnérabilités
@@ -285,8 +267,7 @@ class SecurityService {
    * Génère un rapport de sécurité lisible
    */
   generateSecurityReport(result: SecurityResult): string {
-    const { overallScore, grade, ssl, headers, vulnerabilities } = result;
-
+    const { overallScore, grade, ssl, headers, vulnerabilities } = result
     return `# 🔒 Rapport de Sécurité - ${result.url}
 
 **Date d'analyse :** ${new Date(result.timestamp).toLocaleDateString('fr-FR')}
@@ -334,15 +315,15 @@ ${vulnerabilities.filter(v => v.severity === 'high').map(v => `- ${v.title}`).jo
 ${vulnerabilities.filter(v => v.severity === 'medium').map(v => `- ${v.title}`).join('\n') || '- Optimiser la configuration SSL'}
 
 ---
-*Analyse générée par SecurityBot - Beriox AI*`;
+*Analyse générée par SecurityBot - Beriox AI*`
   }
 
   // Méthodes utilitaires
   private extractDomain(url: string): string {
     try {
-      return new URL(url).hostname;
+      return new URL(url).hostname
     } catch {
-      return url.replace(/^https?:\/\//, '').split('/')[0];
+      return url.replace(/^https?:\/\//, '').split('/')[0]
     }
   }
 
@@ -352,45 +333,45 @@ ${vulnerabilities.filter(v => v.severity === 'medium').map(v => `- ${v.title}`).
       'B+': 80, 'B': 70, 'B-': 65,
       'C+': 60, 'C': 50, 'C-': 45,
       'D': 30, 'E': 20, 'F': 0
-    };
-    return gradeMap[grade] || 0;
+    }
+    return gradeMap[grade] || 0
   }
 
   private scoreToGrade(score: number): SecurityResult['grade'] {
-    if (score >= 95) return 'A+';
-    if (score >= 85) return 'A';
-    if (score >= 75) return 'B';
-    if (score >= 65) return 'C';
-    if (score >= 50) return 'D';
-    if (score >= 35) return 'E';
-    return 'F';
+    if (score >= 95) return 'A+'
+    if (score >= 85) return 'A'
+    if (score >= 75) return 'B'
+    if (score >= 65) return 'C'
+    if (score >= 50) return 'D'
+    if (score >= 35) return 'E'
+    return 'F'
   }
 
   private mapSSLSeverity(severity: number | string): 'critical' | 'high' | 'medium' | 'low' {
     if (typeof severity === 'number') {
-      if (severity >= 4) return 'critical';
-      if (severity >= 3) return 'high';
-      if (severity >= 2) return 'medium';
-      return 'low';
+      if (severity >= 4) return 'critical'
+      if (severity >= 3) return 'high'
+      if (severity >= 2) return 'medium'
+      return 'low'
     }
-    return severity as any || 'medium';
+    return severity as any || 'medium'
   }
 
   private getSecurityEmoji(grade: string): string {
-    if (['A+', 'A'].includes(grade)) return '🟢';
-    if (['B', 'C'].includes(grade)) return '🟡';
-    return '🔴';
+    if (['A+', 'A'].includes(grade)) return '🟢'
+    if (['B', 'C'].includes(grade)) return '🟡'
+    return '🔴'
   }
 
   private getSeverityEmoji(severity: string): string {
     switch (severity) {
-      case 'critical': return '🚨';
-      case 'high': return '🔴';
-      case 'medium': return '🟡';
-      case 'low': return '🟢';
-      default: return 'ℹ️';
+      case 'critical': return '🚨'
+      case 'high': return '🔴'
+      case 'medium': return '🟡'
+      case 'low': return '🟢'
+      default: return 'ℹ️'
     }
   }
 }
 
-export const securityService = new SecurityService();
+export const securityService = new SecurityService()

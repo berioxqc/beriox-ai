@@ -1,49 +1,48 @@
 // Service d'intégration avec l'API PageSpeed Insights de Google
 
 export interface PageSpeedResult {
-  url: string;
-  timestamp: string;
+  url: string
+  timestamp: string
   scores: {
-    performance: number;
-    accessibility: number;
-    bestPractices: number;
-    seo: number;
-  };
+    performance: number
+    accessibility: number
+    bestPractices: number
+    seo: number
+  }
   metrics: {
-    firstContentfulPaint: number;
-    largestContentfulPaint: number;
-    firstInputDelay: number;
-    cumulativeLayoutShift: number;
-    speedIndex: number;
-    totalBlockingTime: number;
-  };
+    firstContentfulPaint: number
+    largestContentfulPaint: number
+    firstInputDelay: number
+    cumulativeLayoutShift: number
+    speedIndex: number
+    totalBlockingTime: number
+  }
   opportunities: Array<{
-    id: string;
-    title: string;
-    description: string;
-    savings: number;
-    impact: 'high' | 'medium' | 'low';
-  }>;
+    id: string
+    title: string
+    description: string
+    savings: number
+    impact: 'high' | 'medium' | 'low'
+  }>
   diagnostics: Array<{
-    id: string;
-    title: string;
-    description: string;
-    severity: 'error' | 'warning' | 'info';
-  }>;
+    id: string
+    title: string
+    description: string
+    severity: 'error' | 'warning' | 'info'
+  }>
   loadingExperience?: {
-    overall_category: 'FAST' | 'AVERAGE' | 'SLOW';
-    initial_url: string;
-  };
+    overall_category: 'FAST' | 'AVERAGE' | 'SLOW'
+    initial_url: string
+  }
 }
 
 class PageSpeedService {
-  private apiKey: string;
-  private baseUrl = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-
+  private apiKey: string
+  private baseUrl = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
   constructor() {
-    this.apiKey = process.env.GOOGLE_PAGESPEED_API_KEY || '';
+    this.apiKey = process.env.GOOGLE_PAGESPEED_API_KEY || ''
     if (!this.apiKey) {
-      console.warn('⚠️ Google PageSpeed API key not configured');
+      console.warn('⚠️ Google PageSpeed API key not configured')
     }
   }
 
@@ -52,8 +51,8 @@ class PageSpeedService {
    */
   async analyzeUrl(url: string, strategy: 'mobile' | 'desktop' = 'mobile'): Promise<PageSpeedResult | null> {
     if (!this.apiKey) {
-      console.error('❌ PageSpeed API key not configured');
-      return null;
+      console.error('❌ PageSpeed API key not configured')
+      return null
     }
 
     try {
@@ -63,20 +62,17 @@ class PageSpeedService {
         strategy: strategy,
         category: ['PERFORMANCE', 'ACCESSIBILITY', 'BEST_PRACTICES', 'SEO'].join(','),
         locale: 'fr'
-      });
-
-      const response = await fetch(`${this.baseUrl}?${params}`);
-      
+      })
+      const response = await fetch(`${this.baseUrl}?${params}`)
       if (!response.ok) {
-        throw new Error(`PageSpeed API error: ${response.status} ${response.statusText}`);
+        throw new Error(`PageSpeed API error: ${response.status} ${response.statusText}`)
       }
 
-      const data = await response.json();
-      return this.formatResult(data);
-
+      const data = await response.json()
+      return this.formatResult(data)
     } catch (error) {
-      console.error('❌ Error analyzing URL with PageSpeed:', error);
-      return null;
+      console.error('❌ Error analyzing URL with PageSpeed:', error)
+      return null
     }
   }
 
@@ -86,23 +82,21 @@ class PageSpeedService {
   async analyzeBatch(urls: string[], strategy: 'mobile' | 'desktop' = 'mobile'): Promise<PageSpeedResult[]> {
     const results = await Promise.allSettled(
       urls.map(url => this.analyzeUrl(url, strategy))
-    );
-
+    )
     return results
       .filter((result): result is PromiseFulfilledResult<PageSpeedResult | null> => 
         result.status === 'fulfilled' && result.value !== null
       )
-      .map(result => result.value as PageSpeedResult);
+      .map(result => result.value as PageSpeedResult)
   }
 
   /**
    * Formate les résultats de l'API en structure utilisable
    */
   private formatResult(data: any): PageSpeedResult {
-    const lighthouse = data.lighthouseResult;
-    const categories = lighthouse.categories;
-    const audits = lighthouse.audits;
-
+    const lighthouse = data.lighthouseResult
+    const categories = lighthouse.categories
+    const audits = lighthouse.audits
     return {
       url: data.id,
       timestamp: new Date().toISOString(),
@@ -123,7 +117,7 @@ class PageSpeedService {
       opportunities: this.extractOpportunities(audits),
       diagnostics: this.extractDiagnostics(audits),
       loadingExperience: data.loadingExperience
-    };
+    }
   }
 
   /**
@@ -141,20 +135,19 @@ class PageSpeedService {
       'enable-text-compression',
       'properly-size-images',
       'efficient-animated-content'
-    ];
-
+    ]
     return opportunityAudits
       .filter(auditId => audits[auditId] && audits[auditId].details?.overallSavingsMs > 0)
       .map(auditId => {
-        const audit = audits[auditId];
-        const savings = audit.details?.overallSavingsMs || 0;
+        const audit = audits[auditId]
+        const savings = audit.details?.overallSavingsMs || 0
         return {
           id: auditId,
           title: audit.title,
           description: audit.description,
           savings: Math.round(savings),
           impact: savings > 1000 ? 'high' : savings > 500 ? 'medium' : 'low'
-        };
+        }
       })
       .sort((a, b) => b.savings - a.savings)
       .slice(0, 10); // Top 10 opportunities
@@ -175,19 +168,18 @@ class PageSpeedService {
       'bootup-time',
       'mainthread-work-breakdown',
       'font-display'
-    ];
-
+    ]
     return diagnosticAudits
       .filter(auditId => audits[auditId])
       .map(auditId => {
-        const audit = audits[auditId];
-        const score = audit.score;
+        const audit = audits[auditId]
+        const score = audit.score
         return {
           id: auditId,
           title: audit.title,
           description: audit.description,
           severity: score === null ? 'info' : score < 0.5 ? 'error' : score < 0.9 ? 'warning' : 'info'
-        };
+        }
       })
       .filter(diagnostic => diagnostic.severity !== 'info' || Math.random() < 0.3) // Garder quelques infos
       .slice(0, 8); // Top 8 diagnostics
@@ -197,9 +189,8 @@ class PageSpeedService {
    * Génère un rapport d'analyse lisible
    */
   generateReport(result: PageSpeedResult): string {
-    const { scores, metrics, opportunities, diagnostics } = result;
-    const overallScore = Math.round((scores.performance + scores.accessibility + scores.bestPractices + scores.seo) / 4);
-
+    const { scores, metrics, opportunities, diagnostics } = result
+    const overallScore = Math.round((scores.performance + scores.accessibility + scores.bestPractices + scores.seo) / 4)
     return `# 🚀 Rapport PageSpeed - ${result.url}
 
 **Date d'analyse :** ${new Date(result.timestamp).toLocaleDateString('fr-FR')}
@@ -237,17 +228,17 @@ ${diag.description}`
 ).join('\n\n') : '_Aucun diagnostic particulier._'}
 
 ---
-*Analyse générée par SpeedBot - Beriox AI*`;
+*Analyse générée par SpeedBot - Beriox AI*`
   }
 
   /**
    * Retourne l'emoji correspondant au score
    */
   private getScoreEmoji(score: number): string {
-    if (score >= 90) return '🟢';
-    if (score >= 50) return '🟡';
-    return '🔴';
+    if (score >= 90) return '🟢'
+    if (score >= 50) return '🟡'
+    return '🔴'
   }
 }
 
-export const pageSpeedService = new PageSpeedService();
+export const pageSpeedService = new PageSpeedService()

@@ -1,22 +1,21 @@
-"use client";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Icon from "@/components/ui/Icon";
-import { useTheme, useStyles } from "@/hooks/useTheme";
+"use client"
+import { useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import Icon from "@/components/ui/Icon"
+import { useTheme, useStyles } from "@/hooks/useTheme"
 import { 
   hasRouteAccess, 
   getAccessDeniedMessage, 
   UserPermissions 
-} from "@/lib/access-control";
-
+} from "@/lib/access-control"
 interface AccessGuardProps {
-  children: React.ReactNode;
-  requiredRole?: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
-  requiredPlan?: string[];
-  premiumOnly?: boolean;
-  superAdminOnly?: boolean;
-  fallback?: React.ReactNode;
+  children: React.ReactNode
+  requiredRole?: 'USER' | 'ADMIN' | 'SUPER_ADMIN'
+  requiredPlan?: string[]
+  premiumOnly?: boolean
+  superAdminOnly?: boolean
+  fallback?: React.ReactNode
 }
 
 export default function AccessGuard({ 
@@ -27,58 +26,48 @@ export default function AccessGuard({
   superAdminOnly,
   fallback
 }: AccessGuardProps) {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const { theme } = useTheme();
-  const styles = useStyles();
-  const [userPermissions, setUserPermissions] = useState<UserPermissions | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [hasAccess, setHasAccess] = useState(false);
-
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const { theme } = useTheme()
+  const styles = useStyles()
+  const [userPermissions, setUserPermissions] = useState<UserPermissions | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [hasAccess, setHasAccess] = useState(false)
   useEffect(() => {
-    if (status === "loading") return;
-
+    if (status === "loading") return
     if (!session) {
-      router.push("/auth/signin");
-      return;
+      router.push("/auth/signin")
+      return
     }
 
-    fetchUserPermissions();
-  }, [session, status, router]);
-
+    fetchUserPermissions()
+  }, [session, status, router])
   const fetchUserPermissions = async () => {
     try {
-      setLoading(true);
-      
+      setLoading(true)
       // Récupérer les informations utilisateur
       const [profileRes, premiumRes] = await Promise.all([
         fetch('/api/user/profile'),
         fetch('/api/user/premium-info')
-      ]);
-
-      const profile = profileRes.ok ? await profileRes.json() : null;
-      const premiumInfo = premiumRes.ok ? await premiumRes.json() : null;
-
+      ])
+      const profile = profileRes.ok ? await profileRes.json() : null
+      const premiumInfo = premiumRes.ok ? await premiumRes.json() : null
       const permissions: UserPermissions = {
         role: profile?.user?.role || 'USER',
         plan: premiumInfo?.planId,
         hasAccess: premiumInfo?.hasAccess || false
-      };
-
-      setUserPermissions(permissions);
-
+      }
+      setUserPermissions(permissions)
       // Vérifier l'accès
-      const access = hasRouteAccess(window.location.pathname, permissions);
-      setHasAccess(access);
-
+      const access = hasRouteAccess(window.location.pathname, permissions)
+      setHasAccess(access)
     } catch (error) {
-      console.error('Erreur lors de la vérification des permissions:', error);
-      setHasAccess(false);
+      console.error('Erreur lors de la vérification des permissions:', error)
+      setHasAccess(false)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   // Loading state
   if (status === "loading" || loading) {
     return (
@@ -117,15 +106,14 @@ export default function AccessGuard({
           </p>
         </div>
       </div>
-    );
+    )
   }
 
   // Accès refusé
   if (!hasAccess && userPermissions) {
-    const errorMessage = getAccessDeniedMessage(window.location.pathname, userPermissions);
-    
+    const errorMessage = getAccessDeniedMessage(window.location.pathname, userPermissions)
     if (fallback) {
-      return <>{fallback}</>;
+      return <>{fallback}</>
     }
 
     return (
@@ -186,7 +174,7 @@ export default function AccessGuard({
               }}
             >
               <Icon name="home" style={{ marginRight: '8px' }} />
-              Retour à l&apos;accueil
+              Retour à l'accueil
             </button>
             
             <button
@@ -219,7 +207,7 @@ export default function AccessGuard({
               margin: '0 0 12px 0',
               color: theme.text
             }}>
-              Besoin d&apos;un accès premium ?
+              Besoin d'un accès premium ?
             </h3>
             <p style={{
               color: theme.textSecondary,
@@ -243,9 +231,9 @@ export default function AccessGuard({
           </div>
         )}
       </div>
-    );
+    )
   }
 
   // Accès autorisé
-  return <>{children}</>;
+  return <>{children}</>
 }

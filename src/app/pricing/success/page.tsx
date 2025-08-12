@@ -1,21 +1,17 @@
-'use client';
-
-import { useEffect, useState, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import Link from 'next/link';
-
+'use client'
+import { useEffect, useState, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useTheme } from '@/hooks/useTheme'
+import Link from 'next/link'
 function SuccessContent() {
-  const theme = useTheme();
-  const searchParams = useSearchParams();
-  const [sessionId, setSessionId] = useState<string | null>(null);
-
+  const theme = useTheme()
+  const searchParams = useSearchParams()
+  const [sessionId, setSessionId] = useState<string | null>(null)
   useEffect(() => {
-    const sessionIdParam = searchParams.get('session_id');
-    setSessionId(sessionIdParam);
-  }, [searchParams]);
-
+    const sessionIdParam = searchParams.get('session_id')
+    setSessionId(sessionIdParam)
+  }, [searchParams])
   return (
     <div style={{ 
       minHeight: '100vh',
@@ -104,7 +100,7 @@ function SuccessContent() {
               color: theme.colors.primary.dark
             }}>
               <FontAwesomeIcon icon="bullseye" />
-              Explorez l&apos;Opportunity Radar
+              Explorez l'Opportunity Radar
             </li>
             <li style={{
               display: 'flex',
@@ -161,7 +157,7 @@ function SuccessContent() {
         )}
       </div>
     </div>
-  );
+  )
 }
 
 export default function SuccessPage() {
@@ -178,5 +174,5 @@ export default function SuccessPage() {
     }>
       <SuccessContent />
     </Suspense>
-  );
+  )
 }

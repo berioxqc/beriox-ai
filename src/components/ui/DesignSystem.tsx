@@ -1,8 +1,6 @@
-'use client';
-
-import React from 'react';
-import { cn } from '@/lib/utils';
-
+'use client'
+import React from 'react'
+import { cn } from '@/lib/utils'
 // ===== TYPOGRAPHY =====
 export const Typography = {
   h1: ({ children, className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
@@ -35,34 +33,30 @@ export const Typography = {
       {children}
     </small>
   ),
-};
-
+}
 // ===== BUTTONS =====
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
-  loading?: boolean;
-  icon?: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
+  size?: 'sm' | 'md' | 'lg'
+  loading?: boolean
+  icon?: React.ReactNode
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', loading = false, icon, children, disabled, ...props }, ref) => {
-    const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-    
+    const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
     const variants = {
       primary: 'bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500 shadow-sm',
       secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500',
       outline: 'border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-purple-500',
       ghost: 'text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
       danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm',
-    };
-
+    }
     const sizes = {
       sm: 'px-3 py-1.5 text-sm',
       md: 'px-4 py-2 text-sm',
       lg: 'px-6 py-3 text-base',
-    };
-
+    }
     return (
       <button
         className={cn(
@@ -84,34 +78,29 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {icon && !loading && <span className="mr-2">{icon}</span>}
         {children}
       </button>
-    );
+    )
   }
-);
-
-Button.displayName = 'Button';
-
+)
+Button.displayName = 'Button'
 // ===== CARDS =====
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'elevated' | 'outlined';
-  padding?: 'sm' | 'md' | 'lg';
+  variant?: 'default' | 'elevated' | 'outlined'
+  padding?: 'sm' | 'md' | 'lg'
 }
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = 'default', padding = 'md', children, ...props }, ref) => {
-    const baseClasses = 'rounded-xl transition-all duration-200';
-    
+    const baseClasses = 'rounded-xl transition-all duration-200'
     const variants = {
       default: 'bg-white border border-gray-200',
       elevated: 'bg-white shadow-lg border border-gray-200',
       outlined: 'bg-white border-2 border-gray-200',
-    };
-
+    }
     const paddings = {
       sm: 'p-4',
       md: 'p-6',
       lg: 'p-8',
-    };
-
+    }
     return (
       <div
         ref={ref}
@@ -120,35 +109,30 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
       >
         {children}
       </div>
-    );
+    )
   }
-);
-
-Card.displayName = 'Card';
-
+)
+Card.displayName = 'Card'
 // ===== BADGES =====
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info';
-  size?: 'sm' | 'md';
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info'
+  size?: 'sm' | 'md'
 }
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant = 'default', size = 'md', children, ...props }, ref) => {
-    const baseClasses = 'inline-flex items-center font-medium rounded-full';
-    
+    const baseClasses = 'inline-flex items-center font-medium rounded-full'
     const variants = {
       default: 'bg-gray-100 text-gray-800',
       success: 'bg-green-100 text-green-800',
       warning: 'bg-yellow-100 text-yellow-800',
       danger: 'bg-red-100 text-red-800',
       info: 'bg-blue-100 text-blue-800',
-    };
-
+    }
     const sizes = {
       sm: 'px-2 py-0.5 text-xs',
       md: 'px-2.5 py-0.5 text-sm',
-    };
-
+    }
     return (
       <span
         ref={ref}
@@ -157,37 +141,32 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
       >
         {children}
       </span>
-    );
+    )
   }
-);
-
-Badge.displayName = 'Badge';
-
+)
+Badge.displayName = 'Badge'
 // ===== ALERTS =====
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'info' | 'success' | 'warning' | 'danger';
-  title?: string;
-  onClose?: () => void;
+  variant?: 'info' | 'success' | 'warning' | 'danger'
+  title?: string
+  onClose?: () => void
 }
 
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = 'info', title, children, onClose, ...props }, ref) => {
-    const baseClasses = 'rounded-lg p-4 border-l-4';
-    
+    const baseClasses = 'rounded-lg p-4 border-l-4'
     const variants = {
       info: 'bg-blue-50 border-blue-400 text-blue-800',
       success: 'bg-green-50 border-green-400 text-green-800',
       warning: 'bg-yellow-50 border-yellow-400 text-yellow-800',
       danger: 'bg-red-50 border-red-400 text-red-800',
-    };
-
+    }
     const icons = {
       info: 'ℹ️',
       success: '✅',
       warning: '⚠️',
       danger: '❌',
-    };
-
+    }
     return (
       <div
         ref={ref}
@@ -210,19 +189,17 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           )}
         </div>
       </div>
-    );
+    )
   }
-);
-
-Alert.displayName = 'Alert';
-
+)
+Alert.displayName = 'Alert'
 // ===== INPUTS =====
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  label?: string
+  error?: string
+  helperText?: string
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -264,17 +241,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <p className="text-sm text-gray-500">{helperText}</p>
         )}
       </div>
-    );
+    )
   }
-);
-
-Input.displayName = 'Input';
-
+)
+Input.displayName = 'Input'
 // ===== TEXTAREA =====
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
+  label?: string
+  error?: string
+  helperText?: string
 }
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -302,18 +277,16 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           <p className="text-sm text-gray-500">{helperText}</p>
         )}
       </div>
-    );
+    )
   }
-);
-
-Textarea.displayName = 'Textarea';
-
+)
+Textarea.displayName = 'Textarea'
 // ===== SELECT =====
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  error?: string;
-  helperText?: string;
-  options: Array<{ value: string; label: string; disabled?: boolean }>;
+  label?: string
+  error?: string
+  helperText?: string
+  options: Array<{ value: string; label: string; disabled?: boolean }>
 }
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
@@ -351,31 +324,27 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           <p className="text-sm text-gray-500">{helperText}</p>
         )}
       </div>
-    );
+    )
   }
-);
-
-Select.displayName = 'Select';
-
+)
+Select.displayName = 'Select'
 // ===== MODAL =====
 interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title?: string;
-  children: React.ReactNode;
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  isOpen: boolean
+  onClose: () => void
+  title?: string
+  children: React.ReactNode
+  size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
 export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalProps) => {
-  if (!isOpen) return null;
-
+  if (!isOpen) return null
   const sizes = {
     sm: 'max-w-md',
     md: 'max-w-lg',
     lg: 'max-w-2xl',
     xl: 'max-w-4xl',
-  };
-
+  }
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-screen items-center justify-center p-4">
@@ -410,14 +379,13 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }: ModalPr
         </div>
       </div>
     </div>
-  );
-};
-
+  )
+}
 // ===== TOOLTIP =====
 interface TooltipProps {
-  content: string;
-  children: React.ReactNode;
-  position?: 'top' | 'bottom' | 'left' | 'right';
+  content: string
+  children: React.ReactNode
+  position?: 'top' | 'bottom' | 'left' | 'right'
 }
 
 export const Tooltip = ({ content, children, position = 'top' }: TooltipProps) => {
@@ -426,8 +394,7 @@ export const Tooltip = ({ content, children, position = 'top' }: TooltipProps) =
     bottom: 'top-full left-1/2 transform -translate-x-1/2 mt-2',
     left: 'right-full top-1/2 transform -translate-y-1/2 mr-2',
     right: 'left-full top-1/2 transform -translate-y-1/2 ml-2',
-  };
-
+  }
   return (
     <div className="relative group">
       {children}
@@ -441,20 +408,19 @@ export const Tooltip = ({ content, children, position = 'top' }: TooltipProps) =
         }`} />
       </div>
     </div>
-  );
-};
-
+  )
+}
 // ===== SKELETON =====
 interface SkeletonProps {
-  className?: string;
-  lines?: number;
+  className?: string
+  lines?: number
 }
 
 export const Skeleton = ({ className, lines = 1 }: SkeletonProps) => {
   if (lines === 1) {
     return (
       <div className={cn('animate-pulse bg-gray-200 rounded', className)} />
-    );
+    )
   }
 
   return (
@@ -467,13 +433,12 @@ export const Skeleton = ({ className, lines = 1 }: SkeletonProps) => {
         />
       ))}
     </div>
-  );
-};
-
+  )
+}
 // ===== DIVIDER =====
 interface DividerProps {
-  className?: string;
-  text?: string;
+  className?: string
+  text?: string
 }
 
 export const Divider = ({ className, text }: DividerProps) => {
@@ -487,12 +452,11 @@ export const Divider = ({ className, text }: DividerProps) => {
           <span className="px-2 bg-white text-gray-500">{text}</span>
         </div>
       </div>
-    );
+    )
   }
 
-  return <hr className={cn('border-gray-200 my-4', className)} />;
-};
-
+  return <hr className={cn('border-gray-200 my-4', className)} />
+}
 // ===== EXPORT ALL COMPONENTS =====
 export const DesignSystem = {
   Typography,
@@ -507,4 +471,4 @@ export const DesignSystem = {
   Tooltip,
   Skeleton,
   Divider,
-};
+}

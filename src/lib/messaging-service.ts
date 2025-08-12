@@ -1,49 +1,47 @@
-import { prisma } from './prisma';
-import nodemailer from 'nodemailer';
-
+import { prisma } from './prisma'
+import nodemailer from 'nodemailer'
 export interface EmailConfig {
-  host: string;
-  port: number;
-  secure: boolean;
+  host: string
+  port: number
+  secure: boolean
   auth: {
-    user: string;
-    pass: string;
-  };
+    user: string
+    pass: string
+  }
 }
 
 export interface MessageData {
-  subject: string;
-  body: string;
-  bodyHtml?: string;
-  fromEmail: string;
-  fromName?: string;
-  toEmail: string;
-  toName?: string;
-  ccEmails?: string[];
-  bccEmails?: string[];
-  templateId?: string;
-  variables?: Record<string, any>;
-  priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
-  userId?: string;
-  botId?: string;
-  ticketId?: string;
+  subject: string
+  body: string
+  bodyHtml?: string
+  fromEmail: string
+  fromName?: string
+  toEmail: string
+  toName?: string
+  ccEmails?: string[]
+  bccEmails?: string[]
+  templateId?: string
+  variables?: Record<string, any>
+  priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT'
+  userId?: string
+  botId?: string
+  ticketId?: string
 }
 
 export interface TemplateData {
-  name: string;
-  description?: string;
-  subject: string;
-  body: string;
-  bodyHtml?: string;
-  variables: string[];
-  category: string;
+  name: string
+  description?: string
+  subject: string
+  body: string
+  bodyHtml?: string
+  variables: string[]
+  category: string
 }
 
 export class MessagingService {
-  private transporter: nodemailer.Transporter;
-
+  private transporter: nodemailer.Transporter
   constructor(config: EmailConfig) {
-    this.transporter = nodemailer.createTransporter(config);
+    this.transporter = nodemailer.createTransporter(config)
   }
 
   /**
@@ -52,15 +50,14 @@ export class MessagingService {
   async sendEmail(messageData: MessageData): Promise<any> {
     try {
       // Remplacer les variables dans le template si fourni
-      let { subject, body, bodyHtml } = messageData;
-      
+      let { subject, body, bodyHtml } = messageData
       if (messageData.templateId && messageData.variables) {
-        const template = await this.getTemplate(messageData.templateId);
+        const template = await this.getTemplate(messageData.templateId)
         if (template) {
-          subject = this.replaceVariables(template.subject, messageData.variables);
-          body = this.replaceVariables(template.body, messageData.variables);
+          subject = this.replaceVariables(template.subject, messageData.variables)
+          body = this.replaceVariables(template.body, messageData.variables)
           if (template.bodyHtml) {
-            bodyHtml = this.replaceVariables(template.bodyHtml, messageData.variables);
+            bodyHtml = this.replaceVariables(template.bodyHtml, messageData.variables)
           }
         }
       }
@@ -80,11 +77,9 @@ export class MessagingService {
           'X-Beriox-User-ID': messageData.userId || '',
           'X-Beriox-Bot-ID': messageData.botId || '',
         }
-      };
-
+      }
       // Envoyer l'email
-      const result = await this.transporter.sendMail(mailOptions);
-
+      const result = await this.transporter.sendMail(mailOptions)
       // Sauvegarder le message en base
       const message = await prisma.message.create({
         data: {
@@ -115,14 +110,11 @@ export class MessagingService {
             pending: result.pending,
           }
         }
-      });
-
-      console.log(`✅ Email envoyé: ${message.id} -> ${messageData.toEmail}`);
-      return { success: true, messageId: message.id, emailId: result.messageId };
-
+      })
+      console.log(`✅ Email envoyé: ${message.id} -> ${messageData.toEmail}`)
+      return { success: true, messageId: message.id, emailId: result.messageId }
     } catch (error) {
-      console.error('❌ Erreur lors de l\'envoi d\'email:', error);
-      
+      console.error('❌ Erreur lors de l\'envoi d\'email:', error)
       // Sauvegarder l'erreur en base
       if (messageData.userId) {
         await prisma.message.create({
@@ -144,10 +136,10 @@ export class MessagingService {
             ticketId: messageData.ticketId,
             metadata: { error: error.message }
           }
-        });
+        })
       }
 
-      throw error;
+      throw error
     }
   }
 
@@ -167,13 +159,12 @@ export class MessagingService {
           category: templateData.category,
           createdBy
         }
-      });
-
-      console.log(`✅ Template créé: ${template.id} - ${template.name}`);
-      return template;
+      })
+      console.log(`✅ Template créé: ${template.id} - ${template.name}`)
+      return template
     } catch (error) {
-      console.error('❌ Erreur lors de la création du template:', error);
-      throw error;
+      console.error('❌ Erreur lors de la création du template:', error)
+      throw error
     }
   }
 
@@ -183,35 +174,33 @@ export class MessagingService {
   async getTemplate(templateId: string): Promise<any> {
     return await prisma.emailTemplate.findUnique({
       where: { id: templateId }
-    });
+    })
   }
 
   /**
    * Obtenir tous les templates
    */
   async getTemplates(category?: string): Promise<any[]> {
-    const where = category ? { category, isActive: true } : { isActive: true };
-    
+    const where = category ? { category, isActive: true } : { isActive: true }
     return await prisma.emailTemplate.findMany({
       where,
       orderBy: { name: 'asc' }
-    });
+    })
   }
 
   /**
    * Créer un ticket de support
    */
   async createSupportTicket(data: {
-    userId: string;
-    subject: string;
-    description: string;
-    category: 'TECHNICAL' | 'BILLING' | 'FEATURE_REQUEST' | 'BUG_REPORT' | 'GENERAL' | 'FEEDBACK';
-    priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
+    userId: string
+    subject: string
+    description: string
+    category: 'TECHNICAL' | 'BILLING' | 'FEATURE_REQUEST' | 'BUG_REPORT' | 'GENERAL' | 'FEEDBACK'
+    priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT'
   }): Promise<any> {
     try {
       // Générer un numéro de ticket unique
-      const ticketNumber = await this.generateTicketNumber();
-
+      const ticketNumber = await this.generateTicketNumber()
       const ticket = await prisma.supportTicket.create({
         data: {
           ticketNumber,
@@ -230,13 +219,12 @@ export class MessagingService {
             }
           }
         }
-      });
-
-      console.log(`✅ Ticket créé: ${ticket.ticketNumber} - ${ticket.subject}`);
-      return ticket;
+      })
+      console.log(`✅ Ticket créé: ${ticket.ticketNumber} - ${ticket.subject}`)
+      return ticket
     } catch (error) {
-      console.error('❌ Erreur lors de la création du ticket:', error);
-      throw error;
+      console.error('❌ Erreur lors de la création du ticket:', error)
+      throw error
     }
   }
 
@@ -244,16 +232,14 @@ export class MessagingService {
    * Obtenir les messages d'un utilisateur
    */
   async getUserMessages(userId: string, filters?: {
-    type?: 'INBOUND' | 'OUTBOUND' | 'INTERNAL' | 'SUPPORT';
-    status?: 'DRAFT' | 'SENT' | 'DELIVERED' | 'READ' | 'FAILED' | 'PENDING';
-    limit?: number;
-    offset?: number;
+    type?: 'INBOUND' | 'OUTBOUND' | 'INTERNAL' | 'SUPPORT'
+    status?: 'DRAFT' | 'SENT' | 'DELIVERED' | 'READ' | 'FAILED' | 'PENDING'
+    limit?: number
+    offset?: number
   }): Promise<any[]> {
-    const where: unknown = { userId };
-    
-    if (filters?.type) where.type = filters.type;
-    if (filters?.status) where.status = filters.status;
-
+    const where: unknown = { userId }
+    if (filters?.type) where.type = filters.type
+    if (filters?.status) where.status = filters.status
     return await prisma.message.findMany({
       where,
       orderBy: { createdAt: 'desc' },
@@ -276,27 +262,25 @@ export class MessagingService {
           }
         }
       }
-    });
+    })
   }
 
   /**
    * Obtenir les tickets de support
    */
   async getSupportTickets(filters?: {
-    status?: 'OPEN' | 'IN_PROGRESS' | 'WAITING_FOR_USER' | 'RESOLVED' | 'CLOSED';
-    priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT';
-    category?: 'TECHNICAL' | 'BILLING' | 'FEATURE_REQUEST' | 'BUG_REPORT' | 'GENERAL' | 'FEEDBACK';
-    assignedTo?: string;
-    limit?: number;
-    offset?: number;
+    status?: 'OPEN' | 'IN_PROGRESS' | 'WAITING_FOR_USER' | 'RESOLVED' | 'CLOSED'
+    priority?: 'LOW' | 'NORMAL' | 'HIGH' | 'URGENT'
+    category?: 'TECHNICAL' | 'BILLING' | 'FEATURE_REQUEST' | 'BUG_REPORT' | 'GENERAL' | 'FEEDBACK'
+    assignedTo?: string
+    limit?: number
+    offset?: number
   }): Promise<any[]> {
-    const where: unknown = {};
-    
-    if (filters?.status) where.status = filters.status;
-    if (filters?.priority) where.priority = filters.priority;
-    if (filters?.category) where.category = filters.category;
-    if (filters?.assignedTo) where.assignedTo = filters.assignedTo;
-
+    const where: unknown = {}
+    if (filters?.status) where.status = filters.status
+    if (filters?.priority) where.priority = filters.priority
+    if (filters?.category) where.category = filters.category
+    if (filters?.assignedTo) where.assignedTo = filters.assignedTo
     return await prisma.supportTicket.findMany({
       where,
       orderBy: { createdAt: 'desc' },
@@ -322,26 +306,25 @@ export class MessagingService {
           take: 1 // Dernier message
         }
       }
-    });
+    })
   }
 
   /**
    * Répondre à un ticket
    */
   async replyToTicket(ticketId: string, data: {
-    userId: string;
-    body: string;
-    bodyHtml?: string;
-    isInternal?: boolean;
+    userId: string
+    body: string
+    bodyHtml?: string
+    isInternal?: boolean
   }): Promise<any> {
     try {
       const ticket = await prisma.supportTicket.findUnique({
         where: { id: ticketId },
         include: { user: true }
-      });
-
+      })
       if (!ticket) {
-        throw new Error('Ticket non trouvé');
+        throw new Error('Ticket non trouvé')
       }
 
       // Créer le message de réponse
@@ -362,23 +345,21 @@ export class MessagingService {
           sentAt: new Date(),
           deliveredAt: new Date()
         }
-      });
-
+      })
       // Mettre à jour le statut du ticket
-      const newStatus = data.isInternal ? 'IN_PROGRESS' : 'WAITING_FOR_USER';
+      const newStatus = data.isInternal ? 'IN_PROGRESS' : 'WAITING_FOR_USER'
       await prisma.supportTicket.update({
         where: { id: ticketId },
         data: { 
           status: newStatus,
           updatedAt: new Date()
         }
-      });
-
-      console.log(`✅ Réponse au ticket ${ticket.ticketNumber}: ${message.id}`);
-      return message;
+      })
+      console.log(`✅ Réponse au ticket ${ticket.ticketNumber}: ${message.id}`)
+      return message
     } catch (error) {
-      console.error('❌ Erreur lors de la réponse au ticket:', error);
-      throw error;
+      console.error('❌ Erreur lors de la réponse au ticket:', error)
+      throw error
     }
   }
 
@@ -386,22 +367,22 @@ export class MessagingService {
    * Générer un numéro de ticket unique
    */
   private async generateTicketNumber(): Promise<string> {
-    const prefix = 'BER';
+    const prefix = 'BER'
     const date = new Date().toISOString().slice(2, 8).replace(/-/g, ''); // YYMMDD
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    return `${prefix}${date}${random}`;
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0')
+    return `${prefix}${date}${random}`
   }
 
   /**
    * Remplacer les variables dans un template
    */
   private replaceVariables(text: string, variables: Record<string, any>): string {
-    let result = text;
+    let result = text
     Object.entries(variables).forEach(([key, value]) => {
-      const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-      result = result.replace(regex, String(value));
-    });
-    return result;
+      const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g')
+      result = result.replace(regex, String(value))
+    })
+    return result
   }
 
   /**
@@ -422,8 +403,7 @@ export class MessagingService {
       prisma.supportTicket.count(),
       prisma.supportTicket.count({ where: { status: 'OPEN' } }),
       prisma.supportTicket.count({ where: { status: 'RESOLVED' } })
-    ]);
-
+    ])
     return {
       messages: {
         total: totalMessages,
@@ -437,6 +417,6 @@ export class MessagingService {
         resolved: resolvedTickets,
         resolutionRate: totalTickets > 0 ? ((resolvedTickets / totalTickets) * 100).toFixed(2) : 0
       }
-    };
+    }
   }
 }

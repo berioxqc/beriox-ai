@@ -1,61 +1,54 @@
-"use client";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useSession, signOut } from "next-auth/react"
+import Icon from "@/components/ui/Icon"
 export default function MobileMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
-  const { data: session } = useSession();
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
+  const { data: session } = useSession()
+  const [userRole, setUserRole] = useState<string | null>(null)
   const [premiumInfo, setPremiumInfo] = useState<{
-    hasAccess: boolean;
-    planId?: string;
-    daysLeft?: number;
-  } | null>(null);
-
+    hasAccess: boolean
+    planId?: string
+    daysLeft?: number
+  } | null>(null)
   // Récupérer les informations utilisateur
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (session?.user?.email) {
         try {
-          const response = await fetch('/api/user/profile');
+          const response = await fetch('/api/user/profile')
           if (response.ok) {
-            const data = await response.json();
-            setUserRole(data.user?.role || 'USER');
-            
+            const data = await response.json()
+            setUserRole(data.user?.role || 'USER')
             // Calculer les infos premium
             if (data.user?.premiumAccess && data.user.premiumAccess.isActive) {
-              const endDate = new Date(data.user.premiumAccess.endDate);
-              const now = new Date();
-              
+              const endDate = new Date(data.user.premiumAccess.endDate)
+              const now = new Date()
               if (endDate > now) {
-                const diffTime = endDate.getTime() - now.getTime();
-                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
+                const diffTime = endDate.getTime() - now.getTime()
+                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
                 setPremiumInfo({
                   hasAccess: true,
                   planId: data.user.premiumAccess.planId,
                   daysLeft
-                });
+                })
               } else {
-                setPremiumInfo({ hasAccess: false });
+                setPremiumInfo({ hasAccess: false })
               }
             } else {
-              setPremiumInfo({ hasAccess: false });
+              setPremiumInfo({ hasAccess: false })
             }
           }
         } catch (error) {
-          console.error('Erreur lors de la récupération des infos utilisateur:', error);
+          console.error('Erreur lors de la récupération des infos utilisateur:', error)
         }
       }
-    };
-
-    fetchUserInfo();
-  }, [session]);
-
+    }
+    fetchUserInfo()
+  }, [session])
   // Structure du menu organisée par catégories
   const menuStructure = [
     {
@@ -134,23 +127,20 @@ export default function MobileMenu() {
         }
       ]
     }
-  ];
-
-  const closeMenu = () => setIsOpen(false);
-
+  ]
+  const closeMenu = () => setIsOpen(false)
   // Empêcher le scroll du body quand le menu est ouvert
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = 'unset'
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
   return (
     <>
       {/* Bouton hamburger */}
@@ -248,7 +238,7 @@ export default function MobileMenu() {
                 {/* Items de la section */}
                 <div className="bg-white/60 backdrop-blur-sm">
                   {section.items.map((item) => {
-                    const isActive = pathname === item.href;
+                    const isActive = pathname === item.href
                     return (
                       <Link
                         key={item.href}
@@ -280,7 +270,7 @@ export default function MobileMenu() {
                           </div>
                         ) : null}
                       </Link>
-                    );
+                    )
                   })}
                 </div>
               </div>
@@ -300,5 +290,5 @@ export default function MobileMenu() {
         </div>
       </div>
     </>
-  );
+  )
 }

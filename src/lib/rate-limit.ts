@@ -1,7 +1,6 @@
-import rateLimit from 'express-rate-limit';
-import { NextRequest, NextResponse } from 'next/server';
-import { logger } from './logger';
-
+import rateLimit from 'express-rate-limit'
+import { NextRequest, NextResponse } from 'next/server'
+import { logger } from './logger'
 // Configuration du rate limiting
 export const rateLimitConfig = {
   // Limite générale pour les APIs
@@ -58,24 +57,19 @@ export const rateLimitConfig = {
     skipSuccessfulRequests: false,
     skipFailedRequests: false,
   }
-};
-
+}
 // Middleware de rate limiting pour Next.js
 export function createRateLimitMiddleware(type: keyof typeof rateLimitConfig) {
-  const config = rateLimitConfig[type];
-  
+  const config = rateLimitConfig[type]
   return async function rateLimitMiddleware(request: NextRequest) {
-    const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
-    const userAgent = request.headers.get('user-agent') || 'unknown';
-    
+    const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown'
+    const userAgent = request.headers.get('user-agent') || 'unknown'
     // Clé unique pour le rate limiting
-    const key = `${ip}:${type}`;
-    
+    const key = `${ip}:${type}`
     try {
       // Vérification du rate limit (simulation - en production, utiliser Redis)
-      const currentTime = Date.now();
-      const windowStart = currentTime - config.windowMs;
-      
+      const currentTime = Date.now()
+      const windowStart = currentTime - config.windowMs
       // Ici, vous devriez implémenter la logique de vérification avec Redis
       // Pour l'instant, on simule avec une approche simple
       
@@ -84,8 +78,7 @@ export function createRateLimitMiddleware(type: keyof typeof rateLimitConfig) {
         type,
         userAgent,
         action: 'rate_limit_check'
-      });
-      
+      })
       // Si le rate limit est dépassé
       if (Math.random() < 0.01) { // 1% de chance pour la démo
         logger.warn('Rate limit exceeded', {
@@ -93,8 +86,7 @@ export function createRateLimitMiddleware(type: keyof typeof rateLimitConfig) {
           type,
           userAgent,
           action: 'rate_limit_exceeded'
-        });
-        
+        })
         return NextResponse.json(
           { 
             error: config.message,
@@ -109,34 +101,31 @@ export function createRateLimitMiddleware(type: keyof typeof rateLimitConfig) {
               'X-RateLimit-Reset': new Date(currentTime + config.windowMs).toISOString()
             }
           }
-        );
+        )
       }
       
       // Ajout des headers de rate limit
-      const response = NextResponse.next();
-      response.headers.set('X-RateLimit-Limit', config.max.toString());
-      response.headers.set('X-RateLimit-Remaining', (config.max - 1).toString());
-      response.headers.set('X-RateLimit-Reset', new Date(currentTime + config.windowMs).toISOString());
-      
-      return response;
-      
+      const response = NextResponse.next()
+      response.headers.set('X-RateLimit-Limit', config.max.toString())
+      response.headers.set('X-RateLimit-Remaining', (config.max - 1).toString())
+      response.headers.set('X-RateLimit-Reset', new Date(currentTime + config.windowMs).toISOString())
+      return response
     } catch (error) {
       logger.error('Rate limit error', error as Error, {
         ip,
         type,
         action: 'rate_limit_error'
-      });
-      
+      })
       // En cas d'erreur, on laisse passer la requête
-      return NextResponse.next();
+      return NextResponse.next()
     }
-  };
+  }
 }
 
 // Fonction utilitaire pour vérifier le rate limit côté client
 export function checkRateLimit(response: Response): boolean {
-  const remaining = response.headers.get('X-RateLimit-Remaining');
-  return remaining !== null && parseInt(remaining) > 0;
+  const remaining = response.headers.get('X-RateLimit-Remaining')
+  return remaining !== null && parseInt(remaining) > 0
 }
 
 // Fonction pour obtenir les informations de rate limit
@@ -146,39 +135,33 @@ export function getRateLimitInfo(response: Response) {
     remaining: response.headers.get('X-RateLimit-Remaining'),
     reset: response.headers.get('X-RateLimit-Reset'),
     retryAfter: response.headers.get('Retry-After')
-  };
+  }
 }
 
 // Middleware spécifique pour les APIs
-export const apiRateLimit = createRateLimitMiddleware('api');
-
+export const apiRateLimit = createRateLimitMiddleware('api')
 // Middleware spécifique pour l'authentification
-export const authRateLimit = createRateLimitMiddleware('auth');
-
+export const authRateLimit = createRateLimitMiddleware('auth')
 // Middleware spécifique pour les webhooks
-export const webhookRateLimit = createRateLimitMiddleware('webhook');
-
+export const webhookRateLimit = createRateLimitMiddleware('webhook')
 // Middleware spécifique pour les missions
-export const missionsRateLimit = createRateLimitMiddleware('missions');
-
+export const missionsRateLimit = createRateLimitMiddleware('missions')
 // Middleware spécifique pour les exports
-export const exportsRateLimit = createRateLimitMiddleware('exports');
-
+export const exportsRateLimit = createRateLimitMiddleware('exports')
 // Fonction pour appliquer le rate limiting à une route API
 export function withRateLimit(
   handler: (request: NextRequest) => Promise<NextResponse>,
   type: keyof typeof rateLimitConfig = 'api'
 ) {
   return async function(request: NextRequest) {
-    const rateLimitMiddleware = createRateLimitMiddleware(type);
-    const rateLimitResponse = await rateLimitMiddleware(request);
-    
+    const rateLimitMiddleware = createRateLimitMiddleware(type)
+    const rateLimitResponse = await rateLimitMiddleware(request)
     // Si le rate limit est dépassé, retourner la réponse d'erreur
     if (rateLimitResponse.status === 429) {
-      return rateLimitResponse;
+      return rateLimitResponse
     }
     
     // Sinon, exécuter le handler original
-    return handler(request);
-  };
+    return handler(request)
+  }
 }

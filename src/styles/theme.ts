@@ -190,21 +190,17 @@ export const theme = {
       error: { background: '#fee2e2', color: '#991b1b', border: '#f87171' }
     }
   }
-};
-
+}
 // Utilitaires pour faciliter l'usage
 export const getColor = (path: string) => {
-  return path.split('.').reduce((obj: any, key) => obj?.[key], theme.colors);
-};
-
+  return path.split('.').reduce((obj: any, key) => obj?.[key], theme.colors)
+}
 export const getSpacing = (size: keyof typeof theme.spacing) => {
-  return theme.spacing[size];
-};
-
+  return theme.spacing[size]
+}
 export const getTypography = (property: keyof typeof theme.typography, value: string) => {
-  return (theme.typography[property] as any)[value];
-};
-
+  return (theme.typography[property] as any)[value]
+}
 // Styles CSS-in-JS helpers
 export const createStyles = {
   card: () => ({
@@ -251,6 +247,5 @@ export const createStyles = {
       borderColor: theme.components.input.borderFocus
     }
   })
-};
-
-export default theme;
+}
+export default theme

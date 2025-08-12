@@ -1,28 +1,23 @@
-"use client";
-import { useState } from 'react';
-import { Plan, PlanService } from '@/lib/plans';
-import Icon from '@/components/ui/Icon';
-
+"use client"
+import { useState } from 'react'
+import { Plan, PlanService } from '@/lib/plans'
+import Icon from '@/components/ui/Icon'
 interface PricingCardProps {
-  plan: Plan;
-  onSelect: (planId: string) => void;
-  isPopular?: boolean;
+  plan: Plan
+  onSelect: (planId: string) => void
+  isPopular?: boolean
 }
 
 export default function PricingCard({ plan, onSelect, isPopular = false }: PricingCardProps) {
-  const [isAnnual, setIsAnnual] = useState(false);
-  const [showTaxes, setShowTaxes] = useState(false);
-  
-  const priceInfo = PlanService.formatPriceWithTaxes(plan);
-  const taxes = PlanService.getCanadianTaxes(plan.price);
-  
-  const annualPrice = PlanService.getAnnualPrice(plan);
-  const annualTaxes = PlanService.getCanadianTaxes(annualPrice / 12);
-  
-  const displayPrice = isAnnual ? annualPrice / 12 : plan.price;
-  const displayTaxes = isAnnual ? annualTaxes : taxes;
-  const displayTotal = displayPrice + displayTaxes.total;
-
+  const [isAnnual, setIsAnnual] = useState(false)
+  const [showTaxes, setShowTaxes] = useState(false)
+  const priceInfo = PlanService.formatPriceWithTaxes(plan)
+  const taxes = PlanService.getCanadianTaxes(plan.price)
+  const annualPrice = PlanService.getAnnualPrice(plan)
+  const annualTaxes = PlanService.getCanadianTaxes(annualPrice / 12)
+  const displayPrice = isAnnual ? annualPrice / 12 : plan.price
+  const displayTaxes = isAnnual ? annualTaxes : taxes
+  const displayTotal = displayPrice + displayTaxes.total
   return (
     <div className={`
       relative bg-white rounded-2xl shadow-lg border-2 p-8 transition-all duration-300 hover:shadow-xl
@@ -41,9 +36,9 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
       <div className="text-center mb-6">
         <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
         <p className="text-gray-600 text-sm mb-4">
-          {plan.id === &apos;free&apos; ? &apos;Parfait pour commencer&apos; : 
-           plan.id === &apos;starter&apos; ? &apos;Pour les petites équipes&apos; :
-           plan.id === &apos;pro&apos; ? &apos;Pour les professionnels&apos; : &apos;Pour les grandes entreprises&apos;}
+          {plan.id === 'free' ? 'Parfait pour commencer' : 
+           plan.id === 'starter' ? 'Pour les petites équipes' :
+           plan.id === 'pro' ? 'Pour les professionnels' : 'Pour les grandes entreprises'}
         </p>
       </div>
 
@@ -97,7 +92,7 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
             className="w-full text-left text-sm text-gray-600 hover:text-purple-600 transition-colors"
           >
             <Icon name="info-circle" size={16} className="inline mr-1" />
-            {showTaxes ? &apos;Masquer&apos; : &apos;Voir&apos;} les taxes (TPS/TVQ)
+            {showTaxes ? 'Masquer' : 'Voir'} les taxes (TPS/TVQ)
           </button>
           
           {showTaxes && (
@@ -141,13 +136,13 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
         className={`
           w-full py-3 px-6 rounded-xl font-semibold transition-all duration-200
           ${plan.price === 0 
-            ? &apos;bg-gray-100 text-gray-700 hover:bg-gray-200&apos; 
-            : &apos;bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg&apos;
+            ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' 
+            : 'bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800 hover:shadow-lg'
           }
         `}
       >
-        {plan.price === 0 ? &apos;Commencer gratuitement&apos; : 
-         isAnnual ? `S&apos;abonner annuellement` : &apos;Commencer l\&apos;essai&apos;}
+        {plan.price === 0 ? 'Commencer gratuitement' : 
+         isAnnual ? `S'abonner annuellement` : 'Commencer l\'essai'}
       </button>
 
       {/* Note sur l'essai */}
@@ -157,5 +152,5 @@ export default function PricingCard({ plan, onSelect, isPopular = false }: Prici
         </p>
       )}
     </div>
-  );
+  )
 }

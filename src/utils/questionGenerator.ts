@@ -1,10 +1,9 @@
-import { openai } from '@/lib/openai';
-
+import { openai } from '@/lib/openai'
 export interface AlignmentQuestion {
-  id: string;
-  emoji: string;
-  label: string;
-  placeholder: string;
+  id: string
+  emoji: string
+  label: string
+  placeholder: string
 }
 
 export async function generateAlignmentQuestions(objective: string): Promise<AlignmentQuestion[]> {
@@ -48,41 +47,35 @@ Exemples d'adaptation selon le type de mission:
 - Design → questions sur style, marque, public cible
 - Business → questions sur marché, concurrence, ressources
 
-Génère maintenant les 3 questions pour cette mission:`;
-
+Génère maintenant les 3 questions pour cette mission:`
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       max_tokens: 500
-    });
-
-    const response = completion.choices[0]?.message?.content;
+    })
+    const response = completion.choices[0]?.message?.content
     if (!response) {
-      throw new Error('Pas de réponse de OpenAI');
+      throw new Error('Pas de réponse de OpenAI')
     }
 
     // Nettoyer la réponse et parser le JSON
-    const cleanResponse = response.trim().replace(/```json\n?|\n?```/g, '');
-    const questions: AlignmentQuestion[] = JSON.parse(cleanResponse);
-
+    const cleanResponse = response.trim().replace(/```json\n?|\n?```/g, '')
+    const questions: AlignmentQuestion[] = JSON.parse(cleanResponse)
     // Validation
     if (!Array.isArray(questions) || questions.length !== 3) {
-      throw new Error('Format de réponse invalide');
+      throw new Error('Format de réponse invalide')
     }
 
     // Vérifier que chaque question a les champs requis
     questions.forEach((q, index) => {
       if (!q.id || !q.emoji || !q.label || !q.placeholder) {
-        throw new Error(`Question ${index + 1} manque des champs requis`);
+        throw new Error(`Question ${index + 1} manque des champs requis`)
       }
-    });
-
-    return questions;
-
+    })
+    return questions
   } catch (error) {
-    console.error('Erreur lors de la génération des questions:', error);
-    
+    console.error('Erreur lors de la génération des questions:', error)
     // Fallback vers des questions génériques en cas d'erreur
     return [
       {
@@ -103,6 +96,6 @@ Génère maintenant les 3 questions pour cette mission:`;
         label: "Y a-t-il des contraintes importantes à respecter ?",
         placeholder: "Budget, délais, contraintes techniques ou légales..."
       }
-    ];
+    ]
   }
 }

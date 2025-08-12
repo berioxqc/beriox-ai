@@ -1,53 +1,44 @@
-"use client";
-import { useState, useEffect } from 'react';
-import { useAnalytics } from '@/hooks/useAnalytics';
-
+"use client"
+import { useState, useEffect } from 'react'
+import { useAnalytics } from '@/hooks/useAnalytics'
 export default function CookieConsent() {
-  const [showConsent, setShowConsent] = useState(false);
-  const analytics = useAnalytics();
-
+  const [showConsent, setShowConsent] = useState(false)
+  const analytics = useAnalytics()
   useEffect(() => {
     // Vérifier si l'utilisateur a déjà donné son consentement
-    const consent = localStorage.getItem('cookie-consent');
+    const consent = localStorage.getItem('cookie-consent')
     if (!consent) {
-      setShowConsent(true);
+      setShowConsent(true)
     }
-  }, []);
-
+  }, [])
   const acceptAll = () => {
-    localStorage.setItem('cookie-consent', 'all');
-    setShowConsent(false);
-    
+    localStorage.setItem('cookie-consent', 'all')
+    setShowConsent(false)
     // Track consent event
-    analytics.trackEvent('cookie_consent', 'engagement', 'accept_all');
-    
+    analytics.trackEvent('cookie_consent', 'engagement', 'accept_all')
     // Enable Google Analytics
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('consent', 'update', {
         analytics_storage: 'granted',
         ad_storage: 'granted',
-      });
+      })
     }
-  };
-
+  }
   const acceptNecessary = () => {
-    localStorage.setItem('cookie-consent', 'necessary');
-    setShowConsent(false);
-    
+    localStorage.setItem('cookie-consent', 'necessary')
+    setShowConsent(false)
     // Track consent event
-    analytics.trackEvent('cookie_consent', 'engagement', 'necessary_only');
-    
+    analytics.trackEvent('cookie_consent', 'engagement', 'necessary_only')
     // Disable Google Analytics
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('consent', 'update', {
         analytics_storage: 'denied',
         ad_storage: 'denied',
-      });
+      })
     }
-  };
-
+  }
   if (!showConsent) {
-    return null;
+    return null
   }
 
   return (
@@ -78,5 +69,5 @@ export default function CookieConsent() {
         </div>
       </div>
     </div>
-  );
+  )
 }

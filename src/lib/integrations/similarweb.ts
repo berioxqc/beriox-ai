@@ -1,11 +1,9 @@
-import { ApiResponse, CompetitorData } from './types';
-
+import { ApiResponse, CompetitorData } from './types'
 export class SimilarWebAPI {
-  private baseUrl = 'https://api.similarweb.com/v1';
-  private apiKey: string;
-
+  private baseUrl = 'https://api.similarweb.com/v1'
+  private apiKey: string
   constructor(apiKey: string) {
-    this.apiKey = apiKey;
+    this.apiKey = apiKey
   }
 
   /**
@@ -18,14 +16,12 @@ export class SimilarWebAPI {
           'api-key': this.apiKey,
           'Content-Type': 'application/json',
         },
-      });
-
+      })
       if (!response.ok) {
-        throw new Error(`SimilarWeb API error: ${response.status}`);
+        throw new Error(`SimilarWeb API error: ${response.status}`)
       }
 
-      const data = await response.json();
-      
+      const data = await response.json()
       return {
         success: true,
         data: {
@@ -39,12 +35,12 @@ export class SimilarWebAPI {
           competitors: data.competitors || [],
           lastUpdated: new Date(),
         },
-      };
+      }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 
@@ -58,14 +54,12 @@ export class SimilarWebAPI {
           'api-key': this.apiKey,
           'Content-Type': 'application/json',
         },
-      });
-
+      })
       if (!response.ok) {
-        throw new Error(`SimilarWeb API error: ${response.status}`);
+        throw new Error(`SimilarWeb API error: ${response.status}`)
       }
 
-      const data = await response.json();
-      
+      const data = await response.json()
       return {
         success: true,
         data: {
@@ -75,12 +69,12 @@ export class SimilarWebAPI {
           keywordDifficulty: data.difficulty || {},
           searchVolume: data.volume || {},
         },
-      };
+      }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 
@@ -94,14 +88,12 @@ export class SimilarWebAPI {
           'api-key': this.apiKey,
           'Content-Type': 'application/json',
         },
-      });
-
+      })
       if (!response.ok) {
-        throw new Error(`SimilarWeb API error: ${response.status}`);
+        throw new Error(`SimilarWeb API error: ${response.status}`)
       }
 
-      const data = await response.json();
-      
+      const data = await response.json()
       return {
         success: true,
         data: {
@@ -113,12 +105,12 @@ export class SimilarWebAPI {
           emailTraffic: data.email || 0,
           displayTraffic: data.display || 0,
         },
-      };
+      }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 
@@ -132,14 +124,12 @@ export class SimilarWebAPI {
           'api-key': this.apiKey,
           'Content-Type': 'application/json',
         },
-      });
-
+      })
       if (!response.ok) {
-        throw new Error(`SimilarWeb API error: ${response.status}`);
+        throw new Error(`SimilarWeb API error: ${response.status}`)
       }
 
-      const data = await response.json();
-      
+      const data = await response.json()
       return {
         success: true,
         data: {
@@ -151,12 +141,12 @@ export class SimilarWebAPI {
             category: comp.category || '',
           })) || [],
         },
-      };
+      }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 
@@ -170,15 +160,13 @@ export class SimilarWebAPI {
         this.getKeywordAnalysis(domain),
         this.getTrafficSources(domain),
         this.getCompetitors(domain),
-      ]);
-
-      const traffic = trafficResult.status === 'fulfilled' ? trafficResult.value : null;
-      const keywords = keywordsResult.status === 'fulfilled' ? keywordsResult.value : null;
-      const sources = sourcesResult.status === 'fulfilled' ? sourcesResult.value : null;
-      const competitors = competitorsResult.status === 'fulfilled' ? competitorsResult.value : null;
-
+      ])
+      const traffic = trafficResult.status === 'fulfilled' ? trafficResult.value : null
+      const keywords = keywordsResult.status === 'fulfilled' ? keywordsResult.value : null
+      const sources = sourcesResult.status === 'fulfilled' ? sourcesResult.value : null
+      const competitors = competitorsResult.status === 'fulfilled' ? competitorsResult.value : null
       if (!traffic?.success) {
-        throw new Error('Impossible d\'obtenir les données de trafic');
+        throw new Error('Impossible d\'obtenir les données de trafic')
       }
 
       return {
@@ -190,12 +178,12 @@ export class SimilarWebAPI {
           competitorAnalysis: competitors?.data || {},
           lastUpdated: new Date(),
         },
-      };
+      }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 }

@@ -1,20 +1,17 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
+import Link from "next/link"
+import Icon from "@/components/ui/Icon"
 export default function HomePage() {
-  const { data: session, status } = useSession();
-  const [loading, setLoading] = useState(true);
-
+  const { data: session, status } = useSession()
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     // Simuler le chargement
     setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
-
+      setLoading(false)
+    }, 1000)
+  }, [])
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
@@ -23,7 +20,7 @@ export default function HomePage() {
           <p className="mt-4 text-white">Chargement...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -76,10 +73,10 @@ export default function HomePage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Votre équipe d&apos;agents IA
+            Votre équipe d'agents IA
           </h1>
           <p className="text-xl text-purple-200 mb-8 max-w-3xl mx-auto">
-            Automatisez et optimisez vos processus business avec l&apos;intelligence artificielle avancée
+            Automatisez et optimisez vos processus business avec l'intelligence artificielle avancée
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -127,7 +124,7 @@ export default function HomePage() {
             </div>
             <h3 className="text-xl font-semibold text-white mb-3">Équipe IA</h3>
             <p className="text-purple-200">
-              Une équipe d&apos;agents IA spécialisés pour chaque domaine d&apos;expertise
+              Une équipe d'agents IA spécialisés pour chaque domaine d'expertise
             </p>
           </div>
 
@@ -144,7 +141,7 @@ export default function HomePage() {
 
         {/* Pricing Section */}
         <div className="mt-20 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Plans d&apos;abonnement</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Plans d'abonnement</h2>
           <p className="text-purple-200 mb-8">
             Choisissez le plan qui correspond à vos besoins
           </p>
@@ -174,5 +171,5 @@ export default function HomePage() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

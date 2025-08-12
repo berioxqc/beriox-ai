@@ -1,6 +1,5 @@
-import { logger } from './logger';
-import { metrics } from './metrics';
-
+import { logger } from './logger'
+import { metrics } from './metrics'
 export enum FormFieldType {
   TEXT = 'text',
   EMAIL = 'email',
@@ -31,108 +30,107 @@ export enum ValidationRule {
 }
 
 export interface FormField {
-  id: string;
-  name: string;
-  type: FormFieldType;
-  label: string;
-  placeholder?: string;
-  required?: boolean;
-  defaultValue?: any;
-  options?: Array<{ value: string; label: string }>;
-  validation?: ValidationRule[];
-  validationConfig?: Record<string, any>;
-  helpText?: string;
-  errorMessage?: string;
-  disabled?: boolean;
-  hidden?: boolean;
-  order: number;
-  group?: string;
+  id: string
+  name: string
+  type: FormFieldType
+  label: string
+  placeholder?: string
+  required?: boolean
+  defaultValue?: any
+  options?: Array<{ value: string; label: string }>
+  validation?: ValidationRule[]
+  validationConfig?: Record<string, any>
+  helpText?: string
+  errorMessage?: string
+  disabled?: boolean
+  hidden?: boolean
+  order: number
+  group?: string
   dependencies?: string[]; // IDs des champs dont dépend ce champ
 }
 
 export interface FormConfig {
-  id: string;
-  name: string;
-  description?: string;
-  fields: FormField[];
-  submitButtonText?: string;
-  cancelButtonText?: string;
-  autoSave?: boolean;
+  id: string
+  name: string
+  description?: string
+  fields: FormField[]
+  submitButtonText?: string
+  cancelButtonText?: string
+  autoSave?: boolean
   autoSaveInterval?: number; // en millisecondes
-  validationMode?: 'onBlur' | 'onChange' | 'onSubmit';
-  showProgress?: boolean;
-  allowDraft?: boolean;
-  maxRetries?: number;
-  successMessage?: string;
-  errorMessage?: string;
-  redirectUrl?: string;
+  validationMode?: 'onBlur' | 'onChange' | 'onSubmit'
+  showProgress?: boolean
+  allowDraft?: boolean
+  maxRetries?: number
+  successMessage?: string
+  errorMessage?: string
+  redirectUrl?: string
   analytics?: {
-    trackAbandonment?: boolean;
-    trackTimeSpent?: boolean;
-    trackErrors?: boolean;
-  };
+    trackAbandonment?: boolean
+    trackTimeSpent?: boolean
+    trackErrors?: boolean
+  }
 }
 
 export interface FormData {
-  formId: string;
-  userId?: string;
-  sessionId: string;
-  data: Record<string, any>;
+  formId: string
+  userId?: string
+  sessionId: string
+  data: Record<string, any>
   progress: number; // 0-100
-  startTime: Date;
-  lastActivity: Date;
-  completed: boolean;
-  submitted: boolean;
-  errors: Record<string, string[]>;
-  warnings: Record<string, string[]>;
-  draft?: boolean;
-  retryCount: number;
+  startTime: Date
+  lastActivity: Date
+  completed: boolean
+  submitted: boolean
+  errors: Record<string, string[]>
+  warnings: Record<string, string[]>
+  draft?: boolean
+  retryCount: number
 }
 
 export interface FormAnalytics {
-  formId: string;
-  totalStarts: number;
-  totalCompletions: number;
-  totalAbandonments: number;
+  formId: string
+  totalStarts: number
+  totalCompletions: number
+  totalAbandonments: number
   averageTimeSpent: number; // en secondes
-  averageProgress: number;
-  errorRate: number;
-  fieldErrors: Record<string, number>;
-  completionRate: number;
-  abandonmentRate: number;
-  topAbandonmentPoints: Array<{ field: string; count: number }>;
-  userJourney: Array<{ action: string; timestamp: Date; data?: any }>;
+  averageProgress: number
+  errorRate: number
+  fieldErrors: Record<string, number>
+  completionRate: number
+  abandonmentRate: number
+  topAbandonmentPoints: Array<{ field: string; count: number }>
+  userJourney: Array<{ action: string; timestamp: Date; data?: any }>
 }
 
 export interface FormOptimization {
-  formId: string;
+  formId: string
   suggestions: Array<{
-    type: 'field_order' | 'field_removal' | 'field_addition' | 'validation' | 'ui_improvement';
-    priority: 'low' | 'medium' | 'high';
-    description: string;
+    type: 'field_order' | 'field_removal' | 'field_addition' | 'validation' | 'ui_improvement'
+    priority: 'low' | 'medium' | 'high'
+    description: string
     impact: number; // 0-100
-    implementation: string;
-  }>;
+    implementation: string
+  }>
   aBTestVariants: Array<{
-    id: string;
-    name: string;
-    changes: Record<string, any>;
+    id: string
+    name: string
+    changes: Record<string, any>
     performance: {
-      completionRate: number;
-      averageTime: number;
-      errorRate: number;
-    };
-  }>;
+      completionRate: number
+      averageTime: number
+      errorRate: number
+    }
+  }>
 }
 
 class FormOptimizer {
-  private forms: Map<string, FormConfig> = new Map();
-  private formData: Map<string, FormData> = new Map();
-  private analytics: Map<string, FormAnalytics> = new Map();
-  private optimizations: Map<string, FormOptimization> = new Map();
-
+  private forms: Map<string, FormConfig> = new Map()
+  private formData: Map<string, FormData> = new Map()
+  private analytics: Map<string, FormAnalytics> = new Map()
+  private optimizations: Map<string, FormOptimization> = new Map()
   constructor() {
-    this.initializeDefaultForms();
+    this.initializeDefaultForms()
   }
 
   private initializeDefaultForms() {
@@ -197,8 +195,7 @@ class FormOptimizer {
         trackTimeSpent: true,
         trackErrors: true
       }
-    });
-
+    })
     // Formulaire d'inscription optimisé
     this.addForm({
       id: 'signup-form',
@@ -284,13 +281,12 @@ class FormOptimizer {
         trackTimeSpent: true,
         trackErrors: true
       }
-    });
+    })
   }
 
   // Gestion des formulaires
   addForm(config: FormConfig): void {
-    this.forms.set(config.id, config);
-    
+    this.forms.set(config.id, config)
     // Initialiser les analytics
     this.analytics.set(config.id, {
       formId: config.id,
@@ -305,31 +301,29 @@ class FormOptimizer {
       abandonmentRate: 0,
       topAbandonmentPoints: [],
       userJourney: []
-    });
-
+    })
     logger.info(`Form added: ${config.name}`, {
       action: 'form_added',
       metadata: { formId: config.id, fieldCount: config.fields.length }
-    });
+    })
   }
 
   getForm(formId: string): FormConfig | null {
-    return this.forms.get(formId) || null;
+    return this.forms.get(formId) || null
   }
 
   getAllForms(): FormConfig[] {
-    return Array.from(this.forms.values());
+    return Array.from(this.forms.values())
   }
 
   // Gestion des données de formulaire
   startForm(formId: string, userId?: string): FormData {
-    const form = this.forms.get(formId);
+    const form = this.forms.get(formId)
     if (!form) {
-      throw new Error(`Form not found: ${formId}`);
+      throw new Error(`Form not found: ${formId}`)
     }
 
-    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     const formData: FormData = {
       formId,
       userId,
@@ -343,291 +337,260 @@ class FormOptimizer {
       errors: {},
       warnings: {},
       retryCount: 0
-    };
-
-    this.formData.set(sessionId, formData);
-
+    }
+    this.formData.set(sessionId, formData)
     // Mettre à jour les analytics
-    const analytics = this.analytics.get(formId);
+    const analytics = this.analytics.get(formId)
     if (analytics) {
-      analytics.totalStarts++;
+      analytics.totalStarts++
       analytics.userJourney.push({
         action: 'form_started',
         timestamp: new Date(),
         data: { userId, sessionId }
-      });
+      })
     }
 
     logger.info(`Form started: ${formId}`, {
       action: 'form_started',
       metadata: { formId, userId, sessionId }
-    });
-
-    metrics.recordUserAction('form_started', userId, { formId });
-
-    return formData;
+    })
+    metrics.recordUserAction('form_started', userId, { formId })
+    return formData
   }
 
   updateFormData(sessionId: string, fieldId: string, value: any): FormData | null {
-    const formData = this.formData.get(sessionId);
-    if (!formData) return null;
-
-    const form = this.forms.get(formData.formId);
-    if (!form) return null;
-
+    const formData = this.formData.get(sessionId)
+    if (!formData) return null
+    const form = this.forms.get(formData.formId)
+    if (!form) return null
     // Mettre à jour les données
-    formData.data[fieldId] = value;
-    formData.lastActivity = new Date();
-
+    formData.data[fieldId] = value
+    formData.lastActivity = new Date()
     // Valider le champ
-    const field = form.fields.find(f => f.id === fieldId);
+    const field = form.fields.find(f => f.id === fieldId)
     if (field) {
-      const fieldErrors = this.validateField(field, value, formData.data);
+      const fieldErrors = this.validateField(field, value, formData.data)
       if (fieldErrors.length > 0) {
-        formData.errors[fieldId] = fieldErrors;
+        formData.errors[fieldId] = fieldErrors
       } else {
-        delete formData.errors[fieldId];
+        delete formData.errors[fieldId]
       }
     }
 
     // Calculer le progrès
-    formData.progress = this.calculateProgress(form, formData.data);
-
+    formData.progress = this.calculateProgress(form, formData.data)
     // Sauvegarder automatiquement si configuré
     if (form.autoSave) {
-      this.saveDraft(sessionId);
+      this.saveDraft(sessionId)
     }
 
     // Mettre à jour les analytics
-    const analytics = this.analytics.get(formData.formId);
+    const analytics = this.analytics.get(formData.formId)
     if (analytics) {
       analytics.userJourney.push({
         action: 'field_updated',
         timestamp: new Date(),
         data: { fieldId, value, progress: formData.progress }
-      });
+      })
     }
 
     logger.info(`Form data updated: ${fieldId}`, {
       action: 'form_data_updated',
       metadata: { formId: formData.formId, fieldId, sessionId, progress: formData.progress }
-    });
-
-    return formData;
+    })
+    return formData
   }
 
   validateForm(sessionId: string): { isValid: boolean; errors: Record<string, string[]> } {
-    const formData = this.formData.get(sessionId);
+    const formData = this.formData.get(sessionId)
     if (!formData) {
-      return { isValid: false, errors: {} };
+      return { isValid: false, errors: {} }
     }
 
-    const form = this.forms.get(formData.formId);
+    const form = this.forms.get(formData.formId)
     if (!form) {
-      return { isValid: false, errors: {} };
+      return { isValid: false, errors: {} }
     }
 
-    const errors: Record<string, string[]> = {};
-
+    const errors: Record<string, string[]> = {}
     // Valider tous les champs
     for (const field of form.fields) {
       if (field.required || formData.data[field.id]) {
-        const fieldErrors = this.validateField(field, formData.data[field.id], formData.data);
+        const fieldErrors = this.validateField(field, formData.data[field.id], formData.data)
         if (fieldErrors.length > 0) {
-          errors[field.id] = fieldErrors;
+          errors[field.id] = fieldErrors
         }
       }
     }
 
-    formData.errors = errors;
-
+    formData.errors = errors
     // Mettre à jour les analytics
-    const analytics = this.analytics.get(formData.formId);
+    const analytics = this.analytics.get(formData.formId)
     if (analytics) {
       Object.keys(errors).forEach(fieldId => {
-        analytics.fieldErrors[fieldId] = (analytics.fieldErrors[fieldId] || 0) + 1;
-      });
+        analytics.fieldErrors[fieldId] = (analytics.fieldErrors[fieldId] || 0) + 1
+      })
     }
 
-    return { isValid: Object.keys(errors).length === 0, errors };
+    return { isValid: Object.keys(errors).length === 0, errors }
   }
 
   private validateField(field: FormField, value: any, formData: Record<string, any>): string[] {
-    const errors: string[] = [];
-
-    if (!field.validation) return errors;
-
+    const errors: string[] = []
+    if (!field.validation) return errors
     for (const rule of field.validation) {
       switch (rule) {
         case ValidationRule.REQUIRED:
           if (!value || (typeof value === 'string' && value.trim() === '')) {
-            errors.push(field.errorMessage || `${field.label} est requis`);
+            errors.push(field.errorMessage || `${field.label} est requis`)
           }
-          break;
-
+          break
         case ValidationRule.EMAIL:
           if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-            errors.push(field.errorMessage || 'Format d\'email invalide');
+            errors.push(field.errorMessage || 'Format d\'email invalide')
           }
-          break;
-
+          break
         case ValidationRule.MIN_LENGTH:
-          const minLength = field.validationConfig?.min_length || 0;
+          const minLength = field.validationConfig?.min_length || 0
           if (value && typeof value === 'string' && value.length < minLength) {
-            errors.push(field.errorMessage || `${field.label} doit contenir au moins ${minLength} caractères`);
+            errors.push(field.errorMessage || `${field.label} doit contenir au moins ${minLength} caractères`)
           }
-          break;
-
+          break
         case ValidationRule.MAX_LENGTH:
-          const maxLength = field.validationConfig?.max_length || 0;
+          const maxLength = field.validationConfig?.max_length || 0
           if (value && typeof value === 'string' && value.length > maxLength) {
-            errors.push(field.errorMessage || `${field.label} ne peut pas dépasser ${maxLength} caractères`);
+            errors.push(field.errorMessage || `${field.label} ne peut pas dépasser ${maxLength} caractères`)
           }
-          break;
-
+          break
         case ValidationRule.PATTERN:
-          const pattern = field.validationConfig?.pattern;
+          const pattern = field.validationConfig?.pattern
           if (pattern && value && !new RegExp(pattern).test(value)) {
-            errors.push(field.errorMessage || `${field.label} ne respecte pas le format requis`);
+            errors.push(field.errorMessage || `${field.label} ne respecte pas le format requis`)
           }
-          break;
-
+          break
         case ValidationRule.MIN_VALUE:
-          const minValue = field.validationConfig?.min_value;
+          const minValue = field.validationConfig?.min_value
           if (minValue !== undefined && value && Number(value) < minValue) {
-            errors.push(field.errorMessage || `${field.label} doit être au moins ${minValue}`);
+            errors.push(field.errorMessage || `${field.label} doit être au moins ${minValue}`)
           }
-          break;
-
+          break
         case ValidationRule.MAX_VALUE:
-          const maxValue = field.validationConfig?.max_value;
+          const maxValue = field.validationConfig?.max_value
           if (maxValue !== undefined && value && Number(value) > maxValue) {
-            errors.push(field.errorMessage || `${field.label} ne peut pas dépasser ${maxValue}`);
+            errors.push(field.errorMessage || `${field.label} ne peut pas dépasser ${maxValue}`)
           }
-          break;
-
+          break
         case ValidationRule.CUSTOM:
-          const customValidator = field.validationConfig?.custom;
+          const customValidator = field.validationConfig?.custom
           if (customValidator && typeof customValidator === 'function') {
             try {
               if (!customValidator(value, formData)) {
-                errors.push(field.errorMessage || `${field.label} n'est pas valide`);
+                errors.push(field.errorMessage || `${field.label} n'est pas valide`)
               }
             } catch (error) {
-              errors.push('Erreur de validation personnalisée');
+              errors.push('Erreur de validation personnalisée')
             }
           }
-          break;
+          break
       }
     }
 
-    return errors;
+    return errors
   }
 
   private calculateProgress(form: FormConfig, data: Record<string, any>): number {
-    const requiredFields = form.fields.filter(f => f.required);
-    if (requiredFields.length === 0) return 100;
-
+    const requiredFields = form.fields.filter(f => f.required)
+    if (requiredFields.length === 0) return 100
     const completedFields = requiredFields.filter(field => {
-      const value = data[field.id];
-      return value && (typeof value !== 'string' || value.trim() !== '');
-    });
-
-    return Math.round((completedFields.length / requiredFields.length) * 100);
+      const value = data[field.id]
+      return value && (typeof value !== 'string' || value.trim() !== '')
+    })
+    return Math.round((completedFields.length / requiredFields.length) * 100)
   }
 
   // Soumission de formulaire
   submitForm(sessionId: string): { success: boolean; errors?: Record<string, string[]>; data?: FormData } {
-    const formData = this.formData.get(sessionId);
+    const formData = this.formData.get(sessionId)
     if (!formData) {
-      return { success: false, errors: {} };
+      return { success: false, errors: {} }
     }
 
-    const form = this.forms.get(formData.formId);
+    const form = this.forms.get(formData.formId)
     if (!form) {
-      return { success: false, errors: {} };
+      return { success: false, errors: {} }
     }
 
     // Valider le formulaire
-    const validation = this.validateForm(sessionId);
+    const validation = this.validateForm(sessionId)
     if (!validation.isValid) {
-      formData.retryCount++;
-      
+      formData.retryCount++
       // Mettre à jour les analytics
-      const analytics = this.analytics.get(formData.formId);
+      const analytics = this.analytics.get(formData.formId)
       if (analytics) {
         analytics.userJourney.push({
           action: 'form_submission_failed',
           timestamp: new Date(),
           data: { errors: validation.errors, retryCount: formData.retryCount }
-        });
+        })
       }
 
       logger.warn(`Form submission failed: ${formData.formId}`, {
         action: 'form_submission_failed',
         metadata: { formId: formData.formId, sessionId, errors: validation.errors }
-      });
-
-      return { success: false, errors: validation.errors };
+      })
+      return { success: false, errors: validation.errors }
     }
 
     // Marquer comme soumis
-    formData.submitted = true;
-    formData.completed = true;
-    formData.progress = 100;
-
+    formData.submitted = true
+    formData.completed = true
+    formData.progress = 100
     // Mettre à jour les analytics
-    const analytics = this.analytics.get(formData.formId);
+    const analytics = this.analytics.get(formData.formId)
     if (analytics) {
-      analytics.totalCompletions++;
-      analytics.averageTimeSpent = this.calculateAverageTimeSpent(formData.formId);
-      analytics.completionRate = (analytics.totalCompletions / analytics.totalStarts) * 100;
+      analytics.totalCompletions++
+      analytics.averageTimeSpent = this.calculateAverageTimeSpent(formData.formId)
+      analytics.completionRate = (analytics.totalCompletions / analytics.totalStarts) * 100
       analytics.userJourney.push({
         action: 'form_submitted',
         timestamp: new Date(),
         data: { timeSpent: (new Date().getTime() - formData.startTime.getTime()) / 1000 }
-      });
+      })
     }
 
     logger.info(`Form submitted: ${formData.formId}`, {
       action: 'form_submitted',
       metadata: { formId: formData.formId, sessionId, timeSpent: (new Date().getTime() - formData.startTime.getTime()) / 1000 }
-    });
-
+    })
     metrics.recordUserAction('form_submitted', formData.userId, { 
       formId: formData.formId,
       timeSpent: (new Date().getTime() - formData.startTime.getTime()) / 1000
-    });
-
-    return { success: true, data: formData };
+    })
+    return { success: true, data: formData }
   }
 
   // Sauvegarde de brouillon
   saveDraft(sessionId: string): boolean {
-    const formData = this.formData.get(sessionId);
-    if (!formData) return false;
-
-    formData.draft = true;
-    formData.lastActivity = new Date();
-
+    const formData = this.formData.get(sessionId)
+    if (!formData) return false
+    formData.draft = true
+    formData.lastActivity = new Date()
     logger.info(`Form draft saved: ${formData.formId}`, {
       action: 'form_draft_saved',
       metadata: { formId: formData.formId, sessionId }
-    });
-
-    return true;
+    })
+    return true
   }
 
   // Abandon de formulaire
   abandonForm(sessionId: string, reason?: string): boolean {
-    const formData = this.formData.get(sessionId);
-    if (!formData || formData.submitted) return false;
-
+    const formData = this.formData.get(sessionId)
+    if (!formData || formData.submitted) return false
     // Mettre à jour les analytics
-    const analytics = this.analytics.get(formData.formId);
+    const analytics = this.analytics.get(formData.formId)
     if (analytics) {
-      analytics.totalAbandonments++;
-      analytics.abandonmentRate = (analytics.totalAbandonments / analytics.totalStarts) * 100;
+      analytics.totalAbandonments++
+      analytics.abandonmentRate = (analytics.totalAbandonments / analytics.totalStarts) * 100
       analytics.userJourney.push({
         action: 'form_abandoned',
         timestamp: new Date(),
@@ -636,18 +599,17 @@ class FormOptimizer {
           progress: formData.progress,
           timeSpent: (new Date().getTime() - formData.startTime.getTime()) / 1000
         }
-      });
-
+      })
       // Identifier le point d'abandon
-      const lastField = this.getLastActiveField(formData);
+      const lastField = this.getLastActiveField(formData)
       if (lastField) {
-        const existingPoint = analytics.topAbandonmentPoints.find(p => p.field === lastField);
+        const existingPoint = analytics.topAbandonmentPoints.find(p => p.field === lastField)
         if (existingPoint) {
-          existingPoint.count++;
+          existingPoint.count++
         } else {
-          analytics.topAbandonmentPoints.push({ field: lastField, count: 1 });
+          analytics.topAbandonmentPoints.push({ field: lastField, count: 1 })
         }
-        analytics.topAbandonmentPoints.sort((a, b) => b.count - a.count);
+        analytics.topAbandonmentPoints.sort((a, b) => b.count - a.count)
       }
     }
 
@@ -659,72 +621,63 @@ class FormOptimizer {
         reason, 
         progress: formData.progress 
       }
-    });
-
+    })
     metrics.recordUserAction('form_abandoned', formData.userId, { 
       formId: formData.formId,
       progress: formData.progress,
       reason
-    });
-
-    return true;
+    })
+    return true
   }
 
   private getLastActiveField(formData: FormData): string | null {
-    const form = this.forms.get(formData.formId);
-    if (!form) return null;
-
+    const form = this.forms.get(formData.formId)
+    if (!form) return null
     // Trouver le dernier champ rempli
     const filledFields = form.fields
       .filter(f => formData.data[f.id])
-      .sort((a, b) => b.order - a.order);
-
-    return filledFields.length > 0 ? filledFields[0].id : null;
+      .sort((a, b) => b.order - a.order)
+    return filledFields.length > 0 ? filledFields[0].id : null
   }
 
   private calculateAverageTimeSpent(formId: string): number {
-    const analytics = this.analytics.get(formId);
-    if (!analytics || analytics.totalCompletions === 0) return 0;
-
+    const analytics = this.analytics.get(formId)
+    if (!analytics || analytics.totalCompletions === 0) return 0
     // Calculer le temps moyen basé sur les soumissions récentes
     const recentSubmissions = analytics.userJourney
       .filter(j => j.action === 'form_submitted')
       .slice(-10); // 10 dernières soumissions
 
-    if (recentSubmissions.length === 0) return 0;
-
+    if (recentSubmissions.length === 0) return 0
     const totalTime = recentSubmissions.reduce((sum, journey) => {
-      return sum + (journey.data?.timeSpent || 0);
-    }, 0);
-
-    return totalTime / recentSubmissions.length;
+      return sum + (journey.data?.timeSpent || 0)
+    }, 0)
+    return totalTime / recentSubmissions.length
   }
 
   // Analytics et optimisations
   getFormAnalytics(formId: string): FormAnalytics | null {
-    return this.analytics.get(formId) || null;
+    return this.analytics.get(formId) || null
   }
 
   generateOptimizations(formId: string): FormOptimization {
-    const analytics = this.analytics.get(formId);
-    const form = this.forms.get(formId);
-    
+    const analytics = this.analytics.get(formId)
+    const form = this.forms.get(formId)
     if (!analytics || !form) {
-      return { formId, suggestions: [], aBTestVariants: [] };
+      return { formId, suggestions: [], aBTestVariants: [] }
     }
 
-    const suggestions: FormOptimization['suggestions'] = [];
-
+    const suggestions: FormOptimization['suggestions'] = []
     // Analyser les points d'abandon
     if (analytics.topAbandonmentPoints.length > 0) {
-      const topAbandonment = analytics.topAbandonmentPoints[0];
+      const topAbandonment = analytics.topAbandonmentPoints[0]
       suggestions.push({
         type: 'field_order',
         priority: 'high',
         description: `Le champ "${topAbandonment.field}" cause ${topAbandonment.count} abandons. Considérer le déplacer ou le simplifier.`,
         impact: Math.min(90, topAbandonment.count * 10),
         implementation: 'Réorganiser les champs ou simplifier la validation'
-      });
+      })
     }
 
     // Analyser le taux de complétion
@@ -735,7 +688,7 @@ class FormOptimizer {
         description: `Taux de complétion faible (${analytics.completionRate.toFixed(1)}%). Améliorer l\'UX.`,
         impact: 80,
         implementation: 'Ajouter des indicateurs de progression, simplifier les champs'
-      });
+      })
     }
 
     // Analyser le temps moyen
@@ -746,13 +699,12 @@ class FormOptimizer {
         description: `Temps moyen élevé (${Math.round(analytics.averageTimeSpent)}s). Considérer supprimer des champs non essentiels.`,
         impact: 60,
         implementation: 'Identifier et supprimer les champs optionnels'
-      });
+      })
     }
 
     // Analyser les erreurs de validation
     const topErrorField = Object.entries(analytics.fieldErrors)
-      .sort(([,a], [,b]) => b - a)[0];
-    
+      .sort(([,a], [,b]) => b - a)[0]
     if (topErrorField) {
       suggestions.push({
         type: 'validation',
@@ -760,7 +712,7 @@ class FormOptimizer {
         description: `Le champ "${topErrorField[0]}" génère ${topErrorField[1]} erreurs. Améliorer la validation.`,
         impact: 50,
         implementation: 'Clarifier les messages d\'erreur et ajouter des exemples'
-      });
+      })
     }
 
     // Générer des variantes A/B
@@ -793,16 +745,13 @@ class FormOptimizer {
           errorRate: 0
         }
       }
-    ];
-
+    ]
     const optimization: FormOptimization = {
       formId,
       suggestions,
       aBTestVariants
-    };
-
-    this.optimizations.set(formId, optimization);
-
+    }
+    this.optimizations.set(formId, optimization)
     logger.info(`Form optimizations generated: ${formId}`, {
       action: 'form_optimizations_generated',
       metadata: { 
@@ -810,80 +759,67 @@ class FormOptimizer {
         suggestionsCount: suggestions.length,
         completionRate: analytics.completionRate 
       }
-    });
-
-    return optimization;
+    })
+    return optimization
   }
 
   // Utilitaires
   getFormData(sessionId: string): FormData | null {
-    return this.formData.get(sessionId) || null;
+    return this.formData.get(sessionId) || null
   }
 
   getAllFormData(): FormData[] {
-    return Array.from(this.formData.values());
+    return Array.from(this.formData.values())
   }
 
   cleanupOldData(maxAge: number = 24 * 60 * 60 * 1000): void { // 24 heures par défaut
-    const cutoffTime = new Date().getTime() - maxAge;
-    
+    const cutoffTime = new Date().getTime() - maxAge
     for (const [sessionId, formData] of this.formData.entries()) {
       if (formData.lastActivity.getTime() < cutoffTime && !formData.submitted) {
-        this.formData.delete(sessionId);
+        this.formData.delete(sessionId)
       }
     }
 
     logger.info('Old form data cleaned up', {
       action: 'form_data_cleaned',
       metadata: { maxAge, cutoffTime: new Date(cutoffTime) }
-    });
+    })
   }
 }
 
 // Instance globale
-export const formOptimizer = new FormOptimizer();
-
+export const formOptimizer = new FormOptimizer()
 // Fonctions utilitaires
 export const addForm = (config: FormConfig) => {
-  return formOptimizer.addForm(config);
-};
-
+  return formOptimizer.addForm(config)
+}
 export const getForm = (formId: string) => {
-  return formOptimizer.getForm(formId);
-};
-
+  return formOptimizer.getForm(formId)
+}
 export const getAllForms = () => {
-  return formOptimizer.getAllForms();
-};
-
+  return formOptimizer.getAllForms()
+}
 export const startForm = (formId: string, userId?: string) => {
-  return formOptimizer.startForm(formId, userId);
-};
-
+  return formOptimizer.startForm(formId, userId)
+}
 export const updateFormData = (sessionId: string, fieldId: string, value: any) => {
-  return formOptimizer.updateFormData(sessionId, fieldId, value);
-};
-
+  return formOptimizer.updateFormData(sessionId, fieldId, value)
+}
 export const validateForm = (sessionId: string) => {
-  return formOptimizer.validateForm(sessionId);
-};
-
+  return formOptimizer.validateForm(sessionId)
+}
 export const submitForm = (sessionId: string) => {
-  return formOptimizer.submitForm(sessionId);
-};
-
+  return formOptimizer.submitForm(sessionId)
+}
 export const saveDraft = (sessionId: string) => {
-  return formOptimizer.saveDraft(sessionId);
-};
-
+  return formOptimizer.saveDraft(sessionId)
+}
 export const abandonForm = (sessionId: string, reason?: string) => {
-  return formOptimizer.abandonForm(sessionId, reason);
-};
-
+  return formOptimizer.abandonForm(sessionId, reason)
+}
 export const getFormAnalytics = (formId: string) => {
-  return formOptimizer.getFormAnalytics(formId);
-};
-
+  return formOptimizer.getFormAnalytics(formId)
+}
 export const generateOptimizations = (formId: string) => {
-  return formOptimizer.generateOptimizations(formId);
-};
+  return formOptimizer.generateOptimizations(formId)
+}

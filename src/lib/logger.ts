@@ -1,9 +1,9 @@
 // Import Sentry avec gestion d'erreur pour éviter les problèmes de compatibilité
-let Sentry: any = null;
+let Sentry: any = null
 try {
-  Sentry = require("@sentry/nextjs");
+  Sentry = require("@sentry/nextjs")
 } catch (error) {
-  console.warn('Sentry not available, logging will be console-only');
+  console.warn('Sentry not available, logging will be console-only')
 }
 
 export enum LogLevel {
@@ -15,38 +15,34 @@ export enum LogLevel {
 }
 
 interface LogContext {
-  userId?: string;
-  sessionId?: string;
-  requestId?: string;
-  action?: string;
-  duration?: number;
-  metadata?: Record<string, any>;
+  userId?: string
+  sessionId?: string
+  requestId?: string
+  action?: string
+  duration?: number
+  metadata?: Record<string, any>
 }
 
 class Logger {
-  private isDevelopment = process.env.NODE_ENV === 'development';
-  private isProduction = process.env.NODE_ENV === 'production';
-
+  private isDevelopment = process.env.NODE_ENV === 'development'
+  private isProduction = process.env.NODE_ENV === 'production'
   private formatMessage(level: LogLevel, message: string, context?: LogContext): string {
-    const timestamp = new Date().toISOString();
-    const contextStr = context ? ` [${JSON.stringify(context)}]` : '';
-    return `[${timestamp}] ${level.toUpperCase()}: ${message}${contextStr}`;
+    const timestamp = new Date().toISOString()
+    const contextStr = context ? ` [${JSON.stringify(context)}]` : ''
+    return `[${timestamp}] ${level.toUpperCase()}: ${message}${contextStr}`
   }
 
   private shouldLog(level: LogLevel): boolean {
-    if (this.isDevelopment) return true;
-    
+    if (this.isDevelopment) return true
     // En production, on ne log que les niveaux importants
-    const productionLevels = [LogLevel.WARN, LogLevel.ERROR, LogLevel.FATAL];
-    return productionLevels.includes(level);
+    const productionLevels = [LogLevel.WARN, LogLevel.ERROR, LogLevel.FATAL]
+    return productionLevels.includes(level)
   }
 
   private sendToSentry(level: LogLevel, message: string, context?: LogContext, error?: Error) {
-    if (!this.isProduction || !Sentry) return;
-
+    if (!this.isProduction || !Sentry) return
     try {
-      const sentryLevel = this.mapToSentryLevel(level);
-      
+      const sentryLevel = this.mapToSentryLevel(level)
       if (error) {
         Sentry.captureException(error, {
           level: sentryLevel,
@@ -59,7 +55,7 @@ class Logger {
             context,
             duration: context?.duration,
           },
-        });
+        })
       } else {
         Sentry.captureMessage(message, {
           level: sentryLevel,
@@ -71,60 +67,60 @@ class Logger {
             context,
             duration: context?.duration,
           },
-        });
+        })
       }
     } catch (sentryError) {
       // Fallback si Sentry échoue
-      console.warn('Sentry error:', sentryError);
+      console.warn('Sentry error:', sentryError)
     }
   }
 
   private mapToSentryLevel(level: LogLevel): string {
     switch (level) {
-      case LogLevel.DEBUG: return 'debug';
-      case LogLevel.INFO: return 'info';
-      case LogLevel.WARN: return 'warning';
-      case LogLevel.ERROR: return 'error';
-      case LogLevel.FATAL: return 'fatal';
-      default: return 'info';
+      case LogLevel.DEBUG: return 'debug'
+      case LogLevel.INFO: return 'info'
+      case LogLevel.WARN: return 'warning'
+      case LogLevel.ERROR: return 'error'
+      case LogLevel.FATAL: return 'fatal'
+      default: return 'info'
     }
   }
 
   debug(message: string, context?: LogContext) {
     if (this.shouldLog(LogLevel.DEBUG)) {
-      console.debug(this.formatMessage(LogLevel.DEBUG, message, context));
+      console.debug(this.formatMessage(LogLevel.DEBUG, message, context))
     }
   }
 
   info(message: string, context?: LogContext) {
     if (this.shouldLog(LogLevel.INFO)) {
-      console.info(this.formatMessage(LogLevel.INFO, message, context));
+      console.info(this.formatMessage(LogLevel.INFO, message, context))
     }
   }
 
   warn(message: string, context?: LogContext) {
     if (this.shouldLog(LogLevel.WARN)) {
-      console.warn(this.formatMessage(LogLevel.WARN, message, context));
-      this.sendToSentry(LogLevel.WARN, message, context);
+      console.warn(this.formatMessage(LogLevel.WARN, message, context))
+      this.sendToSentry(LogLevel.WARN, message, context)
     }
   }
 
   error(message: string, error?: Error, context?: LogContext) {
     if (this.shouldLog(LogLevel.ERROR)) {
-      console.error(this.formatMessage(LogLevel.ERROR, message, context));
+      console.error(this.formatMessage(LogLevel.ERROR, message, context))
       if (error) {
-        console.error('Error details:', error);
+        console.error('Error details:', error)
       }
-      this.sendToSentry(LogLevel.ERROR, message, context, error);
+      this.sendToSentry(LogLevel.ERROR, message, context, error)
     }
   }
 
   fatal(message: string, error?: Error, context?: LogContext) {
-    console.error(this.formatMessage(LogLevel.FATAL, message, context));
+    console.error(this.formatMessage(LogLevel.FATAL, message, context))
     if (error) {
-      console.error('Fatal error details:', error);
+      console.error('Fatal error details:', error)
     }
-    this.sendToSentry(LogLevel.FATAL, message, context, error);
+    this.sendToSentry(LogLevel.FATAL, message, context, error)
   }
 
   // Méthodes spécialisées pour les métriques
@@ -134,8 +130,7 @@ class Logger {
       action,
       duration,
       type: 'performance'
-    });
-
+    })
     // Envoi des métriques de performance à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
@@ -144,9 +139,9 @@ class Logger {
     //         action,
     //         ...context?.metadata
     //       }
-    //     });
+    //     })
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('Sentry metrics not available:', error)
     //   }
     // }
   }
@@ -158,8 +153,7 @@ class Logger {
       action: event,
       metadata: data,
       type: 'business'
-    });
-
+    })
     // Envoi des événements business à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
@@ -168,9 +162,9 @@ class Logger {
     //         event,
     //         ...context?.metadata
     //       }
-    //     });
+    //     })
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('Sentry metrics not available:', error)
     //   }
     // }
   }
@@ -182,8 +176,7 @@ class Logger {
       action: event,
       metadata: data,
       type: 'security'
-    });
-
+    })
     // Envoi des événements de sécurité à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
@@ -193,9 +186,9 @@ class Logger {
     //         severity: data.severity || 'medium',
     //         ...context?.metadata
     //       }
-    //     });
+    //     })
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('Sentry metrics not available:', error)
     //   }
     // }
   }
@@ -207,8 +200,7 @@ class Logger {
       action: event,
       metadata: data,
       type: 'payment'
-    });
-
+    })
     // Envoi des événements de paiement à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
@@ -220,9 +212,9 @@ class Logger {
     //         currency: data.currency || 'usd',
     //         ...context?.metadata
     //       }
-    //     });
+    //     })
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('Sentry metrics not available:', error)
     //   }
     // }
   }
@@ -237,8 +229,7 @@ class Logger {
         statusCode,
         method: context?.metadata?.method || 'GET'
       }
-    });
-
+    })
     // Envoi des métriques d'erreur API à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
@@ -248,9 +239,9 @@ class Logger {
     //         statusCode: statusCode.toString(),
     //         method: context?.metadata?.method || 'GET'
     //       }
-    //     });
+    //     })
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('Sentry metrics not available:', error)
     //   }
     // }
   }
@@ -264,8 +255,7 @@ class Logger {
         operation,
         table
       }
-    });
-
+    })
     // Envoi des métriques d'erreur DB à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
@@ -274,9 +264,9 @@ class Logger {
     //         operation,
     //         table
     //       }
-    //     });
+    //     })
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('Sentry metrics not available:', error)
     //   }
     // }
   }
@@ -289,8 +279,7 @@ class Logger {
       metadata: {
         authAction: action
       }
-    }, error);
-
+    }, error)
     // Envoi des métriques d'erreur d'auth à Sentry (désactivé temporairement)
     // if (this.isProduction && Sentry.metrics) {
     //   try {
@@ -298,36 +287,34 @@ class Logger {
     //       tags: {
     //         action
     //       }
-    //     });
+    //     })
     //   } catch (error) {
-    //     console.warn('Sentry metrics not available:', error);
+    //     console.warn('Sentry metrics not available:', error)
     //   }
     // }
   }
 }
 
-export const logger = new Logger();
-
+export const logger = new Logger()
 // Fonction utilitaire pour mesurer les performances
 export const withPerformanceLogging = <T extends any[], R>(
   fn: (...args: T) => Promise<R>,
   action: string
 ) => {
   return async (...args: T): Promise<R> => {
-    const start = Date.now();
+    const start = Date.now()
     try {
-      const result = await fn(...args);
-      const duration = Date.now() - start;
-      logger.performance(action, duration);
-      return result;
+      const result = await fn(...args)
+      const duration = Date.now() - start
+      logger.performance(action, duration)
+      return result
     } catch (error) {
-      const duration = Date.now() - start;
-      logger.error(`Error in ${action}`, error as Error, { action, duration });
-      throw error;
+      const duration = Date.now() - start
+      logger.error(`Error in ${action}`, error as Error, { action, duration })
+      throw error
     }
-  };
-};
-
+  }
+}
 // Fonction utilitaire pour les transactions Sentry (désactivée temporairement)
 // export const withSentryTransaction = <T extends any[], R>(
 //   fn: (...args: T) => Promise<R>,
@@ -338,22 +325,18 @@ export const withPerformanceLogging = <T extends any[], R>(
 //     const transaction = Sentry.startTransaction({
 //       op: operation,
 //       description: description || operation,
-//     });
-
+//     })
 //     // Utiliser la nouvelle API Sentry
-//     Sentry.getCurrentScope().setSpan(transaction);
-
+//     Sentry.getCurrentScope().setSpan(transaction)
 //     try {
-//       const result = await fn(...args);
-//       transaction.setStatus('ok');
-//       return result;
+//       const result = await fn(...args)
+//       transaction.setStatus('ok')
+//       return result
 //     } catch (error) {
-//       transaction.setStatus('internal_error');
-//       throw error;
+//       transaction.setStatus('internal_error')
+//       throw error
 //     } finally {
-//       transaction.finish();
+//       transaction.finish()
 //     }
-//   };
-// };
-
-
+//   }
+// }

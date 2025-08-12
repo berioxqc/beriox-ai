@@ -1,9 +1,7 @@
 // Système d'icônes dynamique pour optimiser les imports FontAwesome
-import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
-
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 // Cache pour les icônes déjà chargées
-const iconCache = new Map<string, IconDefinition>();
-
+const iconCache = new Map<string, IconDefinition>()
 // Mapping des icônes avec leurs imports dynamiques
 const iconImports: Record<string, () => Promise<{ [key: string]: IconDefinition }>> = {
   // Navigation
@@ -133,36 +131,34 @@ const iconImports: Record<string, () => Promise<{ [key: string]: IconDefinition 
   th: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ th: m.faTh })),
   circle: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ circle: m.faCircle })),
   file: () => import('@fortawesome/free-solid-svg-icons').then(m => ({ file: m.faFile })),
-};
-
+}
 // Fonction pour charger une icône dynamiquement
 export async function getIconDynamic(name: string): Promise<IconDefinition | null> {
   // Vérifier le cache d'abord
   if (iconCache.has(name)) {
-    return iconCache.get(name)!;
+    return iconCache.get(name)!
   }
   
   // Vérifier si l'icône existe dans nos imports
   if (!iconImports[name]) {
-    console.warn(`Icon "${name}" not found in dynamic imports`);
-    return null;
+    console.warn(`Icon "${name}" not found in dynamic imports`)
+    return null
   }
   
   try {
     // Charger l'icône dynamiquement
-    const iconModule = await iconImports[name]();
-    const icon = iconModule[name];
-    
+    const iconModule = await iconImports[name]()
+    const icon = iconModule[name]
     if (icon) {
       // Mettre en cache pour les prochaines utilisations
-      iconCache.set(name, icon);
-      return icon;
+      iconCache.set(name, icon)
+      return icon
     }
     
-    return null;
+    return null
   } catch (error) {
-    console.error(`Error loading icon "${name}":`, error);
-    return null;
+    console.error(`Error loading icon "${name}":`, error)
+    return null
   }
 }
 
@@ -175,25 +171,22 @@ export async function preloadCommonIcons(): Promise<void> {
     'eye', 'search', 'filter', 'bars', 'download', 'upload',
     'microphone', 'flag', 'bolt', 'bell', 'robot', 'brain',
     'heart', 'star', 'shield', 'lock', 'comments'
-  ];
-  
-  console.log('🔄 Préchargement des icônes communes...');
-  
+  ]
+  console.log('🔄 Préchargement des icônes communes...')
   const loadPromises = commonIcons.map(async (iconName) => {
     try {
-      await getIconDynamic(iconName);
+      await getIconDynamic(iconName)
     } catch (error) {
-      console.warn(`Failed to preload icon "${iconName}":`, error);
+      console.warn(`Failed to preload icon "${iconName}":`, error)
     }
-  });
-  
-  await Promise.allSettled(loadPromises);
-  console.log(`✅ ${commonIcons.length} icônes communes préchargées`);
+  })
+  await Promise.allSettled(loadPromises)
+  console.log(`✅ ${commonIcons.length} icônes communes préchargées`)
 }
 
 // Fonction pour vider le cache (utile pour les tests)
 export function clearIconCache(): void {
-  iconCache.clear();
+  iconCache.clear()
 }
 
 // Fonction pour obtenir les statistiques du cache
@@ -201,8 +194,8 @@ export function getIconCacheStats(): { size: number; keys: string[] } {
   return {
     size: iconCache.size,
     keys: Array.from(iconCache.keys())
-  };
+  }
 }
 
 // Export des types
-export type IconName = keyof typeof iconImports;
+export type IconName = keyof typeof iconImports

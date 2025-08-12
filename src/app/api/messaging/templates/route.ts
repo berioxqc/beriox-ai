@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { MessagingService } from '@/lib/messaging-service';
-
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { MessagingService } from '@/lib/messaging-service'
 const getEmailConfig = () => ({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
   port: parseInt(process.env.SMTP_PORT || '587'),
@@ -11,43 +10,37 @@ const getEmailConfig = () => ({
     user: process.env.SMTP_USER || 'support@beriox.ai',
     pass: process.env.SMTP_PASS || ''
   }
-});
-
-const getMessagingService = () => new MessagingService(getEmailConfig());
-
+})
+const getMessagingService = () => new MessagingService(getEmailConfig())
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category');
-
-    const messagingService = getMessagingService();
-    const templates = await messagingService.getTemplates(category || undefined);
-    return NextResponse.json({ templates });
-
+    const { searchParams } = new URL(request.url)
+    const category = searchParams.get('category')
+    const messagingService = getMessagingService()
+    const templates = await messagingService.getTemplates(category || undefined)
+    return NextResponse.json({ templates })
   } catch (error) {
-    console.error('Erreur lors de la récupération des templates:', error);
+    console.error('Erreur lors de la récupération des templates:', error)
     return NextResponse.json(
       { error: 'Erreur lors de la récupération des templates' },
       { status: 500 }
-    );
+    )
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 });
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
 
-    const body = await request.json();
+    const body = await request.json()
     const {
       name,
       description,
@@ -56,17 +49,16 @@ export async function POST(request: NextRequest) {
       bodyHtml,
       variables,
       category
-    } = body;
-
+    } = body
     // Validation des données
     if (!name || !subject || !templateBody || !category) {
       return NextResponse.json(
         { error: 'Name, subject, body et category sont requis' },
         { status: 400 }
-      );
+      )
     }
 
-    const messagingService = getMessagingService();
+    const messagingService = getMessagingService()
     const template = await messagingService.createTemplate({
       name,
       description,
@@ -75,15 +67,13 @@ export async function POST(request: NextRequest) {
       bodyHtml,
       variables: variables || [],
       category
-    }, session.user.id);
-
-    return NextResponse.json({ template });
-
+    }, session.user.id)
+    return NextResponse.json({ template })
   } catch (error) {
-    console.error('Erreur lors de la création du template:', error);
+    console.error('Erreur lors de la création du template:', error)
     return NextResponse.json(
       { error: 'Erreur lors de la création du template' },
       { status: 500 }
-    );
+    )
   }
 }

@@ -1,33 +1,28 @@
-"use client";
-import { useState } from "react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Icon from "@/components/ui/Icon";
-import { useTheme, useStyles } from "@/hooks/useTheme";
-import Link from "next/link";
-
+"use client"
+import { useState } from "react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import Icon from "@/components/ui/Icon"
+import { useTheme, useStyles } from "@/hooks/useTheme"
+import Link from "next/link"
 export default function CouponPage() {
-  const [couponCode, setCouponCode] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [couponCode, setCouponCode] = useState("")
+  const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<{
-    success: boolean;
-    message: string;
+    success: boolean
+    message: string
     access?: {
-      planId: string;
-      expiresAt: string;
-      daysRemaining: number;
-    };
-  } | null>(null);
-
-  const theme = useTheme();
-  const styles = useStyles();
-
+      planId: string
+      expiresAt: string
+      daysRemaining: number
+    }
+  } | null>(null)
+  const theme = useTheme()
+  const styles = useStyles()
   const handleRedeemCoupon = async () => {
-    if (!couponCode.trim()) return;
-    
-    setLoading(true);
-    setResult(null);
-    
+    if (!couponCode.trim()) return
+    setLoading(true)
+    setResult(null)
     try {
       const response = await fetch('/api/coupons/redeem', {
         method: 'POST',
@@ -35,42 +30,38 @@ export default function CouponPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ code: couponCode.trim() }),
-      });
-
-      const data = await response.json();
-      
+      })
+      const data = await response.json()
       if (response.ok) {
         setResult({
           success: true,
           message: data.message,
           access: data.access
-        });
+        })
         setCouponCode(""); // Vider le champ
       } else {
         setResult({
           success: false,
           message: data.error || "Erreur lors de l'utilisation du coupon"
-        });
+        })
       }
     } catch (error) {
       setResult({
         success: false,
         message: "Erreur de connexion. Veuillez réessayer."
-      });
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const getPlanName = (planId: string) => {
     const plans: Record<string, string> = {
       'starter': 'Starter',
       'pro': 'Professionnel',
       'enterprise': 'Enterprise'
-    };
-    return plans[planId] || planId;
-  };
-
+    }
+    return plans[planId] || planId
+  }
   return (
     <AuthGuard>
       <Layout>
@@ -136,27 +127,27 @@ export default function CouponPage() {
                   onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                   placeholder="Ex: PREMIUM3MOIS, STARTER2024..."
                   style={{
-                    width: &apos;100%&apos;,
-                    padding: &apos;16px 20px&apos;,
-                    border: &apos;2px solid #e3e8ee&apos;,
-                    borderRadius: &apos;12px&apos;,
-                    fontSize: &apos;16px&apos;,
-                    fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif",
-                    outline: &apos;none&apos;,
-                    transition: &apos;border-color 0.2s&apos;,
-                    textTransform: &apos;uppercase&apos;,
-                    letterSpacing: &apos;1px&apos;,
-                    fontWeight: &apos;500&apos;
+                    width: '100%',
+                    padding: '16px 20px',
+                    border: '2px solid #e3e8ee',
+                    borderRadius: '12px',
+                    fontSize: '16px',
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    fontWeight: '500'
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.primary;
+                    e.currentTarget.style.borderColor = theme.colors.primary
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.borderColor = &apos;#e3e8ee&apos;;
+                    e.currentTarget.style.borderColor = '#e3e8ee'
                   }}
                   onKeyPress={(e) => {
-                    if (e.key === &apos;Enter&apos;) {
-                      handleRedeemCoupon();
+                    if (e.key === 'Enter') {
+                      handleRedeemCoupon()
                     }
                   }}
                   disabled={loading}
@@ -185,13 +176,13 @@ export default function CouponPage() {
                 }}
                 onMouseEnter={(e) => {
                   if (!loading && couponCode.trim()) {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.2)';
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.2)'
                   }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = 'none'
                 }}
               >
                 {loading ? (
@@ -327,10 +318,10 @@ export default function CouponPage() {
                   gap: '8px'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'
                 }}
               >
                 <Icon name="home" />
@@ -354,10 +345,10 @@ export default function CouponPage() {
                   gap: '8px'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'
                 }}
               >
                 <Icon name="credit-card" />
@@ -375,5 +366,5 @@ export default function CouponPage() {
         `}</style>
       </Layout>
     </AuthGuard>
-  );
+  )
 }

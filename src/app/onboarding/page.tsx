@@ -1,23 +1,22 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+"use client"
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 interface OnboardingData {
-  industry: string;
-  company: string;
-  role: string;
-  experience: string;
-  goals: string[];
-  preferredAgents: string[];
+  industry: string
+  company: string
+  role: string
+  experience: string
+  goals: string[]
+  preferredAgents: string[]
 }
 
 export default function OnboardingPage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(1);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [currentStep, setCurrentStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [data, setData] = useState<OnboardingData>({
     industry: '',
     company: '',
@@ -25,19 +24,16 @@ export default function OnboardingPage() {
     experience: '',
     goals: [],
     preferredAgents: []
-  });
-
-  const totalSteps = 4;
-
+  })
+  const totalSteps = 4
   // Redirection si pas connecté
   useEffect(() => {
-    if (status === "loading") return;
+    if (status === "loading") return
     if (!session) {
-      router.push('/auth/signin');
-      return;
+      router.push('/auth/signin')
+      return
     }
-  }, [session, status, router]);
-
+  }, [session, status, router])
   const industries = [
     { id: 'tech', name: 'Technologie', icon: 'laptop-code' },
     { id: 'marketing', name: 'Marketing/Publicité', icon: 'bullhorn' },
@@ -47,15 +43,13 @@ export default function OnboardingPage() {
     { id: 'healthcare', name: 'Santé', icon: 'heartbeat' },
     { id: 'finance', name: 'Finance', icon: 'chart-line' },
     { id: 'other', name: 'Autre', icon: 'ellipsis-h' }
-  ];
-
+  ]
   const experiences = [
     { id: 'beginner', name: 'Débutant', desc: 'Nouveau dans le domaine' },
     { id: 'intermediate', name: 'Intermédiaire', desc: '2-5 ans d\'expérience' },
     { id: 'advanced', name: 'Avancé', desc: '5+ ans d\'expérience' },
     { id: 'expert', name: 'Expert', desc: '10+ ans, je forme les autres' }
-  ];
-
+  ]
   const availableGoals = [
     { id: 'content', name: 'Créer du contenu', icon: 'pen-fancy' },
     { id: 'wordpress', name: 'Gérer WordPress', icon: 'wordpress' },
@@ -65,8 +59,7 @@ export default function OnboardingPage() {
     { id: 'analytics', name: 'Analyse & Data', icon: 'chart-bar' },
     { id: 'automation', name: 'Automatisation', icon: 'robot' },
     { id: 'strategy', name: 'Stratégie business', icon: 'chess' }
-  ];
-
+  ]
   const agents = [
     { id: 'KarineAI', name: 'KarineAI', desc: 'Stratégie & Organisation', icon: 'bullseye', color: '#ec4899' },
     { id: 'HugoAI', name: 'HugoAI', desc: 'Développement & Tech', icon: 'code', color: '#3b82f6' },
@@ -74,69 +67,61 @@ export default function OnboardingPage() {
     { id: 'ElodieAI', name: 'ÉlodieAI', desc: 'Contenu & Créatif', icon: 'pen-fancy', color: '#8b5cf6' },
     { id: 'ClaraLaCloseuse', name: 'Clara', desc: 'Conversion & Vente', icon: 'dollar-sign', color: '#f59e0b' },
     { id: 'FauconLeMaitreFocus', name: 'Faucon', desc: 'Focus & Simplicité', icon: 'eye', color: '#6b7280' }
-  ];
-
+  ]
   const handleArrayToggle = (field: keyof Pick<OnboardingData, 'goals' | 'preferredAgents'>, value: string) => {
     setData(prev => ({
       ...prev,
       [field]: prev[field].includes(value)
         ? prev[field].filter(item => item !== value)
         : [...prev[field], value]
-    }));
-  };
-
+    }))
+  }
   const canProceedToNext = () => {
     switch (currentStep) {
       case 1:
-        return data.industry && data.company && data.role;
+        return data.industry && data.company && data.role
       case 2:
-        return data.experience;
+        return data.experience
       case 3:
-        return data.goals.length > 0;
+        return data.goals.length > 0
       case 4:
-        return data.preferredAgents.length > 0;
+        return data.preferredAgents.length > 0
       default:
-        return false;
+        return false
     }
-  };
-
+  }
   const handleNext = () => {
     if (currentStep < totalSteps) {
-      setCurrentStep(currentStep + 1);
+      setCurrentStep(currentStep + 1)
     } else {
-      handleComplete();
+      handleComplete()
     }
-  };
-
+  }
   const handleComplete = async () => {
-    setIsSubmitting(true);
-    
+    setIsSubmitting(true)
     try {
       // Sauvegarder les données d'onboarding
       const response = await fetch('/api/user/onboarding', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
-      });
-
+      })
       if (response.ok) {
         // Marquer l'onboarding comme terminé
-        localStorage.setItem('beriox_onboarding_completed', 'true');
-        
+        localStorage.setItem('beriox_onboarding_completed', 'true')
         // Rediriger vers l'accueil
-        router.push('/?welcome=true');
+        router.push('/?welcome=true')
       } else {
-        throw new Error('Erreur lors de la sauvegarde');
+        throw new Error('Erreur lors de la sauvegarde')
       }
     } catch (error) {
-      console.error('Erreur onboarding:', error);
+      console.error('Erreur onboarding:', error)
       // Continuer quand même vers l'accueil
-      router.push('/');
+      router.push('/')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
-
+  }
   if (status === "loading") {
     return (
       <div style={{
@@ -155,7 +140,7 @@ export default function OnboardingPage() {
           animation: 'spin 1s linear infinite'
         }}></div>
       </div>
-    );
+    )
   }
 
   return (
@@ -315,16 +300,16 @@ export default function OnboardingPage() {
                     onChange={(e) => setData({...data, company: e.target.value})}
                     placeholder="Ex: Ma Super Entreprise Inc."
                     style={{
-                      width: &apos;100%&apos;,
-                      padding: &apos;12px 16px&apos;,
-                      border: &apos;1px solid #e3e8ee&apos;,
-                      borderRadius: &apos;8px&apos;,
-                      fontSize: &apos;14px&apos;,
-                      outline: &apos;none&apos;,
-                      transition: &apos;border-color 0.2s&apos;
+                      width: '100%',
+                      padding: '12px 16px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      outline: 'none',
+                      transition: 'border-color 0.2s'
                     }}
-                    onFocus={(e) => e.target.style.borderColor = &apos;#635bff&apos;}
-                    onBlur={(e) => e.target.style.borderColor = &apos;#e3e8ee&apos;}
+                    onFocus={(e) => e.target.style.borderColor = '#635bff'}
+                    onBlur={(e) => e.target.style.borderColor = '#e3e8ee'}
                   />
                 </div>
 
@@ -345,16 +330,16 @@ export default function OnboardingPage() {
                     onChange={(e) => setData({...data, role: e.target.value})}
                     placeholder="Ex: Directeur marketing, Développeur web, Entrepreneur..."
                     style={{
-                      width: &apos;100%&apos;,
-                      padding: &apos;12px 16px&apos;,
-                      border: &apos;1px solid #e3e8ee&apos;,
-                      borderRadius: &apos;8px&apos;,
-                      fontSize: &apos;14px&apos;,
-                      outline: &apos;none&apos;,
-                      transition: &apos;border-color 0.2s&apos;
+                      width: '100%',
+                      padding: '12px 16px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      outline: 'none',
+                      transition: 'border-color 0.2s'
                     }}
-                    onFocus={(e) => e.target.style.borderColor = &apos;#635bff&apos;}
-                    onBlur={(e) => e.target.style.borderColor = &apos;#e3e8ee&apos;}
+                    onFocus={(e) => e.target.style.borderColor = '#635bff'}
+                    onBlur={(e) => e.target.style.borderColor = '#e3e8ee'}
                   />
                 </div>
               </div>
@@ -371,7 +356,7 @@ export default function OnboardingPage() {
                 marginBottom: '8px',
                 textAlign: 'center'
               }}>
-                Quel est votre niveau d&apos;expérience ?
+                Quel est votre niveau d'expérience ?
               </h2>
               <p style={{
                 fontSize: '14px',
@@ -655,5 +640,5 @@ export default function OnboardingPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

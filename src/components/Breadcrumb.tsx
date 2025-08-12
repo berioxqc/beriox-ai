@@ -1,32 +1,28 @@
-"use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import Icon from "@/components/ui/Icon"
 interface BreadcrumbItem {
-  href: string;
-  label: string;
-  icon: string;
-  isActive: boolean;
+  href: string
+  label: string
+  icon: string
+  isActive: boolean
 }
 
 function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
-  const segments = pathname.split('/').filter(Boolean);
-  const breadcrumbs: BreadcrumbItem[] = [];
-
+  const segments = pathname.split('/').filter(Boolean)
+  const breadcrumbs: BreadcrumbItem[] = []
   // Ajouter l'accueil
   breadcrumbs.push({
     href: '/',
     label: 'Accueil',
     icon: 'home',
     isActive: pathname === '/'
-  });
-
+  })
   // Traiter chaque segment
-  let currentPath = '';
+  let currentPath = ''
   segments.forEach((segment, index) => {
-    currentPath += `/${segment}`;
-    
+    currentPath += `/${segment}`
     // Mapping des segments vers des labels lisibles
     const labelMap: Record<string, string> = {
       'missions': 'Missions',
@@ -42,8 +38,7 @@ function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
       'auth': 'Authentification',
       'signin': 'Connexion',
       'signout': 'Déconnexion'
-    };
-
+    }
     const iconMap: Record<string, string> = {
       'missions': 'tasks',
       'profile': 'user',
@@ -58,26 +53,22 @@ function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
       'auth': 'lock',
       'signin': 'user',
       'signout': 'sign-out-alt'
-    };
-
-    const label = labelMap[segment] || segment.charAt(0).toUpperCase() + segment.slice(1);
-    const icon = iconMap[segment] || 'circle';
-    
+    }
+    const label = labelMap[segment] || segment.charAt(0).toUpperCase() + segment.slice(1)
+    const icon = iconMap[segment] || 'circle'
     breadcrumbs.push({
       href: currentPath,
       label,
       icon,
       isActive: pathname === currentPath
-    });
-  });
-
-  return breadcrumbs;
+    })
+  })
+  return breadcrumbs
 }
 
 export default function Breadcrumb() {
-  const pathname = usePathname();
-  const breadcrumbs = generateBreadcrumbs(pathname);
-
+  const pathname = usePathname()
+  const breadcrumbs = generateBreadcrumbs(pathname)
   return (
     <div className="py-4 border-b border-gray-200 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
@@ -118,5 +109,5 @@ export default function Breadcrumb() {
         </nav>
       </div>
     </div>
-  );
+  )
 }

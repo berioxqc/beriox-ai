@@ -1,24 +1,23 @@
-import React from 'react';
-import * as Sentry from '@sentry/nextjs';
-
+import React from 'react'
+import * as Sentry from '@sentry/nextjs'
 interface ErrorBoundaryState {
-  hasError: boolean;
-  error?: Error;
+  hasError: boolean
+  error?: Error
 }
 
 interface ErrorBoundaryProps {
-  children: React.ReactNode;
-  fallback?: React.ComponentType<{ error?: Error; resetError: () => void }>;
+  children: React.ReactNode
+  fallback?: React.ComponentType<{ error?: Error; resetError: () => void }>
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false };
+    super(props)
+    this.state = { hasError: false }
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, error };
+    return { hasError: true, error }
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -29,20 +28,18 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
           componentStack: errorInfo.componentStack,
         },
       },
-    });
-
-    console.error('Error caught by boundary:', error, errorInfo);
+    })
+    console.error('Error caught by boundary:', error, errorInfo)
   }
 
   resetError = () => {
-    this.setState({ hasError: false, error: undefined });
-  };
-
+    this.setState({ hasError: false, error: undefined })
+  }
   render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
-        const FallbackComponent = this.props.fallback;
-        return <FallbackComponent error={this.state.error} resetError={this.resetError} />;
+        const FallbackComponent = this.props.fallback
+        return <FallbackComponent error={this.state.error} resetError={this.resetError} />
       }
 
       return (
@@ -55,10 +52,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                 </svg>
               </div>
               <h2 className="mt-6 text-3xl font-bold text-white">
-                Oups ! Quelque chose s&apos;est mal passé
+                Oups ! Quelque chose s'est mal passé
               </h2>
               <p className="mt-2 text-sm text-gray-300">
-                Une erreur inattendue s&apos;est produite. Notre équipe a été notifiée.
+                Une erreur inattendue s'est produite. Notre équipe a été notifiée.
               </p>
             </div>
             
@@ -81,17 +78,17 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
-                  Retour à l&apos;accueil
+                  Retour à l'accueil
                 </button>
               </div>
             </div>
           </div>
         </div>
-      );
+      )
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary

@@ -10,7 +10,7 @@ export default function NotFound() {
     }}>
       <h1 style={{ fontSize: '4rem', margin: 0, color: '#5a5fca' }}>404</h1>
       <h2 style={{ fontSize: '1.5rem', margin: '1rem 0', color: '#333' }}>Page non trouvée</h2>
-      <p style={{ color: '#666', marginBottom: '2rem' }}>La page que vous cherchez n&apos;existe pas.</p>
+      <p style={{ color: '#666', marginBottom: '2rem' }}>La page que vous cherchez n'existe pas.</p>
       <a href="/" style={{ 
         padding: '12px 24px', 
         background: '#5a5fca', 
@@ -18,8 +18,8 @@ export default function NotFound() {
         textDecoration: 'none', 
         borderRadius: '6px' 
       }}>
-        Retour à l&apos;accueil
+        Retour à l'accueil
       </a>
     </div>
-  );
+  )
 }

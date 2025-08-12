@@ -1,22 +1,20 @@
 // Export de toutes les intégrations API
-export * from './types';
-export * from './manager';
-export * from './google-search-console';
-export * from './pagespeed-insights';
-export * from './mozilla-observatory';
-export * from './ssl-labs';
-export * from './uptimerobot';
-export * from './wave';
-export * from './microsoft-clarity';
-export * from './github';
-export * from './slack';
-export * from './similarweb';
-export * from './semrush';
-
+export * from './types'
+export * from './manager'
+export * from './google-search-console'
+export * from './pagespeed-insights'
+export * from './mozilla-observatory'
+export * from './ssl-labs'
+export * from './uptimerobot'
+export * from './wave'
+export * from './microsoft-clarity'
+export * from './github'
+export * from './slack'
+export * from './similarweb'
+export * from './semrush'
 // Import du gestionnaire et des types
-import { integrationManager } from './manager';
-import { ApiIntegration } from './types';
-
+import { integrationManager } from './manager'
+import { ApiIntegration } from './types'
 // Configuration de toutes les intégrations disponibles
 const availableIntegrations: ApiIntegration[] = [
   {
@@ -139,40 +137,38 @@ const availableIntegrations: ApiIntegration[] = [
     quotaLimit: 1000, // 1000 requêtes par jour
     quotaUsed: 0,
   },
-];
-
+]
 // Initialiser toutes les intégrations
 export function initializeIntegrations() {
   availableIntegrations.forEach(integration => {
-    integrationManager.register(integration);
-  });
+    integrationManager.register(integration)
+  })
 }
 
 // Fonction utilitaire pour obtenir une intégration spécifique
 export function getIntegration(id: string) {
-  return integrationManager.getAll().find(integration => integration.id === id);
+  return integrationManager.getAll().find(integration => integration.id === id)
 }
 
 // Fonction utilitaire pour obtenir les intégrations par catégorie
 export function getIntegrationsByCategory(category: string) {
-  return integrationManager.getByCategory(category);
+  return integrationManager.getByCategory(category)
 }
 
 // Fonction utilitaire pour obtenir les intégrations actives
 export function getActiveIntegrations() {
-  return integrationManager.getEnabled();
+  return integrationManager.getEnabled()
 }
 
 // Fonction utilitaire pour obtenir les intégrations gratuites
 export function getFreeIntegrations() {
-  return integrationManager.getFree();
+  return integrationManager.getFree()
 }
 
 // Export du gestionnaire
-export { integrationManager };
-
+export { integrationManager }
 // Initialiser automatiquement
 if (typeof window === 'undefined') {
   // Côté serveur uniquement
-  initializeIntegrations();
+  initializeIntegrations()
 }

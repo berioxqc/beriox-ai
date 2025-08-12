@@ -1,75 +1,69 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+"use client"
+import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import Link from "next/link"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 interface DatabaseStats {
-  missions: number;
-  briefs: number;
-  deliverables: number;
-  reports: number;
-  users: number;
-  executionLogs: number;
+  missions: number
+  briefs: number
+  deliverables: number
+  reports: number
+  users: number
+  executionLogs: number
 }
 
 export default function AdminPage() {
-  const { data: session } = useSession();
-  const [stats, setStats] = useState<DatabaseStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [resetLoading, setResetLoading] = useState(false);
-  const [showResetConfirm, setShowResetConfirm] = useState(false);
-  const [resetSuccess, setResetSuccess] = useState(false);
-
+  const { data: session } = useSession()
+  const [stats, setStats] = useState<DatabaseStats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [resetLoading, setResetLoading] = useState(false)
+  const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [resetSuccess, setResetSuccess] = useState(false)
   useEffect(() => {
-    fetchStats();
-  }, []);
-
+    fetchStats()
+  }, [])
   const fetchStats = async () => {
     try {
-      const response = await fetch('/api/admin/stats');
+      const response = await fetch('/api/admin/stats')
       if (response.ok) {
-        const data = await response.json();
-        setStats(data);
+        const data = await response.json()
+        setStats(data)
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des statistiques:', error);
+      console.error('Erreur lors du chargement des statistiques:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const handleReset = async () => {
     try {
-      setResetLoading(true);
+      setResetLoading(true)
       const response = await fetch('/api/admin/reset', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         }
-      });
-
+      })
       if (response.ok) {
-        setResetSuccess(true);
-        setShowResetConfirm(false);
+        setResetSuccess(true)
+        setShowResetConfirm(false)
         // Recharger les stats après reset
         setTimeout(() => {
-          fetchStats();
-          setResetSuccess(false);
-        }, 2000);
+          fetchStats()
+          setResetSuccess(false)
+        }, 2000)
       } else {
-        throw new Error('Erreur lors du reset');
+        throw new Error('Erreur lors du reset')
       }
     } catch (error) {
-      console.error('Erreur reset:', error);
-      alert('Erreur lors du reset de la base de données');
+      console.error('Erreur reset:', error)
+      alert('Erreur lors du reset de la base de données')
     } finally {
-      setResetLoading(false);
+      setResetLoading(false)
     }
-  };
-
+  }
   // Vérifier si l'utilisateur est super admin
   if (session?.user?.email !== 'info@beriox.ca') {
     return (
@@ -90,7 +84,7 @@ export default function AdminPage() {
                 Accès refusé
               </h2>
               <p style={{ color: '#6b7280', fontSize: '16px', margin: '0 0 32px 0' }}>
-                Vous n&apos;avez pas les permissions nécessaires pour accéder à cette page.
+                Vous n'avez pas les permissions nécessaires pour accéder à cette page.
               </p>
               <Link
                 href="/"
@@ -103,13 +97,13 @@ export default function AdminPage() {
                   fontWeight: '600'
                 }}
               >
-                Retour à l&apos;accueil
+                Retour à l'accueil
               </Link>
             </div>
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   return (
@@ -227,7 +221,7 @@ export default function AdminPage() {
                   color: '#0a2540',
                   marginBottom: '4px'
                 }}>
-                  {loading ? &apos;...&apos; : stat.value.toLocaleString()}
+                  {loading ? '...' : stat.value.toLocaleString()}
                 </div>
                 <div style={{ color: '#6b7280', fontSize: '14px' }}>
                   {stat.label}
@@ -472,14 +466,14 @@ export default function AdminPage() {
                         onClick={() => setShowResetConfirm(false)}
                         disabled={resetLoading}
                         style={{
-                          padding: &apos;8px 12px&apos;,
-                          backgroundColor: &apos;#6b7280&apos;,
-                          color: &apos;white&apos;,
-                          border: &apos;none&apos;,
-                          borderRadius: &apos;6px&apos;,
-                          fontWeight: &apos;600&apos;,
-                          cursor: resetLoading ? &apos;not-allowed&apos; : &apos;pointer&apos;,
-                          fontSize: &apos;12px&apos;
+                          padding: '8px 12px',
+                          backgroundColor: '#6b7280',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '6px',
+                          fontWeight: '600',
+                          cursor: resetLoading ? 'not-allowed' : 'pointer',
+                          fontSize: '12px'
                         }}
                       >
                         Annuler
@@ -493,5 +487,5 @@ export default function AdminPage() {
         </div>
       </Layout>
     </AuthGuard>
-  );
+  )
 }

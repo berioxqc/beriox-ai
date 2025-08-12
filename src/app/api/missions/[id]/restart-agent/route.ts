@@ -1,35 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-
-export const runtime = "nodejs";
-
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+export const runtime = "nodejs"
 export async function POST(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const missionId = params.id;
-    const { agent } = await req.json();
-
+    const missionId = params.id
+    const { agent } = await req.json()
     if (!agent) {
-      return NextResponse.json({ error: "Agent name required" }, { status: 400 });
+      return NextResponse.json({ error: "Agent name required" }, { status: 400 })
     }
 
-    console.log(`🔄 Redémarrage de ${agent} pour la mission ${missionId}`);
-
+    console.log(`🔄 Redémarrage de ${agent} pour la mission ${missionId}`)
     // Supprimer les anciens briefs et livrables de cet agent
     await prisma.deliverable.deleteMany({
       where: { missionId, agent }
-    });
-
+    })
     await prisma.brief.deleteMany({
       where: { missionId, agent }
-    });
-
+    })
     // Recréer le brief et le livrable pour cet agent
-    const mission = await prisma.mission.findUnique({ where: { id: missionId } });
-    const objective = mission?.objective || "";
-
+    const mission = await prisma.mission.findUnique({ where: { id: missionId } })
+    const objective = mission?.objective || ""
     const agentBriefs: Record<string, string> = {
       "KarineAI": `**Mission:** ${objective}
 
@@ -130,8 +123,7 @@ Focus. Essentiel. Livrable.
 **Délai:** Le plus court possible sans sacrifier la qualité.
 
 **Méditation du jour:** "Que faut-il vraiment pour réussir cette mission?" 🧘‍♂️`
-    };
-
+    }
     const agentDeliverables: Record<string, { content: string }> = {
       "KarineAI": {
         content: `# Stratégie Marketing - ${objective}
@@ -313,8 +305,7 @@ Focus. Essentiel. Livrable.
 - Mercredi: Ajustements tactiques  
 - Vendredi: Préparation semaine suivante`
       }
-    };
-
+    }
     // Créer le nouveau brief
     if (agentBriefs[agent]) {
       await prisma.brief.create({
@@ -324,7 +315,7 @@ Focus. Essentiel. Livrable.
           contentJson: agentBriefs[agent],
           status: "done"
         }
-      });
+      })
     }
 
     // Créer le nouveau livrable après un délai
@@ -336,20 +327,19 @@ Focus. Essentiel. Livrable.
             agent,
             output: agentDeliverables[agent]
           }
-        });
-        console.log(`✅ ${agent} redémarré avec succès pour la mission ${missionId}`);
+        })
+        console.log(`✅ ${agent} redémarré avec succès pour la mission ${missionId}`)
       }
     }, 3000); // 3 secondes de délai pour simuler le travail
 
     return NextResponse.json({ 
       success: true, 
       message: `${agent} redémarré avec succès` 
-    });
-
+    })
   } catch (error) {
-    console.error("Restart Agent Error:", error);
+    console.error("Restart Agent Error:", error)
     return NextResponse.json({ 
       error: "Erreur lors du redémarrage de l'agent" 
-    }, { status: 500 });
+    }, { status: 500 })
   }
 }

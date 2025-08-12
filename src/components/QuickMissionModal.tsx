@@ -1,31 +1,27 @@
-"use client";
-import { useState } from "react";
-import Icon from "@/components/ui/Icon";
-import { useTheme } from "@/hooks/useTheme";
-
+"use client"
+import { useState } from "react"
+import Icon from "@/components/ui/Icon"
+import { useTheme } from "@/hooks/useTheme"
 interface QuickMissionModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onMissionCreated: (missionId: string) => void;
+  isOpen: boolean
+  onClose: () => void
+  onMissionCreated: (missionId: string) => void
 }
 
 export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }: QuickMissionModalProps) {
-  const [prompt, setPrompt] = useState("");
-  const [details, setDetails] = useState("");
-  const [creating, setCreating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [recommendedAgents, setRecommendedAgents] = useState<string[]>([]);
-  const [analyzing, setAnalyzing] = useState(false);
-  const [agentReasoning, setAgentReasoning] = useState<string>("");
-  const theme = useTheme();
-
+  const [prompt, setPrompt] = useState("")
+  const [details, setDetails] = useState("")
+  const [creating, setCreating] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [recommendedAgents, setRecommendedAgents] = useState<string[]>([])
+  const [analyzing, setAnalyzing] = useState(false)
+  const [agentReasoning, setAgentReasoning] = useState<string>("")
+  const theme = useTheme()
   // Analyser la mission pour recommander des agents
   const analyzeMission = async () => {
-    if (!prompt.trim()) return;
-
-    setAnalyzing(true);
-    setError(null);
-
+    if (!prompt.trim()) return
+    setAnalyzing(true)
+    setError(null)
     try {
       const response = await fetch("/api/missions/analyze", {
         method: "POST",
@@ -34,33 +30,28 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
           objective: prompt,
           context: details
         })
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (response.ok) {
-        setRecommendedAgents(data.recommendedAgents || []);
-        setAgentReasoning(data.reasoning || "");
+        setRecommendedAgents(data.recommendedAgents || [])
+        setAgentReasoning(data.reasoning || "")
       } else {
         // Fallback vers des agents par défaut
-        setRecommendedAgents(["KarineAI", "HugoAI", "JPBot", "ElodieAI"]);
-        setAgentReasoning("Analyse non disponible, utilisation des agents par défaut");
+        setRecommendedAgents(["KarineAI", "HugoAI", "JPBot", "ElodieAI"])
+        setAgentReasoning("Analyse non disponible, utilisation des agents par défaut")
       }
     } catch (error) {
       // Fallback vers des agents par défaut
-      setRecommendedAgents(["KarineAI", "HugoAI", "JPBot", "ElodieAI"]);
-      setAgentReasoning("Erreur d'analyse, utilisation des agents par défaut");
+      setRecommendedAgents(["KarineAI", "HugoAI", "JPBot", "ElodieAI"])
+      setAgentReasoning("Erreur d'analyse, utilisation des agents par défaut")
     } finally {
-      setAnalyzing(false);
+      setAnalyzing(false)
     }
-  };
-
+  }
   const createMission = async () => {
-    if (!prompt.trim()) return;
-
-    setCreating(true);
-    setError(null);
-
+    if (!prompt.trim()) return
+    setCreating(true)
+    setError(null)
     try {
       const response = await fetch("/api/missions", {
         method: "POST",
@@ -71,29 +62,25 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
           priority: "auto",
           selectedAgents: recommendedAgents.length > 0 ? recommendedAgents : ["KarineAI", "HugoAI", "JPBot", "ElodieAI"]
         })
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (response.ok && data.missionId) {
-        setPrompt("");
-        setDetails("");
-        setRecommendedAgents([]);
-        setAgentReasoning("");
-        onMissionCreated(data.missionId);
-        onClose();
+        setPrompt("")
+        setDetails("")
+        setRecommendedAgents([])
+        setAgentReasoning("")
+        onMissionCreated(data.missionId)
+        onClose()
       } else {
-        setError(data.error || "Erreur lors de la création");
+        setError(data.error || "Erreur lors de la création")
       }
     } catch (error) {
-      setError("Erreur de connexion");
+      setError("Erreur de connexion")
     } finally {
-      setCreating(false);
+      setCreating(false)
     }
-  };
-
-  if (!isOpen) return null;
-
+  }
+  if (!isOpen) return null
   return (
     <div style={{
       position: "fixed",
@@ -192,7 +179,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                 color: "#0a2540",
                 outline: "none",
                 transition: "border-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onFocus={(e) => e.target.style.borderColor = "#635bff"}
               onBlur={(e) => e.target.style.borderColor = "#e3e8ee"}
@@ -226,7 +213,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                 color: "#0a2540",
                 outline: "none",
                 transition: "border-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif",
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
                 resize: "vertical"
               }}
               onFocus={(e) => e.target.style.borderColor = "#635bff"}
@@ -334,7 +321,7 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
                   color: "#6b7280",
                   fontSize: "14px"
                 }}>
-                  Cliquez sur "Analyser" pour obtenir des recommandations d&apos;agents optimisées
+                  Cliquez sur "Analyser" pour obtenir des recommandations d'agents optimisées
                 </div>
               )}
             </div>
@@ -382,13 +369,13 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
               }}
               onMouseOver={(e) => {
                 if (!creating) {
-                  e.currentTarget.style.borderColor = "#d1d5db";
-                  e.currentTarget.style.color = "#374151";
+                  e.currentTarget.style.borderColor = "#d1d5db"
+                  e.currentTarget.style.color = "#374151"
                 }
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.borderColor = "#e3e8ee";
-                e.currentTarget.style.color = "#6b7280";
+                e.currentTarget.style.borderColor = "#e3e8ee"
+                e.currentTarget.style.color = "#6b7280"
               }}
             >
               Annuler
@@ -430,5 +417,5 @@ export default function QuickMissionModal({ isOpen, onClose, onMissionCreated }:
         </div>
       </div>
     </div>
-  );
+  )
 }

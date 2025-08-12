@@ -1,16 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
-import { callJson } from "@/lib/openai";
-import { PlanService } from "@/lib/plans";
-import { prisma } from "@/lib/prisma";
-
+import { NextRequest, NextResponse } from "next/server"
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../../auth/[...nextauth]/route"
+import { callJson } from "@/lib/openai"
+import { PlanService } from "@/lib/plans"
+import { prisma } from "@/lib/prisma"
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    
+    const session = await getServerSession(authOptions)
     if (!session?.user?.email) {
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 })
     }
 
     // Récupérer les informations utilisateur et plan
@@ -19,29 +17,25 @@ export async function POST(req: NextRequest) {
       include: {
         premiumAccess: true
       }
-    });
-
+    })
     if (!user) {
-      return NextResponse.json({ error: "Utilisateur introuvable" }, { status: 404 });
+      return NextResponse.json({ error: "Utilisateur introuvable" }, { status: 404 })
     }
 
     // Déterminer le plan effectif (avec accès premium temporaire)
-    const basePlan = user.planId || 'free';
-    const effectivePlan = PlanService.getEffectivePlan(basePlan, user.premiumAccess);
-    const canUseGPT = PlanService.canUseGPTQuestions(effectivePlan);
-    const hasPremiumAccess = PlanService.hasPremiumAccess(user.premiumAccess);
-
-    const body = await req.json();
-    const { objective } = body;
-
+    const basePlan = user.planId || 'free'
+    const effectivePlan = PlanService.getEffectivePlan(basePlan, user.premiumAccess)
+    const canUseGPT = PlanService.canUseGPTQuestions(effectivePlan)
+    const hasPremiumAccess = PlanService.hasPremiumAccess(user.premiumAccess)
+    const body = await req.json()
+    const { objective } = body
     if (!objective || objective.trim().length === 0) {
-      return NextResponse.json({ error: "Objectif de mission requis" }, { status: 400 });
+      return NextResponse.json({ error: "Objectif de mission requis" }, { status: 400 })
     }
 
     // Si l'utilisateur ne peut pas utiliser GPT, retourner des questions génériques
     if (!canUseGPT) {
-      console.log(`🚫 Utilisateur ${user.email} (plan: ${effectivePlan}, premium: ${hasPremiumAccess}) - Questions GPT non autorisées`);
-      
+      console.log(`🚫 Utilisateur ${user.email} (plan: ${effectivePlan}, premium: ${hasPremiumAccess}) - Questions GPT non autorisées`)
       const genericQuestions = [
         {
           label: "💡 Dans quel contexte avez-vous besoin d'aide ?",
@@ -55,18 +49,16 @@ export async function POST(req: NextRequest) {
           label: "⏱️ Y a-t-il des contraintes à savoir ?",
           placeholder: "Ex: À faire rapidement, style particulier, budget serré..."
         }
-      ];
-
+      ]
       return NextResponse.json({ 
         questions: genericQuestions,
         isPremium: false,
         upgradeMessage: "Débloquez les questions GPT personnalisées avec un plan payant !",
         upgradeUrl: "/pricing"
-      });
+      })
     }
 
-    console.log(`✅ Utilisateur ${user.email} (plan: ${effectivePlan}, premium: ${hasPremiumAccess}) - Questions GPT autorisées`);
-
+    console.log(`✅ Utilisateur ${user.email} (plan: ${effectivePlan}, premium: ${hasPremiumAccess}) - Questions GPT autorisées`)
     // Prompt pour GPT afin de générer 3 questions d'alignement personnalisées
     const prompt = `Analyse cette demande de mission et génère exactement 3 questions d'alignement stratégiques pour mieux comprendre le besoin du client.
 
@@ -102,8 +94,7 @@ EXEMPLES DE BONNES QUESTIONS:
 - "📋 Y a-t-il des contraintes techniques ou budgétaires ?"
 - "✨ À quoi ressemblera le succès pour vous ?"
 
-Génère maintenant 3 questions spécifiques pour cette mission.`;
-
+Génère maintenant 3 questions spécifiques pour cette mission.`
     // Appel à OpenAI
     const response = await callJson({
       model: "gpt-4",
@@ -119,12 +110,10 @@ Génère maintenant 3 questions spécifiques pour cette mission.`;
       ],
       temperature: 0.7,
       max_tokens: 800
-    });
-
+    })
     // Validation de la réponse
     if (!response.questions || !Array.isArray(response.questions) || response.questions.length !== 3) {
-      console.error('Réponse GPT invalide:', response);
-      
+      console.error('Réponse GPT invalide:', response)
       // Questions de fallback si GPT échoue
       const fallbackQuestions = [
         {
@@ -139,9 +128,8 @@ Génère maintenant 3 questions spécifiques pour cette mission.`;
           label: "✨ Comment saurez-vous que c'est réussi ?",
           placeholder: "Ex: Métriques précises, feedback positif, objectif atteint..."
         }
-      ];
-
-      return NextResponse.json({ questions: fallbackQuestions });
+      ]
+      return NextResponse.json({ questions: fallbackQuestions })
     }
 
     // Validation des questions individuelles
@@ -150,25 +138,21 @@ Génère maintenant 3 questions spécifiques pour cette mission.`;
         return {
           label: `🎯 Question ${index + 1} sur votre besoin`,
           placeholder: "Décrivez votre besoin spécifique..."
-        };
+        }
       }
       return {
         label: q.label.substring(0, 100), // Limite la longueur
         placeholder: q.placeholder.substring(0, 150)
-      };
-    });
-
-    console.log('✅ Questions GPT générées pour mission:', objective.substring(0, 50) + '...');
-    
+      }
+    })
+    console.log('✅ Questions GPT générées pour mission:', objective.substring(0, 50) + '...')
     return NextResponse.json({ 
       questions: validatedQuestions,
       isPremium: true,
       generatedAt: new Date().toISOString()
-    });
-
+    })
   } catch (error) {
-    console.error('Erreur génération questions:', error);
-    
+    console.error('Erreur génération questions:', error)
     // Questions de fallback en cas d'erreur
     const fallbackQuestions = [
       {
@@ -183,13 +167,12 @@ Génère maintenant 3 questions spécifiques pour cette mission.`;
         label: "✨ Quel résultat espérez-vous ?",
         placeholder: "Ex: Augmentation des ventes, gain de temps, meilleure visibilité..."
       }
-    ];
-
+    ]
     return NextResponse.json({ 
       questions: fallbackQuestions,
       isPremium: false,
       fallback: true,
       error: "Utilisation des questions par défaut"
-    });
+    })
   }
 }

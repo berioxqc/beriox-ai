@@ -1,6 +1,5 @@
-import { Suspense } from 'react';
-import BotRecommendations from '@/components/bots/BotRecommendations';
-
+import { Suspense } from 'react'
+import BotRecommendations from '@/components/bots/BotRecommendations'
 export default function RecommendationsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -24,5 +23,5 @@ export default function RecommendationsPage() {
         </Suspense>
       </div>
     </div>
-  );
+  )
 }

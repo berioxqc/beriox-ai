@@ -1,110 +1,97 @@
-"use client";
-
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import Icon from '@/components/ui/Icon';
-import BotRecommendations from '@/components/bots/BotRecommendations';
-
+"use client"
+import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import Icon from '@/components/ui/Icon'
+import BotRecommendations from '@/components/bots/BotRecommendations'
 interface BotStats {
-  botId: string;
-  botName: string;
-  botType: string;
-  capabilities: string[];
-  totalRecommendations: number;
-  pendingRecommendations: number;
-  implementedRecommendations: number;
-  lastAnalysis?: string;
-  autoRecommendations: boolean;
+  botId: string
+  botName: string
+  botType: string
+  capabilities: string[]
+  totalRecommendations: number
+  pendingRecommendations: number
+  implementedRecommendations: number
+  lastAnalysis?: string
+  autoRecommendations: boolean
 }
 
 export default function BotsDashboardPage() {
-  const { data: session } = useSession();
-  const [botStats, setBotStats] = useState<BotStats[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedBot, setSelectedBot] = useState<string | null>(null);
-  const [generating, setGenerating] = useState(false);
-
+  const { data: session } = useSession()
+  const [botStats, setBotStats] = useState<BotStats[]>([])
+  const [loading, setLoading] = useState(true)
+  const [selectedBot, setSelectedBot] = useState<string | null>(null)
+  const [generating, setGenerating] = useState(false)
   // Charger les statistiques des bots
   const loadBotStats = async () => {
-    if (!session?.user?.id) return;
-
-    setLoading(true);
+    if (!session?.user?.id) return
+    setLoading(true)
     try {
-      const response = await fetch('/api/bots/stats');
-      const data = await response.json();
-
+      const response = await fetch('/api/bots/stats')
+      const data = await response.json()
       if (response.ok) {
-        setBotStats(data.stats);
+        setBotStats(data.stats)
       } else {
-        console.error('Erreur lors du chargement des stats:', data.error);
+        console.error('Erreur lors du chargement des stats:', data.error)
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des stats:', error);
+      console.error('Erreur lors du chargement des stats:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   // Générer des recommandations pour tous les bots
   const generateAllRecommendations = async () => {
-    if (!session?.user?.id) return;
-
-    setGenerating(true);
+    if (!session?.user?.id) return
+    setGenerating(true)
     try {
       const response = await fetch('/api/bots/recommendations/generate-all', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (response.ok) {
-        await loadBotStats();
-        console.log(`${data.totalRecommendations} recommandations générées`);
+        await loadBotStats()
+        console.log(`${data.totalRecommendations} recommandations générées`)
       } else {
-        console.error('Erreur lors de la génération:', data.error);
+        console.error('Erreur lors de la génération:', data.error)
       }
     } catch (error) {
-      console.error('Erreur lors de la génération:', error);
+      console.error('Erreur lors de la génération:', error)
     } finally {
-      setGenerating(false);
+      setGenerating(false)
     }
-  };
-
+  }
   // Charger les stats au montage
   useEffect(() => {
-    loadBotStats();
-  }, [session?.user?.id]);
-
+    loadBotStats()
+  }, [session?.user?.id])
   const getBotTypeColor = (type: string) => {
     switch (type) {
-      case 'analyst': return 'bg-blue-500';
-      case 'developer': return 'bg-green-500';
-      case 'business': return 'bg-purple-500';
-      case 'qa': return 'bg-orange-500';
-      default: return 'bg-gray-500';
+      case 'analyst': return 'bg-blue-500'
+      case 'developer': return 'bg-green-500'
+      case 'business': return 'bg-purple-500'
+      case 'qa': return 'bg-orange-500'
+      default: return 'bg-gray-500'
     }
-  };
-
+  }
   const getCapabilityColor = (capability: string) => {
     switch (capability) {
-      case 'performance': return 'bg-blue-100 text-blue-800';
-      case 'security': return 'bg-red-100 text-red-800';
-      case 'ux': return 'bg-purple-100 text-purple-800';
-      case 'business': return 'bg-green-100 text-green-800';
-      case 'technical': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'performance': return 'bg-blue-100 text-blue-800'
+      case 'security': return 'bg-red-100 text-red-800'
+      case 'ux': return 'bg-purple-100 text-purple-800'
+      case 'business': return 'bg-green-100 text-green-800'
+      case 'technical': return 'bg-gray-100 text-gray-800'
+      default: return 'bg-gray-100 text-gray-800'
     }
-  };
-
+  }
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
       </div>
-    );
+    )
   }
 
   return (
@@ -209,7 +196,7 @@ export default function BotsDashboardPage() {
                 {bot.lastAnalysis && (
                   <div className="mt-4 pt-4 border-t border-gray-100">
                     <p className="text-xs text-gray-500">
-                      Dernière analyse: {new Date(bot.lastAnalysis).toLocaleDateString(&apos;fr-FR&apos;)}
+                      Dernière analyse: {new Date(bot.lastAnalysis).toLocaleDateString('fr-FR')}
                     </p>
                   </div>
                 )}
@@ -241,5 +228,5 @@ export default function BotsDashboardPage() {
         )}
       </div>
     </div>
-  );
+  )
 }

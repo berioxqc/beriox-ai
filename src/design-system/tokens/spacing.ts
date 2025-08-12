@@ -17,8 +17,7 @@ export const spacing = {
   48: '192px',
   56: '224px',
   64: '256px',
-} as const;
-
+} as const
 export const borderRadius = {
   none: '0',
   sm: '4px',
@@ -28,8 +27,7 @@ export const borderRadius = {
   xl: '16px',
   '2xl': '24px',
   full: '9999px',
-} as const;
-
+} as const
 export const shadows = {
   none: 'none',
   sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
@@ -41,8 +39,7 @@ export const shadows = {
   inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
   beriox: '0 4px 6px -1px rgba(99, 91, 255, 0.2)',
   berioxHover: '0 6px 12px -1px rgba(99, 91, 255, 0.3)',
-} as const;
-
-export type SpacingToken = keyof typeof spacing;
-export type BorderRadiusToken = keyof typeof borderRadius;
-export type ShadowToken = keyof typeof shadows;
+} as const
+export type SpacingToken = keyof typeof spacing
+export type BorderRadiusToken = keyof typeof borderRadius
+export type ShadowToken = keyof typeof shadows

@@ -1,151 +1,136 @@
-"use client";
-import { useEffect, useState, useMemo } from "react";
-import Link from "next/link";
-import Layout from "@/components/Layout";
-import { useAuthGuard, LimitedContentWrapper, LoginPrompt } from "@/hooks/useAuthGuard";
-
+"use client"
+import { useEffect, useState, useMemo } from "react"
+import Link from "next/link"
+import Layout from "@/components/Layout"
+import { useAuthGuard, LimitedContentWrapper, LoginPrompt } from "@/hooks/useAuthGuard"
 type Mission = {
-  id: string;
-  objective: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  deadline?: string | null;
-  priority?: string | null;
-  notionPageId?: string | null;
-};
-
+  id: string
+  objective: string
+  status: string
+  createdAt: string
+  updatedAt: string
+  deadline?: string | null
+  priority?: string | null
+  notionPageId?: string | null
+}
 export default function MissionsPage() {
-  const { isAuthenticated, isLoading } = useAuthGuard();
-  const [missions, setMissions] = useState<Mission[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [priorityFilter, setPriorityFilter] = useState("all");
-  const [orchestrating, setOrchestrating] = useState<string | null>(null);
-
+  const { isAuthenticated, isLoading } = useAuthGuard()
+  const [missions, setMissions] = useState<Mission[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [statusFilter, setStatusFilter] = useState("all")
+  const [priorityFilter, setPriorityFilter] = useState("all")
+  const [orchestrating, setOrchestrating] = useState<string | null>(null)
   async function fetchMissions() {
     try {
-      setLoading(true);
-      const res = await fetch("/api/missions");
-      const json = await res.json();
-      setMissions(json.missions || []);
-      setError(null);
+      setLoading(true)
+      const res = await fetch("/api/missions")
+      const json = await res.json()
+      setMissions(json.missions || [])
+      setError(null)
     } catch (e: any) {
-      setError(e?.message || "Erreur de chargement");
+      setError(e?.message || "Erreur de chargement")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetchMissions();
+      fetchMissions()
     }
-  }, [isAuthenticated]);
-
+  }, [isAuthenticated])
   async function handleOrchestrateMission(missionId: string) {
     try {
-      setOrchestrating(missionId);
-      
+      setOrchestrating(missionId)
       const response = await fetch("/api/missions/orchestrate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ missionId }),
-      });
-
-      const result = await response.json();
-
+      })
+      const result = await response.json()
       if (result.success) {
         alert("🎯 Orchestration IA lancée avec succès !\n\n" + 
               `Confiance: ${result.plan.confidence}%\n` +
               `Durée estimée: ${result.plan.estimatedDuration} minutes\n` +
               `Agents sélectionnés: ${result.plan.agents.map((a: any) => a.name).join(", ")}\n\n` +
-              "Les agents travaillent maintenant sur votre mission !");
-        
+              "Les agents travaillent maintenant sur votre mission !")
         // Recharger les missions pour voir les changements
-        await fetchMissions();
+        await fetchMissions()
       } else {
-        alert("❌ Erreur lors de l'orchestration: " + (result.error || "Erreur inconnue"));
+        alert("❌ Erreur lors de l'orchestration: " + (result.error || "Erreur inconnue"))
       }
     } catch (error) {
-      console.error("Erreur orchestration:", error);
-      alert("❌ Erreur lors de l'orchestration: " + (error instanceof Error ? error.message : "Erreur inconnue"));
+      console.error("Erreur orchestration:", error)
+      alert("❌ Erreur lors de l'orchestration: " + (error instanceof Error ? error.message : "Erreur inconnue"))
     } finally {
-      setOrchestrating(null);
+      setOrchestrating(null)
     }
   }
 
   const filteredMissions = useMemo(() => {
     return missions.filter(mission => {
-      const matchesSearch = mission.objective.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === "all" || mission.status === statusFilter;
-      const matchesPriority = priorityFilter === "all" || mission.priority === priorityFilter;
-      return matchesSearch && matchesStatus && matchesPriority;
-    });
-  }, [missions, searchTerm, statusFilter, priorityFilter]);
-
+      const matchesSearch = mission.objective.toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesStatus = statusFilter === "all" || mission.status === statusFilter
+      const matchesPriority = priorityFilter === "all" || mission.priority === priorityFilter
+      return matchesSearch && matchesStatus && matchesPriority
+    })
+  }, [missions, searchTerm, statusFilter, priorityFilter])
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "received": return "#8898aa";
-      case "split": return "#f79009";
-      case "in_progress": return "#0570de";
-      case "compiled": return "#00d924";
-      case "archived": return "#00a86b";
-      case "notified": return "#00d924";
-      case "failed": return "#df1b41";
-      default: return "#8898aa";
+      case "received": return "#8898aa"
+      case "split": return "#f79009"
+      case "in_progress": return "#0570de"
+      case "compiled": return "#00d924"
+      case "archived": return "#00a86b"
+      case "notified": return "#00d924"
+      case "failed": return "#df1b41"
+      default: return "#8898aa"
     }
-  };
-
+  }
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case "received": return "Reçue";
-      case "split": return "Découpée";
-      case "in_progress": return "En cours";
-      case "compiled": return "Compilée";
-      case "archived": return "Archivée";
-      case "notified": return "Terminée";
-      case "failed": return "Échouée";
-      default: return status;
+      case "received": return "Reçue"
+      case "split": return "Découpée"
+      case "in_progress": return "En cours"
+      case "compiled": return "Compilée"
+      case "archived": return "Archivée"
+      case "notified": return "Terminée"
+      case "failed": return "Échouée"
+      default: return status
     }
-  };
-
+  }
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high": return "#df1b41";
-      case "medium": return "#f79009";
-      case "low": return "#00a86b";
-      default: return "#8898aa";
+      case "high": return "#df1b41"
+      case "medium": return "#f79009"
+      case "low": return "#00a86b"
+      default: return "#8898aa"
     }
-  };
-
+  }
   const getPriorityLabel = (priority: string) => {
     switch (priority) {
-      case "high": return "Haute";
-      case "medium": return "Moyenne";
-      case "low": return "Basse";
-      default: return "—";
+      case "high": return "Haute"
+      case "medium": return "Moyenne"
+      case "low": return "Basse"
+      default: return "—"
     }
-  };
-
+  }
   const getMissionIcon = (objective: string) => {
-    const lower = objective.toLowerCase();
-    if (lower.includes('marketing') || lower.includes('campagne')) return '📊';
-    if (lower.includes('développement') || lower.includes('site') || lower.includes('app')) return '💻';
-    if (lower.includes('contenu') || lower.includes('article') || lower.includes('blog')) return '✍️';
-    if (lower.includes('design') || lower.includes('logo') || lower.includes('graphique')) return '🎨';
-    if (lower.includes('vente') || lower.includes('commercial')) return '💰';
-    if (lower.includes('formation') || lower.includes('cours')) return '🎓';
-    return '🎯';
-  };
-
+    const lower = objective.toLowerCase()
+    if (lower.includes('marketing') || lower.includes('campagne')) return '📊'
+    if (lower.includes('développement') || lower.includes('site') || lower.includes('app')) return '💻'
+    if (lower.includes('contenu') || lower.includes('article') || lower.includes('blog')) return '✍️'
+    if (lower.includes('design') || lower.includes('logo') || lower.includes('graphique')) return '🎨'
+    if (lower.includes('vente') || lower.includes('commercial')) return '💰'
+    if (lower.includes('formation') || lower.includes('cours')) return '🎓'
+    return '🎯'
+  }
   const notionUrl = (mission: Mission) =>
-    mission.notionPageId ? `https://www.notion.so/${mission.notionPageId.replace(/-/g, "")}` : null;
-
+    mission.notionPageId ? `https://www.notion.so/${mission.notionPageId.replace(/-/g, "")}` : null
   const headerActions = (
     <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
       <button
@@ -165,14 +150,14 @@ export default function MissionsPage() {
         }}
         onMouseOver={(e) => {
           if (!loading) {
-            e.currentTarget.style.borderColor = "#c7d2fe";
-            e.currentTarget.style.color = "#0a2540";
+            e.currentTarget.style.borderColor = "#c7d2fe"
+            e.currentTarget.style.color = "#0a2540"
           }
         }}
         onMouseOut={(e) => {
           if (!loading) {
-            e.currentTarget.style.borderColor = "#e3e8ee";
-            e.currentTarget.style.color = "#425466";
+            e.currentTarget.style.borderColor = "#e3e8ee"
+            e.currentTarget.style.color = "#425466"
           }
         }}
       >
@@ -187,19 +172,17 @@ export default function MissionsPage() {
         fontWeight: "500",
         fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       }}>
-        {filteredMissions.length} mission{filteredMissions.length !== 1 ? &apos;s&apos; : &apos;&apos;}
+        {filteredMissions.length} mission{filteredMissions.length !== 1 ? 's' : ''}
       </div>
     </div>
-  );
-
+  )
   // Contenu limité pour les utilisateurs non connectés
   const limitedContent = (
     <LoginPrompt 
-      message="Connectez-vous pour accéder à vos missions et utiliser l&apos;orchestration IA"
+      message="Connectez-vous pour accéder à vos missions et utiliser l'orchestration IA"
       showSignUp={true}
     />
-  );
-
+  )
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
@@ -208,7 +191,7 @@ export default function MissionsPage() {
           <p className="mt-4 text-white">Chargement...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -262,7 +245,7 @@ export default function MissionsPage() {
                 color: "#0a2540",
                 outline: "none",
                 transition: "border-color 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onFocus={(e) => e.target.style.borderColor = "#635bff"}
               onBlur={(e) => e.target.style.borderColor = "#e3e8ee"}
@@ -347,9 +330,9 @@ export default function MissionsPage() {
           {(searchTerm || statusFilter !== "all" || priorityFilter !== "all") && (
             <button
               onClick={() => {
-                setSearchTerm("");
-                setStatusFilter("all");
-                setPriorityFilter("all");
+                setSearchTerm("")
+                setStatusFilter("all")
+                setPriorityFilter("all")
               }}
               style={{
                 padding: "10px 16px",
@@ -361,17 +344,17 @@ export default function MissionsPage() {
                 fontSize: "14px",
                 fontWeight: "500",
                 transition: "all 0.2s",
-                fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.borderColor = "#fecaca";
-                e.currentTarget.style.background = "#fef2f2";
-                e.currentTarget.style.color = "#dc2626";
+                e.currentTarget.style.borderColor = "#fecaca"
+                e.currentTarget.style.background = "#fef2f2"
+                e.currentTarget.style.color = "#dc2626"
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.borderColor = "#e3e8ee";
-                e.currentTarget.style.background = "white";
-                e.currentTarget.style.color = "#425466";
+                e.currentTarget.style.borderColor = "#e3e8ee"
+                e.currentTarget.style.background = "white"
+                e.currentTarget.style.color = "#425466"
               }}
             >
               Effacer filtres
@@ -431,7 +414,7 @@ export default function MissionsPage() {
               color: "#8898aa",
               fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
-              Essayez d&apos;ajuster vos critères de recherche
+              Essayez d'ajuster vos critères de recherche
             </div>
           </div>
         ) : (
@@ -474,7 +457,7 @@ export default function MissionsPage() {
                       color: "#8898aa",
                       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
-                      Créée le {new Date(mission.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
+                      Créée le {new Date(mission.createdAt).toLocaleDateString('fr-FR')}
                     </div>
                   </div>
 
@@ -519,9 +502,9 @@ export default function MissionsPage() {
                     {/* Bouton Orchestration IA */}
                     <button
                       onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleOrchestrateMission(mission.id);
+                        e.preventDefault()
+                        e.stopPropagation()
+                        handleOrchestrateMission(mission.id)
                       }}
                       disabled={orchestrating === mission.id}
                       style={{
@@ -534,16 +517,16 @@ export default function MissionsPage() {
                         fontWeight: "500",
                         cursor: orchestrating === mission.id ? "not-allowed" : "pointer",
                         transition: "all 0.2s",
-                        fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                       }}
                       onMouseOver={(e) => {
                         if (orchestrating !== mission.id) {
-                          e.currentTarget.style.background = "#7c3aed";
+                          e.currentTarget.style.background = "#7c3aed"
                         }
                       }}
                       onMouseOut={(e) => {
                         if (orchestrating !== mission.id) {
-                          e.currentTarget.style.background = "#8b5cf6";
+                          e.currentTarget.style.background = "#8b5cf6"
                         }
                       }}
                     >
@@ -566,12 +549,12 @@ export default function MissionsPage() {
                           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                         }}
                         onMouseOver={(e) => {
-                          e.currentTarget.style.background = "#f7f9fc";
-                          e.currentTarget.style.borderColor = "#8898aa";
+                          e.currentTarget.style.background = "#f7f9fc"
+                          e.currentTarget.style.borderColor = "#8898aa"
                         }}
                         onMouseOut={(e) => {
-                          e.currentTarget.style.background = "transparent";
-                          e.currentTarget.style.borderColor = "#e3e8ee";
+                          e.currentTarget.style.background = "transparent"
+                          e.currentTarget.style.borderColor = "#e3e8ee"
                         }}
                       >
                         Voir
@@ -585,5 +568,5 @@ export default function MissionsPage() {
       </div>
       </Layout>
     </LimitedContentWrapper>
-  );
+  )
 }

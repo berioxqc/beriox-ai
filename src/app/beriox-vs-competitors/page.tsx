@@ -1,8 +1,7 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Layout from '@/components/Layout';
-import SchemaMarkup from '@/components/seo/SchemaMarkup';
-
+import { Metadata } from 'next'
+import Link from 'next/link'
+import Layout from '@/components/Layout'
+import SchemaMarkup from '@/components/seo/SchemaMarkup'
 export const metadata: Metadata = {
   title: 'Beriox AI vs Concurrents - Comparaison Complète 2024',
   description: 'Comparez Beriox AI avec les meilleures plateformes d\'IA. Découvrez pourquoi Beriox AI est la solution la plus avancée pour l\'orchestration d\'agents IA.',
@@ -13,8 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://beriox-ai.vercel.app/beriox-vs-competitors',
   },
-};
-
+}
 const competitors = [
   {
     name: 'Zapier',
@@ -48,8 +46,7 @@ const competitors = [
     pricing: 'À partir de 15$/mois',
     rating: 3.9,
   },
-];
-
+]
 const berioxFeatures = [
   {
     feature: 'Orchestration IA Avancée',
@@ -81,8 +78,7 @@ const berioxFeatures = [
     beriox: '✅ Métriques détaillées et ROI calculé',
     competitors: '❌ Métriques basiques',
   },
-];
-
+]
 export default function BerioxVsCompetitorsPage() {
   return (
     <>
@@ -99,7 +95,7 @@ export default function BerioxVsCompetitorsPage() {
       
       <Layout
         title="Beriox AI vs Concurrents"
-        subtitle="Comparaison complète avec les meilleures plateformes d&apos;automatisation"
+        subtitle="Comparaison complète avec les meilleures plateformes d'automatisation"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Hero Section */}
@@ -109,8 +105,8 @@ export default function BerioxVsCompetitorsPage() {
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               Comparaison objective et détaillée avec les meilleures plateformes 
-              d&apos;automatisation. Découvrez pourquoi Beriox AI révolutionne 
-              l&apos;orchestration d&apos;agents IA.
+              d'automatisation. Découvrez pourquoi Beriox AI révolutionne 
+              l'orchestration d'agents IA.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
@@ -268,7 +264,7 @@ export default function BerioxVsCompetitorsPage() {
               Prêt à essayer Beriox AI ?
             </h3>
             <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-              Rejoignez des milliers d&apos;entreprises qui ont déjà choisi Beriox AI 
+              Rejoignez des milliers d'entreprises qui ont déjà choisi Beriox AI 
               pour révolutionner leur automatisation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -289,5 +285,5 @@ export default function BerioxVsCompetitorsPage() {
         </div>
       </Layout>
     </>
-  );
+  )
 }

@@ -4,113 +4,107 @@
  */
 
 export interface Trend {
-  name: string;
-  category: 'technology' | 'social' | 'business' | 'lifestyle' | 'marketing';
-  growthRate: number;
+  name: string
+  category: 'technology' | 'social' | 'business' | 'lifestyle' | 'marketing'
+  growthRate: number
   relevance: number; // 1-10
-  description: string;
-  examples: string[];
-  potential: 'high' | 'medium' | 'low';
-  timeframe: 'immediate' | 'short_term' | 'long_term';
+  description: string
+  examples: string[]
+  potential: 'high' | 'medium' | 'low'
+  timeframe: 'immediate' | 'short_term' | 'long_term'
 }
 
 export interface CreativeConcept {
-  id: string;
-  title: string;
-  description: string;
-  inspiration: string[];
-  targetAudience: string[];
-  channels: string[];
-  uniqueAngle: string;
+  id: string
+  title: string
+  description: string
+  inspiration: string[]
+  targetAudience: string[]
+  channels: string[]
+  uniqueAngle: string
   execution: {
-    phases: string[];
-    timeline: string;
-    resources: string[];
-    budget: 'low' | 'medium' | 'high';
-  };
+    phases: string[]
+    timeline: string
+    resources: string[]
+    budget: 'low' | 'medium' | 'high'
+  }
   expectedOutcomes: {
-    engagement: string;
-    reach: string;
-    conversion: string;
-    brandImpact: string;
-  };
+    engagement: string
+    reach: string
+    conversion: string
+    brandImpact: string
+  }
   moodboard: {
-    colors: string[];
-    styles: string[];
-    references: string[];
-    keywords: string[];
-  };
+    colors: string[]
+    styles: string[]
+    references: string[]
+    keywords: string[]
+  }
   riskAssessment: {
-    level: 'low' | 'medium' | 'high';
-    concerns: string[];
-    mitigation: string[];
-  };
+    level: 'low' | 'medium' | 'high'
+    concerns: string[]
+    mitigation: string[]
+  }
 }
 
 export interface TrendSculptorReport {
-  trends: Trend[];
-  concepts: CreativeConcept[];
+  trends: Trend[]
+  concepts: CreativeConcept[]
   recommendations: {
-    immediate: string[];
-    shortTerm: string[];
-    longTerm: string[];
-  };
+    immediate: string[]
+    shortTerm: string[]
+    longTerm: string[]
+  }
   opportunities: {
-    highPotential: string[];
-    emerging: string[];
-    niche: string[];
-  };
+    highPotential: string[]
+    emerging: string[]
+    niche: string[]
+  }
 }
 
 export interface TrendSculptorConfig {
   dataSources: {
-    socialMedia: boolean;
-    pinterest: boolean;
-    tiktok: boolean;
-    newsletters: boolean;
-    trendReports: boolean;
-  };
-  creativityLevel: 'conservative' | 'balanced' | 'experimental';
+    socialMedia: boolean
+    pinterest: boolean
+    tiktok: boolean
+    newsletters: boolean
+    trendReports: boolean
+  }
+  creativityLevel: 'conservative' | 'balanced' | 'experimental'
   brandAlignment: number; // 1-10
-  targetAudiences: string[];
-  focusCategories: string[];
+  targetAudiences: string[]
+  focusCategories: string[]
 }
 
 export class TrendSculptorBot {
-  private config: TrendSculptorConfig;
-  private lastReport: TrendSculptorReport | null = null;
-
+  private config: TrendSculptorConfig
+  private lastReport: TrendSculptorReport | null = null
   constructor(config: TrendSculptorConfig) {
-    this.config = config;
+    this.config = config
   }
 
   /**
    * Analyse les tendances et génère des concepts créatifs
    */
   async generateCreativeConcepts(brandContext?: string): Promise<TrendSculptorReport> {
-    console.log("🎨 TrendSculptorBot: Génération de concepts créatifs en cours...");
-
+    console.log("🎨 TrendSculptorBot: Génération de concepts créatifs en cours...")
     try {
-      const trends = await this.analyzeTrends();
-      const concepts = this.createConcepts(trends, brandContext);
-      const recommendations = this.generateRecommendations(trends, concepts);
-      const opportunities = this.identifyOpportunities(trends);
-
+      const trends = await this.analyzeTrends()
+      const concepts = this.createConcepts(trends, brandContext)
+      const recommendations = this.generateRecommendations(trends, concepts)
+      const opportunities = this.identifyOpportunities(trends)
       const report: TrendSculptorReport = {
         trends,
         concepts,
         recommendations,
         opportunities
-      };
-
-      this.lastReport = report;
-      
-      console.log("🎨 TrendSculptorBot: Concepts générés:", concepts.length);
-      
-      return report;
+      }
+      this.lastReport = report
+      console.log("🎨 TrendSculptorBot: Concepts générés:", concepts.length)
+      return report
     } catch (error) {
-      console.error("🎨 TrendSculptorBot: Erreur lors de la génération:", error);
-      throw new Error("Impossible de générer des concepts créatifs");
+      console.error("🎨 TrendSculptorBot: Erreur lors de la génération:", error)
+      throw new Error("Impossible de générer des concepts créatifs")
     }
   }
 
@@ -169,17 +163,15 @@ export class TrendSculptorBot {
         potential: 'medium',
         timeframe: 'long_term'
       }
-    ];
-
-    return trends;
+    ]
+    return trends
   }
 
   /**
    * Crée des concepts basés sur les tendances
    */
   private createConcepts(trends: Trend[], brandContext?: string): CreativeConcept[] {
-    const concepts: CreativeConcept[] = [];
-
+    const concepts: CreativeConcept[] = []
     // Concept 1: Micro-Interactions + Authenticité
     concepts.push({
       id: "concept-001",
@@ -217,8 +209,7 @@ export class TrendSculptorBot {
         concerns: ["Complexité technique", "Risque de surcharge visuelle"],
         mitigation: ["Tests utilisateurs précoces", "Design itératif", "Feedback continu"]
       }
-    });
-
+    })
     // Concept 2: Gamification + Personnalisation IA
     concepts.push({
       id: "concept-002",
@@ -256,8 +247,7 @@ export class TrendSculptorBot {
         concerns: ["Complexité de l'IA", "Coût de développement", "Adoption utilisateur"],
         mitigation: ["MVP itératif", "Tests utilisateurs intensifs", "Partnerships stratégiques"]
       }
-    });
-
+    })
     // Concept 3: Durabilité Créative + Authenticité
     concepts.push({
       id: "concept-003",
@@ -295,38 +285,33 @@ export class TrendSculptorBot {
         concerns: ["Greenwashing perçu", "Authenticité difficile à maintenir"],
         mitigation: ["Transparence totale", "Audit externe", "Engagement communautaire"]
       }
-    });
-
-    return concepts;
+    })
+    return concepts
   }
 
   /**
    * Génère des recommandations basées sur les tendances et concepts
    */
   private generateRecommendations(trends: Trend[], concepts: CreativeConcept[]) {
-    const immediate: string[] = [];
-    const shortTerm: string[] = [];
-    const longTerm: string[] = [];
-
+    const immediate: string[] = []
+    const shortTerm: string[] = []
+    const longTerm: string[] = []
     // Recommandations immédiates
-    const immediateTrends = trends.filter(t => t.timeframe === 'immediate');
+    const immediateTrends = trends.filter(t => t.timeframe === 'immediate')
     immediateTrends.forEach(trend => {
-      immediate.push(`Explorer les opportunités de ${trend.name} dans les 30 prochains jours`);
-    });
-
+      immediate.push(`Explorer les opportunités de ${trend.name} dans les 30 prochains jours`)
+    })
     // Recommandations court terme
-    const shortTermTrends = trends.filter(t => t.timeframe === 'short_term');
+    const shortTermTrends = trends.filter(t => t.timeframe === 'short_term')
     shortTermTrends.forEach(trend => {
-      shortTerm.push(`Développer une stratégie autour de ${trend.name} dans les 3 prochains mois`);
-    });
-
+      shortTerm.push(`Développer une stratégie autour de ${trend.name} dans les 3 prochains mois`)
+    })
     // Recommandations long terme
-    const longTermTrends = trends.filter(t => t.timeframe === 'long_term');
+    const longTermTrends = trends.filter(t => t.timeframe === 'long_term')
     longTermTrends.forEach(trend => {
-      longTerm.push(`Planifier l'intégration de ${trend.name} dans la roadmap produit annuelle`);
-    });
-
-    return { immediate, shortTerm, longTerm };
+      longTerm.push(`Planifier l'intégration de ${trend.name} dans la roadmap produit annuelle`)
+    })
+    return { immediate, shortTerm, longTerm }
   }
 
   /**
@@ -335,26 +320,23 @@ export class TrendSculptorBot {
   private identifyOpportunities(trends: Trend[]) {
     const highPotential = trends
       .filter(t => t.potential === 'high')
-      .map(t => `${t.name} - ${t.description}`);
-
+      .map(t => `${t.name} - ${t.description}`)
     const emerging = trends
       .filter(t => t.growthRate > 30 && t.relevance >= 7)
-      .map(t => `${t.name} - Croissance de ${t.growthRate}%`);
-
+      .map(t => `${t.name} - Croissance de ${t.growthRate}%`)
     const niche = trends
       .filter(t => t.relevance >= 8 && t.category !== 'technology')
-      .map(t => `${t.name} - Opportunité de différenciation`);
-
-    return { highPotential, emerging, niche };
+      .map(t => `${t.name} - Opportunité de différenciation`)
+    return { highPotential, emerging, niche }
   }
 
   /**
    * Génère un moodboard pour un concept
    */
   generateMoodboard(conceptId: string): any {
-    const concept = this.lastReport?.concepts.find(c => c.id === conceptId);
+    const concept = this.lastReport?.concepts.find(c => c.id === conceptId)
     if (!concept) {
-      return null;
+      return null
     }
 
     return {
@@ -370,27 +352,24 @@ export class TrendSculptorBot {
       typography: ["Inter", "Roboto", "Open Sans"],
       textures: ["Subtle gradients", "Clean lines", "Organic shapes"],
       lighting: "Soft, natural lighting with modern accents"
-    };
+    }
   }
 
   /**
    * Évalue la faisabilité d'un concept
    */
   evaluateFeasibility(conceptId: string): any {
-    const concept = this.lastReport?.concepts.find(c => c.id === conceptId);
+    const concept = this.lastReport?.concepts.find(c => c.id === conceptId)
     if (!concept) {
-      return null;
+      return null
     }
 
     const technicalFeasibility = concept.riskAssessment.level === 'low' ? 90 : 
-                                concept.riskAssessment.level === 'medium' ? 70 : 50;
-
-    const marketFeasibility = concept.targetAudience.length > 2 ? 85 : 65;
+                                concept.riskAssessment.level === 'medium' ? 70 : 50
+    const marketFeasibility = concept.targetAudience.length > 2 ? 85 : 65
     const resourceFeasibility = concept.execution.budget === 'low' ? 90 : 
-                               concept.execution.budget === 'medium' ? 75 : 60;
-
-    const overallFeasibility = Math.round((technicalFeasibility + marketFeasibility + resourceFeasibility) / 3);
-
+                               concept.execution.budget === 'medium' ? 75 : 60
+    const overallFeasibility = Math.round((technicalFeasibility + marketFeasibility + resourceFeasibility) / 3)
     return {
       concept: concept.title,
       scores: {
@@ -404,7 +383,7 @@ export class TrendSculptorBot {
         "Tester avec un groupe d'utilisateurs cibles",
         "Préparer un plan de mitigation des risques"
       ]
-    };
+    }
   }
 
   /**
@@ -412,73 +391,68 @@ export class TrendSculptorBot {
    */
   generateReport(): string {
     if (!this.lastReport) {
-      return "Aucun rapport disponible. Lancez d'abord une génération de concepts.";
+      return "Aucun rapport disponible. Lancez d'abord une génération de concepts."
     }
 
-    const { trends, concepts, recommendations, opportunities } = this.lastReport;
-
-    let report = "🎨 **RAPPORT TRENDSCULPTOR - CONCEPTS CRÉATIFS**\n\n";
-    
+    const { trends, concepts, recommendations, opportunities } = this.lastReport
+    let report = "🎨 **RAPPORT TRENDSCULPTOR - CONCEPTS CRÉATIFS**\n\n"
     // Tendances clés
-    report += "## 📈 TENDANCES CLÉS\n";
+    report += "## 📈 TENDANCES CLÉS\n"
     trends.slice(0, 3).forEach((trend, index) => {
-      const emoji = trend.potential === 'high' ? '🔥' : trend.potential === 'medium' ? '⚡' : '💡';
-      report += `### ${index + 1}. ${trend.name}\n`;
-      report += `${emoji} **Catégorie:** ${trend.category}\n`;
-      report += `**Croissance:** +${trend.growthRate}%\n`;
-      report += `**Pertinence:** ${trend.relevance}/10\n`;
-      report += `**Description:** ${trend.description}\n\n`;
-    });
-
+      const emoji = trend.potential === 'high' ? '🔥' : trend.potential === 'medium' ? '⚡' : '💡'
+      report += `### ${index + 1}. ${trend.name}\n`
+      report += `${emoji} **Catégorie:** ${trend.category}\n`
+      report += `**Croissance:** +${trend.growthRate}%\n`
+      report += `**Pertinence:** ${trend.relevance}/10\n`
+      report += `**Description:** ${trend.description}\n\n`
+    })
     // Concepts générés
-    report += "## 🚀 CONCEPTS GÉNÉRÉS\n";
+    report += "## 🚀 CONCEPTS GÉNÉRÉS\n"
     concepts.forEach((concept, index) => {
       const riskEmoji = concept.riskAssessment.level === 'low' ? '🟢' : 
-                       concept.riskAssessment.level === 'medium' ? '🟡' : '🔴';
-      report += `### ${index + 1}. ${concept.title}\n`;
-      report += `${riskEmoji} **Risque:** ${concept.riskAssessment.level}\n`;
-      report += `**Budget:** ${concept.execution.budget}\n`;
-      report += `**Timeline:** ${concept.execution.timeline}\n`;
-      report += `**Angle unique:** ${concept.uniqueAngle}\n\n`;
-    });
-
+                       concept.riskAssessment.level === 'medium' ? '🟡' : '🔴'
+      report += `### ${index + 1}. ${concept.title}\n`
+      report += `${riskEmoji} **Risque:** ${concept.riskAssessment.level}\n`
+      report += `**Budget:** ${concept.execution.budget}\n`
+      report += `**Timeline:** ${concept.execution.timeline}\n`
+      report += `**Angle unique:** ${concept.uniqueAngle}\n\n`
+    })
     // Opportunités
     if (opportunities.highPotential.length > 0) {
-      report += "## 🎯 OPPORTUNITÉS À FORT POTENTIEL\n";
+      report += "## 🎯 OPPORTUNITÉS À FORT POTENTIEL\n"
       opportunities.highPotential.forEach(opp => {
-        report += `• ${opp}\n`;
-      });
-      report += "\n";
+        report += `• ${opp}\n`
+      })
+      report += "\n"
     }
 
     // Recommandations
     if (recommendations.immediate.length > 0) {
-      report += "## ⚡ ACTIONS IMMÉDIATES\n";
+      report += "## ⚡ ACTIONS IMMÉDIATES\n"
       recommendations.immediate.forEach(rec => {
-        report += `• ${rec}\n`;
-      });
-      report += "\n";
+        report += `• ${rec}\n`
+      })
+      report += "\n"
     }
 
     if (recommendations.shortTerm.length > 0) {
-      report += "## 📅 ACTIONS COURT TERME\n";
+      report += "## 📅 ACTIONS COURT TERME\n"
       recommendations.shortTerm.forEach(rec => {
-        report += `• ${rec}\n`;
-      });
+        report += `• ${rec}\n`
+      })
     }
 
-    report += "\n---\n";
-    report += "*Rapport généré par TrendSculptorBot - Et si on prenait cette idée… mais en la rendant totalement nôtre ?*";
-
-    return report;
+    report += "\n---\n"
+    report += "*Rapport généré par TrendSculptorBot - Et si on prenait cette idée… mais en la rendant totalement nôtre ?*"
+    return report
   }
 
   /**
    * Met à jour la configuration
    */
   updateConfig(newConfig: Partial<TrendSculptorConfig>) {
-    this.config = { ...this.config, ...newConfig };
-    console.log("🎨 TrendSculptorBot: Configuration mise à jour");
+    this.config = { ...this.config, ...newConfig }
+    console.log("🎨 TrendSculptorBot: Configuration mise à jour")
   }
 }
 
@@ -495,4 +469,4 @@ export const trendSculptorBot = new TrendSculptorBot({
   brandAlignment: 8,
   targetAudiences: ["Millennials", "Gen Z", "Professionnels", "Créateurs"],
   focusCategories: ["technology", "marketing", "social", "lifestyle"]
-});
+})

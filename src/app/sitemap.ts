@@ -1,8 +1,6 @@
-import { MetadataRoute } from 'next';
-
+import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://beriox-ai.vercel.app';
-  
+  const baseUrl = 'https://beriox-ai.vercel.app'
   // Pages statiques principales
   const staticPages = [
     {
@@ -71,8 +69,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly' as const,
       priority: 0.3,
     },
-  ];
-
+  ]
   // Articles de blog
   const blogPosts = [
     {
@@ -95,14 +92,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       title: 'SEO et IA en 2024 : Stratégies Gagnantes',
       publishedAt: '2024-01-01',
     },
-  ];
-
+  ]
   const blogPages = blogPosts.map((post) => ({
     url: `${baseUrl}/blog/${post.id}`,
     lastModified: new Date(post.publishedAt),
     changeFrequency: 'monthly' as const,
     priority: 0.6,
-  }));
-
-  return [...staticPages, ...blogPages];
+  }))
+  return [...staticPages, ...blogPages]
 }

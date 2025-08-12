@@ -1,38 +1,36 @@
-"use client";
-
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import Icon from '@/components/ui/Icon';
-
+"use client"
+import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import Icon from '@/components/ui/Icon'
 interface BotRecommendation {
-  id: string;
-  type: 'performance' | 'security' | 'ux' | 'business' | 'technical';
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  title: string;
-  description: string;
-  impact: string;
-  effort: 'low' | 'medium' | 'high';
-  estimatedTime: string;
-  category: string;
-  tags: string[];
-  status: 'pending' | 'approved' | 'rejected' | 'implemented';
-  implementationNotes?: string;
-  createdAt: string;
+  id: string
+  type: 'performance' | 'security' | 'ux' | 'business' | 'technical'
+  priority: 'low' | 'medium' | 'high' | 'critical'
+  title: string
+  description: string
+  impact: string
+  effort: 'low' | 'medium' | 'high'
+  estimatedTime: string
+  category: string
+  tags: string[]
+  status: 'pending' | 'approved' | 'rejected' | 'implemented'
+  implementationNotes?: string
+  createdAt: string
   bot?: {
-    id: string;
-    name: string;
-    type: string;
-  };
+    id: string
+    name: string
+    type: string
+  }
   mission?: {
-    id: string;
-    title: string;
-  };
+    id: string
+    title: string
+  }
 }
 
 interface BotRecommendationsProps {
-  botId?: string;
-  missionId?: string;
-  autoGenerate?: boolean;
+  botId?: string
+  missionId?: string
+  autoGenerate?: boolean
 }
 
 export default function BotRecommendations({ 
@@ -40,49 +38,43 @@ export default function BotRecommendations({
   missionId, 
   autoGenerate = false 
 }: BotRecommendationsProps) {
-  const { data: session } = useSession();
-  const [recommendations, setRecommendations] = useState<BotRecommendation[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [generating, setGenerating] = useState(false);
+  const { data: session } = useSession()
+  const [recommendations, setRecommendations] = useState<BotRecommendation[]>([])
+  const [loading, setLoading] = useState(false)
+  const [generating, setGenerating] = useState(false)
   const [filter, setFilter] = useState({
     type: '',
     priority: '',
     status: ''
-  });
-
+  })
   // Charger les recommandations
   const loadRecommendations = async () => {
-    if (!session?.user?.id) return;
-
-    setLoading(true);
+    if (!session?.user?.id) return
+    setLoading(true)
     try {
-      const params = new URLSearchParams();
-      if (botId) params.append('botId', botId);
-      if (missionId) params.append('missionId', missionId);
-      if (filter.type) params.append('type', filter.type);
-      if (filter.priority) params.append('priority', filter.priority);
-      if (filter.status) params.append('status', filter.status);
-
-      const response = await fetch(`/api/bots/recommendations?${params}`);
-      const data = await response.json();
-
+      const params = new URLSearchParams()
+      if (botId) params.append('botId', botId)
+      if (missionId) params.append('missionId', missionId)
+      if (filter.type) params.append('type', filter.type)
+      if (filter.priority) params.append('priority', filter.priority)
+      if (filter.status) params.append('status', filter.status)
+      const response = await fetch(`/api/bots/recommendations?${params}`)
+      const data = await response.json()
       if (response.ok) {
-        setRecommendations(data.recommendations);
+        setRecommendations(data.recommendations)
       } else {
-        console.error('Erreur lors du chargement des recommandations:', data.error);
+        console.error('Erreur lors du chargement des recommandations:', data.error)
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des recommandations:', error);
+      console.error('Erreur lors du chargement des recommandations:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   // Générer de nouvelles recommandations
   const generateRecommendations = async () => {
-    if (!session?.user?.id) return;
-
-    setGenerating(true);
+    if (!session?.user?.id) return
+    setGenerating(true)
     try {
       const response = await fetch('/api/bots/recommendations', {
         method: 'POST',
@@ -94,24 +86,21 @@ export default function BotRecommendations({
           missionId,
           forceRegenerate: true
         }),
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (response.ok) {
-        await loadRecommendations();
+        await loadRecommendations()
         // Notification de succès
-        console.log(`${data.recommendations} recommandations générées`);
+        console.log(`${data.recommendations} recommandations générées`)
       } else {
-        console.error('Erreur lors de la génération:', data.error);
+        console.error('Erreur lors de la génération:', data.error)
       }
     } catch (error) {
-      console.error('Erreur lors de la génération des recommandations:', error);
+      console.error('Erreur lors de la génération des recommandations:', error)
     } finally {
-      setGenerating(false);
+      setGenerating(false)
     }
-  };
-
+  }
   // Mettre à jour le statut d'une recommandation
   const updateRecommendationStatus = async (id: string, status: string, notes?: string) => {
     try {
@@ -124,96 +113,85 @@ export default function BotRecommendations({
           status,
           implementationNotes: notes
         }),
-      });
-
+      })
       if (response.ok) {
-        await loadRecommendations();
+        await loadRecommendations()
       } else {
-        console.error('Erreur lors de la mise à jour');
+        console.error('Erreur lors de la mise à jour')
       }
     } catch (error) {
-      console.error('Erreur lors de la mise à jour:', error);
+      console.error('Erreur lors de la mise à jour:', error)
     }
-  };
-
+  }
   // Supprimer une recommandation
   const deleteRecommendation = async (id: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer cette recommandation ?')) return;
-
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette recommandation ?')) return
     try {
       const response = await fetch(`/api/bots/recommendations/${id}`, {
         method: 'DELETE',
-      });
-
+      })
       if (response.ok) {
-        await loadRecommendations();
+        await loadRecommendations()
       } else {
-        console.error('Erreur lors de la suppression');
+        console.error('Erreur lors de la suppression')
       }
     } catch (error) {
-      console.error('Erreur lors de la suppression:', error);
+      console.error('Erreur lors de la suppression:', error)
     }
-  };
-
+  }
   // Charger les recommandations au montage et quand les filtres changent
   useEffect(() => {
-    loadRecommendations();
-  }, [session?.user?.id, botId, missionId, filter]);
-
+    loadRecommendations()
+  }, [session?.user?.id, botId, missionId, filter])
   // Génération automatique si activée
   useEffect(() => {
     if (autoGenerate && recommendations.length === 0) {
-      generateRecommendations();
+      generateRecommendations()
     }
-  }, [autoGenerate, recommendations.length]);
-
+  }, [autoGenerate, recommendations.length])
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'bg-red-500 text-white';
-      case 'high': return 'bg-orange-500 text-white';
-      case 'medium': return 'bg-yellow-500 text-black';
-      case 'low': return 'bg-green-500 text-white';
-      default: return 'bg-gray-500 text-white';
+      case 'critical': return 'bg-red-500 text-white'
+      case 'high': return 'bg-orange-500 text-white'
+      case 'medium': return 'bg-yellow-500 text-black'
+      case 'low': return 'bg-green-500 text-white'
+      default: return 'bg-gray-500 text-white'
     }
-  };
-
+  }
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'performance': return 'bg-blue-500 text-white';
-      case 'security': return 'bg-red-500 text-white';
-      case 'ux': return 'bg-purple-500 text-white';
-      case 'business': return 'bg-green-500 text-white';
-      case 'technical': return 'bg-gray-500 text-white';
-      default: return 'bg-gray-400 text-white';
+      case 'performance': return 'bg-blue-500 text-white'
+      case 'security': return 'bg-red-500 text-white'
+      case 'ux': return 'bg-purple-500 text-white'
+      case 'business': return 'bg-green-500 text-white'
+      case 'technical': return 'bg-gray-500 text-white'
+      default: return 'bg-gray-400 text-white'
     }
-  };
-
+  }
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'implemented': return 'bg-green-500 text-white';
-      case 'approved': return 'bg-blue-500 text-white';
-      case 'rejected': return 'bg-red-500 text-white';
-      case 'pending': return 'bg-yellow-500 text-black';
-      default: return 'bg-gray-400 text-white';
+      case 'implemented': return 'bg-green-500 text-white'
+      case 'approved': return 'bg-blue-500 text-white'
+      case 'rejected': return 'bg-red-500 text-white'
+      case 'pending': return 'bg-yellow-500 text-black'
+      default: return 'bg-gray-400 text-white'
     }
-  };
-
+  }
   const getEffortColor = (effort: string) => {
     switch (effort) {
-      case 'high': return 'text-red-500';
-      case 'medium': return 'text-yellow-500';
-      case 'low': return 'text-green-500';
-      default: return 'text-gray-500';
+      case 'high': return 'text-red-500'
+      case 'medium': return 'text-yellow-500'
+      case 'low': return 'text-green-500'
+      default: return 'text-gray-500'
     }
-  };
-
+  }
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
         <span className="ml-2 text-gray-600">Chargement des recommandations...</span>
       </div>
-    );
+    )
   }
 
   return (
@@ -295,7 +273,7 @@ export default function BotRecommendations({
             Aucune recommandation
           </h3>
           <p className="text-gray-600 mb-4">
-            Cliquez sur "Générer" pour créer de nouvelles recommandations basées sur l&apos;analyse du système.
+            Cliquez sur "Générer" pour créer de nouvelles recommandations basées sur l'analyse du système.
           </p>
           <button
             onClick={generateRecommendations}
@@ -332,7 +310,7 @@ export default function BotRecommendations({
                   <p className="text-sm text-gray-600">
                     {recommendation.category} • Effort: 
                     <span className={`font-medium ${getEffortColor(recommendation.effort)}`}>
-                      {&apos; &apos;}{recommendation.effort}
+                      {' '}{recommendation.effort}
                     </span>
                     {' '}• Temps estimé: {recommendation.estimatedTime}
                   </p>
@@ -392,7 +370,7 @@ export default function BotRecommendations({
                 {/* Notes d'implémentation */}
                 {recommendation.implementationNotes && (
                   <div>
-                    <h4 className="font-medium text-gray-900 mb-1">Notes d&apos;implémentation</h4>
+                    <h4 className="font-medium text-gray-900 mb-1">Notes d'implémentation</h4>
                     <p className="text-gray-700 text-sm">{recommendation.implementationNotes}</p>
                   </div>
                 )}
@@ -400,7 +378,7 @@ export default function BotRecommendations({
                 {/* Métadonnées */}
                 <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
                   <span>
-                    Créé le {new Date(recommendation.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
+                    Créé le {new Date(recommendation.createdAt).toLocaleDateString('fr-FR')}
                   </span>
                   {recommendation.bot && (
                     <span>Bot: {recommendation.bot.name}</span>
@@ -412,5 +390,5 @@ export default function BotRecommendations({
         </div>
       )}
     </div>
-  );
+  )
 }

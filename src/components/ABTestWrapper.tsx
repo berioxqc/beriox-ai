@@ -1,22 +1,20 @@
-"use client";
-
-import { useEffect, useState, ReactNode } from 'react';
-import { useSession } from 'next-auth/react';
-
+"use client"
+import { useEffect, useState, ReactNode } from 'react'
+import { useSession } from 'next-auth/react'
 interface ABTestWrapperProps {
-  experimentId: string;
-  children: ReactNode | ((variant: any) => ReactNode);
-  fallback?: ReactNode;
-  onVariantLoad?: (variant: any) => void;
-  onError?: (error: Error) => void;
+  experimentId: string
+  children: ReactNode | ((variant: any) => ReactNode)
+  fallback?: ReactNode
+  onVariantLoad?: (variant: any) => void
+  onError?: (error: Error) => void
 }
 
 interface ExperimentVariant {
-  id: string;
-  name: string;
-  type: string;
-  config: Record<string, any>;
-  weight: number;
+  id: string
+  name: string
+  type: string
+  config: Record<string, any>
+  weight: number
 }
 
 export default function ABTestWrapper({
@@ -26,59 +24,50 @@ export default function ABTestWrapper({
   onVariantLoad,
   onError
 }: ABTestWrapperProps) {
-  const { data: session } = useSession();
-  const [variant, setVariant] = useState<ExperimentVariant | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
+  const { data: session } = useSession()
+  const [variant, setVariant] = useState<ExperimentVariant | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
   useEffect(() => {
     const loadVariant = async () => {
       try {
-        setLoading(true);
-        setError(null);
-
+        setLoading(true)
+        setError(null)
         // Générer un sessionId si pas d'utilisateur connecté
-        const sessionId = session?.user?.id || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-        const response = await fetch(`/api/ab-testing?action=variant&experimentId=${experimentId}&sessionId=${sessionId}`);
-        
+        const sessionId = session?.user?.id || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        const response = await fetch(`/api/ab-testing?action=variant&experimentId=${experimentId}&sessionId=${sessionId}`)
         if (!response.ok) {
           if (response.status === 404) {
             // Expérience non trouvée ou inactive - utiliser le fallback
-            setVariant(null);
-            return;
+            setVariant(null)
+            return
           }
-          throw new Error(`Failed to load variant: ${response.statusText}`);
+          throw new Error(`Failed to load variant: ${response.statusText}`)
         }
 
-        const data = await response.json();
-        setVariant(data.variant);
-        
+        const data = await response.json()
+        setVariant(data.variant)
         if (onVariantLoad) {
-          onVariantLoad(data.variant);
+          onVariantLoad(data.variant)
         }
 
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('Unknown error');
-        setError(error);
-        
+        const error = err instanceof Error ? err : new Error('Unknown error')
+        setError(error)
         if (onError) {
-          onError(error);
+          onError(error)
         }
         
-        console.error('AB Test Error:', error);
+        console.error('AB Test Error:', error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-
-    loadVariant();
-  }, [experimentId, session?.user?.id, onVariantLoad, onError]);
-
+    }
+    loadVariant()
+  }, [experimentId, session?.user?.id, onVariantLoad, onError])
   // Enregistrer une conversion
   const recordConversion = async (goalId: string, value?: number, metadata?: Record<string, any>) => {
-    if (!variant) return;
-
+    if (!variant) return
     try {
       await fetch('/api/ab-testing?action=conversion', {
         method: 'POST',
@@ -92,12 +81,11 @@ export default function ABTestWrapper({
           value,
           metadata
         })
-      });
+      })
     } catch (error) {
-      console.error('Failed to record conversion:', error);
+      console.error('Failed to record conversion:', error)
     }
-  };
-
+  }
   // Exposer la fonction recordConversion via le contexte
   const contextValue = {
     variant,
@@ -105,62 +93,55 @@ export default function ABTestWrapper({
     experimentId,
     loading,
     error
-  };
-
+  }
   if (loading) {
-    return <div className="ab-test-loading">Chargement...</div>;
+    return <div className="ab-test-loading">Chargement...</div>
   }
 
   if (error) {
-    return fallback;
+    return fallback
   }
 
   if (!variant) {
-    return fallback;
+    return fallback
   }
 
   // Si children est une fonction, l'appeler avec la variante
   if (typeof children === 'function') {
-    return children(variant);
+    return children(variant)
   }
 
   // Sinon, retourner les children directement
-  return <>{children}</>;
+  return <>{children}</>
 }
 
 // Hook pour utiliser l'A/B testing
 export function useABTest(experimentId: string) {
-  const { data: session } = useSession();
-  const [variant, setVariant] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
+  const { data: session } = useSession()
+  const [variant, setVariant] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const loadVariant = async () => {
       try {
-        const sessionId = session?.user?.id || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        
-        const response = await fetch(`/api/ab-testing?action=variant&experimentId=${experimentId}&sessionId=${sessionId}`);
-        
+        const sessionId = session?.user?.id || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        const response = await fetch(`/api/ab-testing?action=variant&experimentId=${experimentId}&sessionId=${sessionId}`)
         if (response.ok) {
-          const data = await response.json();
-          setVariant(data.variant);
+          const data = await response.json()
+          setVariant(data.variant)
         } else {
-          setVariant(null);
+          setVariant(null)
         }
       } catch (error) {
-        console.error('AB Test Error:', error);
-        setVariant(null);
+        console.error('AB Test Error:', error)
+        setVariant(null)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-
-    loadVariant();
-  }, [experimentId, session?.user?.id]);
-
+    }
+    loadVariant()
+  }, [experimentId, session?.user?.id])
   const recordConversion = async (goalId: string, value?: number, metadata?: Record<string, any>) => {
-    if (!variant) return;
-
+    if (!variant) return
     try {
       await fetch('/api/ab-testing?action=conversion', {
         method: 'POST',
@@ -174,18 +155,17 @@ export function useABTest(experimentId: string) {
           value,
           metadata
         })
-      });
+      })
     } catch (error) {
-      console.error('Failed to record conversion:', error);
+      console.error('Failed to record conversion:', error)
     }
-  };
-
+  }
   return {
     variant,
     loading,
     recordConversion,
     experimentId
-  };
+  }
 }
 
 // Composant pour tester différents textes de boutons
@@ -196,28 +176,24 @@ export function ABTestButton({
   className = '',
   ...props
 }: {
-  experimentId: string;
-  defaultText: string;
-  onClick?: () => void;
-  className?: string;
-  [key: string]: any;
+  experimentId: string
+  defaultText: string
+  onClick?: () => void
+  className?: string
+  [key: string]: any
 }) {
-  const { variant, recordConversion } = useABTest(experimentId);
-
+  const { variant, recordConversion } = useABTest(experimentId)
   const handleClick = () => {
     // Enregistrer la conversion
     recordConversion('button_click', undefined, {
       buttonText: variant?.config?.buttonText || defaultText
-    });
-
+    })
     // Appeler le onClick original
     if (onClick) {
-      onClick();
+      onClick()
     }
-  };
-
-  const buttonText = variant?.config?.buttonText || defaultText;
-
+  }
+  const buttonText = variant?.config?.buttonText || defaultText
   return (
     <button
       className={className}
@@ -226,7 +202,7 @@ export function ABTestButton({
     >
       {buttonText}
     </button>
-  );
+  )
 }
 
 // Composant pour tester différents layouts
@@ -236,21 +212,20 @@ export function ABTestLayout({
   variantLayout,
   children
 }: {
-  experimentId: string;
-  controlLayout: ReactNode;
-  variantLayout: ReactNode;
-  children: ReactNode;
+  experimentId: string
+  controlLayout: ReactNode
+  variantLayout: ReactNode
+  children: ReactNode
 }) {
-  const { variant } = useABTest(experimentId);
-
+  const { variant } = useABTest(experimentId)
   if (!variant) {
-    return <>{controlLayout}</>;
+    return <>{controlLayout}</>
   }
 
   if (variant.type === 'control') {
-    return <>{controlLayout}</>;
+    return <>{controlLayout}</>
   } else {
-    return <>{variantLayout}</>;
+    return <>{variantLayout}</>
   }
 }
 
@@ -261,24 +236,23 @@ export function ABTestContent({
   variantContent,
   fallback = null
 }: {
-  experimentId: string;
-  controlContent: ReactNode;
-  variantContent: ReactNode;
-  fallback?: ReactNode;
+  experimentId: string
+  controlContent: ReactNode
+  variantContent: ReactNode
+  fallback?: ReactNode
 }) {
-  const { variant, loading } = useABTest(experimentId);
-
+  const { variant, loading } = useABTest(experimentId)
   if (loading) {
-    return fallback;
+    return fallback
   }
 
   if (!variant) {
-    return <>{controlContent}</>;
+    return <>{controlContent}</>
   }
 
   if (variant.type === 'control') {
-    return <>{controlContent}</>;
+    return <>{controlContent}</>
   } else {
-    return <>{variantContent}</>;
+    return <>{variantContent}</>
   }
 }

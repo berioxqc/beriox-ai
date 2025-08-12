@@ -1,41 +1,39 @@
-"use client";
-import React from 'react';
-import Icon from '@/components/ui/Icon';
-
+"use client"
+import React from 'react'
+import Icon from '@/components/ui/Icon'
 interface DeliverableBubbleProps {
   deliverable: {
-    id: string;
-    agent: string;
-    output: any;
-    createdAt: string;
-  };
+    id: string
+    agent: string
+    output: any
+    createdAt: string
+  }
   agentInfo: {
-    name: string;
-    role: string;
-    color: string;
-    icon: string;
-    age: number;
-  };
+    name: string
+    role: string
+    color: string
+    icon: string
+    age: number
+  }
 }
 
 export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverable, agentInfo }) => {
   // Fonction pour formater le contenu
   const formatContent = (content: any): string => {
     if (typeof content === 'string') {
-      return content;
+      return content
     }
     if (typeof content === 'object' && content.content) {
-      return content.content;
+      return content.content
     }
     if (typeof content === 'object' && content.response) {
-      return content.response;
+      return content.response
     }
-    return JSON.stringify(content, null, 2);
-  };
-
+    return JSON.stringify(content, null, 2)
+  }
   // Fonction pour formater le contenu en HTML avec style
   const formatAsStyledHtml = (content: string): JSX.Element => {
-    const lines = content.split('\n');
+    const lines = content.split('\n')
     return (
       <div style={{ lineHeight: '1.6' }}>
         {lines.map((line, index) => {
@@ -47,13 +45,13 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
                 fontWeight: '700', 
                 color: '#0a2540', 
                 marginBottom: '12px', 
-                marginTop: index > 0 ? &apos;24px&apos; : &apos;0&apos;,
+                marginTop: index > 0 ? '24px' : '0',
                 borderBottom: `2px solid ${agentInfo.color}`,
-                paddingBottom: &apos;4px&apos;
+                paddingBottom: '4px'
               }}>
                 {line.substring(2)}
               </h3>
-            );
+            )
           }
           if (line.startsWith('## ')) {
             return (
@@ -67,7 +65,7 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
               }}>
                 {line.substring(3)}
               </h4>
-            );
+            )
           }
           if (line.startsWith('### ')) {
             return (
@@ -80,7 +78,7 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
               }}>
                 {line.substring(4)}
               </h5>
-            );
+            )
           }
           
           // Listes
@@ -100,12 +98,12 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
                 }}>•</span>
                 <span>{line.substring(2)}</span>
               </div>
-            );
+            )
           }
           
           // Gras
           if (line.includes('**')) {
-            const parts = line.split('**');
+            const parts = line.split('**')
             return (
               <div key={index} style={{ marginBottom: '8px' }}>
                 {parts.map((part, i) => 
@@ -114,12 +112,12 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
                     part
                 )}
               </div>
-            );
+            )
           }
           
           // Ligne vide
           if (line.trim() === '') {
-            return <div key={index} style={{ height: '12px' }} />;
+            return <div key={index} style={{ height: '12px' }} />
           }
           
           // Texte normal
@@ -131,21 +129,19 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
             }}>
               {line}
             </div>
-          );
+          )
         })}
       </div>
-    );
-  };
-
-  const content = formatContent(deliverable.output);
+    )
+  }
+  const content = formatContent(deliverable.output)
   const formattedDate = new Date(deliverable.createdAt).toLocaleString('fr-FR', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  });
-
+  })
   return (
     <div style={{
       marginBottom: '24px',
@@ -256,28 +252,26 @@ export const DeliverableBubble: React.FC<DeliverableBubbleProps> = ({ deliverabl
         </div>
       </div>
     </div>
-  );
-};
-
+  )
+}
 // Styles CSS pour l'animation
 const styles = `
   @keyframes slideIn {
     from {
-      opacity: 0;
-      transform: translateY(20px);
+      opacity: 0
+      transform: translateY(20px)
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
+      opacity: 1
+      transform: translateY(0)
     }
   }
-`;
-
+`
 // Injecter les styles
 if (typeof document !== 'undefined') {
-  const styleSheet = document.createElement('style');
-  styleSheet.textContent = styles;
-  document.head.appendChild(styleSheet);
+  const styleSheet = document.createElement('style')
+  styleSheet.textContent = styles
+  document.head.appendChild(styleSheet)
 }
 
-export default DeliverableBubble;
+export default DeliverableBubble

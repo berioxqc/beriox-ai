@@ -1,114 +1,108 @@
-'use client';
-
-import { useSession, signOut } from 'next-auth/react';
-import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import Layout from '@/components/Layout';
-
+'use client'
+import { useSession, signOut } from 'next-auth/react'
+import { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useTheme } from '@/hooks/useTheme'
+import Layout from '@/components/Layout'
 interface UserStats {
-  totalMissions: number;
-  completedMissions: number;
-  subscriptionStatus: string;
-  planId: string;
-  joinDate: string;
+  totalMissions: number
+  completedMissions: number
+  subscriptionStatus: string
+  planId: string
+  joinDate: string
 }
 
 interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  image?: string;
-  industry: string;
-  company: string;
-  role: string;
-  experience: string;
-  goals: string[];
-  preferredAgents: string[];
-  timezone: string;
-  language: string;
+  id: string
+  name: string
+  email: string
+  image?: string
+  industry: string
+  company: string
+  role: string
+  experience: string
+  goals: string[]
+  preferredAgents: string[]
+  timezone: string
+  language: string
   notifications: {
-    email: boolean;
-    push: boolean;
-    weekly: boolean;
-  };
+    email: boolean
+    push: boolean
+    weekly: boolean
+  }
   preferences: {
-    theme: 'light' | 'dark' | 'auto';
-    compactMode: boolean;
-    autoSave: boolean;
-  };
+    theme: 'light' | 'dark' | 'auto'
+    compactMode: boolean
+    autoSave: boolean
+  }
 }
 
 interface ApiUsageData {
-  apiName: string;
-  displayName: string;
-  used: number;
-  limit: number;
-  lastUpdate: string;
-  status: 'healthy' | 'warning' | 'error';
-  data?: any[];
+  apiName: string
+  displayName: string
+  used: number
+  limit: number
+  lastUpdate: string
+  status: 'healthy' | 'warning' | 'error'
+  data?: any[]
 }
 
 interface DashboardData {
-  apiUsage: ApiUsageData[];
+  apiUsage: ApiUsageData[]
   recentAlerts: {
-    type: 'security' | 'performance' | 'seo' | 'uptime';
-    message: string;
-    timestamp: string;
-    severity: 'low' | 'medium' | 'high';
-  }[];
+    type: 'security' | 'performance' | 'seo' | 'uptime'
+    message: string
+    timestamp: string
+    severity: 'low' | 'medium' | 'high'
+  }[]
   performanceMetrics: {
-    avgLoadTime: number;
-    uptimePercentage: number;
-    securityScore: number;
-    seoScore: number;
-  };
+    avgLoadTime: number
+    uptimePercentage: number
+    securityScore: number
+    seoScore: number
+  }
 }
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
-  const theme = useTheme();
-  const [userStats, setUserStats] = useState<UserStats | null>(null);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [editing, setEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'overview' | 'profile' | 'apis' | 'metrics' | 'preferences' | 'subscription'>('overview');
-
+  const { data: session, status } = useSession()
+  const theme = useTheme()
+  const [userStats, setUserStats] = useState<UserStats | null>(null)
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [editing, setEditing] = useState(false)
+  const [activeTab, setActiveTab] = useState<'overview' | 'profile' | 'apis' | 'metrics' | 'preferences' | 'subscription'>('overview')
   useEffect(() => {
     if (session?.user) {
-      fetchUserStats();
-      fetchUserProfile();
-      fetchDashboardData();
+      fetchUserStats()
+      fetchUserProfile()
+      fetchDashboardData()
     }
-  }, [session]);
-
+  }, [session])
   const fetchUserStats = async () => {
     try {
-      const res = await fetch('/api/user/stats');
+      const res = await fetch('/api/user/stats')
       if (res.ok) {
-        const stats = await res.json();
-        setUserStats(stats);
+        const stats = await res.json()
+        setUserStats(stats)
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des stats:', error);
+      console.error('Erreur lors du chargement des stats:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const fetchUserProfile = async () => {
     try {
-      const res = await fetch('/api/user/profile');
+      const res = await fetch('/api/user/profile')
       if (res.ok) {
-        const profile = await res.json();
-        setUserProfile(profile.user);
+        const profile = await res.json()
+        setUserProfile(profile.user)
       }
     } catch (error) {
-      console.error('Erreur lors du chargement du profil:', error);
+      console.error('Erreur lors du chargement du profil:', error)
     }
-  };
-
+  }
   const fetchDashboardData = async () => {
     try {
       // Simulation des données de tableau de bord pour la démonstration
@@ -175,38 +169,34 @@ export default function ProfilePage() {
           securityScore: 87,
           seoScore: 92
         }
-      };
-      
-      setDashboardData(mockData);
+      }
+      setDashboardData(mockData)
     } catch (error) {
-      console.error('Erreur lors du chargement des données dashboard:', error);
+      console.error('Erreur lors du chargement des données dashboard:', error)
     }
-  };
-
+  }
   const handleSaveName = async () => {
     try {
       const res = await fetch('/api/user/profile', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name }),
-      });
-
+      })
       if (res.ok) {
-        setEditing(false);
+        setEditing(false)
         // Rafraîchir la session
-        window.location.reload();
+        window.location.reload()
       } else {
-        alert('Erreur lors de la sauvegarde');
+        alert('Erreur lors de la sauvegarde')
       }
     } catch (error) {
-      alert('Erreur lors de la sauvegarde');
+      alert('Erreur lors de la sauvegarde')
     }
-  };
-
+  }
   const getSubscriptionBadge = (status: string, planId: string) => {
     if (status === 'active') {
-      const color = planId === 'pro' ? theme.colors.primary.main : theme.colors.warning;
-      const label = planId === 'pro' ? 'Pro' : planId === 'enterprise' ? 'Enterprise' : 'Actif';
+      const color = planId === 'pro' ? theme.colors.primary.main : theme.colors.warning
+      const label = planId === 'pro' ? 'Pro' : planId === 'enterprise' ? 'Enterprise' : 'Actif'
       return (
         <span style={{
           backgroundColor: color + '20',
@@ -219,7 +209,7 @@ export default function ProfilePage() {
         }}>
           {label}
         </span>
-      );
+      )
     }
     return (
       <span style={{
@@ -232,9 +222,8 @@ export default function ProfilePage() {
       }}>
         Essai Gratuit
       </span>
-    );
-  };
-
+    )
+  }
   if (status === 'loading') {
     return (
       <Layout>
@@ -247,7 +236,7 @@ export default function ProfilePage() {
           <FontAwesomeIcon icon="spinner" spin style={{ fontSize: '32px', color: theme.colors.neutral[400] }} />
         </div>
       </Layout>
-    );
+    )
   }
 
   if (!session) {
@@ -263,7 +252,7 @@ export default function ProfilePage() {
           </p>
         </div>
       </Layout>
-    );
+    )
   }
 
   return (
@@ -298,7 +287,7 @@ export default function ProfilePage() {
               fontWeight: 'bold',
               color: 'white'
             }}>
-              {!session.user.image && (session.user.name ? session.user.name.charAt(0).toUpperCase() : &apos;U&apos;)}
+              {!session.user.image && (session.user.name ? session.user.name.charAt(0).toUpperCase() : 'U')}
             </div>
 
             {/* Info utilisateur */}
@@ -334,8 +323,8 @@ export default function ProfilePage() {
                     </button>
                     <button
                       onClick={() => {
-                        setEditing(false);
-                        setName(session.user.name || '');
+                        setEditing(false)
+                        setName(session.user.name || '')
                       }}
                       style={{
                         backgroundColor: theme.colors.neutral[300],
@@ -357,7 +346,7 @@ export default function ProfilePage() {
                       color: theme.colors.neutral[900],
                       margin: 0
                     }}>
-                      {session.user.name || &apos;Utilisateur&apos;}
+                      {session.user.name || 'Utilisateur'}
                     </h1>
                     <button
                       onClick={() => setEditing(true)}
@@ -465,7 +454,7 @@ export default function ProfilePage() {
                 fontWeight: 'bold', 
                 color: theme.colors.neutral[900] 
               }}>
-                {new Date(userStats.joinDate).toLocaleDateString(&apos;fr-FR&apos;)}
+                {new Date(userStats.joinDate).toLocaleDateString('fr-FR')}
               </div>
               <div style={{ color: theme.colors.neutral[600], fontSize: '14px' }}>
                 Membre depuis
@@ -694,7 +683,7 @@ export default function ProfilePage() {
                             fontSize: '12px', 
                             color: theme.colors.neutral[600]
                           }}>
-                            {new Date(alert.timestamp).toLocaleString(&apos;fr-FR&apos;)}
+                            {new Date(alert.timestamp).toLocaleString('fr-FR')}
                           </div>
                         </div>
                       </div>
@@ -747,8 +736,8 @@ export default function ProfilePage() {
                                api.status === 'warning' ? theme.colors.warning :
                                theme.colors.error
                       }}>
-                        {api.status === &apos;healthy&apos; ? &apos;✓ OK&apos; :
-                         api.status === &apos;warning&apos; ? &apos;⚠ Attention&apos; : &apos;✗ Erreur&apos;}
+                        {api.status === 'healthy' ? '✓ OK' :
+                         api.status === 'warning' ? '⚠ Attention' : '✗ Erreur'}
                       </span>
                     </div>
 
@@ -787,7 +776,7 @@ export default function ProfilePage() {
                       fontSize: '12px',
                       color: theme.colors.neutral[600]
                     }}>
-                      Dernière mise à jour: {new Date(api.lastUpdate).toLocaleString(&apos;fr-FR&apos;)}
+                      Dernière mise à jour: {new Date(api.lastUpdate).toLocaleString('fr-FR')}
                     </div>
                   </div>
                 ))}
@@ -806,7 +795,7 @@ export default function ProfilePage() {
                 </h4>
                 <p>
                   Cette section contiendra des graphiques interactifs pour visualiser
-                  l&apos;évolution de vos métriques dans le temps.
+                  l'évolution de vos métriques dans le temps.
                 </p>
               </div>
             )}
@@ -907,11 +896,11 @@ export default function ProfilePage() {
                     value={userProfile?.name || session?.user?.name || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, name: e.target.value } : null)}
                     style={{
-                      width: &apos;100%&apos;,
-                      padding: &apos;12px&apos;,
-                      border: &apos;1px solid #e3e8ee&apos;,
-                      borderRadius: &apos;6px&apos;,
-                      fontSize: &apos;14px&apos;
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '6px',
+                      fontSize: '14px'
                     }}
                   />
                 </div>
@@ -993,11 +982,11 @@ export default function ProfilePage() {
                     value={userProfile?.company || ''}
                     onChange={(e) => setUserProfile(prev => prev ? { ...prev, company: e.target.value } : null)}
                     style={{
-                      width: &apos;100%&apos;,
-                      padding: &apos;12px&apos;,
-                      border: &apos;1px solid #e3e8ee&apos;,
-                      borderRadius: &apos;6px&apos;,
-                      fontSize: &apos;14px&apos;
+                      width: '100%',
+                      padding: '12px',
+                      border: '1px solid #e3e8ee',
+                      borderRadius: '6px',
+                      fontSize: '14px'
                     }}
                   />
                 </div>
@@ -1057,7 +1046,7 @@ export default function ProfilePage() {
                       fontSize: '14px'
                     }}
                   >
-                    <option value="">Sélectionner l&apos;expérience</option>
+                    <option value="">Sélectionner l'expérience</option>
                     <option value="beginner">Débutant</option>
                     <option value="intermediate">Intermédiaire</option>
                     <option value="advanced">Avancé</option>
@@ -1069,7 +1058,7 @@ export default function ProfilePage() {
               <button
                 onClick={() => {
                   // Sauvegarder les modifications du profil
-                  console.log('Sauvegarde du profil:', userProfile);
+                  console.log('Sauvegarde du profil:', userProfile)
                 }}
                 style={{
                   padding: '12px 24px',
@@ -1118,7 +1107,7 @@ export default function ProfilePage() {
                   color: theme.colors.neutral[700],
                   marginBottom: '8px'
                 }}>
-                  Thème d&apos;affichage
+                  Thème d'affichage
                 </label>
                 <select
                   value={userProfile?.preferences?.theme || 'auto'}
@@ -1226,7 +1215,7 @@ export default function ProfilePage() {
               <button
                 onClick={() => {
                   // Sauvegarder les préférences
-                  console.log('Sauvegarde des préférences:', userProfile);
+                  console.log('Sauvegarde des préférences:', userProfile)
                 }}
                 style={{
                   padding: '12px 24px',
@@ -1262,7 +1251,7 @@ export default function ProfilePage() {
               color: theme.colors.neutral[900],
               marginBottom: theme.spacing.lg
             }}>
-              💳 Gestion de l&apos;abonnement
+              💳 Gestion de l'abonnement
             </h3>
 
             <div style={{ display: 'grid', gap: theme.spacing.lg }}>
@@ -1293,7 +1282,7 @@ export default function ProfilePage() {
                       Plan actuel
                     </div>
                     <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
-                      {userStats?.planId === &apos;free&apos; ? &apos;Gratuit&apos; : userStats?.planId === &apos;pro&apos; ? &apos;Pro&apos; : &apos;Enterprise&apos;}
+                      {userStats?.planId === 'free' ? 'Gratuit' : userStats?.planId === 'pro' ? 'Pro' : 'Enterprise'}
                     </div>
                   </div>
                   
@@ -1307,7 +1296,7 @@ export default function ProfilePage() {
                       Statut
                     </div>
                     <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
-                      {userStats?.subscriptionStatus === &apos;active&apos; ? &apos;Actif&apos; : &apos;Essai&apos;}
+                      {userStats?.subscriptionStatus === 'active' ? 'Actif' : 'Essai'}
                     </div>
                   </div>
                   
@@ -1321,7 +1310,7 @@ export default function ProfilePage() {
                       Membre depuis
                     </div>
                     <div style={{ fontSize: '18px', fontWeight: '600', color: theme.colors.neutral[900] }}>
-                      {userStats?.joinDate ? new Date(userStats.joinDate).toLocaleDateString(&apos;fr-FR&apos;) : &apos;N/A&apos;}
+                      {userStats?.joinDate ? new Date(userStats.joinDate).toLocaleDateString('fr-FR') : 'N/A'}
                     </div>
                   </div>
                 </div>
@@ -1486,18 +1475,18 @@ export default function ProfilePage() {
                     
                     {userStats?.planId !== 'pro' && (
                       <button
-                        onClick={() => window.location.href = &apos;/pricing&apos;}
+                        onClick={() => window.location.href = '/pricing'}
                         style={{
-                          width: &apos;100%&apos;,
-                          padding: &apos;12px&apos;,
+                          width: '100%',
+                          padding: '12px',
                           background: theme.colors.primary.main,
-                          color: &apos;white&apos;,
-                          border: &apos;none&apos;,
-                          borderRadius: &apos;8px&apos;,
-                          fontSize: &apos;14px&apos;,
-                          fontWeight: &apos;600&apos;,
-                          cursor: &apos;pointer&apos;,
-                          transition: &apos;background-color 0.2s&apos;
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'background-color 0.2s'
                         }}
                         onMouseOver={(e) => e.currentTarget.style.background = theme.colors.primary.dark}
                         onMouseOut={(e) => e.currentTarget.style.background = theme.colors.primary.main}
@@ -1576,29 +1565,29 @@ export default function ProfilePage() {
                     
                     {userStats?.planId !== 'enterprise' && (
                       <button
-                        onClick={() => window.location.href = &apos;/pricing&apos;}
+                        onClick={() => window.location.href = '/pricing'}
                         style={{
-                          width: &apos;100%&apos;,
-                          padding: &apos;12px&apos;,
-                          background: &apos;white&apos;,
+                          width: '100%',
+                          padding: '12px',
+                          background: 'white',
                           color: theme.colors.primary.main,
                           border: `1px solid ${theme.colors.primary.main}`,
-                          borderRadius: &apos;8px&apos;,
-                          fontSize: &apos;14px&apos;,
-                          fontWeight: &apos;600&apos;,
-                          cursor: &apos;pointer&apos;,
-                          transition: &apos;all 0.2s&apos;
+                          borderRadius: '8px',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s'
                         }}
                         onMouseOver={(e) => {
-                          e.currentTarget.style.background = theme.colors.primary.main;
-                          e.currentTarget.style.color = &apos;white&apos;;
+                          e.currentTarget.style.background = theme.colors.primary.main
+                          e.currentTarget.style.color = 'white'
                         }}
                         onMouseOut={(e) => {
-                          e.currentTarget.style.background = &apos;white&apos;;
-                          e.currentTarget.style.color = theme.colors.primary.main;
+                          e.currentTarget.style.background = 'white'
+                          e.currentTarget.style.color = theme.colors.primary.main
                         }}
                       >
-                        Contacter l&apos;équipe
+                        Contacter l'équipe
                       </button>
                     )}
                   </div>
@@ -1639,7 +1628,7 @@ export default function ProfilePage() {
                     }}
                   >
                     <FontAwesomeIcon icon="credit-card" />
-                    Gérer l&apos;abonnement
+                    Gérer l'abonnement
                   </button>
                   
                   <button
@@ -1737,5 +1726,5 @@ export default function ProfilePage() {
         </div>
       </div>
     </Layout>
-  );
+  )
 }

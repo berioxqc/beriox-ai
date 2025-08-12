@@ -1,14 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { rateLimitMiddleware } from './lib/rate-limit-advanced';
-
+import { NextRequest, NextResponse } from 'next/server'
+import { rateLimitMiddleware } from './lib/rate-limit-advanced'
 /**
  * Middleware Next.js pour Beriox AI
  * Applique le rate limiting, l'authentification et d'autres protections de sécurité
  */
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
+  const { pathname } = request.nextUrl
   // Pages publiques qui ne nécessitent pas d'authentification
   const publicPages = [
     '/',
@@ -26,8 +24,7 @@ export async function middleware(request: NextRequest) {
     '/api/health',
     '/api/monitoring/health',
     '/api/csrf'
-  ];
-
+  ]
   // Pages qui nécessitent une authentification stricte (redirection)
   const strictAuthPages = [
     '/admin',
@@ -36,14 +33,11 @@ export async function middleware(request: NextRequest) {
     '/api/user',
     '/api/stripe',
     '/api/bots'
-  ];
-
+  ]
   // Vérifier si la page actuelle est publique
-  const isPublicPage = publicPages.some(page => pathname.startsWith(page));
-  
+  const isPublicPage = publicPages.some(page => pathname.startsWith(page))
   // Vérifier si la page nécessite une authentification stricte
-  const isStrictAuthPage = strictAuthPages.some(page => pathname.startsWith(page));
-
+  const isStrictAuthPage = strictAuthPages.some(page => pathname.startsWith(page))
   // Si c'est une page d'authentification stricte, vérifier l'authentification
   if (isStrictAuthPage) {
     try {
@@ -52,35 +46,33 @@ export async function middleware(request: NextRequest) {
         headers: {
           cookie: request.headers.get('cookie') || '',
         },
-      });
-
+      })
       if (!sessionResponse.ok) {
-        console.log(`🔒 Session invalide pour ${pathname} - Redirection vers /auth/signin`);
-        const signInUrl = new URL('/auth/signin', request.url);
-        signInUrl.searchParams.set('callbackUrl', pathname);
-        return NextResponse.redirect(signInUrl);
+        console.log(`🔒 Session invalide pour ${pathname} - Redirection vers /auth/signin`)
+        const signInUrl = new URL('/auth/signin', request.url)
+        signInUrl.searchParams.set('callbackUrl', pathname)
+        return NextResponse.redirect(signInUrl)
       }
 
-      const session = await sessionResponse.json();
-      
+      const session = await sessionResponse.json()
       // Si pas de session valide, rediriger vers la connexion
       if (!session || !session.user) {
-        console.log(`🔒 Utilisateur non authentifié pour ${pathname} - Redirection vers /auth/signin`);
-        const signInUrl = new URL('/auth/signin', request.url);
-        signInUrl.searchParams.set('callbackUrl', pathname);
-        return NextResponse.redirect(signInUrl);
+        console.log(`🔒 Utilisateur non authentifié pour ${pathname} - Redirection vers /auth/signin`)
+        const signInUrl = new URL('/auth/signin', request.url)
+        signInUrl.searchParams.set('callbackUrl', pathname)
+        return NextResponse.redirect(signInUrl)
       }
     } catch (error) {
-      console.error('Erreur lors de la vérification de la session:', error);
+      console.error('Erreur lors de la vérification de la session:', error)
       // En cas d'erreur, rediriger vers la connexion par sécurité
-      const signInUrl = new URL('/auth/signin', request.url);
-      signInUrl.searchParams.set('callbackUrl', pathname);
-      return NextResponse.redirect(signInUrl);
+      const signInUrl = new URL('/auth/signin', request.url)
+      signInUrl.searchParams.set('callbackUrl', pathname)
+      return NextResponse.redirect(signInUrl)
     }
   } else if (!isPublicPage) {
     // Pour les pages non-publiques mais non-strictes, permettre l'accès sans redirection
     // Les pages géreront elles-mêmes l'affichage du contenu selon l'état d'authentification
-    console.log(`📄 Accès public autorisé à ${pathname} - Contenu limité`);
+    console.log(`📄 Accès public autorisé à ${pathname} - Contenu limité`)
   }
 
   // Appliquer le rate limiting uniquement sur les routes API
@@ -90,31 +82,28 @@ export async function middleware(request: NextRequest) {
         pathname.startsWith('/api/monitoring/health') ||
         pathname.startsWith('/api/admin/stats') ||
         pathname.startsWith('/api/auth')) {
-      return NextResponse.next();
+      return NextResponse.next()
     }
 
     try {
       // Vérifier le rate limiting
-      const rateLimitResponse = await rateLimitMiddleware(request);
-      
+      const rateLimitResponse = await rateLimitMiddleware(request)
       if (rateLimitResponse) {
-        return rateLimitResponse;
+        return rateLimitResponse
       }
     } catch (error) {
-      console.error('Erreur dans le middleware de rate limiting:', error);
+      console.error('Erreur dans le middleware de rate limiting:', error)
       // En cas d'erreur, continuer le traitement
     }
   }
 
   // Headers de sécurité
-  const response = NextResponse.next();
-  
+  const response = NextResponse.next()
   // Headers de sécurité de base
-  response.headers.set('X-Content-Type-Options', 'nosniff');
-  response.headers.set('X-Frame-Options', 'DENY');
-  response.headers.set('X-XSS-Protection', '1; mode=block');
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('X-XSS-Protection', '1; mode=block')
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
   // Headers CSP (Content Security Policy)
   const csp = [
     "default-src 'self'",
@@ -128,11 +117,9 @@ export async function middleware(request: NextRequest) {
     "base-uri 'self'",
     "form-action 'self'",
     "frame-ancestors 'none'"
-  ].join('; ');
-  
-  response.headers.set('Content-Security-Policy', csp);
-
-  return response;
+  ].join('; ')
+  response.headers.set('Content-Security-Policy', csp)
+  return response
 }
 
 // Configuration du middleware - Appliquer à toutes les routes sauf les fichiers statiques
@@ -148,4 +135,4 @@ export const config = {
      */
     '/((?!_next/static|_next/image|favicon.ico|public/|api/auth).*)',
   ],
-};
+}

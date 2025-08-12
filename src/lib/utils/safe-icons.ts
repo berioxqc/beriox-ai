@@ -2,10 +2,10 @@
 // Évite les problèmes d'encodage et de corruption
 
 export interface SafeIcon {
-  name: string;
-  unicode: string;
-  fallback: string;
-  category: 'status' | 'action' | 'navigation' | 'feedback' | 'system';
+  name: string
+  unicode: string
+  fallback: string
+  category: 'status' | 'action' | 'navigation' | 'feedback' | 'system'
 }
 
 // Icônes sécurisées avec fallbacks
@@ -289,53 +289,50 @@ export const SAFE_ICONS: Record<string, SafeIcon> = {
     fallback: '[AGRANDIR]',
     category: 'system'
   }
-};
-
+}
 export class SafeIconManager {
-  private useUnicode: boolean = true;
-  private fallbackMode: boolean = false;
-
+  private useUnicode: boolean = true
+  private fallbackMode: boolean = false
   constructor(options?: { useUnicode?: boolean; fallbackMode?: boolean }) {
-    this.useUnicode = options?.useUnicode ?? true;
-    this.fallbackMode = options?.fallbackMode ?? false;
+    this.useUnicode = options?.useUnicode ?? true
+    this.fallbackMode = options?.fallbackMode ?? false
   }
 
   /**
    * Obtient une icône sécurisée
    */
   getIcon(iconName: string): string {
-    const icon = SAFE_ICONS[iconName];
+    const icon = SAFE_ICONS[iconName]
     if (!icon) {
-      return this.fallbackMode ? '[ICÔNE MANQUANTE]' : '?';
+      return this.fallbackMode ? '[ICÔNE MANQUANTE]' : '?'
     }
 
-    return this.fallbackMode ? icon.fallback : icon.unicode;
+    return this.fallbackMode ? icon.fallback : icon.unicode
   }
 
   /**
    * Obtient une icône avec fallback automatique
    */
   getIconWithFallback(iconName: string): string {
-    const icon = SAFE_ICONS[iconName];
+    const icon = SAFE_ICONS[iconName]
     if (!icon) {
-      return '[ICÔNE MANQUANTE]';
+      return '[ICÔNE MANQUANTE]'
     }
 
     try {
       // Tester si l'unicode s'affiche correctement
-      const testElement = document.createElement('span');
-      testElement.textContent = icon.unicode;
-      const computedStyle = window.getComputedStyle(testElement);
-      
+      const testElement = document.createElement('span')
+      testElement.textContent = icon.unicode
+      const computedStyle = window.getComputedStyle(testElement)
       // Si l'unicode ne s'affiche pas (largeur = 0), utiliser le fallback
       if (computedStyle.width === '0px' || computedStyle.width === '0') {
-        return icon.fallback;
+        return icon.fallback
       }
       
-      return icon.unicode;
+      return icon.unicode
     } catch (error) {
       // En cas d'erreur (SSR, etc.), utiliser le fallback
-      return icon.fallback;
+      return icon.fallback
     }
   }
 
@@ -343,93 +340,88 @@ export class SafeIconManager {
    * Obtient toutes les icônes d'une catégorie
    */
   getIconsByCategory(category: SafeIcon['category']): SafeIcon[] {
-    return Object.values(SAFE_ICONS).filter(icon => icon.category === category);
+    return Object.values(SAFE_ICONS).filter(icon => icon.category === category)
   }
 
   /**
    * Vérifie si une icône existe
    */
   hasIcon(iconName: string): boolean {
-    return iconName in SAFE_ICONS;
+    return iconName in SAFE_ICONS
   }
 
   /**
    * Active le mode fallback
    */
   enableFallbackMode(): void {
-    this.fallbackMode = true;
+    this.fallbackMode = true
   }
 
   /**
    * Désactive le mode fallback
    */
   disableFallbackMode(): void {
-    this.fallbackMode = false;
+    this.fallbackMode = false
   }
 
   /**
    * Obtient la liste de toutes les icônes disponibles
    */
   getAllIcons(): SafeIcon[] {
-    return Object.values(SAFE_ICONS);
+    return Object.values(SAFE_ICONS)
   }
 
   /**
    * Recherche des icônes par nom
    */
   searchIcons(query: string): SafeIcon[] {
-    const lowerQuery = query.toLowerCase();
+    const lowerQuery = query.toLowerCase()
     return Object.values(SAFE_ICONS).filter(icon => 
       icon.name.toLowerCase().includes(lowerQuery) ||
       icon.fallback.toLowerCase().includes(lowerQuery)
-    );
+    )
   }
 }
 
 // Instance singleton
-export const safeIconManager = new SafeIconManager();
-
+export const safeIconManager = new SafeIconManager()
 // Fonctions utilitaires
 export function getSafeIcon(iconName: string): string {
-  return safeIconManager.getIcon(iconName);
+  return safeIconManager.getIcon(iconName)
 }
 
 export function getSafeIconWithFallback(iconName: string): string {
-  return safeIconManager.getIconWithFallback(iconName);
+  return safeIconManager.getIconWithFallback(iconName)
 }
 
 export function hasSafeIcon(iconName: string): boolean {
-  return safeIconManager.hasIcon(iconName);
+  return safeIconManager.hasIcon(iconName)
 }
 
 // Hook React pour les icônes sécurisées
 export function useSafeIcon(iconName: string): string {
-  const [icon, setIcon] = React.useState<string>('');
-
+  const [icon, setIcon] = React.useState<string>('')
   React.useEffect(() => {
-    setIcon(safeIconManager.getIconWithFallback(iconName));
-  }, [iconName]);
-
-  return icon;
+    setIcon(safeIconManager.getIconWithFallback(iconName))
+  }, [iconName])
+  return icon
 }
 
 // Composant React pour les icônes sécurisées
 export const SafeIcon: React.FC<{
-  name: string;
-  className?: string;
-  size?: 'sm' | 'md' | 'lg';
-  fallback?: boolean;
+  name: string
+  className?: string
+  size?: 'sm' | 'md' | 'lg'
+  fallback?: boolean
 }> = ({ name, className = '', size = 'md', fallback = false }) => {
   const iconText = fallback 
     ? safeIconManager.getIcon(name)
-    : safeIconManager.getIconWithFallback(name);
-
+    : safeIconManager.getIconWithFallback(name)
   const sizeClasses = {
     sm: 'text-sm',
     md: 'text-base',
     lg: 'text-lg'
-  };
-
+  }
   return (
     <span 
       className={`inline-block ${sizeClasses[size]} ${className}`}
@@ -438,5 +430,5 @@ export const SafeIcon: React.FC<{
     >
       {iconText}
     </span>
-  );
-};
+  )
+}

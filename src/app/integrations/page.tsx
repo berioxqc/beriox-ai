@@ -1,70 +1,61 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import Layout from '@/components/Layout';
-import { ApiIntegration } from '@/lib/integrations/types';
-
+'use client'
+import { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useTheme } from '@/hooks/useTheme'
+import Layout from '@/components/Layout'
+import { ApiIntegration } from '@/lib/integrations/types'
 interface IntegrationConfig {
-  [key: string]: any;
+  [key: string]: any
 }
 
 export default function IntegrationsPage() {
-  const theme = useTheme();
-  const [integrations, setIntegrations] = useState<ApiIntegration[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<string>('all');
-  const [configModal, setConfigModal] = useState<{ integration: ApiIntegration; config: IntegrationConfig } | null>(null);
-
+  const theme = useTheme()
+  const [integrations, setIntegrations] = useState<ApiIntegration[]>([])
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<string>('all')
+  const [configModal, setConfigModal] = useState<{ integration: ApiIntegration; config: IntegrationConfig } | null>(null)
   useEffect(() => {
-    fetchIntegrations();
-  }, []);
-
+    fetchIntegrations()
+  }, [])
   const fetchIntegrations = async () => {
     try {
-      const response = await fetch('/api/integrations');
+      const response = await fetch('/api/integrations')
       if (response.ok) {
-        const data = await response.json();
-        setIntegrations(data.integrations);
+        const data = await response.json()
+        setIntegrations(data.integrations)
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des intégrations:', error);
+      console.error('Erreur lors du chargement des intégrations:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const toggleIntegration = async (id: string, enabled: boolean) => {
     try {
       const response = await fetch('/api/integrations/toggle', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, enabled }),
-      });
-
+      })
       if (response.ok) {
         setIntegrations(prev => 
           prev.map(integration => 
             integration.id === id ? { ...integration, isEnabled: enabled } : integration
           )
-        );
+        )
       }
     } catch (error) {
-      console.error('Erreur lors de la mise à jour:', error);
+      console.error('Erreur lors de la mise à jour:', error)
     }
-  };
-
+  }
   const openConfigModal = (integration: ApiIntegration) => {
     setConfigModal({
       integration,
       config: integration.config || {},
-    });
-  };
-
+    })
+  }
   const saveConfig = async () => {
-    if (!configModal) return;
-
+    if (!configModal) return
     try {
       const response = await fetch('/api/integrations/config', {
         method: 'POST',
@@ -73,8 +64,7 @@ export default function IntegrationsPage() {
           id: configModal.integration.id,
           config: configModal.config,
         }),
-      });
-
+      })
       if (response.ok) {
         setIntegrations(prev =>
           prev.map(integration =>
@@ -82,14 +72,13 @@ export default function IntegrationsPage() {
               ? { ...integration, config: configModal.config }
               : integration
           )
-        );
-        setConfigModal(null);
+        )
+        setConfigModal(null)
       }
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde:', error);
+      console.error('Erreur lors de la sauvegarde:', error)
     }
-  };
-
+  }
   const categories = [
     { id: 'all', name: 'Toutes', icon: 'list' },
     { id: 'seo', name: 'SEO', icon: 'search' },
@@ -101,27 +90,23 @@ export default function IntegrationsPage() {
     { id: 'accessibility', name: 'Accessibilité', icon: 'universal-access' },
     { id: 'development', name: 'Dev', icon: 'code' },
     { id: 'communication', name: 'Communication', icon: 'comments' },
-  ];
-
+  ]
   const filteredIntegrations = activeTab === 'all' 
     ? integrations 
-    : integrations.filter(integration => integration.category === activeTab);
-
+    : integrations.filter(integration => integration.category === activeTab)
   const getCategoryIcon = (category: string) => {
-    const categoryData = categories.find(cat => cat.id === category);
-    return categoryData?.icon || 'plug';
-  };
-
+    const categoryData = categories.find(cat => cat.id === category)
+    return categoryData?.icon || 'plug'
+  }
   const getStatusColor = (integration: ApiIntegration) => {
-    if (!integration.isEnabled) return theme.colors.neutral[400];
+    if (!integration.isEnabled) return theme.colors.neutral[400]
     if (integration.quotaLimit && integration.quotaUsed) {
-      const percentage = (integration.quotaUsed / integration.quotaLimit) * 100;
-      if (percentage > 90) return theme.colors.error;
-      if (percentage > 70) return theme.colors.warning;
+      const percentage = (integration.quotaUsed / integration.quotaLimit) * 100
+      if (percentage > 90) return theme.colors.error
+      if (percentage > 70) return theme.colors.warning
     }
-    return theme.colors.success;
-  };
-
+    return theme.colors.success
+  }
   if (loading) {
     return (
       <Layout>
@@ -129,7 +114,7 @@ export default function IntegrationsPage() {
           <FontAwesomeIcon icon="spinner" spin style={{ fontSize: '32px', color: theme.colors.neutral[400] }} />
         </div>
       </Layout>
-    );
+    )
   }
 
   return (
@@ -243,7 +228,7 @@ export default function IntegrationsPage() {
                         color: integration.isFree ? theme.colors.success : theme.colors.warning,
                         fontWeight: '500'
                       }}>
-                        {integration.isFree ? &apos;Gratuit&apos; : &apos;Payant&apos;}
+                        {integration.isFree ? 'Gratuit' : 'Payant'}
                       </span>
                       <span style={{
                         width: '4px',
@@ -463,11 +448,11 @@ export default function IntegrationsPage() {
                   })}
                   placeholder="Entrez votre clé API..."
                   style={{
-                    width: &apos;100%&apos;,
+                    width: '100%',
                     padding: theme.spacing.sm,
                     border: `1px solid ${theme.colors.neutral[300]}`,
-                    borderRadius: &apos;6px&apos;,
-                    fontSize: &apos;14px&apos;
+                    borderRadius: '6px',
+                    fontSize: '14px'
                   }}
                 />
               </div>
@@ -482,10 +467,10 @@ export default function IntegrationsPage() {
                   style={{
                     padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
                     border: `1px solid ${theme.colors.neutral[300]}`,
-                    borderRadius: &apos;6px&apos;,
-                    backgroundColor: &apos;white&apos;,
+                    borderRadius: '6px',
+                    backgroundColor: 'white',
                     color: theme.colors.neutral[700],
-                    cursor: &apos;pointer&apos;
+                    cursor: 'pointer'
                   }}
                 >
                   Annuler
@@ -510,5 +495,5 @@ export default function IntegrationsPage() {
         )}
       </div>
     </Layout>
-  );
+  )
 }

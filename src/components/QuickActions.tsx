@@ -1,21 +1,19 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+"use client"
+import { useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 interface QuickAction {
-  label: string;
-  icon: string;
-  href: string;
-  description: string;
-  color?: string;
+  label: string
+  icon: string
+  href: string
+  description: string
+  color?: string
 }
 
 export default function QuickActions() {
-  const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
-
+  const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
   // Actions rapides contextuelles basées sur la page actuelle
   const getContextualActions = (): QuickAction[] => {
     const baseActions: QuickAction[] = [
@@ -32,8 +30,7 @@ export default function QuickActions() {
         href: "/profile",
         description: "Gérer mon profil"
       }
-    ];
-
+    ]
     // Actions spécifiques selon la page
     switch (pathname) {
       case "/":
@@ -51,8 +48,7 @@ export default function QuickActions() {
             href: "/agents",
             description: "Gérer mes agents IA"
           }
-        ];
-      
+        ]
       case "/missions":
         return [
           ...baseActions,
@@ -68,8 +64,7 @@ export default function QuickActions() {
             href: "/settings",
             description: "Configurer l'application"
           }
-        ];
-      
+        ]
       case "/agents":
         return [
           ...baseActions,
@@ -85,15 +80,12 @@ export default function QuickActions() {
             href: "/novabot",
             description: "Tester avec NovaBot"
           }
-        ];
-      
+        ]
       default:
-        return baseActions;
+        return baseActions
     }
-  };
-
-  const actions = getContextualActions();
-
+  }
+  const actions = getContextualActions()
   return (
     <div style={{ position: "relative" }}>
       {/* Bouton d'ouverture */}
@@ -115,10 +107,10 @@ export default function QuickActions() {
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         }}
         onMouseOver={(e) => {
-          e.currentTarget.style.background = "rgba(99, 91, 255, 0.12)";
+          e.currentTarget.style.background = "rgba(99, 91, 255, 0.12)"
         }}
         onMouseOut={(e) => {
-          e.currentTarget.style.background = "rgba(99, 91, 255, 0.08)";
+          e.currentTarget.style.background = "rgba(99, 91, 255, 0.08)"
         }}
       >
         <FontAwesomeIcon icon="bolt" style={{ fontSize: "12px" }} />
@@ -268,5 +260,5 @@ export default function QuickActions() {
         </>
       )}
     </div>
-  );
+  )
 }

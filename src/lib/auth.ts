@@ -3,14 +3,13 @@
  * Export de la configuration NextAuth
  */
 
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
-import bcrypt from "bcryptjs";
-import { sendVerificationEmail, sendWelcomeEmail } from "@/lib/email";
-
+import NextAuth from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
+import CredentialsProvider from "next-auth/providers/credentials"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { prisma } from "@/lib/prisma"
+import bcrypt from "bcryptjs"
+import { sendVerificationEmail, sendWelcomeEmail } from "@/lib/email"
 export const authOptions: any = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -27,26 +26,24 @@ export const authOptions: any = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          return null
         }
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email }
-        });
-
+        })
         if (!user || !user.password) {
-          return null;
+          return null
         }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
-
+        const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
         if (!isPasswordValid) {
-          return null;
+          return null
         }
 
         // Vérifier que l'email est vérifié
         if (!user.emailVerified) {
-          throw new Error("Veuillez vérifier votre email avant de vous connecter");
+          throw new Error("Veuillez vérifier votre email avant de vous connecter")
         }
 
         return {
@@ -54,7 +51,7 @@ export const authOptions: any = {
           email: user.email,
           name: user.name,
           image: user.image,
-        };
+        }
       }
     }),
   ],
@@ -66,17 +63,17 @@ export const authOptions: any = {
     async session({ session, user }) {
       // Ajouter l'ID utilisateur à la session
       if (session.user && user) {
-        session.user.id = user.id;
+        session.user.id = user.id
       }
-      return session;
+      return session
     },
     async signIn({ user, account, profile }) {
       // Vérifications de sécurité pour Google
       if (account?.provider === "google") {
         // Vérifier que l'email est vérifié
         if (!profile?.email_verified) {
-          console.warn("Tentative de connexion avec email non vérifié:", profile?.email);
-          return false;
+          console.warn("Tentative de connexion avec email non vérifié:", profile?.email)
+          return false
         }
         
         // Log de connexion pour sécurité
@@ -85,28 +82,27 @@ export const authOptions: any = {
           name: user.name,
           provider: account.provider,
           timestamp: new Date().toISOString()
-        });
+        })
       }
       
       // Autoriser toutes les connexions valides
-      return true;
+      return true
     },
     async redirect({ url, baseUrl }) {
       // Gestion intelligente des redirections
-      console.log("🔄 Redirection:", { url, baseUrl });
-      
+      console.log("🔄 Redirection:", { url, baseUrl })
       // Si l'URL est relative, la construire avec baseUrl
       if (url.startsWith("/")) {
-        return `${baseUrl}${url}`;
+        return `${baseUrl}${url}`
       }
       
       // Si l'URL appartient au même domaine
       if (new URL(url).origin === baseUrl) {
-        return url;
+        return url
       }
       
       // Par défaut, rediriger vers le dashboard
-      return `${baseUrl}/missions`;
+      return `${baseUrl}/missions`
     },
   },
   session: {
@@ -134,16 +130,15 @@ export const authOptions: any = {
         provider: account?.provider,
         isNewUser,
         timestamp: new Date().toISOString()
-      });
+      })
     },
     async signOut({ session, token }) {
       console.log("🚪 Événement de déconnexion:", {
         userId: token?.userId,
         timestamp: new Date().toISOString()
-      });
+      })
     },
   },
   debug: process.env.NODE_ENV === "development",
-};
-
-export default NextAuth(authOptions);
+}
+export default NextAuth(authOptions)

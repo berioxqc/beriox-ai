@@ -1,71 +1,63 @@
-"use client";
-import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-
+"use client"
+import { useState, useEffect } from "react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
 export default function SettingsPage() {
-  const [openaiKey, setOpenaiKey] = useState("");
-  const [notionKey, setNotionKey] = useState("");
-  const [slackWebhook, setSlackWebhook] = useState("");
+  const [openaiKey, setOpenaiKey] = useState("")
+  const [notionKey, setNotionKey] = useState("")
+  const [slackWebhook, setSlackWebhook] = useState("")
   const [emailSettings, setEmailSettings] = useState({
     provider: "resend",
     apiKey: "",
     fromEmail: ""
-  });
-  const [saved, setSaved] = useState(false);
-  const [loading, setLoading] = useState(false);
-
+  })
+  const [saved, setSaved] = useState(false)
+  const [loading, setLoading] = useState(false)
   // Charger les paramètres depuis localStorage au démarrage
   useEffect(() => {
-    const savedSettings = localStorage.getItem('beriox-settings');
+    const savedSettings = localStorage.getItem('beriox-settings')
     if (savedSettings) {
-      const settings = JSON.parse(savedSettings);
-      setOpenaiKey(settings.openaiKey || "");
-      setNotionKey(settings.notionKey || "");
-      setSlackWebhook(settings.slackWebhook || "");
+      const settings = JSON.parse(savedSettings)
+      setOpenaiKey(settings.openaiKey || "")
+      setNotionKey(settings.notionKey || "")
+      setSlackWebhook(settings.slackWebhook || "")
       setEmailSettings(settings.emailSettings || {
         provider: "resend",
         apiKey: "",
         fromEmail: ""
-      });
+      })
     }
-  }, []);
-
+  }, [])
   const saveSettings = () => {
-    setLoading(true);
+    setLoading(true)
     const settings = {
       openaiKey,
       notionKey,
       slackWebhook,
       emailSettings
-    };
-    
-    localStorage.setItem('beriox-settings', JSON.stringify(settings));
-    setSaved(true);
-    setLoading(false);
-    
+    }
+    localStorage.setItem('beriox-settings', JSON.stringify(settings))
+    setSaved(true)
+    setLoading(false)
     // Reset le feedback après 3 secondes
-    setTimeout(() => setSaved(false), 3000);
-  };
-
+    setTimeout(() => setSaved(false), 3000)
+  }
   const resetSettings = () => {
     if (confirm("Êtes-vous sûr de vouloir effacer tous les paramètres ?")) {
-      localStorage.removeItem('beriox-settings');
-      setOpenaiKey("");
-      setNotionKey("");
-      setSlackWebhook("");
+      localStorage.removeItem('beriox-settings')
+      setOpenaiKey("")
+      setNotionKey("")
+      setSlackWebhook("")
       setEmailSettings({
         provider: "resend",
         apiKey: "",
         fromEmail: ""
-      });
+      })
     }
-  };
-
+  }
   const testConnection = async (service: string) => {
-    alert(`Test de connexion pour ${service} - Fonctionnalité à venir !`);
-  };
-
+    alert(`Test de connexion pour ${service} - Fonctionnalité à venir !`)
+  }
   const headerActions = (
     <div style={{
       display: "flex",
@@ -97,17 +89,16 @@ export default function SettingsPage() {
           transition: "all 0.2s"
         }}
         onMouseOver={(e) => {
-          e.currentTarget.style.background = "#fde68a";
+          e.currentTarget.style.background = "#fde68a"
         }}
         onMouseOut={(e) => {
-          e.currentTarget.style.background = "#fef3c7";
+          e.currentTarget.style.background = "#fef3c7"
         }}
       >
         🍪 Cookies
       </a>
     </div>
-  );
-
+  )
   return (
     <AuthGuard>
       <Layout
@@ -274,7 +265,7 @@ export default function SettingsPage() {
                   color: "#333",
                   marginBottom: 8
                 }}>
-                  Token d&apos;intégration Notion
+                  Token d'intégration Notion
                 </label>
                 <input
                   type="password"
@@ -606,5 +597,5 @@ export default function SettingsPage() {
         </div>
       </Layout>
     </AuthGuard>
-  );
+  )
 }

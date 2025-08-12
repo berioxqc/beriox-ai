@@ -1,74 +1,65 @@
-"use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-import { useState, useEffect } from "react";
-import Icon from "@/components/ui/Icon";
-import { useTheme } from "@/hooks/useTheme";
-
+"use client"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useSession, signOut } from "next-auth/react"
+import { useState, useEffect } from "react"
+import Icon from "@/components/ui/Icon"
+import { useTheme } from "@/hooks/useTheme"
 export default function Sidebar() {
-  const pathname = usePathname();
-  const { data: session } = useSession();
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const pathname = usePathname()
+  const { data: session } = useSession()
+  const [showUserMenu, setShowUserMenu] = useState(false)
+  const [userRole, setUserRole] = useState<string | null>(null)
   const [premiumInfo, setPremiumInfo] = useState<{
-    hasAccess: boolean;
-    planId?: string;
-    daysLeft?: number;
-  } | null>(null);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const theme = useTheme();
-
+    hasAccess: boolean
+    planId?: string
+    daysLeft?: number
+  } | null>(null)
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const theme = useTheme()
   // Récupérer les informations utilisateur
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (session?.user?.email) {
         try {
-          const response = await fetch('/api/user/profile');
+          const response = await fetch('/api/user/profile')
           if (response.ok) {
-            const data = await response.json();
-            setUserRole(data.user?.role || 'USER');
-            
+            const data = await response.json()
+            setUserRole(data.user?.role || 'USER')
             // Calculer les infos premium
             if (data.user?.premiumAccess && data.user.premiumAccess.isActive) {
-              const endDate = new Date(data.user.premiumAccess.endDate);
-              const now = new Date();
-              
+              const endDate = new Date(data.user.premiumAccess.endDate)
+              const now = new Date()
               if (endDate > now) {
-                const diffTime = endDate.getTime() - now.getTime();
-                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
+                const diffTime = endDate.getTime() - now.getTime()
+                const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
                 setPremiumInfo({
                   hasAccess: true,
                   planId: data.user.premiumAccess.planId,
                   daysLeft
-                });
+                })
               } else {
-                setPremiumInfo({ hasAccess: false });
+                setPremiumInfo({ hasAccess: false })
               }
             } else {
-              setPremiumInfo({ hasAccess: false });
+              setPremiumInfo({ hasAccess: false })
             }
           }
         } catch (error) {
-          console.error('Erreur lors de la récupération des infos utilisateur:', error);
+          console.error('Erreur lors de la récupération des infos utilisateur:', error)
         }
       }
-    };
-
-    fetchUserInfo();
-  }, [session]);
-
+    }
+    fetchUserInfo()
+  }, [session])
   // Écouter les événements de toggle du sidebar
   useEffect(() => {
     const handleSidebarToggle = () => {
-      setIsCollapsed(!isCollapsed);
-    };
-
-    window.addEventListener('sidebar-toggle', handleSidebarToggle);
-    return () => window.removeEventListener('sidebar-toggle', handleSidebarToggle);
-  }, [isCollapsed]);
-
+      setIsCollapsed(!isCollapsed)
+    }
+    window.addEventListener('sidebar-toggle', handleSidebarToggle)
+    return () => window.removeEventListener('sidebar-toggle', handleSidebarToggle)
+  }, [isCollapsed])
   // Structure du menu organisée par catégories
   const menuStructure = [
     {
@@ -147,10 +138,8 @@ export default function Sidebar() {
         }
       ]
     }
-  ];
-
-  const sidebarWidth = isCollapsed ? 64 : theme.components.sidebar.width;
-
+  ]
+  const sidebarWidth = isCollapsed ? 64 : theme.components.sidebar.width
   return (
     <div style={{
       width: sidebarWidth,
@@ -299,7 +288,7 @@ export default function Sidebar() {
             
             {/* Items de la section */}
             {section.items.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = pathname === item.href
               return (
                 <Link
                   key={item.href}
@@ -322,14 +311,14 @@ export default function Sidebar() {
                   }}
                   onMouseOver={(e) => {
                     if (!isActive) {
-                      e.currentTarget.style.color = "white";
-                      e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
+                      e.currentTarget.style.color = "white"
+                      e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)"
                     }
                   }}
                   onMouseOut={(e) => {
                     if (!isActive) {
-                      e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)";
-                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.color = "rgba(255, 255, 255, 0.7)"
+                      e.currentTarget.style.background = "transparent"
                     }
                   }}
                   title={isCollapsed ? item.description : undefined}
@@ -360,7 +349,7 @@ export default function Sidebar() {
                     </>
                   )}
                 </Link>
-              );
+              )
             })}
             
             {/* Séparateur entre sections (sauf pour la dernière) */}
@@ -670,5 +659,5 @@ export default function Sidebar() {
         )}
       </div>
     </div>
-  );
+  )
 }

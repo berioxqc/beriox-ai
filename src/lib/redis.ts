@@ -1,13 +1,11 @@
 // Redis configuration - seulement côté serveur
-let redis: any = null;
-let bullConnection: any = null;
-
+let redis: any = null
+let bullConnection: any = null
 // Vérifier si nous sommes côté serveur (pas dans Edge Runtime)
 if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
   try {
-    const IORedis = require("ioredis");
-    const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
-    
+    const IORedis = require("ioredis")
+    const redisUrl = process.env.REDIS_URL || "redis://localhost:6379"
     // Vérifier si l'URL Redis est valide
     if (redisUrl && redisUrl !== "redis://localhost:6379") {
       redis = new IORedis(redisUrl, {
@@ -17,19 +15,18 @@ if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
         lazyConnect: true,
         connectTimeout: 5000,
         commandTimeout: 5000
-      });
-      
+      })
       bullConnection = redis; // BullMQ accepts an ioredis instance
     } else {
       // Log silencieux en production
       if (process.env.NODE_ENV !== 'production') {
-        console.log('Redis URL not configured, using in-memory fallback');
+        console.log('Redis URL not configured, using in-memory fallback')
       }
     }
   } catch (error) {
     // Log silencieux en production
     if (process.env.NODE_ENV !== 'production') {
-      console.log('Redis not available, using in-memory fallback:', error.message);
+      console.log('Redis not available, using in-memory fallback:', error.message)
     }
   }
 }
@@ -37,58 +34,55 @@ if (typeof window === 'undefined' && process.env.NODE_ENV !== 'test') {
 // Fonctions utilitaires pour Redis avec gestion d'erreur
 export const redisUtils = {
   async get(key: string): Promise<string | null> {
-    if (!redis) return null;
+    if (!redis) return null
     try {
-      return await redis.get(key);
+      return await redis.get(key)
     } catch (error) {
-      console.warn('Redis get error:', error);
-      return null;
+      console.warn('Redis get error:', error)
+      return null
     }
   },
 
   async set(key: string, value: string, ttl?: number): Promise<void> {
-    if (!redis) return;
+    if (!redis) return
     try {
       if (ttl) {
-        await redis.setex(key, ttl, value);
+        await redis.setex(key, ttl, value)
       } else {
-        await redis.set(key, value);
+        await redis.set(key, value)
       }
     } catch (error) {
-      console.warn('Redis set error:', error);
+      console.warn('Redis set error:', error)
     }
   },
 
   async del(key: string): Promise<void> {
-    if (!redis) return;
+    if (!redis) return
     try {
-      await redis.del(key);
+      await redis.del(key)
     } catch (error) {
-      console.warn('Redis del error:', error);
+      console.warn('Redis del error:', error)
     }
   },
 
   async exists(key: string): Promise<boolean> {
-    if (!redis) return false;
+    if (!redis) return false
     try {
-      const result = await redis.exists(key);
-      return result === 1;
+      const result = await redis.exists(key)
+      return result === 1
     } catch (error) {
-      console.warn('Redis exists error:', error);
-      return false;
+      console.warn('Redis exists error:', error)
+      return false
     }
   },
 
   async expire(key: string, ttl: number): Promise<void> {
-    if (!redis) return;
+    if (!redis) return
     try {
-      await redis.expire(key, ttl);
+      await redis.expire(key, ttl)
     } catch (error) {
-      console.warn('Redis expire error:', error);
+      console.warn('Redis expire error:', error)
     }
   }
-};
-
-export { redis, bullConnection };
-
-
+}
+export { redis, bullConnection }

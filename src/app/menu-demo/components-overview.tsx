@@ -1,6 +1,5 @@
-"use client";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+"use client"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export default function ComponentsOverview() {
   const components = [
     {
@@ -75,8 +74,7 @@ export default function ComponentsOverview() {
         "Modal de création rapide de mission"
       ]
     }
-  ];
-
+  ]
   return (
     <div style={{
       background: "white",
@@ -92,7 +90,7 @@ export default function ComponentsOverview() {
         marginBottom: "24px",
         textAlign: "center"
       }}>
-        Vue d&apos;Ensemble des Composants
+        Vue d'Ensemble des Composants
       </h3>
 
       <div style={{
@@ -111,12 +109,12 @@ export default function ComponentsOverview() {
               cursor: "pointer"
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.1)";
+              e.currentTarget.style.transform = "translateY(-2px)"
+              e.currentTarget.style.boxShadow = "0 8px 25px rgba(0, 0, 0, 0.1)"
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "none";
+              e.currentTarget.style.transform = "translateY(0)"
+              e.currentTarget.style.boxShadow = "none"
             }}
           >
             {/* Header */}
@@ -314,5 +312,5 @@ export default function ComponentsOverview() {
         </div>
       </div>
     </div>
-  );
+  )
 }

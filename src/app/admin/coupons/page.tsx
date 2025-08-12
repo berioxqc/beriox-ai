@@ -1,50 +1,46 @@
-"use client";
-import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
-import AdminGuard from "@/components/AdminGuard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme, useStyles } from "@/hooks/useTheme";
-
+"use client"
+import { useState, useEffect } from "react"
+import Layout from "@/components/Layout"
+import AdminGuard from "@/components/AdminGuard"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useTheme, useStyles } from "@/hooks/useTheme"
 type Coupon = {
-  id: string;
-  code: string;
-  type: 'PREMIUM_TRIAL' | 'PLAN_UPGRADE' | 'DISCOUNT';
-  status: 'ACTIVE' | 'USED' | 'EXPIRED' | 'DISABLED';
-  description?: string;
-  planId?: string;
-  duration?: number;
-  discount?: number;
-  maxUses?: number;
-  currentUses: number;
-  validFrom: string;
-  validUntil?: string;
-  createdAt: string;
-  notes?: string;
+  id: string
+  code: string
+  type: 'PREMIUM_TRIAL' | 'PLAN_UPGRADE' | 'DISCOUNT'
+  status: 'ACTIVE' | 'USED' | 'EXPIRED' | 'DISABLED'
+  description?: string
+  planId?: string
+  duration?: number
+  discount?: number
+  maxUses?: number
+  currentUses: number
+  validFrom: string
+  validUntil?: string
+  createdAt: string
+  notes?: string
   redemptions: Array<{
-    id: string;
-    redeemedAt: string;
+    id: string
+    redeemedAt: string
     user: {
-      email: string;
-      name?: string;
-    };
-  }>;
-};
-
+      email: string
+      name?: string
+    }
+  }>
+}
 type Stats = {
-  total: number;
-  active: number;
-  used: number;
-  expired: number;
-  totalRedemptions: number;
-};
-
+  total: number
+  active: number
+  used: number
+  expired: number
+  totalRedemptions: number
+}
 export default function AdminCouponsPage() {
-  const [coupons, setCoupons] = useState<Coupon[]>([]);
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [creating, setCreating] = useState(false);
-  
+  const [coupons, setCoupons] = useState<Coupon[]>([])
+  const [stats, setStats] = useState<Stats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [showCreateModal, setShowCreateModal] = useState(false)
+  const [creating, setCreating] = useState(false)
   // Formulaire de création
   const [formData, setFormData] = useState({
     code: '',
@@ -56,35 +52,29 @@ export default function AdminCouponsPage() {
     maxUses: 1,
     validUntil: '',
     notes: ''
-  });
-
-  const theme = useTheme();
-  const styles = useStyles();
-
+  })
+  const theme = useTheme()
+  const styles = useStyles()
   useEffect(() => {
-    fetchCoupons();
-  }, []);
-
+    fetchCoupons()
+  }, [])
   const fetchCoupons = async () => {
     try {
-      const response = await fetch('/api/admin/coupons');
+      const response = await fetch('/api/admin/coupons')
       if (response.ok) {
-        const data = await response.json();
-        setCoupons(data.coupons);
-        setStats(data.stats);
+        const data = await response.json()
+        setCoupons(data.coupons)
+        setStats(data.stats)
       }
     } catch (error) {
-      console.error('Erreur récupération coupons:', error);
+      console.error('Erreur récupération coupons:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const handleCreateCoupon = async () => {
-    if (!formData.code.trim()) return;
-    
-    setCreating(true);
-    
+    if (!formData.code.trim()) return
+    setCreating(true)
     try {
       const response = await fetch('/api/admin/coupons', {
         method: 'POST',
@@ -96,10 +86,9 @@ export default function AdminCouponsPage() {
           code: formData.code.toUpperCase(),
           validUntil: formData.validUntil || null
         }),
-      });
-
+      })
       if (response.ok) {
-        setShowCreateModal(false);
+        setShowCreateModal(false)
         setFormData({
           code: '',
           type: 'PREMIUM_TRIAL',
@@ -110,19 +99,18 @@ export default function AdminCouponsPage() {
           maxUses: 1,
           validUntil: '',
           notes: ''
-        });
+        })
         fetchCoupons(); // Recharger la liste
       } else {
-        const data = await response.json();
-        alert(data.error || 'Erreur lors de la création');
+        const data = await response.json()
+        alert(data.error || 'Erreur lors de la création')
       }
     } catch (error) {
-      alert('Erreur de connexion');
+      alert('Erreur de connexion')
     } finally {
-      setCreating(false);
+      setCreating(false)
     }
-  };
-
+  }
   const updateCouponStatus = async (couponId: string, status: string) => {
     try {
       const response = await fetch('/api/admin/coupons', {
@@ -131,35 +119,31 @@ export default function AdminCouponsPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ id: couponId, status }),
-      });
-
+      })
       if (response.ok) {
         fetchCoupons(); // Recharger la liste
       }
     } catch (error) {
-      console.error('Erreur mise à jour coupon:', error);
+      console.error('Erreur mise à jour coupon:', error)
     }
-  };
-
+  }
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'ACTIVE': return '#10b981';
-      case 'USED': return '#6b7280';
-      case 'EXPIRED': return '#ef4444';
-      case 'DISABLED': return '#f59e0b';
-      default: return '#6b7280';
+      case 'ACTIVE': return '#10b981'
+      case 'USED': return '#6b7280'
+      case 'EXPIRED': return '#ef4444'
+      case 'DISABLED': return '#f59e0b'
+      default: return '#6b7280'
     }
-  };
-
+  }
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'PREMIUM_TRIAL': return 'Essai Premium';
-      case 'PLAN_UPGRADE': return 'Mise à niveau';
-      case 'DISCOUNT': return 'Réduction';
-      default: return type;
+      case 'PREMIUM_TRIAL': return 'Essai Premium'
+      case 'PLAN_UPGRADE': return 'Mise à niveau'
+      case 'DISCOUNT': return 'Réduction'
+      default: return type
     }
-  };
-
+  }
   if (loading) {
     return (
       <AdminGuard>
@@ -174,7 +158,7 @@ export default function AdminCouponsPage() {
           </div>
         </Layout>
       </AdminGuard>
-    );
+    )
   }
 
   return (
@@ -204,7 +188,7 @@ export default function AdminCouponsPage() {
                 margin: 0,
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
-                Créez et gérez les coupons d&apos;accès premium
+                Créez et gérez les coupons d'accès premium
               </p>
             </div>
             
@@ -390,7 +374,7 @@ export default function AdminCouponsPage() {
                           </div>
                         )}
                         <div>
-                          <strong>Utilisations:</strong> {coupon.currentUses}/{coupon.maxUses || &apos;∞&apos;}
+                          <strong>Utilisations:</strong> {coupon.currentUses}/{coupon.maxUses || '∞'}
                         </div>
                         <div>
                           <strong>Créé:</strong> {new Date(coupon.createdAt).toLocaleDateString()}
@@ -430,15 +414,15 @@ export default function AdminCouponsPage() {
                       }}>
                         {coupon.status === 'ACTIVE' && (
                           <button
-                            onClick={() => updateCouponStatus(coupon.id, &apos;DISABLED&apos;)}
+                            onClick={() => updateCouponStatus(coupon.id, 'DISABLED')}
                             style={{
-                              background: &apos;#f59e0b&apos;,
-                              color: &apos;white&apos;,
-                              border: &apos;none&apos;,
-                              borderRadius: &apos;4px&apos;,
-                              padding: &apos;6px 12px&apos;,
-                              fontSize: &apos;12px&apos;,
-                              cursor: &apos;pointer&apos;
+                              background: '#f59e0b',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '6px 12px',
+                              fontSize: '12px',
+                              cursor: 'pointer'
                             }}
                           >
                             Désactiver
@@ -446,15 +430,15 @@ export default function AdminCouponsPage() {
                         )}
                         {coupon.status === 'DISABLED' && (
                           <button
-                            onClick={() => updateCouponStatus(coupon.id, &apos;ACTIVE&apos;)}
+                            onClick={() => updateCouponStatus(coupon.id, 'ACTIVE')}
                             style={{
-                              background: &apos;#10b981&apos;,
-                              color: &apos;white&apos;,
-                              border: &apos;none&apos;,
-                              borderRadius: &apos;4px&apos;,
-                              padding: &apos;6px 12px&apos;,
-                              fontSize: &apos;12px&apos;,
-                              cursor: &apos;pointer&apos;
+                              background: '#10b981',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '4px',
+                              padding: '6px 12px',
+                              fontSize: '12px',
+                              cursor: 'pointer'
                             }}
                           >
                             Réactiver
@@ -525,12 +509,12 @@ export default function AdminCouponsPage() {
                       onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
                       placeholder="Ex: PREMIUM3MOIS"
                       style={{
-                        width: &apos;100%&apos;,
-                        padding: &apos;12px&apos;,
-                        border: &apos;1px solid #d1d5db&apos;,
-                        borderRadius: &apos;6px&apos;,
-                        fontSize: &apos;14px&apos;,
-                        textTransform: &apos;uppercase&apos;
+                        width: '100%',
+                        padding: '12px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        textTransform: 'uppercase'
                       }}
                     />
                   </div>
@@ -578,11 +562,11 @@ export default function AdminCouponsPage() {
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       placeholder="Description du coupon"
                       style={{
-                        width: &apos;100%&apos;,
-                        padding: &apos;12px&apos;,
-                        border: &apos;1px solid #d1d5db&apos;,
-                        borderRadius: &apos;6px&apos;,
-                        fontSize: &apos;14px&apos;
+                        width: '100%',
+                        padding: '12px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px'
                       }}
                     />
                   </div>
@@ -632,11 +616,11 @@ export default function AdminCouponsPage() {
                           onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) })}
                           min="1"
                           style={{
-                            width: &apos;100%&apos;,
-                            padding: &apos;12px&apos;,
-                            border: &apos;1px solid #d1d5db&apos;,
-                            borderRadius: &apos;6px&apos;,
-                            fontSize: &apos;14px&apos;
+                            width: '100%',
+                            padding: '12px',
+                            border: '1px solid #d1d5db',
+                            borderRadius: '6px',
+                            fontSize: '14px'
                           }}
                         />
                       </div>
@@ -651,7 +635,7 @@ export default function AdminCouponsPage() {
                       color: '#374151',
                       marginBottom: '6px'
                     }}>
-                      Nombre max d&apos;utilisations
+                      Nombre max d'utilisations
                     </label>
                     <input
                       type="number"
@@ -659,11 +643,11 @@ export default function AdminCouponsPage() {
                       onChange={(e) => setFormData({ ...formData, maxUses: parseInt(e.target.value) })}
                       min="1"
                       style={{
-                        width: &apos;100%&apos;,
-                        padding: &apos;12px&apos;,
-                        border: &apos;1px solid #d1d5db&apos;,
-                        borderRadius: &apos;6px&apos;,
-                        fontSize: &apos;14px&apos;
+                        width: '100%',
+                        padding: '12px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px'
                       }}
                     />
                   </div>
@@ -676,18 +660,18 @@ export default function AdminCouponsPage() {
                       color: '#374151',
                       marginBottom: '6px'
                     }}>
-                      Date d&apos;expiration
+                      Date d'expiration
                     </label>
                     <input
                       type="date"
                       value={formData.validUntil}
                       onChange={(e) => setFormData({ ...formData, validUntil: e.target.value })}
                       style={{
-                        width: &apos;100%&apos;,
-                        padding: &apos;12px&apos;,
-                        border: &apos;1px solid #d1d5db&apos;,
-                        borderRadius: &apos;6px&apos;,
-                        fontSize: &apos;14px&apos;
+                        width: '100%',
+                        padding: '12px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px'
                       }}
                     />
                   </div>
@@ -705,15 +689,15 @@ export default function AdminCouponsPage() {
                     <textarea
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="Notes pour l&apos;équipe admin"
+                      placeholder="Notes pour l'équipe admin"
                       style={{
-                        width: &apos;100%&apos;,
-                        padding: &apos;12px&apos;,
-                        border: &apos;1px solid #d1d5db&apos;,
-                        borderRadius: &apos;6px&apos;,
-                        fontSize: &apos;14px&apos;,
-                        minHeight: &apos;80px&apos;,
-                        resize: &apos;vertical&apos;
+                        width: '100%',
+                        padding: '12px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        minHeight: '80px',
+                        resize: 'vertical'
                       }}
                     />
                   </div>
@@ -731,14 +715,14 @@ export default function AdminCouponsPage() {
                   onClick={() => setShowCreateModal(false)}
                   disabled={creating}
                   style={{
-                    background: &apos;#f3f4f6&apos;,
-                    color: &apos;#374151&apos;,
-                    border: &apos;none&apos;,
-                    borderRadius: &apos;6px&apos;,
-                    padding: &apos;12px 20px&apos;,
-                    fontSize: &apos;14px&apos;,
-                    fontWeight: &apos;600&apos;,
-                    cursor: creating ? &apos;not-allowed&apos; : &apos;pointer&apos;
+                    background: '#f3f4f6',
+                    color: '#374151',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '12px 20px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: creating ? 'not-allowed' : 'pointer'
                   }}
                 >
                   Annuler
@@ -778,5 +762,5 @@ export default function AdminCouponsPage() {
         )}
       </Layout>
     </AdminGuard>
-  );
+  )
 }

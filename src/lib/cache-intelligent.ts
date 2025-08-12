@@ -4,8 +4,7 @@
  */
 
 // Import Redis sécurisé
-import { redisUtils } from './redis';
-
+import { redisUtils } from './redis'
 // Types
 interface CacheConfig {
   ttl: number; // Time to live en secondes
@@ -15,11 +14,11 @@ interface CacheConfig {
 }
 
 interface CacheStats {
-  hits: number;
-  misses: number;
-  keys: number;
-  memory: number;
-  hitRate: number;
+  hits: number
+  misses: number
+  keys: number
+  memory: number
+  hitRate: number
 }
 
 // Configuration par défaut
@@ -27,8 +26,7 @@ const DEFAULT_CONFIG: CacheConfig = {
   ttl: 300, // 5 minutes
   prefix: 'cache:',
   compression: false
-};
-
+}
 // Configurations spécifiques par type de données
 const CACHE_CONFIGS: Record<string, CacheConfig> = {
   // Cache des missions - court terme
@@ -65,24 +63,22 @@ const CACHE_CONFIGS: Record<string, CacheConfig> = {
     prefix: 'cache:recommendations:',
     maxSize: 500
   }
-};
-
+}
 /**
  * Classe de cache intelligent
  */
 class IntelligentCache {
-  private config: CacheConfig;
-  private stats: { hits: number; misses: number } = { hits: 0, misses: 0 };
-
+  private config: CacheConfig
+  private stats: { hits: number; misses: number } = { hits: 0, misses: 0 }
   constructor(type: string = 'default') {
-    this.config = { ...DEFAULT_CONFIG, ...CACHE_CONFIGS[type] };
+    this.config = { ...DEFAULT_CONFIG, ...CACHE_CONFIGS[type] }
   }
 
   /**
    * Génère une clé de cache
    */
   private generateKey(key: string): string {
-    return `${this.config.prefix}${key}`;
+    return `${this.config.prefix}${key}`
   }
 
   /**
@@ -91,9 +87,9 @@ class IntelligentCache {
   private compress(data: any): string {
     if (this.config.compression) {
       // Compression simple avec JSON.stringify
-      return JSON.stringify(data);
+      return JSON.stringify(data)
     }
-    return JSON.stringify(data);
+    return JSON.stringify(data)
   }
 
   /**
@@ -101,9 +97,9 @@ class IntelligentCache {
    */
   private decompress(data: string): any {
     if (this.config.compression) {
-      return JSON.parse(data);
+      return JSON.parse(data)
     }
-    return JSON.parse(data);
+    return JSON.parse(data)
   }
 
   /**
@@ -111,20 +107,19 @@ class IntelligentCache {
    */
   async get<T>(key: string): Promise<T | null> {
     try {
-      const cacheKey = this.generateKey(key);
-      const cached = await redisUtils.get(cacheKey);
-
+      const cacheKey = this.generateKey(key)
+      const cached = await redisUtils.get(cacheKey)
       if (cached) {
-        this.stats.hits++;
-        return this.decompress(cached);
+        this.stats.hits++
+        return this.decompress(cached)
       } else {
-        this.stats.misses++;
-        return null;
+        this.stats.misses++
+        return null
       }
     } catch (error) {
-      console.error('Erreur lors de la récupération du cache:', error);
-      this.stats.misses++;
-      return null;
+      console.error('Erreur lors de la récupération du cache:', error)
+      this.stats.misses++
+      return null
     }
   }
 
@@ -133,18 +128,16 @@ class IntelligentCache {
    */
   async set(key: string, value: any, customTtl?: number): Promise<void> {
     try {
-      const cacheKey = this.generateKey(key);
-      const ttl = customTtl || this.config.ttl;
-      const compressed = this.compress(value);
-
-      await redisUtils.set(cacheKey, compressed, ttl);
-
+      const cacheKey = this.generateKey(key)
+      const ttl = customTtl || this.config.ttl
+      const compressed = this.compress(value)
+      await redisUtils.set(cacheKey, compressed, ttl)
       // Vérifier la taille maximale si configurée
       if (this.config.maxSize) {
-        await this.enforceMaxSize();
+        await this.enforceMaxSize()
       }
     } catch (error) {
-      console.error('Erreur lors du stockage en cache:', error);
+      console.error('Erreur lors du stockage en cache:', error)
     }
   }
 
@@ -153,10 +146,10 @@ class IntelligentCache {
    */
   async delete(key: string): Promise<void> {
     try {
-      const cacheKey = this.generateKey(key);
-      await redisUtils.del(cacheKey);
+      const cacheKey = this.generateKey(key)
+      await redisUtils.del(cacheKey)
     } catch (error) {
-      console.error('Erreur lors de la suppression du cache:', error);
+      console.error('Erreur lors de la suppression du cache:', error)
     }
   }
 
@@ -165,12 +158,12 @@ class IntelligentCache {
    */
   async exists(key: string): Promise<boolean> {
     try {
-      const cacheKey = this.generateKey(key);
-      const exists = await redisUtils.exists(cacheKey);
-      return exists === 1;
+      const cacheKey = this.generateKey(key)
+      const exists = await redisUtils.exists(cacheKey)
+      return exists === 1
     } catch (error) {
-      console.error('Erreur lors de la vérification du cache:', error);
-      return false;
+      console.error('Erreur lors de la vérification du cache:', error)
+      return false
     }
   }
 
@@ -183,18 +176,16 @@ class IntelligentCache {
     customTtl?: number
   ): Promise<T> {
     // Essayer de récupérer du cache
-    const cached = await this.get<T>(key);
+    const cached = await this.get<T>(key)
     if (cached !== null) {
-      return cached;
+      return cached
     }
 
     // Générer la valeur
-    const value = await generator();
-    
+    const value = await generator()
     // Mettre en cache
-    await this.set(key, value, customTtl);
-    
-    return value;
+    await this.set(key, value, customTtl)
+    return value
   }
 
   /**
@@ -202,17 +193,16 @@ class IntelligentCache {
    */
   async touch(key: string, customTtl?: number): Promise<void> {
     try {
-      const cacheKey = this.generateKey(key);
-      const ttl = customTtl || this.config.ttl;
-      
+      const cacheKey = this.generateKey(key)
+      const ttl = customTtl || this.config.ttl
       // Récupérer la valeur actuelle
-      const value = await redisUtils.get(cacheKey);
+      const value = await redisUtils.get(cacheKey)
       if (value) {
         // Remettre avec le nouveau TTL
-                  await redisUtils.set(cacheKey, value, ttl);
+                  await redisUtils.set(cacheKey, value, ttl)
       }
     } catch (error) {
-      console.error('Erreur lors du touch du cache:', error);
+      console.error('Erreur lors du touch du cache:', error)
     }
   }
 
@@ -222,21 +212,19 @@ class IntelligentCache {
   private async enforceMaxSize(): Promise<void> {
     // Désactivé car redis.keys n'est pas disponible dans le wrapper
     // try {
-    //   const pattern = `${this.config.prefix}*`;
-    //   const keys = await redis.keys(pattern);
-
+    //   const pattern = `${this.config.prefix}*`
+    //   const keys = await redis.keys(pattern)
     //   if (keys.length > this.config.maxSize!) {
     //     // Supprimer les clés les plus anciennes
     //     const keysToDelete = keys
     //       .slice(0, keys.length - this.config.maxSize!)
-    //       .map(key => key.replace(this.config.prefix, ''));
-
+    //       .map(key => key.replace(this.config.prefix, ''))
     //     for (const key of keysToDelete) {
-    //       await this.delete(key);
+    //       await this.delete(key)
     //     }
     //   }
     // } catch (error) {
-    //   console.error('Erreur lors de l\'application de la taille maximale:', error);
+    //   console.error('Erreur lors de l\'application de la taille maximale:', error)
     // }
   }
 
@@ -246,24 +234,23 @@ class IntelligentCache {
   async cleanup(): Promise<number> {
     // Désactivé car redis.keys et redis.ttl ne sont pas disponibles dans le wrapper
     // try {
-    //   const pattern = `${this.config.prefix}*`;
-    //   const keys = await redis.keys(pattern);
-    //   let cleaned = 0;
-
+    //   const pattern = `${this.config.prefix}*`
+    //   const keys = await redis.keys(pattern)
+    //   let cleaned = 0
     //   for (const key of keys) {
-    //     const ttl = await redis.ttl(key);
+    //     const ttl = await redis.ttl(key)
     //     if (ttl <= 0) {
-    //       await redis.del(key);
-    //       cleaned++;
+    //       await redis.del(key)
+    //       cleaned++
     //     }
     //   }
 
-    //   return cleaned;
+    //   return cleaned
     // } catch (error) {
-    //   console.error('Erreur lors du nettoyage du cache:', error);
-    //   return 0;
+    //   console.error('Erreur lors du nettoyage du cache:', error)
+    //   return 0
     // }
-    return 0;
+    return 0
   }
 
   /**
@@ -272,27 +259,26 @@ class IntelligentCache {
   async getStats(): Promise<CacheStats> {
     try {
       // Désactivé car redis.keys n'est pas disponible dans le wrapper
-      // const pattern = `${this.config.prefix}*`;
-      // const keys = await redis.keys(pattern);
-      const total = this.stats.hits + this.stats.misses;
-      const hitRate = total > 0 ? (this.stats.hits / total) * 100 : 0;
-
+      // const pattern = `${this.config.prefix}*`
+      // const keys = await redis.keys(pattern)
+      const total = this.stats.hits + this.stats.misses
+      const hitRate = total > 0 ? (this.stats.hits / total) * 100 : 0
       return {
         hits: this.stats.hits,
         misses: this.stats.misses,
         keys: 0, // Désactivé temporairement
         memory: 0, // Redis gère la mémoire automatiquement
         hitRate
-      };
+      }
     } catch (error) {
-      console.error('Erreur lors de la récupération des stats:', error);
+      console.error('Erreur lors de la récupération des stats:', error)
       return {
         hits: this.stats.hits,
         misses: this.stats.misses,
         keys: 0,
         memory: 0,
         hitRate: 0
-      };
+      }
     }
   }
 
@@ -302,14 +288,13 @@ class IntelligentCache {
   async clear(): Promise<void> {
     // Désactivé car redis.keys n'est pas disponible dans le wrapper
     // try {
-    //   const pattern = `${this.config.prefix}*`;
-    //   const keys = await redis.keys(pattern);
-      
+    //   const pattern = `${this.config.prefix}*`
+    //   const keys = await redis.keys(pattern)
     //   if (keys.length > 0) {
-    //     await redis.del(...keys);
+    //     await redis.del(...keys)
     //   }
     // } catch (error) {
-    //   console.error('Erreur lors du vidage du cache:', error);
+    //   console.error('Erreur lors du vidage du cache:', error)
     // }
   }
 }
@@ -322,8 +307,7 @@ export const cacheInstances = {
   analytics: new IntelligentCache('analytics'),
   recommendations: new IntelligentCache('recommendations'),
   default: new IntelligentCache('default')
-};
-
+}
 // Fonctions utilitaires pour le cache
 export const cache = {
   /**
@@ -331,16 +315,16 @@ export const cache = {
    */
   missions: {
     async get<T>(key: string): Promise<T | null> {
-      return cacheInstances.missions.get<T>(key);
+      return cacheInstances.missions.get<T>(key)
     },
     async set(key: string, value: any, ttl?: number): Promise<void> {
-      return cacheInstances.missions.set(key, value, ttl);
+      return cacheInstances.missions.set(key, value, ttl)
     },
     async getOrSet<T>(key: string, generator: () => Promise<T>, ttl?: number): Promise<T> {
-      return cacheInstances.missions.getOrSet(key, generator, ttl);
+      return cacheInstances.missions.getOrSet(key, generator, ttl)
     },
     async delete(key: string): Promise<void> {
-      return cacheInstances.missions.delete(key);
+      return cacheInstances.missions.delete(key)
     }
   },
 
@@ -349,16 +333,16 @@ export const cache = {
    */
   users: {
     async get<T>(key: string): Promise<T | null> {
-      return cacheInstances.users.get<T>(key);
+      return cacheInstances.users.get<T>(key)
     },
     async set(key: string, value: any, ttl?: number): Promise<void> {
-      return cacheInstances.users.set(key, value, ttl);
+      return cacheInstances.users.set(key, value, ttl)
     },
     async getOrSet<T>(key: string, generator: () => Promise<T>, ttl?: number): Promise<T> {
-      return cacheInstances.users.getOrSet(key, generator, ttl);
+      return cacheInstances.users.getOrSet(key, generator, ttl)
     },
     async delete(key: string): Promise<void> {
-      return cacheInstances.users.delete(key);
+      return cacheInstances.users.delete(key)
     }
   },
 
@@ -367,16 +351,16 @@ export const cache = {
    */
   integrations: {
     async get<T>(key: string): Promise<T | null> {
-      return cacheInstances.integrations.get<T>(key);
+      return cacheInstances.integrations.get<T>(key)
     },
     async set(key: string, value: any, ttl?: number): Promise<void> {
-      return cacheInstances.integrations.set(key, value, ttl);
+      return cacheInstances.integrations.set(key, value, ttl)
     },
     async getOrSet<T>(key: string, generator: () => Promise<T>, ttl?: number): Promise<T> {
-      return cacheInstances.integrations.getOrSet(key, generator, ttl);
+      return cacheInstances.integrations.getOrSet(key, generator, ttl)
     },
     async delete(key: string): Promise<void> {
-      return cacheInstances.integrations.delete(key);
+      return cacheInstances.integrations.delete(key)
     }
   },
 
@@ -385,46 +369,43 @@ export const cache = {
    */
   recommendations: {
     async get<T>(key: string): Promise<T | null> {
-      return cacheInstances.recommendations.get<T>(key);
+      return cacheInstances.recommendations.get<T>(key)
     },
     async set(key: string, value: any, ttl?: number): Promise<void> {
-      return cacheInstances.recommendations.set(key, value, ttl);
+      return cacheInstances.recommendations.set(key, value, ttl)
     },
     async getOrSet<T>(key: string, generator: () => Promise<T>, ttl?: number): Promise<T> {
-      return cacheInstances.recommendations.getOrSet(key, generator, ttl);
+      return cacheInstances.recommendations.getOrSet(key, generator, ttl)
     },
     async delete(key: string): Promise<void> {
-      return cacheInstances.recommendations.delete(key);
+      return cacheInstances.recommendations.delete(key)
     }
   }
-};
-
+}
 /**
  * Fonction pour obtenir les statistiques globales du cache
  */
 export async function getGlobalCacheStats(): Promise<Record<string, CacheStats>> {
-  const stats: Record<string, CacheStats> = {};
-
+  const stats: Record<string, CacheStats> = {}
   for (const [name, instance] of Object.entries(cacheInstances)) {
-    stats[name] = await instance.getStats();
+    stats[name] = await instance.getStats()
   }
 
-  return stats;
+  return stats
 }
 
 /**
  * Fonction pour nettoyer tous les caches
  */
 export async function cleanupAllCaches(): Promise<Record<string, number>> {
-  const results: Record<string, number> = {};
-
+  const results: Record<string, number> = {}
   for (const [name, instance] of Object.entries(cacheInstances)) {
-    results[name] = await instance.cleanup();
+    results[name] = await instance.cleanup()
   }
 
-  return results;
+  return results
 }
 
 // Export des types
-export type { CacheConfig, CacheStats };
-export { IntelligentCache };
+export type { CacheConfig, CacheStats }
+export { IntelligentCache }

@@ -35,6 +35,5 @@ export const typography = {
     normal: '0',
     wide: '0.025em',
   },
-} as const;
-
-export type TypographyToken = keyof typeof typography;
+} as const
+export type TypographyToken = keyof typeof typography

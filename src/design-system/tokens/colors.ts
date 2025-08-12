@@ -113,6 +113,5 @@ export const colors = {
     inverse: '#ffffff',
     muted: '#6b7280',
   },
-} as const;
-
-export type ColorToken = keyof typeof colors;
+} as const
+export type ColorToken = keyof typeof colors

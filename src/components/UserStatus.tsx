@@ -1,66 +1,59 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
+import Icon from "@/components/ui/Icon"
 export default function UserStatus() {
-  const { data: session } = useSession();
-  const [profile, setProfile] = useState<any>(null);
-
+  const { data: session } = useSession()
+  const [profile, setProfile] = useState<any>(null)
   useEffect(() => {
     const fetchProfile = async () => {
       if (session?.user?.email) {
         try {
-          const response = await fetch('/api/user/profile');
+          const response = await fetch('/api/user/profile')
           if (response.ok) {
-            const data = await response.json();
-            setProfile(data);
+            const data = await response.json()
+            setProfile(data)
           }
         } catch (error) {
-          console.error('Erreur lors de la récupération du profil:', error);
+          console.error('Erreur lors de la récupération du profil:', error)
         }
       }
-    };
-
-    fetchProfile();
-  }, [session]);
-
+    }
+    fetchProfile()
+  }, [session])
   // Déterminer l'accès premium basé sur le rôle et les crédits
-  let hasAccess = false;
-  let plan = undefined;
-
+  let hasAccess = false
+  let plan = undefined
   if (profile?.user?.role === 'SUPER_ADMIN' || profile?.user?.role === 'ADMIN') {
-    hasAccess = true;
-    plan = 'enterprise';
+    hasAccess = true
+    plan = 'enterprise'
   } else if (profile?.user?.credits && profile.user.credits > 0) {
-    hasAccess = true;
-    plan = 'basic';
+    hasAccess = true
+    plan = 'basic'
   }
 
   const getRoleColor = () => {
     switch (profile?.user?.role) {
       case 'SUPER_ADMIN':
-        return 'text-red-600 bg-red-50';
+        return 'text-red-600 bg-red-50'
       case 'ADMIN':
-        return 'text-orange-600 bg-orange-50';
+        return 'text-orange-600 bg-orange-50'
       case 'USER':
-        return 'text-blue-600 bg-blue-50';
+        return 'text-blue-600 bg-blue-50'
       default:
-        return 'text-gray-600 bg-gray-50';
+        return 'text-gray-600 bg-gray-50'
     }
-  };
-
+  }
   const getPlanColor = () => {
     switch (plan) {
       case 'enterprise':
-        return 'text-purple-600 bg-purple-50';
+        return 'text-purple-600 bg-purple-50'
       case 'basic':
-        return 'text-green-600 bg-green-50';
+        return 'text-green-600 bg-green-50'
       default:
-        return 'text-gray-600 bg-gray-50';
+        return 'text-gray-600 bg-gray-50'
     }
-  };
-
+  }
   return (
     <div className="flex items-center gap-3">
       {/* Statut Premium */}
@@ -75,7 +68,7 @@ export default function UserStatus() {
       {profile?.user?.role && (
         <div className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${getRoleColor()}`}>
           <Icon name="user" size={12} />
-          <span>{profile.user.role.replace(&apos;_&apos;, &apos; &apos;)}</span>
+          <span>{profile.user.role.replace('_', ' ')}</span>
         </div>
       )}
 
@@ -107,5 +100,5 @@ export default function UserStatus() {
         </div>
       </div>
     </div>
-  );
+  )
 }

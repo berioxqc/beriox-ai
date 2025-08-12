@@ -1,11 +1,9 @@
-import { ApiResponse } from './types';
-
+import { ApiResponse } from './types'
 export class SlackAPI {
-  private token: string;
-  private baseUrl = 'https://slack.com/api';
-
+  private token: string
+  private baseUrl = 'https://slack.com/api'
   constructor(token: string) {
-    this.token = token;
+    this.token = token
   }
 
   async sendMessage(channel: string, text: string, blocks?: any[]): Promise<ApiResponse<any>> {
@@ -21,27 +19,25 @@ export class SlackAPI {
           text,
           blocks,
         }),
-      });
-
+      })
       if (!response.ok) {
-        throw new Error(`Slack API error: ${response.status}`);
+        throw new Error(`Slack API error: ${response.status}`)
       }
 
-      const data = await response.json();
-
+      const data = await response.json()
       if (!data.ok) {
-        throw new Error(data.error || 'Slack API error');
+        throw new Error(data.error || 'Slack API error')
       }
 
       return {
         success: true,
         data: data.message,
-      };
+      }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 
@@ -82,9 +78,8 @@ export class SlackAPI {
           },
         ],
       },
-    ];
-
-    return this.sendMessage(channel, `Nouvelle mission créée: ${mission.objective}`, blocks);
+    ]
+    return this.sendMessage(channel, `Nouvelle mission créée: ${mission.objective}`, blocks)
   }
 
   async sendReportNotification(channel: string, mission: any, report: any): Promise<ApiResponse<any>> {
@@ -124,9 +119,8 @@ export class SlackAPI {
           },
         ],
       },
-    ];
-
-    return this.sendMessage(channel, `Rapport de mission disponible: ${mission.objective}`, blocks);
+    ]
+    return this.sendMessage(channel, `Rapport de mission disponible: ${mission.objective}`, blocks)
   }
 
   async sendAlertNotification(channel: string, alert: any): Promise<ApiResponse<any>> {
@@ -135,8 +129,7 @@ export class SlackAPI {
       medium: '🟠',
       high: '🔴',
       critical: '🚨',
-    };
-
+    }
     const blocks = [
       {
         type: 'header',
@@ -161,9 +154,8 @@ export class SlackAPI {
           },
         ],
       },
-    ];
-
-    return this.sendMessage(channel, `Alerte ${alert.type}: ${alert.description}`, blocks);
+    ]
+    return this.sendMessage(channel, `Alerte ${alert.type}: ${alert.description}`, blocks)
   }
 
   async getChannels(): Promise<ApiResponse<any[]>> {
@@ -172,16 +164,14 @@ export class SlackAPI {
         headers: {
           'Authorization': `Bearer ${this.token}`,
         },
-      });
-
+      })
       if (!response.ok) {
-        throw new Error(`Slack API error: ${response.status}`);
+        throw new Error(`Slack API error: ${response.status}`)
       }
 
-      const data = await response.json();
-
+      const data = await response.json()
       if (!data.ok) {
-        throw new Error(data.error || 'Slack API error');
+        throw new Error(data.error || 'Slack API error')
       }
 
       return {
@@ -192,12 +182,12 @@ export class SlackAPI {
           isPrivate: channel.is_private,
           isMember: channel.is_member,
         })) || [],
-      };
+      }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 
@@ -207,24 +197,22 @@ export class SlackAPI {
         headers: {
           'Authorization': `Bearer ${this.token}`,
         },
-      });
-
+      })
       if (!response.ok) {
-        throw new Error(`Slack API error: ${response.status}`);
+        throw new Error(`Slack API error: ${response.status}`)
       }
 
-      const data = await response.json();
-
+      const data = await response.json()
       return {
         success: data.ok,
         data: data.ok ? data : null,
         error: data.ok ? undefined : data.error,
-      };
+      }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 }

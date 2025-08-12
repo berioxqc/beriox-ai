@@ -1,105 +1,100 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Link from "next/link";
-import DeliverableBubble from "@/components/DeliverableBubble";
-import BriefCard from "@/components/BriefCard";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import { useEffect, useState } from "react"
+import { useParams, useRouter } from "next/navigation"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import Link from "next/link"
+import DeliverableBubble from "@/components/DeliverableBubble"
+import BriefCard from "@/components/BriefCard"
+import Icon from "@/components/ui/Icon"
 // Fonction pour formater le contenu Markdown
 function formatMarkdownContent(content: any): string {
   if (typeof content === 'string') {
-    return content;
+    return content
   }
   if (typeof content === 'object' && content.content) {
-    return content.content;
+    return content.content
   }
-  return JSON.stringify(content, null, 2);
+  return JSON.stringify(content, null, 2)
 }
 
 // Fonction pour formater le contenu en HTML simple
 function formatAsHtml(content: string): JSX.Element {
-  const lines = content.split('\n');
+  const lines = content.split('\n')
   return (
     <div>
       {lines.map((line, index) => {
         // Titres
         if (line.startsWith('# ')) {
-          return <h3 key={index} style={{ fontSize: '18px', fontWeight: '700', color: '#0a2540', marginBottom: '12px', marginTop: index > 0 ? &apos;24px&apos; : &apos;0&apos; }}>{line.substring(2)}</h3>;
+          return <h3 key={index} style={{ fontSize: '18px', fontWeight: '700', color: '#0a2540', marginBottom: '12px', marginTop: index > 0 ? '24px' : '0' }}>{line.substring(2)}</h3>
         }
         if (line.startsWith('## ')) {
-          return <h4 key={index} style={{ fontSize: '16px', fontWeight: '600', color: '#0a2540', marginBottom: '8px', marginTop: '20px' }}>{line.substring(3)}</h4>;
+          return <h4 key={index} style={{ fontSize: '16px', fontWeight: '600', color: '#0a2540', marginBottom: '8px', marginTop: '20px' }}>{line.substring(3)}</h4>
         }
         if (line.startsWith('### ')) {
-          return <h5 key={index} style={{ fontSize: '14px', fontWeight: '600', color: '#425466', marginBottom: '6px', marginTop: '16px' }}>{line.substring(4)}</h5>;
+          return <h5 key={index} style={{ fontSize: '14px', fontWeight: '600', color: '#425466', marginBottom: '6px', marginTop: '16px' }}>{line.substring(4)}</h5>
         }
         // Listes
         if (line.startsWith('- ')) {
-          return <div key={index} style={{ marginLeft: '16px', marginBottom: '4px' }}>• {line.substring(2)}</div>;
+          return <div key={index} style={{ marginLeft: '16px', marginBottom: '4px' }}>• {line.substring(2)}</div>
         }
         // Gras
         if (line.includes('**')) {
-          const parts = line.split('**');
+          const parts = line.split('**')
           return (
             <div key={index} style={{ marginBottom: '4px' }}>
               {parts.map((part, i) => i % 2 === 1 ? <strong key={i}>{part}</strong> : part)}
             </div>
-          );
+          )
         }
         // Ligne vide
         if (line.trim() === '') {
-          return <div key={index} style={{ height: '8px' }} />;
+          return <div key={index} style={{ height: '8px' }} />
         }
         // Texte normal
-        return <div key={index} style={{ marginBottom: '4px' }}>{line}</div>;
+        return <div key={index} style={{ marginBottom: '4px' }}>{line}</div>
       })}
     </div>
-  );
+  )
 }
 
 // Fonction pour trouver le brief correspondant à un livrable
 function findRelatedBrief(deliverable: Deliverable, briefs: Brief[]): Brief | undefined {
-  return briefs.find(brief => brief.agent === deliverable.agent);
+  return briefs.find(brief => brief.agent === deliverable.agent)
 }
 
 type Mission = {
-  id: string;
-  objective: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  deadline?: string | null;
-  priority?: string | null;
-  context?: string | null;
-  notionPageId?: string | null;
-};
-
+  id: string
+  objective: string
+  status: string
+  createdAt: string
+  updatedAt: string
+  deadline?: string | null
+  priority?: string | null
+  context?: string | null
+  notionPageId?: string | null
+}
 type Brief = {
-  id: string;
-  agent: string;
-  contentJson: any;
-  status: string;
-  createdAt: string;
-};
-
+  id: string
+  agent: string
+  contentJson: any
+  status: string
+  createdAt: string
+}
 type Deliverable = {
-  id: string;
-  agent: string;
-  output: any;
-  createdAt: string;
-};
-
+  id: string
+  agent: string
+  output: any
+  createdAt: string
+}
 type Report = {
-  id: string;
-  summary: string;
-  detailsMd: string;
-  cautions: string | null;
-  nextSteps: string | null;
-  createdAt: string;
-};
-
+  id: string
+  summary: string
+  detailsMd: string
+  cautions: string | null
+  nextSteps: string | null
+  createdAt: string
+}
 // Informations des agents avec la vraie équipe
 const AGENTS_INFO = {
   "KarineAI": {
@@ -158,64 +153,58 @@ const AGENTS_INFO = {
     specialty: "Analyse d'urgence & Impact",
     age: 0
   }
-};
-
+}
 export default function MissionDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const [mission, setMission] = useState<Mission | null>(null);
-  const [briefs, setBriefs] = useState<Brief[]>([]);
-  const [deliverables, setDeliverables] = useState<Deliverable[]>([]);
-  const [report, setReport] = useState<Report | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [restarting, setRestarting] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'briefs' | 'deliverables' | 'report'>('overview');
-  const [selectedBrief, setSelectedBrief] = useState<Brief | null>(null);
-  const [regeneratingReport, setRegeneratingReport] = useState(false);
-
+  const params = useParams()
+  const router = useRouter()
+  const [mission, setMission] = useState<Mission | null>(null)
+  const [briefs, setBriefs] = useState<Brief[]>([])
+  const [deliverables, setDeliverables] = useState<Deliverable[]>([])
+  const [report, setReport] = useState<Report | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [restarting, setRestarting] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<'overview' | 'briefs' | 'deliverables' | 'report'>('overview')
+  const [selectedBrief, setSelectedBrief] = useState<Brief | null>(null)
+  const [regeneratingReport, setRegeneratingReport] = useState(false)
   useEffect(() => {
     if (params.id) {
-      fetchMissionData(params.id as string);
+      fetchMissionData(params.id as string)
     }
-  }, [params.id]);
-
+  }, [params.id])
   // Gestion de la fermeture de la modal par Escape
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && selectedBrief) {
-        setSelectedBrief(null);
+        setSelectedBrief(null)
       }
-    };
-
+    }
     if (selectedBrief) {
-      document.addEventListener('keydown', handleEscape);
+      document.addEventListener('keydown', handleEscape)
       document.body.style.overflow = 'hidden'; // Empêcher le scroll en arrière-plan
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedBrief]);
-
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'unset'
+    }
+  }, [selectedBrief])
   async function fetchMissionData(missionId: string) {
     try {
-      setLoading(true);
+      setLoading(true)
       const [missionRes, briefsRes, deliverablesRes, reportRes] = await Promise.all([
         fetch(`/api/missions/${missionId}`),
         fetch(`/api/missions/${missionId}/briefs`),
         fetch(`/api/missions/${missionId}/deliverables`),
         fetch(`/api/missions/${missionId}/report`)
-      ]);
-
+      ])
       // Vérifier si la mission existe
       if (!missionRes.ok) {
         if (missionRes.status === 404) {
-          setError("Mission introuvable");
-          return;
+          setError("Mission introuvable")
+          return
         }
-        throw new Error(`Erreur ${missionRes.status}: ${missionRes.statusText}`);
+        throw new Error(`Erreur ${missionRes.status}: ${missionRes.statusText}`)
       }
 
       const [missionData, briefsData, deliverablesData, reportData] = await Promise.all([
@@ -223,112 +212,100 @@ export default function MissionDetailPage() {
         briefsRes.json(),
         deliverablesRes.json(),
         reportRes.json()
-      ]);
-
-      setMission(missionData.mission);
-      setBriefs(briefsData.briefs || []);
-      setDeliverables(deliverablesData.deliverables || []);
-      setReport(reportData.report);
+      ])
+      setMission(missionData.mission)
+      setBriefs(briefsData.briefs || [])
+      setDeliverables(deliverablesData.deliverables || [])
+      setReport(reportData.report)
     } catch (e: any) {
-      setError(e?.message || "Erreur de chargement");
+      setError(e?.message || "Erreur de chargement")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
   const restartAgent = async (agentName: string) => {
     try {
-      setRestarting(agentName);
-      
+      setRestarting(agentName)
       const response = await fetch(`/api/missions/${params.id}/restart-agent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ agent: agentName })
-      });
-
+      })
       if (!response.ok) {
-        throw new Error('Erreur lors du redémarrage');
+        throw new Error('Erreur lors du redémarrage')
       }
 
       // Recharger les données après redémarrage
       setTimeout(() => {
-        fetchMissionData(params.id as string);
+        fetchMissionData(params.id as string)
       }, 4000); // Attendre 4 secondes pour laisser le temps à l'agent de travailler
 
     } catch (error) {
-      console.error('Erreur redémarrage:', error);
-      alert('Erreur lors du redémarrage de l\'agent');
+      console.error('Erreur redémarrage:', error)
+      alert('Erreur lors du redémarrage de l\'agent')
     } finally {
-      setRestarting(null);
+      setRestarting(null)
     }
-  };
-
+  }
   const regenerateReport = async () => {
     try {
-      setRegeneratingReport(true);
-      
+      setRegeneratingReport(true)
       const response = await fetch(`/api/missions/${params.id}/regenerate-report`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         }
-      });
-
+      })
       if (!response.ok) {
-        throw new Error('Erreur lors de la régénération du rapport');
+        throw new Error('Erreur lors de la régénération du rapport')
       }
 
-      const data = await response.json();
-      setReport(data.report);
-      
+      const data = await response.json()
+      setReport(data.report)
       // Optionnel : recharger toutes les données pour être sûr
-      // fetchMissionData(params.id as string);
-
+      // fetchMissionData(params.id as string)
     } catch (error) {
-      console.error('Erreur régénération rapport:', error);
-      alert('Erreur lors de la régénération du rapport');
+      console.error('Erreur régénération rapport:', error)
+      alert('Erreur lors de la régénération du rapport')
     } finally {
-      setRegeneratingReport(false);
+      setRegeneratingReport(false)
     }
-  };
-
+  }
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "received": return "#8898aa";
-      case "split": return "#f79009";
-      case "in_progress": return "#0570de";
-      case "compiled": return "#00d924";
-      case "archived": return "#00a86b";
-      case "notified": return "#00d924";
-      case "failed": return "#df1b41";
-      default: return "#8898aa";
+      case "received": return "#8898aa"
+      case "split": return "#f79009"
+      case "in_progress": return "#0570de"
+      case "compiled": return "#00d924"
+      case "archived": return "#00a86b"
+      case "notified": return "#00d924"
+      case "failed": return "#df1b41"
+      default: return "#8898aa"
     }
-  };
-
+  }
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case "received": return "Reçue";
-      case "split": return "Découpée";
-      case "in_progress": return "En cours";
-      case "compiled": return "Compilée";
-      case "archived": return "Archivée";
-      case "notified": return "Terminée";
-      case "failed": return "Échouée";
-      default: return status;
+      case "received": return "Reçue"
+      case "split": return "Découpée"
+      case "in_progress": return "En cours"
+      case "compiled": return "Compilée"
+      case "archived": return "Archivée"
+      case "notified": return "Terminée"
+      case "failed": return "Échouée"
+      default: return status
     }
-  };
-
+  }
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "high": return "#df1b41";
-      case "medium": return "#f79009";
-      case "low": return "#00a86b";
-      default: return "#8898aa";
+      case "high": return "#df1b41"
+      case "medium": return "#f79009"
+      case "low": return "#00a86b"
+      default: return "#8898aa"
     }
-  };
-
+  }
   if (loading) {
     return (
       <AuthGuard>
@@ -361,7 +338,7 @@ export default function MissionDetailPage() {
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   if (error || !mission) {
@@ -390,7 +367,7 @@ export default function MissionDetailPage() {
               marginBottom: 24,
               fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
-              {error || "Cette mission n&apos;existe pas ou a été supprimée"}
+              {error || "Cette mission n'existe pas ou a été supprimée"}
             </p>
             <Link
               href="/missions"
@@ -410,7 +387,7 @@ export default function MissionDetailPage() {
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   const headerActions = (
@@ -430,12 +407,12 @@ export default function MissionDetailPage() {
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         }}
         onMouseOver={(e) => {
-          e.currentTarget.style.borderColor = "#c7d2fe";
-          e.currentTarget.style.color = "#0a2540";
+          e.currentTarget.style.borderColor = "#c7d2fe"
+          e.currentTarget.style.color = "#0a2540"
         }}
         onMouseOut={(e) => {
-          e.currentTarget.style.borderColor = "#e3e8ee";
-          e.currentTarget.style.color = "#425466";
+          e.currentTarget.style.borderColor = "#e3e8ee"
+          e.currentTarget.style.color = "#425466"
         }}
       >
         ← Toutes les missions
@@ -462,33 +439,27 @@ export default function MissionDetailPage() {
         </a>
       )}
     </div>
-  );
-
+  )
   // Calculer les statistiques de progression basées sur les agents qui ont réellement des briefs
-  const workflowBriefs = briefs.filter(b => b.agent !== "PriorityBot");
-  const workflowDeliverables = deliverables.filter(d => d.agent !== "PriorityBot");
-  
+  const workflowBriefs = briefs.filter(b => b.agent !== "PriorityBot")
+  const workflowDeliverables = deliverables.filter(d => d.agent !== "PriorityBot")
   // Agents qui ont effectivement reçu des briefs (= agents actifs pour cette mission)
-  const agentsWithBriefs = [...new Set(workflowBriefs.map(b => b.agent))];
-  
+  const agentsWithBriefs = [...new Set(workflowBriefs.map(b => b.agent))]
   // Agents de travail (exclure PriorityBot du calcul de progression)
-  const workAgents = agentsWithBriefs.filter(agent => agent !== "PriorityBot");
-  
+  const workAgents = agentsWithBriefs.filter(agent => agent !== "PriorityBot")
   // Tous les agents à afficher (inclure PriorityBot pour l'affichage)
-  const allAgentsToDisplay = [...agentsWithBriefs];
+  const allAgentsToDisplay = [...agentsWithBriefs]
   if (briefs.some(b => b.agent === "PriorityBot")) {
-    allAgentsToDisplay.push("PriorityBot");
+    allAgentsToDisplay.push("PriorityBot")
   }
   
   const totalAgents = workAgents.length; // Exclure PriorityBot du calcul
-  const completedDeliverables = workflowDeliverables.length;
-  const progressPercentage = totalAgents > 0 ? Math.round((completedDeliverables / totalAgents) * 100) : 0;
-
+  const completedDeliverables = workflowDeliverables.length
+  const progressPercentage = totalAgents > 0 ? Math.round((completedDeliverables / totalAgents) * 100) : 0
   // Composant Modal pour afficher les briefs
   const BriefModal = ({ brief, onClose }: { brief: Brief; onClose: () => void }) => {
-    const agentInfo = AGENTS_INFO[brief.agent as keyof typeof AGENTS_INFO];
-    const formattedContent = formatMarkdownContent(brief.contentJson);
-
+    const agentInfo = AGENTS_INFO[brief.agent as keyof typeof AGENTS_INFO]
+    const formattedContent = formatMarkdownContent(brief.contentJson)
     return (
       <div
         style={{
@@ -506,7 +477,7 @@ export default function MissionDetailPage() {
         }}
         onClick={(e) => {
           if (e.target === e.currentTarget) {
-            onClose();
+            onClose()
           }
         }}
       >
@@ -551,7 +522,7 @@ export default function MissionDetailPage() {
                   color: '#8898aa',
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  {agentInfo?.role || "Agent"} • {new Date(brief.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
+                  {agentInfo?.role || "Agent"} • {new Date(brief.createdAt).toLocaleDateString('fr-FR')}
                 </div>
               </div>
             </div>
@@ -573,12 +544,12 @@ export default function MissionDetailPage() {
                 transition: 'all 0.2s'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = &apos;#f6f9fc&apos;;
-                e.currentTarget.style.color = &apos;#425466&apos;;
+                e.currentTarget.style.background = '#f6f9fc'
+                e.currentTarget.style.color = '#425466'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = &apos;transparent&apos;;
-                e.currentTarget.style.color = &apos;#8898aa&apos;;
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.color = '#8898aa'
               }}
             >
               ✕
@@ -599,9 +570,8 @@ export default function MissionDetailPage() {
           </div>
         </div>
       </div>
-    );
-  };
-
+    )
+  }
   return (
     <AuthGuard>
       <Layout
@@ -712,7 +682,7 @@ export default function MissionDetailPage() {
                   color: "#0a2540",
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  {new Date(mission.deadline).toLocaleDateString(&apos;fr-FR&apos;)}
+                  {new Date(mission.deadline).toLocaleDateString('fr-FR')}
                 </div>
               </div>
             )}
@@ -789,14 +759,14 @@ export default function MissionDetailPage() {
                 }}
                 onMouseOver={(e) => {
                   if (activeTab !== tab.key) {
-                    e.currentTarget.style.background = "#f7f9fc";
-                    e.currentTarget.style.color = "#425466";
+                    e.currentTarget.style.background = "#f7f9fc"
+                    e.currentTarget.style.color = "#425466"
                   }
                 }}
                 onMouseOut={(e) => {
                   if (activeTab !== tab.key) {
-                    e.currentTarget.style.background = "transparent";
-                    e.currentTarget.style.color = "#8898aa";
+                    e.currentTarget.style.background = "transparent"
+                    e.currentTarget.style.color = "#8898aa"
                   }
                 }}
               >
@@ -829,7 +799,7 @@ export default function MissionDetailPage() {
                   marginBottom: 24,
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  📋 Vue d&apos;ensemble de la mission
+                  📋 Vue d'ensemble de la mission
                 </h3>
 
                 {/* Statistiques rapides */}
@@ -947,11 +917,10 @@ export default function MissionDetailPage() {
                     gap: 16
                   }}>
                     {allAgentsToDisplay.map(agentName => {
-                      const info = AGENTS_INFO[agentName as keyof typeof AGENTS_INFO];
-                      const hasBrief = briefs.some(b => b.agent === agentName);
-                      const hasDeliverable = deliverables.some(d => d.agent === agentName);
-                      const isPriorityBot = agentName === "PriorityBot";
-                      
+                      const info = AGENTS_INFO[agentName as keyof typeof AGENTS_INFO]
+                      const hasBrief = briefs.some(b => b.agent === agentName)
+                      const hasDeliverable = deliverables.some(d => d.agent === agentName)
+                      const isPriorityBot = agentName === "PriorityBot"
                       if (!info) return null; // Au cas où un agent ne serait pas dans AGENTS_INFO
                       
                       return (
@@ -1057,14 +1026,14 @@ export default function MissionDetailPage() {
                               }}
                               onMouseEnter={(e) => {
                                 if (restarting !== agentName) {
-                                  e.currentTarget.style.background = "#f6f9fc";
-                                  e.currentTarget.style.borderColor = "#d1d5db";
+                                  e.currentTarget.style.background = "#f6f9fc"
+                                  e.currentTarget.style.borderColor = "#d1d5db"
                                 }
                               }}
                               onMouseLeave={(e) => {
                                 if (restarting !== agentName) {
-                                  e.currentTarget.style.background = "#fff";
-                                  e.currentTarget.style.borderColor = "#e3e8ee";
+                                  e.currentTarget.style.background = "#fff"
+                                  e.currentTarget.style.borderColor = "#e3e8ee"
                                 }
                               }}
                             >
@@ -1082,7 +1051,7 @@ export default function MissionDetailPage() {
                             </button>
                           )}
                         </div>
-                      );
+                      )
                     })}
                   </div>
                 </div>
@@ -1131,9 +1100,8 @@ export default function MissionDetailPage() {
                     gap: 20
                   }}>
                     {briefs.map((brief) => {
-                      const agentInfo = AGENTS_INFO[brief.agent as keyof typeof AGENTS_INFO];
-                      if (!agentInfo) return null;
-                      
+                      const agentInfo = AGENTS_INFO[brief.agent as keyof typeof AGENTS_INFO]
+                      if (!agentInfo) return null
                       return (
                         <BriefCard
                           key={brief.id}
@@ -1141,7 +1109,7 @@ export default function MissionDetailPage() {
                           agentInfo={agentInfo}
                           onRestart={restartAgent}
                         />
-                      );
+                      )
                     })}
                   </div>
                 )}
@@ -1190,16 +1158,15 @@ export default function MissionDetailPage() {
                     gap: 24
                   }}>
                     {deliverables.map((deliverable) => {
-                      const agentInfo = AGENTS_INFO[deliverable.agent as keyof typeof AGENTS_INFO];
-                      if (!agentInfo) return null;
-                      
+                      const agentInfo = AGENTS_INFO[deliverable.agent as keyof typeof AGENTS_INFO]
+                      if (!agentInfo) return null
                       return (
                         <DeliverableBubble
                           key={deliverable.id}
                           deliverable={deliverable}
                           agentInfo={agentInfo}
                         />
-                      );
+                      )
                     })}
                   </div>
                 )}
@@ -1237,10 +1204,10 @@ export default function MissionDetailPage() {
                       fontSize: "14px",
                       color: "#8898aa",
                       marginBottom: deliverables.length > 0 ? 24 : 0,
-                      fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
                       {deliverables.length > 0 
-                        ? "Des livrables sont disponibles mais le rapport final n&apos;a pas été généré" 
+                        ? "Des livrables sont disponibles mais le rapport final n'a pas été généré" 
                         : "Le rapport final sera disponible une fois tous les agents terminés"
                       }
                     </div>
@@ -1268,12 +1235,12 @@ export default function MissionDetailPage() {
                         }}
                         onMouseEnter={(e) => {
                           if (!regeneratingReport) {
-                            e.currentTarget.style.background = "#5a52e8";
+                            e.currentTarget.style.background = "#5a52e8"
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (!regeneratingReport) {
-                            e.currentTarget.style.background = "#635bff";
+                            e.currentTarget.style.background = "#635bff"
                           }
                         }}
                       >
@@ -1321,7 +1288,7 @@ export default function MissionDetailPage() {
                           color: "#8898aa",
                           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                         }}>
-                          Généré le {new Date(report.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
+                          Généré le {new Date(report.createdAt).toLocaleDateString('fr-FR')}
                         </div>
                       </div>
                     </div>
@@ -1352,5 +1319,5 @@ export default function MissionDetailPage() {
         />
       )}
     </AuthGuard>
-  );
+  )
 }

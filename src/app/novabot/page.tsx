@@ -1,90 +1,81 @@
-"use client";
-import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Icon from "@/components/ui/Icon";
-import { useTheme, useStyles } from "@/hooks/useTheme";
-
+"use client"
+import { useState, useEffect } from "react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import Icon from "@/components/ui/Icon"
+import { useTheme, useStyles } from "@/hooks/useTheme"
 type NovaMission = {
-  id: string;
-  title: string;
-  constat: string;
-  sources: string[];
-  objectif: string;
-  impactEstime: number;
-  effortEstime: number;
-  priorite: number;
-  planAction: string[];
-  risques: string[];
-  planB: string;
-  historique: string;
-  tags: string[];
-  createdAt: Date;
-  status: 'pending' | 'validated' | 'rejected' | 'implemented';
-  jpbFeedback?: string;
-  agentsRecommandes?: string[];
-  raisonnementAgents?: string;
-};
-
+  id: string
+  title: string
+  constat: string
+  sources: string[]
+  objectif: string
+  impactEstime: number
+  effortEstime: number
+  priorite: number
+  planAction: string[]
+  risques: string[]
+  planB: string
+  historique: string
+  tags: string[]
+  createdAt: Date
+  status: 'pending' | 'validated' | 'rejected' | 'implemented'
+  jpbFeedback?: string
+  agentsRecommandes?: string[]
+  raisonnementAgents?: string
+}
 export default function NovaBotPage() {
-  const [loading, setLoading] = useState(false);
-  const [generatedMission, setGeneratedMission] = useState<NovaMission | null>(null);
-  const [validating, setValidating] = useState(false);
-  const [validationResult, setValidationResult] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false)
+  const [generatedMission, setGeneratedMission] = useState<NovaMission | null>(null)
+  const [validating, setValidating] = useState(false)
+  const [validationResult, setValidationResult] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
   const [dataSources, setDataSources] = useState({
     ga4: false,
     gsc: false,
     ads: false,
     crm: false
-  });
-  const [missionCount, setMissionCount] = useState(1);
-  const [generatedMissions, setGeneratedMissions] = useState<NovaMission[]>([]);
-  const [hasPremiumAccess, setHasPremiumAccess] = useState(false);
-  const [showDemo, setShowDemo] = useState(false);
-
-  const theme = useTheme();
-  const styles = useStyles();
-
+  })
+  const [missionCount, setMissionCount] = useState(1)
+  const [generatedMissions, setGeneratedMissions] = useState<NovaMission[]>([])
+  const [hasPremiumAccess, setHasPremiumAccess] = useState(false)
+  const [showDemo, setShowDemo] = useState(false)
+  const theme = useTheme()
+  const styles = useStyles()
   // Vérifier l'accès premium
   useEffect(() => {
     const checkPremiumAccess = async () => {
       try {
-        const response = await fetch('/api/user/profile');
+        const response = await fetch('/api/user/profile')
         if (response.ok) {
-          const data = await response.json();
-          const hasAccess = data.user?.premiumAccess?.isActive || false;
-          setHasPremiumAccess(hasAccess);
+          const data = await response.json()
+          const hasAccess = data.user?.premiumAccess?.isActive || false
+          setHasPremiumAccess(hasAccess)
           if (!hasAccess) {
-            setShowDemo(true);
+            setShowDemo(true)
           }
         }
       } catch (error) {
-        console.error('Erreur lors de la vérification premium:', error);
+        console.error('Erreur lors de la vérification premium:', error)
       }
-    };
-
-    checkPremiumAccess();
-  }, []);
-
+    }
+    checkPremiumAccess()
+  }, [])
   const generateMissions = async () => {
     if (!hasPremiumAccess) {
-      setError("Accès premium requis pour générer des missions");
-      return;
+      setError("Accès premium requis pour générer des missions")
+      return
     }
 
-    setLoading(true);
-    setError(null);
-    setGeneratedMission(null);
-    setGeneratedMissions([]);
-    setValidationResult(null);
-
+    setLoading(true)
+    setError(null)
+    setGeneratedMission(null)
+    setGeneratedMissions([])
+    setValidationResult(null)
     try {
       // Récupérer les vraies données des sources activées
-      const realDataSources = await fetchRealDataSources();
-
-      const missions: NovaMission[] = [];
-      
+      const realDataSources = await fetchRealDataSources()
+      const missions: NovaMission[] = []
       // Générer plusieurs missions
       for (let i = 0; i < missionCount; i++) {
         const response = await fetch('/api/novabot/generate', {
@@ -100,51 +91,47 @@ export default function NovaBotPage() {
               currentPlan: 'pro'
             }
           }),
-        });
-
-        const data = await response.json();
-
+        })
+        const data = await response.json()
         if (response.ok && data.success) {
-          missions.push(data.mission);
+          missions.push(data.mission)
         } else if (data.message) {
-          setError(data.message);
-          break;
+          setError(data.message)
+          break
         } else {
-          setError(data.error || "Erreur lors de la génération");
-          break;
+          setError(data.error || "Erreur lors de la génération")
+          break
         }
       }
 
       if (missions.length > 0) {
-        setGeneratedMissions(missions);
+        setGeneratedMissions(missions)
         if (missions.length === 1) {
-          setGeneratedMission(missions[0]);
+          setGeneratedMission(missions[0])
         }
       }
     } catch (error) {
-      console.error('Erreur lors de la génération:', error);
-      setError("Erreur lors de la génération des missions");
+      console.error('Erreur lors de la génération:', error)
+      setError("Erreur lors de la génération des missions")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   // Récupérer les vraies données des sources
   const fetchRealDataSources = async () => {
-    const sources = [];
-    
+    const sources = []
     for (const [type, enabled] of Object.entries(dataSources)) {
       if (enabled) {
         try {
-          const response = await fetch(`/api/integrations/${type}/data`);
+          const response = await fetch(`/api/integrations/${type}/data`)
           if (response.ok) {
-            const data = await response.json();
+            const data = await response.json()
             sources.push({
               type,
               data: data.data || getMockData(type),
               lastUpdated: new Date(),
               isReal: true
-            });
+            })
           } else {
             // Fallback vers les données mockées si l'API échoue
             sources.push({
@@ -152,30 +139,27 @@ export default function NovaBotPage() {
               data: getMockData(type),
               lastUpdated: new Date(),
               isReal: false
-            });
+            })
           }
         } catch (error) {
-          console.warn(`Impossible de récupérer les données ${type}:`, error);
+          console.warn(`Impossible de récupérer les données ${type}:`, error)
           sources.push({
             type,
             data: getMockData(type),
             lastUpdated: new Date(),
             isReal: false
-          });
+          })
         }
       }
     }
 
-    return sources;
-  };
-
+    return sources
+  }
   const validateWithJPBot = async (mission?: NovaMission) => {
-    const missionToValidate = mission || generatedMission;
-    if (!missionToValidate) return;
-
-    setValidating(true);
-    setValidationResult(null);
-
+    const missionToValidate = mission || generatedMission
+    if (!missionToValidate) return
+    setValidating(true)
+    setValidationResult(null)
     try {
       const response = await fetch('/api/novabot/validate', {
         method: 'POST',
@@ -185,23 +169,20 @@ export default function NovaBotPage() {
         body: JSON.stringify({
           mission: missionToValidate
         }),
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (response.ok) {
-        setValidationResult(data);
+        setValidationResult(data)
       } else {
-        setError(data.error || "Erreur lors de la validation");
+        setError(data.error || "Erreur lors de la validation")
       }
     } catch (error) {
-      console.error('Erreur lors de la validation:', error);
-      setError("Erreur lors de la validation");
+      console.error('Erreur lors de la validation:', error)
+      setError("Erreur lors de la validation")
     } finally {
-      setValidating(false);
+      setValidating(false)
     }
-  };
-
+  }
   const getMockData = (type: string) => {
     switch (type) {
       case 'ga4':
@@ -211,7 +192,7 @@ export default function NovaBotPage() {
             { path: '/contact', bounceRate: 45, pageViews: 80 }
           ],
           conversions: { total: 12, sessions: { total: 1000 } }
-        };
+        }
       case 'gsc':
         return {
           queries: [
@@ -222,35 +203,32 @@ export default function NovaBotPage() {
             { page: '/services', position: 8, impressions: 800 },
             { page: '/contact', position: 15, impressions: 600 }
           ]
-        };
+        }
       case 'ads':
         return {
           campaigns: [
             { name: 'Campagne Services', cpa: 45, targetCpa: 30 },
             { name: 'Campagne Contact', cpa: 25, targetCpa: 20 }
           ]
-        };
+        }
       case 'crm':
         return {
           leads: { total: 50, converted: 3 }
-        };
+        }
       default:
-        return {};
+        return {}
     }
-  };
-
+  }
   const getPriorityColor = (priority: number) => {
-    if (priority >= 3) return '#10b981';
-    if (priority >= 1) return '#f59e0b';
-    return '#ef4444';
-  };
-
+    if (priority >= 3) return '#10b981'
+    if (priority >= 1) return '#f59e0b'
+    return '#ef4444'
+  }
   const getPriorityLabel = (priority: number) => {
-    if (priority >= 3) return 'Haute';
-    if (priority >= 1) return 'Moyenne';
-    return 'Basse';
-  };
-
+    if (priority >= 3) return 'Haute'
+    if (priority >= 1) return 'Moyenne'
+    return 'Basse'
+  }
   // Données de démonstration pour les utilisateurs non premium
   const demoMission: NovaMission = {
     id: 'demo-1',
@@ -278,8 +256,7 @@ export default function NovaBotPage() {
     status: 'pending',
     agentsRecommandes: ['KarineAI', 'ElodieAI', 'HugoAI'],
     raisonnementAgents: 'KarineAI pour la stratégie, ElodieAI pour le contenu optimisé, HugoAI pour les améliorations techniques'
-  };
-
+  }
   // Afficher la démo pour les utilisateurs non premium
   if (showDemo && !hasPremiumAccess) {
     return (
@@ -318,7 +295,7 @@ export default function NovaBotPage() {
                   margin: 0,
                   fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}>
-                  L&apos;architecte d&apos;opportunités basé sur vos données analytiques
+                  L'architecte d'opportunités basé sur vos données analytiques
                 </p>
               </div>
             </div>
@@ -349,17 +326,17 @@ export default function NovaBotPage() {
                 NovaBot analyse vos vraies données pour générer des missions personnalisées
               </p>
               <button
-                onClick={() => window.location.href = &apos;/pricing&apos;}
+                onClick={() => window.location.href = '/pricing'}
                 style={{
-                  background: &apos;white&apos;,
-                  color: &apos;#8b5cf6&apos;,
-                  border: &apos;none&apos;,
-                  padding: &apos;12px 24px&apos;,
-                  borderRadius: &apos;8px&apos;,
-                  fontSize: &apos;16px&apos;,
-                  fontWeight: &apos;600&apos;,
-                  cursor: &apos;pointer&apos;,
-                  fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
+                  background: 'white',
+                  color: '#8b5cf6',
+                  border: 'none',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                 }}
               >
                 Voir les Plans Premium
@@ -492,7 +469,7 @@ export default function NovaBotPage() {
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   return (
@@ -531,7 +508,7 @@ export default function NovaBotPage() {
                 margin: 0,
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
-                L&apos;architecte d&apos;opportunités basé sur vos données analytiques
+                L'architecte d'opportunités basé sur vos données analytiques
               </p>
             </div>
           </div>
@@ -604,7 +581,7 @@ export default function NovaBotPage() {
                     fontSize: '12px',
                     fontWeight: 'bold'
                   }}>
-                    {enabled && &apos;✓&apos;}
+                    {enabled && '✓'}
                   </div>
                   <div>
                     <div style={{
@@ -621,10 +598,10 @@ export default function NovaBotPage() {
                       color: '#6b7280',
                       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                     }}>
-                      {key === &apos;ga4&apos; && &apos;Google Analytics 4&apos;}
-                      {key === &apos;gsc&apos; && &apos;Google Search Console&apos;}
-                      {key === &apos;ads&apos; && &apos;Google Ads&apos;}
-                      {key === &apos;crm&apos; && &apos;CRM&apos;}
+                      {key === 'ga4' && 'Google Analytics 4'}
+                      {key === 'gsc' && 'Google Search Console'}
+                      {key === 'ads' && 'Google Ads'}
+                      {key === 'crm' && 'CRM'}
                     </div>
                   </div>
                 </label>
@@ -653,11 +630,11 @@ export default function NovaBotPage() {
                   value={missionCount}
                   onChange={(e) => setMissionCount(Math.min(5, Math.max(1, parseInt(e.target.value) || 1)))}
                   style={{
-                    width: &apos;60px&apos;,
-                    padding: &apos;4px 8px&apos;,
-                    border: &apos;1px solid #d1d5db&apos;,
-                    borderRadius: &apos;4px&apos;,
-                    fontSize: &apos;14px&apos;
+                    width: '60px',
+                    padding: '4px 8px',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '4px',
+                    fontSize: '14px'
                   }}
                 />
               </label>
@@ -851,7 +828,7 @@ export default function NovaBotPage() {
                     <button
                       onClick={() => {
                         // Créer une mission à partir de cette recommandation
-                        window.location.href = `/missions?from-nova=${encodeURIComponent(JSON.stringify(mission))}`;
+                        window.location.href = `/missions?from-nova=${encodeURIComponent(JSON.stringify(mission))}`
                       }}
                       style={{
                         background: '#8b5cf6',
@@ -938,7 +915,7 @@ export default function NovaBotPage() {
                     fontWeight: '600',
                     marginLeft: '8px'
                   }}>
-                    {validationResult.approved ? &apos;✅ Approuvé&apos; : &apos;❌ Rejeté&apos;}
+                    {validationResult.approved ? '✅ Approuvé' : '❌ Rejeté'}
                   </span>
                 </div>
                 
@@ -953,7 +930,7 @@ export default function NovaBotPage() {
                 
                 {validationResult.suggestions && validationResult.suggestions.length > 0 && (
                   <div>
-                    <strong style={{ color: '#374151' }}>Suggestions d&apos;amélioration :</strong>
+                    <strong style={{ color: '#374151' }}>Suggestions d'amélioration :</strong>
                     <ul style={{ margin: '8px 0', color: '#6b7280', paddingLeft: '20px' }}>
                       {validationResult.suggestions.map((suggestion: string, index: number) => (
                         <li key={index}>{suggestion}</li>
@@ -967,5 +944,5 @@ export default function NovaBotPage() {
         </div>
       </Layout>
     </AuthGuard>
-  );
+  )
 }

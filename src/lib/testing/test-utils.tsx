@@ -1,8 +1,7 @@
-import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
-import { SessionProvider } from 'next-auth/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
+import React, { ReactElement } from 'react'
+import { render, RenderOptions } from '@testing-library/react'
+import { SessionProvider } from 'next-auth/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 // Mock Next.js router
 jest.mock('next/router', () => ({
   useRouter() {
@@ -23,10 +22,9 @@ jest.mock('next/router', () => ({
         emit: jest.fn(),
       },
       isFallback: false,
-    };
+    }
   },
-}));
-
+}))
 // Mock Next.js navigation
 jest.mock('next/navigation', () => ({
   useRouter() {
@@ -37,16 +35,15 @@ jest.mock('next/navigation', () => ({
       back: jest.fn(),
       forward: jest.fn(),
       refresh: jest.fn(),
-    };
+    }
   },
   useSearchParams() {
-    return new URLSearchParams();
+    return new URLSearchParams()
   },
   usePathname() {
-    return '/';
+    return '/'
   },
-}));
-
+}))
 // Mock Prisma
 jest.mock('@/lib/prisma', () => ({
   prisma: {
@@ -79,8 +76,7 @@ jest.mock('@/lib/prisma', () => ({
       delete: jest.fn(),
     },
   },
-}));
-
+}))
 // Mock Stripe
 jest.mock('stripe', () => {
   return jest.fn().mockImplementation(() => ({
@@ -100,9 +96,8 @@ jest.mock('stripe', () => {
       retrieve: jest.fn(),
       update: jest.fn(),
     },
-  }));
-});
-
+  }))
+})
 // Mock OpenAI
 jest.mock('openai', () => ({
   OpenAI: jest.fn().mockImplementation(() => ({
@@ -115,8 +110,7 @@ jest.mock('openai', () => ({
       generate: jest.fn(),
     },
   })),
-}));
-
+}))
 // Mock Sentry
 jest.mock('@sentry/nextjs', () => ({
   captureException: jest.fn(),
@@ -124,8 +118,7 @@ jest.mock('@sentry/nextjs', () => ({
   setUser: jest.fn(),
   setTag: jest.fn(),
   setContext: jest.fn(),
-}));
-
+}))
 // Mock Resend
 jest.mock('resend', () => ({
   Resend: jest.fn().mockImplementation(() => ({
@@ -133,8 +126,7 @@ jest.mock('resend', () => ({
       send: jest.fn(),
     },
   })),
-}));
-
+}))
 // Mock Redis
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => ({
@@ -157,26 +149,22 @@ jest.mock('ioredis', () => {
     zrem: jest.fn(),
     zcard: jest.fn(),
     disconnect: jest.fn(),
-  }));
-});
-
+  }))
+})
 // Mock fetch
-global.fetch = jest.fn();
-
+global.fetch = jest.fn()
 // Mock IntersectionObserver
 global.IntersectionObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
   disconnect: jest.fn(),
-}));
-
+}))
 // Mock ResizeObserver
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
   disconnect: jest.fn(),
-}));
-
+}))
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -190,30 +178,27 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-});
-
+})
 // Mock localStorage
 const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
-};
-global.localStorage = localStorageMock;
-
+}
+global.localStorage = localStorageMock
 // Mock sessionStorage
 const sessionStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
   clear: jest.fn(),
-};
-global.sessionStorage = sessionStorageMock;
-
+}
+global.sessionStorage = sessionStorageMock
 // Custom render function with providers
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
-  session?: any;
-  queryClient?: QueryClient;
+  session?: any
+  queryClient?: QueryClient
 }
 
 const createTestQueryClient = () =>
@@ -227,8 +212,7 @@ const createTestQueryClient = () =>
         retry: false,
       },
     },
-  });
-
+  })
 export function renderWithProviders(
   ui: ReactElement,
   {
@@ -244,13 +228,13 @@ export function renderWithProviders(
           {children}
         </QueryClientProvider>
       </SessionProvider>
-    );
+    )
   }
 
   return {
     ...render(ui, { wrapper: Wrapper, ...renderOptions }),
     queryClient,
-  };
+  }
 }
 
 // Test data factories
@@ -264,8 +248,7 @@ export const createMockUser = (overrides = {}) => ({
   createdAt: new Date(),
   updatedAt: new Date(),
   ...overrides,
-});
-
+})
 export const createMockMission = (overrides = {}) => ({
   id: 'mission-1',
   title: 'Test Mission',
@@ -278,8 +261,7 @@ export const createMockMission = (overrides = {}) => ({
   completedAt: null,
   satisfaction: null,
   ...overrides,
-});
-
+})
 export const createMockDeliverable = (overrides = {}) => ({
   id: 'deliverable-1',
   missionId: 'mission-1',
@@ -290,8 +272,7 @@ export const createMockDeliverable = (overrides = {}) => ({
   createdAt: new Date(),
   updatedAt: new Date(),
   ...overrides,
-});
-
+})
 export const createMockBrief = (overrides = {}) => ({
   id: 'brief-1',
   missionId: 'mission-1',
@@ -300,112 +281,95 @@ export const createMockBrief = (overrides = {}) => ({
   createdAt: new Date(),
   updatedAt: new Date(),
   ...overrides,
-});
-
+})
 // Custom matchers
 export const customMatchers = {
   toHaveBeenCalledWithMatch: (mock: jest.Mock, expected: any) => {
-    const calls = mock.mock.calls;
+    const calls = mock.mock.calls
     const hasMatch = calls.some(call => {
       try {
-        expect(call).toEqual(expect.arrayContaining([expected]));
-        return true;
+        expect(call).toEqual(expect.arrayContaining([expected]))
+        return true
       } catch {
-        return false;
+        return false
       }
-    });
-    
+    })
     if (!hasMatch) {
       throw new Error(
         `Expected mock to have been called with ${JSON.stringify(expected)}, but it was called with ${JSON.stringify(calls)}`
-      );
+      )
     }
   },
-};
-
+}
 // Test helpers
 export const waitForLoadingToFinish = () =>
-  new Promise(resolve => setTimeout(resolve, 0));
-
+  new Promise(resolve => setTimeout(resolve, 0))
 export const mockApiResponse = (data: any, status = 200) => {
   (global.fetch as jest.Mock).mockResolvedValueOnce({
     ok: status >= 200 && status < 300,
     status,
     json: async () => data,
     text: async () => JSON.stringify(data),
-  });
-};
-
+  })
+}
 export const mockApiError = (error: string, status = 500) => {
-  (global.fetch as jest.Mock).mockRejectedValueOnce(new Error(error));
-};
-
+  (global.fetch as jest.Mock).mockRejectedValueOnce(new Error(error))
+}
 // Form testing helpers
 export const fillForm = async (formData: Record<string, string>) => {
-  const { fireEvent } = await import('@testing-library/react');
-  
+  const { fireEvent } = await import('@testing-library/react')
   for (const [name, value] of Object.entries(formData)) {
-    const input = document.querySelector(`[name="${name}"]`) as HTMLInputElement;
+    const input = document.querySelector(`[name="${name}"]`) as HTMLInputElement
     if (input) {
-      fireEvent.change(input, { target: { value } });
+      fireEvent.change(input, { target: { value } })
     }
   }
-};
-
+}
 export const submitForm = async (formSelector = 'form') => {
-  const { fireEvent } = await import('@testing-library/react');
-  const form = document.querySelector(formSelector) as HTMLFormElement;
+  const { fireEvent } = await import('@testing-library/react')
+  const form = document.querySelector(formSelector) as HTMLFormElement
   if (form) {
-    fireEvent.submit(form);
+    fireEvent.submit(form)
   }
-};
-
+}
 // Accessibility testing helpers
 export const checkA11y = async (container: HTMLElement) => {
-  const { axe, toHaveNoViolations } = await import('jest-axe');
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-};
-
+  const { axe, toHaveNoViolations } = await import('jest-axe')
+  const results = await axe(container)
+  expect(results).toHaveNoViolations()
+}
 // Snapshot testing helpers
 export const createSnapshot = (component: ReactElement) => {
-  const { render } = require('@testing-library/react');
-  const { container } = render(component);
-  expect(container.firstChild).toMatchSnapshot();
-};
-
+  const { render } = require('@testing-library/react')
+  const { container } = render(component)
+  expect(container.firstChild).toMatchSnapshot()
+}
 // Mock environment variables
 export const mockEnvVars = (vars: Record<string, string>) => {
-  const originalEnv = process.env;
-  process.env = { ...originalEnv, ...vars };
-  
+  const originalEnv = process.env
+  process.env = { ...originalEnv, ...vars }
   return () => {
-    process.env = originalEnv;
-  };
-};
-
+    process.env = originalEnv
+  }
+}
 // Test database helpers
 export const mockPrismaQuery = (model: string, method: string, returnValue: any) => {
-  const { prisma } = require('@/lib/prisma');
-  prisma[model][method].mockResolvedValue(returnValue);
-};
-
+  const { prisma } = require('@/lib/prisma')
+  prisma[model][method].mockResolvedValue(returnValue)
+}
 export const mockPrismaError = (model: string, method: string, error: Error) => {
-  const { prisma } = require('@/lib/prisma');
-  prisma[model][method].mockRejectedValue(error);
-};
-
+  const { prisma } = require('@/lib/prisma')
+  prisma[model][method].mockRejectedValue(error)
+}
 // Cleanup helpers
 export const cleanupMocks = () => {
-  jest.clearAllMocks();
-  jest.clearAllTimers();
-};
-
+  jest.clearAllMocks()
+  jest.clearAllTimers()
+}
 export const resetMocks = () => {
-  jest.resetAllMocks();
-  jest.resetModules();
-};
-
+  jest.resetAllMocks()
+  jest.resetModules()
+}
 // Export everything
-export * from '@testing-library/react';
-export { default as userEvent } from '@testing-library/user-event';
+export * from '@testing-library/react'
+export { default as userEvent } from '@testing-library/user-event'

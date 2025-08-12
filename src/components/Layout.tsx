@@ -1,19 +1,18 @@
-"use client";
-import { useState, useEffect } from "react";
-import Sidebar from "@/components/Sidebar";
-import Navigation from "@/components/Navigation";
-import Breadcrumb from "@/components/Breadcrumb";
-import QuickMissionModal from "@/components/QuickMissionModal";
-import Icon from "@/components/ui/Icon";
-import { useIsMobile } from "@/hooks/useMediaQuery";
-
+"use client"
+import { useState, useEffect } from "react"
+import Sidebar from "@/components/Sidebar"
+import Navigation from "@/components/Navigation"
+import Breadcrumb from "@/components/Breadcrumb"
+import QuickMissionModal from "@/components/QuickMissionModal"
+import Icon from "@/components/ui/Icon"
+import { useIsMobile } from "@/hooks/useMediaQuery"
 interface LayoutProps {
-  children: React.ReactNode;
-  title?: string;
-  subtitle?: string;
-  headerActions?: React.ReactNode;
-  showSidebar?: boolean;
-  showNavigation?: boolean;
+  children: React.ReactNode
+  title?: string
+  subtitle?: string
+  headerActions?: React.ReactNode
+  showSidebar?: boolean
+  showNavigation?: boolean
 }
 
 export default function Layout({
@@ -24,31 +23,26 @@ export default function Layout({
   showSidebar = true,
   showNavigation = true
 }: LayoutProps) {
-  const [showQuickMissionModal, setShowQuickMissionModal] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const isMobile = useIsMobile();
-
+  const [showQuickMissionModal, setShowQuickMissionModal] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const isMobile = useIsMobile()
   // Écouter les changements d'état du sidebar
   useEffect(() => {
     const handleSidebarStateChange = () => {
-      setSidebarCollapsed(prev => !prev);
-    };
-
-    window.addEventListener('sidebar-toggle', handleSidebarStateChange);
-    return () => window.removeEventListener('sidebar-toggle', handleSidebarStateChange);
-  }, []);
-
+      setSidebarCollapsed(prev => !prev)
+    }
+    window.addEventListener('sidebar-toggle', handleSidebarStateChange)
+    return () => window.removeEventListener('sidebar-toggle', handleSidebarStateChange)
+  }, [])
   const handleMissionCreated = (missionId: string) => {
     // Rediriger vers la mission créée
-    window.location.href = `/missions/${missionId}`;
-  };
-
+    window.location.href = `/missions/${missionId}`
+  }
   // Calculer la marge gauche en fonction de l'état du sidebar
   const getSidebarMargin = () => {
-    if (!showSidebar) return '0';
-    return sidebarCollapsed ? '64px' : '256px';
-  };
-
+    if (!showSidebar) return '0'
+    return sidebarCollapsed ? '64px' : '256px'
+  }
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -114,5 +108,5 @@ export default function Layout({
         onMissionCreated={handleMissionCreated}
       />
     </div>
-  );
+  )
 }

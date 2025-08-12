@@ -1,8 +1,7 @@
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
-
+import NextAuth from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { prisma } from "@/lib/prisma"
 export const authOptions: any = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -19,17 +18,17 @@ export const authOptions: any = {
     async session({ session, user }) {
       // Ajouter l'ID utilisateur à la session
       if (session.user && user) {
-        session.user.id = user.id;
+        session.user.id = user.id
       }
-      return session;
+      return session
     },
     async signIn({ user, account, profile }) {
       // Vérifications de sécurité
       if (account?.provider === "google") {
         // Vérifier que l'email est vérifié
         if (!profile?.email_verified) {
-          console.warn("Tentative de connexion avec email non vérifié:", profile?.email);
-          return false;
+          console.warn("Tentative de connexion avec email non vérifié:", profile?.email)
+          return false
         }
         
         // Log de connexion pour sécurité
@@ -38,29 +37,27 @@ export const authOptions: any = {
           name: user.name,
           provider: account.provider,
           timestamp: new Date().toISOString()
-        });
-        
-        return true;
+        })
+        return true
       }
       
-      return false;
+      return false
     },
     async redirect({ url, baseUrl }) {
       // Gestion intelligente des redirections
-      console.log("🔄 Redirection:", { url, baseUrl });
-      
+      console.log("🔄 Redirection:", { url, baseUrl })
       // Si l'URL est relative, la construire avec baseUrl
       if (url.startsWith("/")) {
-        return `${baseUrl}${url}`;
+        return `${baseUrl}${url}`
       }
       
       // Si l'URL appartient au même domaine
       if (new URL(url).origin === baseUrl) {
-        return url;
+        return url
       }
       
       // Par défaut, rediriger vers le dashboard
-      return `${baseUrl}/missions`;
+      return `${baseUrl}/missions`
     },
   },
   session: {
@@ -88,23 +85,20 @@ export const authOptions: any = {
         provider: account?.provider,
         isNewUser,
         timestamp: new Date().toISOString()
-      });
-
+      })
       // Redirection spéciale pour les nouveaux utilisateurs
       if (isNewUser) {
-        console.log("👋 Nouvel utilisateur détecté - redirection vers welcome");
+        console.log("👋 Nouvel utilisateur détecté - redirection vers welcome")
       }
     },
     async signOut({ session, token }) {
       console.log("🚪 Événement de déconnexion:", {
         userId: token?.userId || session?.user?.id,
         timestamp: new Date().toISOString()
-      });
+      })
     },
   },
   debug: process.env.NODE_ENV === "development",
-};
-
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+}
+const handler = NextAuth(authOptions)
+export { handler as GET, handler as POST }

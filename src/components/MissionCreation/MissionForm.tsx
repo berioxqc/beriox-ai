@@ -1,12 +1,11 @@
-"use client";
-import React, { useState } from 'react';
-import { Button, Input } from '@/design-system/components';
-import { designTokens } from '@/design-system/tokens';
-
+"use client"
+import React, { useState } from 'react'
+import { Button, Input } from '@/design-system/components'
+import { designTokens } from '@/design-system/tokens'
 export interface MissionFormProps {
-  onSubmit: (data: { prompt: string; details: string }) => void;
-  loading?: boolean;
-  onCancel?: () => void;
+  onSubmit: (data: { prompt: string; details: string }) => void
+  loading?: boolean
+  onCancel?: () => void
 }
 
 const MissionForm: React.FC<MissionFormProps> = ({
@@ -14,16 +13,14 @@ const MissionForm: React.FC<MissionFormProps> = ({
   loading = false,
   onCancel,
 }) => {
-  const [prompt, setPrompt] = useState('');
-  const [details, setDetails] = useState('');
-
+  const [prompt, setPrompt] = useState('')
+  const [details, setDetails] = useState('')
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (prompt.trim()) {
-      onSubmit({ prompt: prompt.trim(), details: details.trim() });
+      onSubmit({ prompt: prompt.trim(), details: details.trim() })
     }
-  };
-
+  }
   return (
     <form onSubmit={handleSubmit} style={{ width: '100%' }}>
       <div style={{ marginBottom: designTokens.spacing[6] }}>
@@ -72,7 +69,6 @@ const MissionForm: React.FC<MissionFormProps> = ({
         </Button>
       </div>
     </form>
-  );
-};
-
-export default MissionForm;
+  )
+}
+export default MissionForm

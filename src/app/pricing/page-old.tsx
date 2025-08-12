@@ -1,66 +1,56 @@
-'use client';
-
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import { stripePlans } from '@/lib/stripe';
-
+'use client'
+import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useTheme } from '@/hooks/useTheme'
+import { stripePlans } from '@/lib/stripe'
 export default function PricingPage() {
-  const { data: session } = useSession();
-  const theme = useTheme();
-  const [loading, setLoading] = useState<string | null>(null);
-
+  const { data: session } = useSession()
+  const theme = useTheme()
+  const [loading, setLoading] = useState<string | null>(null)
   const handleSubscribe = async (planId: string) => {
     if (!session) {
-      alert('Veuillez vous connecter pour souscrire');
-      return;
+      alert('Veuillez vous connecter pour souscrire')
+      return
     }
 
-    setLoading(planId);
-
+    setLoading(planId)
     try {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ planId }),
-      });
-
-      const data = await res.json();
-      
+      })
+      const data = await res.json()
       if (data.url) {
-        window.location.href = data.url;
+        window.location.href = data.url
       } else {
-        throw new Error(data.error || 'Erreur lors de la redirection');
+        throw new Error(data.error || 'Erreur lors de la redirection')
       }
     } catch (error: any) {
-      console.error('Erreur souscription:', error);
-      alert('Erreur lors de la souscription: ' + error.message);
+      console.error('Erreur souscription:', error)
+      alert('Erreur lors de la souscription: ' + error.message)
     } finally {
-      setLoading(null);
+      setLoading(null)
     }
-  };
-
+  }
   const handleManageSubscription = async () => {
     try {
       const res = await fetch('/api/stripe/portal', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-      });
-
-      const data = await res.json();
-      
+      })
+      const data = await res.json()
       if (data.url) {
-        window.location.href = data.url;
+        window.location.href = data.url
       } else {
-        throw new Error(data.error || 'Erreur lors de la redirection');
+        throw new Error(data.error || 'Erreur lors de la redirection')
       }
     } catch (error: any) {
-      console.error('Erreur portail:', error);
-      alert('Erreur: ' + error.message);
+      console.error('Erreur portail:', error)
+      alert('Erreur: ' + error.message)
     }
-  };
-
+  }
   return (
     <div style={{ 
       minHeight: '100vh',
@@ -90,7 +80,7 @@ export default function PricingPage() {
             maxWidth: '600px',
             margin: '0 auto'
           }}>
-            Libérez le potentiel de l&apos;IA collaborative pour vos projets. 
+            Libérez le potentiel de l'IA collaborative pour vos projets. 
             Nos agents spécialisés travaillent ensemble pour des résultats exceptionnels.
           </p>
         </div>
@@ -264,9 +254,9 @@ export default function PricingPage() {
                   <span style={{ color: theme.colors.neutral[600] }}> CAD/mois</span>
                 </div>
                 <p style={{ color: theme.colors.neutral[600] }}>
-                  {plan.id === &apos;pro&apos; 
-                    ? &apos;Idéal pour les professionnels&apos; 
-                    : &apos;Pour les équipes et entreprises&apos;
+                  {plan.id === 'pro' 
+                    ? 'Idéal pour les professionnels' 
+                    : 'Pour les équipes et entreprises'
                   }
                 </p>
               </div>
@@ -315,7 +305,7 @@ export default function PricingPage() {
                     Redirection...
                   </>
                 ) : (
-                  &apos;Souscrire maintenant&apos;
+                  'Souscrire maintenant'
                 )}
               </button>
             </div>
@@ -410,5 +400,5 @@ export default function PricingPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

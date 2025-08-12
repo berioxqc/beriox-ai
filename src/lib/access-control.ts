@@ -4,20 +4,20 @@
  */
 
 export interface UserPermissions {
-  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
-  plan?: string;
-  hasAccess?: boolean;
+  role: 'USER' | 'ADMIN' | 'SUPER_ADMIN'
+  plan?: string
+  hasAccess?: boolean
 }
 
 export interface RouteConfig {
-  path: string;
-  label: string;
-  icon: string;
-  requiredRole?: 'USER' | 'ADMIN' | 'SUPER_ADMIN';
-  requiredPlan?: string[];
-  premiumOnly?: boolean;
-  superAdminOnly?: boolean;
-  description?: string;
+  path: string
+  label: string
+  icon: string
+  requiredRole?: 'USER' | 'ADMIN' | 'SUPER_ADMIN'
+  requiredPlan?: string[]
+  premiumOnly?: boolean
+  superAdminOnly?: boolean
+  description?: string
 }
 
 // Configuration des routes avec leurs permissions
@@ -128,8 +128,7 @@ export const ROUTE_CONFIGS: RouteConfig[] = [
     superAdminOnly: true,
     description: 'Gestion des utilisateurs et rôles'
   }
-];
-
+]
 /**
  * Vérifie si un utilisateur a accès à une route
  */
@@ -137,11 +136,10 @@ export function hasRouteAccess(
   routePath: string,
   userPermissions: UserPermissions
 ): boolean {
-  const route = ROUTE_CONFIGS.find(r => r.path === routePath);
-  
+  const route = ROUTE_CONFIGS.find(r => r.path === routePath)
   if (!route) {
     // Route non configurée - accès par défaut
-    return true;
+    return true
   }
 
   // Vérifier le rôle requis
@@ -150,48 +148,46 @@ export function hasRouteAccess(
       'USER': 1,
       'ADMIN': 2,
       'SUPER_ADMIN': 3
-    };
-
-    const userRoleLevel = roleHierarchy[userPermissions.role] || 0;
-    const requiredRoleLevel = roleHierarchy[route.requiredRole] || 0;
-
+    }
+    const userRoleLevel = roleHierarchy[userPermissions.role] || 0
+    const requiredRoleLevel = roleHierarchy[route.requiredRole] || 0
     if (userRoleLevel < requiredRoleLevel) {
-      return false;
+      return false
     }
   }
 
   // Vérifier si c'est réservé aux super admins
   if (route.superAdminOnly && userPermissions.role !== 'SUPER_ADMIN') {
-    return false;
+    return false
   }
 
   // Vérifier si c'est premium seulement
   if (route.premiumOnly && !userPermissions.hasAccess) {
-    return false;
+    return false
   }
 
   // Vérifier le plan requis
   if (route.requiredPlan && route.requiredPlan.length > 0) {
     if (!userPermissions.plan || !route.requiredPlan.includes(userPermissions.plan)) {
-      return false;
+      return false
     }
   }
 
-  return true;
+  return true
 }
 
 /**
  * Filtre les routes visibles pour un utilisateur
  */
 export function getVisibleRoutes(userPermissions: UserPermissions): RouteConfig[] {
-  return ROUTE_CONFIGS.filter(route => hasRouteAccess(route.path, userPermissions));
+  return ROUTE_CONFIGS.filter(route => hasRouteAccess(route.path, userPermissions))
 }
 
 /**
  * Obtient les informations d'une route
  */
 export function getRouteInfo(routePath: string): RouteConfig | null {
-  return ROUTE_CONFIGS.find(r => r.path === routePath) || null;
+  return ROUTE_CONFIGS.find(r => r.path === routePath) || null
 }
 
 /**
@@ -201,30 +197,29 @@ export function canSeeInMenu(
   routePath: string,
   userPermissions: UserPermissions
 ): boolean {
-  return hasRouteAccess(routePath, userPermissions);
+  return hasRouteAccess(routePath, userPermissions)
 }
 
 /**
  * Obtient le message d'erreur pour une route inaccessible
  */
 export function getAccessDeniedMessage(routePath: string, userPermissions: UserPermissions): string {
-  const route = getRouteInfo(routePath);
-  
+  const route = getRouteInfo(routePath)
   if (!route) {
-    return 'Page non trouvée';
+    return 'Page non trouvée'
   }
 
   if (route.superAdminOnly && userPermissions.role !== 'SUPER_ADMIN') {
-    return 'Accès réservé aux super administrateurs';
+    return 'Accès réservé aux super administrateurs'
   }
 
   if (route.premiumOnly && !userPermissions.hasAccess) {
-    return 'Cette fonctionnalité nécessite un abonnement premium';
+    return 'Cette fonctionnalité nécessite un abonnement premium'
   }
 
   if (route.requiredPlan && route.requiredPlan.length > 0) {
     if (!userPermissions.plan || !route.requiredPlan.includes(userPermissions.plan)) {
-      return `Cette fonctionnalité nécessite le plan ${route.requiredPlan.join(' ou ')}`;
+      return `Cette fonctionnalité nécessite le plan ${route.requiredPlan.join(' ou ')}`
     }
   }
 
@@ -233,18 +228,16 @@ export function getAccessDeniedMessage(routePath: string, userPermissions: UserP
       'USER': 'utilisateur',
       'ADMIN': 'administrateur',
       'SUPER_ADMIN': 'super administrateur'
-    };
-    
+    }
     const userRoleLevel = {
       'USER': 1,
       'ADMIN': 2,
       'SUPER_ADMIN': 3
-    };
-
+    }
     if (userRoleLevel[userPermissions.role] < userRoleLevel[route.requiredRole]) {
-      return `Cette fonctionnalité nécessite le rôle ${roleLabels[route.requiredRole]}`;
+      return `Cette fonctionnalité nécessite le rôle ${roleLabels[route.requiredRole]}`
     }
   }
 
-  return 'Accès refusé';
+  return 'Accès refusé'
 }

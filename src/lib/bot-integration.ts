@@ -1,21 +1,19 @@
-import { BotRecommendationEngine } from './bot-recommendations';
-import { prisma } from './prisma.ts';
-
+import { BotRecommendationEngine } from './bot-recommendations'
+import { prisma } from './prisma.ts'
 export interface BotIntegrationConfig {
-  botId: string;
-  botName: string;
-  botType: string;
-  capabilities: string[];
-  autoRecommendations: boolean;
+  botId: string
+  botName: string
+  botType: string
+  capabilities: string[]
+  autoRecommendations: boolean
   recommendationInterval: number; // en heures
-  lastAnalysis?: Date;
+  lastAnalysis?: Date
 }
 
 export class BotIntegrationManager {
-  private configs: Map<string, BotIntegrationConfig> = new Map();
-
+  private configs: Map<string, BotIntegrationConfig> = new Map()
   constructor() {
-    this.initializeDefaultBots();
+    this.initializeDefaultBots()
   }
 
   /**
@@ -55,11 +53,10 @@ export class BotIntegrationManager {
         autoRecommendations: true,
         recommendationInterval: 6
       }
-    ];
-
+    ]
     defaultBots.forEach(bot => {
-      this.configs.set(bot.botId, bot);
-    });
+      this.configs.set(bot.botId, bot)
+    })
   }
 
   /**
@@ -70,8 +67,7 @@ export class BotIntegrationManager {
       // Vérifier si le bot existe déjà en base
       const existingBot = await prisma.bot.findUnique({
         where: { id: config.botId }
-      });
-
+      })
       if (!existingBot) {
         // Créer le bot en base
         await prisma.bot.create({
@@ -87,14 +83,14 @@ export class BotIntegrationManager {
               recommendationInterval: config.recommendationInterval
             }
           }
-        });
+        })
       }
 
-      this.configs.set(config.botId, config);
-      console.log(`✅ Bot ${config.botName} enregistré avec succès`);
+      this.configs.set(config.botId, config)
+      console.log(`✅ Bot ${config.botName} enregistré avec succès`)
     } catch (error) {
-      console.error(`❌ Erreur lors de l'enregistrement du bot ${config.botName}:`, error);
-      throw error;
+      console.error(`❌ Erreur lors de l'enregistrement du bot ${config.botName}:`, error)
+      throw error
     }
   }
 
@@ -102,103 +98,93 @@ export class BotIntegrationManager {
    * Générer des recommandations pour un bot spécifique
    */
   async generateBotRecommendations(botId: string, userId: string): Promise<any[]> {
-    const config = this.configs.get(botId);
+    const config = this.configs.get(botId)
     if (!config) {
-      throw new Error(`Bot ${botId} non trouvé`);
+      throw new Error(`Bot ${botId} non trouvé`)
     }
 
-    console.log(`🤖 ${config.botName} génère des recommandations...`);
-
-    const engine = new BotRecommendationEngine(userId);
-    const allRecommendations = await engine.generateRecommendations();
-
+    console.log(`🤖 ${config.botName} génère des recommandations...`)
+    const engine = new BotRecommendationEngine(userId)
+    const allRecommendations = await engine.generateRecommendations()
     // Filtrer les recommandations selon les capacités du bot
     const botRecommendations = allRecommendations.filter(rec => 
       config.capabilities.includes(rec.type)
-    );
-
+    )
     // Ajouter l'ID du bot à chaque recommandation
     const recommendationsWithBot = botRecommendations.map(rec => ({
       ...rec,
       botId: botId
-    }));
-
+    }))
     // Sauvegarder les recommandations
     if (recommendationsWithBot.length > 0) {
-      await engine.saveRecommendations(recommendationsWithBot);
+      await engine.saveRecommendations(recommendationsWithBot)
     }
 
     // Mettre à jour la date de dernière analyse
-    config.lastAnalysis = new Date();
-    this.configs.set(botId, config);
-
-    console.log(`✅ ${config.botName} a généré ${recommendationsWithBot.length} recommandations`);
-    return recommendationsWithBot;
+    config.lastAnalysis = new Date()
+    this.configs.set(botId, config)
+    console.log(`✅ ${config.botName} a généré ${recommendationsWithBot.length} recommandations`)
+    return recommendationsWithBot
   }
 
   /**
    * Générer des recommandations pour tous les bots
    */
   async generateAllBotRecommendations(userId: string): Promise<Map<string, any[]>> {
-    const results = new Map<string, any[]>();
-
+    const results = new Map<string, any[]>()
     for (const [botId, config] of this.configs) {
       if (config.autoRecommendations) {
         try {
-          const recommendations = await this.generateBotRecommendations(botId, userId);
-          results.set(botId, recommendations);
+          const recommendations = await this.generateBotRecommendations(botId, userId)
+          results.set(botId, recommendations)
         } catch (error) {
-          console.error(`❌ Erreur avec le bot ${config.botName}:`, error);
-          results.set(botId, []);
+          console.error(`❌ Erreur avec le bot ${config.botName}:`, error)
+          results.set(botId, [])
         }
       }
     }
 
-    return results;
+    return results
   }
 
   /**
    * Vérifier si un bot doit générer des recommandations
    */
   shouldGenerateRecommendations(botId: string): boolean {
-    const config = this.configs.get(botId);
+    const config = this.configs.get(botId)
     if (!config || !config.autoRecommendations) {
-      return false;
+      return false
     }
 
     if (!config.lastAnalysis) {
-      return true;
+      return true
     }
 
-    const hoursSinceLastAnalysis = (Date.now() - config.lastAnalysis.getTime()) / (1000 * 60 * 60);
-    return hoursSinceLastAnalysis >= config.recommendationInterval;
+    const hoursSinceLastAnalysis = (Date.now() - config.lastAnalysis.getTime()) / (1000 * 60 * 60)
+    return hoursSinceLastAnalysis >= config.recommendationInterval
   }
 
   /**
    * Obtenir les statistiques des bots
    */
   async getBotStats(): Promise<any[]> {
-    const stats = [];
-
+    const stats = []
     for (const [botId, config] of this.configs) {
       const recommendations = await prisma.botRecommendation.count({
         where: { botId: botId }
-      });
-
+      })
       const pendingRecommendations = await prisma.botRecommendation.count({
         where: { 
           botId: botId,
           status: 'pending'
         }
-      });
-
+      })
       const implementedRecommendations = await prisma.botRecommendation.count({
         where: { 
           botId: botId,
           status: 'implemented'
         }
-      });
-
+      })
       stats.push({
         botId,
         botName: config.botName,
@@ -209,10 +195,10 @@ export class BotIntegrationManager {
         implementedRecommendations,
         lastAnalysis: config.lastAnalysis,
         autoRecommendations: config.autoRecommendations
-      });
+      })
     }
 
-    return stats;
+    return stats
   }
 
   /**
@@ -222,12 +208,10 @@ export class BotIntegrationManager {
     const where: unknown = {
       botId: botId,
       userId: userId
-    };
-
-    if (filters?.status) where.status = filters.status;
-    if (filters?.type) where.type = filters.type;
-    if (filters?.priority) where.priority = filters.priority;
-
+    }
+    if (filters?.status) where.status = filters.status
+    if (filters?.type) where.type = filters.type
+    if (filters?.priority) where.priority = filters.priority
     return await prisma.botRecommendation.findMany({
       where,
       orderBy: [
@@ -249,22 +233,21 @@ export class BotIntegrationManager {
           }
         }
       }
-    });
+    })
   }
 
   /**
    * Mettre à jour la configuration d'un bot
    */
   async updateBotConfig(botId: string, updates: Partial<BotIntegrationConfig>): Promise<void> {
-    const config = this.configs.get(botId);
+    const config = this.configs.get(botId)
     if (!config) {
-      throw new Error(`Bot ${botId} non trouvé`);
+      throw new Error(`Bot ${botId} non trouvé`)
     }
 
     // Mettre à jour la configuration en mémoire
-    const updatedConfig = { ...config, ...updates };
-    this.configs.set(botId, updatedConfig);
-
+    const updatedConfig = { ...config, ...updates }
+    this.configs.set(botId, updatedConfig)
     // Mettre à jour en base de données
     await prisma.bot.update({
       where: { id: botId },
@@ -277,25 +260,24 @@ export class BotIntegrationManager {
           recommendationInterval: updatedConfig.recommendationInterval
         }
       }
-    });
-
-    console.log(`✅ Configuration du bot ${updatedConfig.botName} mise à jour`);
+    })
+    console.log(`✅ Configuration du bot ${updatedConfig.botName} mise à jour`)
   }
 
   /**
    * Désactiver/activer les recommandations automatiques pour un bot
    */
   async toggleAutoRecommendations(botId: string, enabled: boolean): Promise<void> {
-    await this.updateBotConfig(botId, { autoRecommendations: enabled });
+    await this.updateBotConfig(botId, { autoRecommendations: enabled })
   }
 
   /**
    * Obtenir la liste des bots disponibles
    */
   getAvailableBots(): BotIntegrationConfig[] {
-    return Array.from(this.configs.values());
+    return Array.from(this.configs.values())
   }
 }
 
 // Instance singleton
-export const botIntegrationManager = new BotIntegrationManager();
+export const botIntegrationManager = new BotIntegrationManager()

@@ -1,47 +1,40 @@
-'use client';
-
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useTheme } from '@/hooks/useTheme';
-import Layout from '@/components/Layout';
-
+'use client'
+import { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useTheme } from '@/hooks/useTheme'
+import Layout from '@/components/Layout'
 export default function PremiumPricingPage() {
-  const { data: session } = useSession();
-  const theme = useTheme();
-  const [loading, setLoading] = useState<string | null>(null);
-  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
-
+  const { data: session } = useSession()
+  const theme = useTheme()
+  const [loading, setLoading] = useState<string | null>(null)
+  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly')
   const handleSubscribe = async (planId: string) => {
     if (!session) {
-      alert('Veuillez vous connecter pour souscrire');
-      return;
+      alert('Veuillez vous connecter pour souscrire')
+      return
     }
 
-    setLoading(planId);
-
+    setLoading(planId)
     try {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ planId }),
-      });
-
-      const data = await res.json();
-      
+      })
+      const data = await res.json()
       if (data.url) {
-        window.location.href = data.url;
+        window.location.href = data.url
       } else {
-        throw new Error(data.error || 'Erreur lors de la redirection');
+        throw new Error(data.error || 'Erreur lors de la redirection')
       }
     } catch (error: any) {
-      console.error('Erreur souscription:', error);
-      alert('Erreur lors de la souscription: ' + error.message);
+      console.error('Erreur souscription:', error)
+      alert('Erreur lors de la souscription: ' + error.message)
     } finally {
-      setLoading(null);
+      setLoading(null)
     }
-  };
-
+  }
   const plans = [
     {
       id: 'free',
@@ -154,8 +147,7 @@ export default function PremiumPricingPage() {
       buttonText: 'Passer à Enterprise',
       buttonColor: '#8b5cf6'
     }
-  ];
-
+  ]
   return (
     <Layout>
       {/* Bandeau Call-to-Action */}
@@ -173,7 +165,7 @@ export default function PremiumPricingPage() {
             marginBottom: theme.spacing.sm,
             margin: 0
           }}>
-            🚀 Transformez votre stratégie digitale dès aujourd&apos;hui !
+            🚀 Transformez votre stratégie digitale dès aujourd'hui !
           </h2>
           <p style={{
             fontSize: '1.1rem',
@@ -188,26 +180,26 @@ export default function PremiumPricingPage() {
             gap: theme.spacing.md
           }}>
             <button
-              onClick={() => handleSubscribe(&apos;pro&apos;)}
+              onClick={() => handleSubscribe('pro')}
               style={{
                 padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-                backgroundColor: &apos;white&apos;,
+                backgroundColor: 'white',
                 color: theme.colors.primary.main,
-                border: &apos;none&apos;,
-                borderRadius: &apos;8px&apos;,
-                fontWeight: &apos;600&apos;,
-                fontSize: &apos;16px&apos;,
-                cursor: &apos;pointer&apos;,
-                transition: &apos;all 0.3s&apos;,
-                boxShadow: &apos;0 2px 8px rgba(0, 0, 0, 0.1)&apos;
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: '600',
+                fontSize: '16px',
+                cursor: 'pointer',
+                transition: 'all 0.3s',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = &apos;translateY(-2px)&apos;;
-                e.currentTarget.style.boxShadow = &apos;0 4px 16px rgba(0, 0, 0, 0.15)&apos;;
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.15)'
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.transform = &apos;translateY(0)&apos;;
-                e.currentTarget.style.boxShadow = &apos;0 2px 8px rgba(0, 0, 0, 0.1)&apos;;
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)'
               }}
             >
               Essayer gratuitement
@@ -328,26 +320,26 @@ export default function PremiumPricingPage() {
               </div>
               
               <button
-                onClick={() => handleSubscribe(&apos;competitor-intelligence&apos;)}
+                onClick={() => handleSubscribe('competitor-intelligence')}
                 style={{
                   padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-                  backgroundColor: &apos;white&apos;,
-                  color: &apos;#10b981&apos;,
-                  border: &apos;none&apos;,
-                  borderRadius: &apos;12px&apos;,
-                  fontWeight: &apos;700&apos;,
-                  fontSize: &apos;18px&apos;,
-                  cursor: &apos;pointer&apos;,
-                  transition: &apos;all 0.3s&apos;,
-                  boxShadow: &apos;0 4px 16px rgba(0, 0, 0, 0.2)&apos;
+                  backgroundColor: 'white',
+                  color: '#10b981',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontWeight: '700',
+                  fontSize: '18px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.transform = &apos;translateY(-2px)&apos;;
-                  e.currentTarget.style.boxShadow = &apos;0 8px 24px rgba(0, 0, 0, 0.3)&apos;;
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.3)'
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.transform = &apos;translateY(0)&apos;;
-                  e.currentTarget.style.boxShadow = &apos;0 4px 16px rgba(0, 0, 0, 0.2)&apos;;
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)'
                 }}
               >
                 🚀 Démarrer la veille concurrentielle
@@ -448,14 +440,14 @@ export default function PremiumPricingPage() {
               }}
               onMouseOver={(e) => {
                 if (!plan.isPopular) {
-                  e.currentTarget.style.transform = 'scale(1.02)';
-                  e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.12)';
+                  e.currentTarget.style.transform = 'scale(1.02)'
+                  e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.12)'
                 }
               }}
               onMouseOut={(e) => {
                 if (!plan.isPopular) {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.transform = 'scale(1)'
+                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.08)'
                 }
               }}
             >
@@ -515,7 +507,7 @@ export default function PremiumPricingPage() {
                       fontWeight: 'bold',
                       color: plan.price === 0 ? theme.colors.neutral[600] : theme.colors.primary.main
                     }}>
-                      {plan.price === 0 ? &apos;Gratuit&apos; : `${plan.price}$`}
+                      {plan.price === 0 ? 'Gratuit' : `${plan.price}$`}
                     </span>
                   </div>
                   {plan.price > 0 && (
@@ -613,14 +605,14 @@ export default function PremiumPricingPage() {
                 }}
                 onMouseOver={(e) => {
                   if (plan.id !== 'free') {
-                    e.currentTarget.style.transform = 'translateY(-2px)';
-                    e.currentTarget.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.35)';
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = '0 8px 25px rgba(99, 102, 241, 0.35)'
                   }
                 }}
                 onMouseOut={(e) => {
                   if (plan.id !== 'free') {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(99, 102, 241, 0.25)';
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(99, 102, 241, 0.25)'
                   }
                 }}
               >
@@ -669,7 +661,7 @@ export default function PremiumPricingPage() {
           }}>
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Qu&apos;est-ce que le Beriox Performance Index (BPI) ?
+                Qu'est-ce que le Beriox Performance Index (BPI) ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Le BPI est notre score propriétaire qui combine SEO (30%), Performance (25%), Conversion (25%) et Sécurité (20%) 
@@ -679,7 +671,7 @@ export default function PremiumPricingPage() {
 
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: '600', marginBottom: theme.spacing.sm, color: theme.colors.neutral[900] }}>
-                Comment fonctionne l&apos;Opportunity Radar ?
+                Comment fonctionne l'Opportunity Radar ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
                 Notre IA analyse vos données et identifie automatiquement les 5 actions prioritaires avec le meilleur ROI 
@@ -701,7 +693,7 @@ export default function PremiumPricingPage() {
                 Les APIs sont-elles incluses dans le prix ?
               </h3>
               <p style={{ fontSize: '14px', color: theme.colors.neutral[600], lineHeight: '1.6' }}>
-                Oui, tous les coûts d&apos;APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
+                Oui, tous les coûts d'APIs sont inclus dans votre abonnement. Nous gérons tous les quotas et optimisations 
                 pour vous offrir le meilleur service au meilleur prix.
               </p>
             </div>
@@ -732,17 +724,17 @@ export default function PremiumPricingPage() {
             Rejoignez les professionnels qui font confiance à Beriox AI pour leurs analyses.
           </p>
           <button
-            onClick={() => handleSubscribe(&apos;pro&apos;)}
+            onClick={() => handleSubscribe('pro')}
             style={{
               padding: `${theme.spacing.md} ${theme.spacing.xl}`,
-              borderRadius: &apos;12px&apos;,
-              border: &apos;none&apos;,
+              borderRadius: '12px',
+              border: 'none',
               backgroundColor: theme.colors.primary.main,
-              color: &apos;white&apos;,
-              fontSize: &apos;18px&apos;,
-              fontWeight: &apos;600&apos;,
-              cursor: &apos;pointer&apos;,
-              boxShadow: &apos;0 4px 12px rgba(90, 95, 202, 0.3)&apos;
+              color: 'white',
+              fontSize: '18px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(90, 95, 202, 0.3)'
             }}
           >
             Commencer avec Pro - 25$/mois
@@ -750,5 +742,5 @@ export default function PremiumPricingPage() {
         </div>
       </div>
     </Layout>
-  );
+  )
 }

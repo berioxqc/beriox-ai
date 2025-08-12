@@ -1,18 +1,16 @@
-"use client";
-import { useFreeTrial } from "@/hooks/useFreeTrial";
-import { signIn } from "next-auth/react";
-
+"use client"
+import { useFreeTrial } from "@/hooks/useFreeTrial"
+import { signIn } from "next-auth/react"
 export default function TrialBanner() {
-  const { trialsLeft, isAuthenticated } = useFreeTrial();
-
+  const { trialsLeft, isAuthenticated } = useFreeTrial()
   // Ne pas afficher le banner si l'utilisateur est connecté
   if (isAuthenticated) {
-    return null;
+    return null
   }
 
   // Ne pas afficher si plus d'essais
   if (trialsLeft <= 0) {
-    return null;
+    return null
   }
 
   return (
@@ -84,19 +82,19 @@ export default function TrialBanner() {
           transition: "all 0.2s",
           position: "relative",
           zIndex: 1,
-          fontFamily: "-apple-system, BlinkMacSystemFont, &apos;Segoe UI&apos;, Roboto, sans-serif"
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         }}
         onMouseOver={(e) => {
-          e.currentTarget.style.background = "rgba(255, 255, 255, 0.3)";
-          e.currentTarget.style.transform = "translateY(-1px)";
+          e.currentTarget.style.background = "rgba(255, 255, 255, 0.3)"
+          e.currentTarget.style.transform = "translateY(-1px)"
         }}
         onMouseOut={(e) => {
-          e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)";
-          e.currentTarget.style.transform = "translateY(0)";
+          e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)"
+          e.currentTarget.style.transform = "translateY(0)"
         }}
       >
         🚀 Créer un compte gratuit
       </button>
     </div>
-  );
+  )
 }

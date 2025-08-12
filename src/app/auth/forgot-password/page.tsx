@@ -1,21 +1,17 @@
-"use client";
-
-import { useState } from 'react';
-import Link from 'next/link';
-import Icon from '@/components/ui/Icon';
-
+"use client"
+import { useState } from 'react'
+import Link from 'next/link'
+import Icon from '@/components/ui/Icon'
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-
+  const [email, setEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-    setSuccess('');
-
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
+    setSuccess('')
     try {
       const response = await fetch('/api/auth/forgot-password', {
         method: 'POST',
@@ -23,23 +19,20 @@ export default function ForgotPasswordPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (!response.ok) {
-        setError(data.error || 'Erreur lors de l\'envoi de l\'email');
+        setError(data.error || 'Erreur lors de l\'envoi de l\'email')
       } else {
-        setSuccess(data.message);
-        setEmail('');
+        setSuccess(data.message)
+        setEmail('')
       }
     } catch (error) {
-      setError('Erreur lors de l\'envoi de l\'email');
+      setError('Erreur lors de l\'envoi de l\'email')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
@@ -82,7 +75,7 @@ export default function ForgotPasswordPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? &apos;Envoi...&apos; : &apos;Envoyer le lien de réinitialisation&apos;}
+              {isLoading ? 'Envoi...' : 'Envoyer le lien de réinitialisation'}
             </button>
           </form>
 
@@ -97,5 +90,5 @@ export default function ForgotPasswordPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

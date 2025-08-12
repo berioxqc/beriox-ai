@@ -1,47 +1,39 @@
-"use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-
+"use client"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Link from "next/link"
 export default function ConsentPage() {
-  const router = useRouter();
+  const router = useRouter()
   const [consents, setConsents] = useState({
     essential: true, // Toujours requis
     dataProcessing: false,
     communications: false,
     improvements: false
-  });
-  const [hasReadPolicy, setHasReadPolicy] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  })
+  const [hasReadPolicy, setHasReadPolicy] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const handleConsentChange = (key: keyof typeof consents) => {
     if (key === 'essential') return; // Ne peut pas être désactivé
     
     setConsents(prev => ({
       ...prev,
       [key]: !prev[key]
-    }));
-  };
-
-  const canProceed = consents.dataProcessing && hasReadPolicy;
-
+    }))
+  }
+  const canProceed = consents.dataProcessing && hasReadPolicy
   const handleSubmit = async () => {
-    if (!canProceed) return;
-    
-    setIsSubmitting(true);
-    
+    if (!canProceed) return
+    setIsSubmitting(true)
     // Enregistrer les consentements dans le localStorage pour la session
     localStorage.setItem('beriox_consents', JSON.stringify({
       ...consents,
       timestamp: new Date().toISOString(),
       version: '1.0'
-    }));
-    
+    }))
     // Rediriger vers la page de connexion
-    router.push('/auth/signin?callbackUrl=' + encodeURIComponent('/'));
-  };
-
+    router.push('/auth/signin?callbackUrl=' + encodeURIComponent('/'))
+  }
   return (
     <div style={{
       minHeight: '100vh',
@@ -301,7 +293,7 @@ export default function ConsentPage() {
                     margin: 0,
                     lineHeight: '1.4'
                   }}>
-                    Nouvelles fonctionnalités, conseils d&apos;utilisation, mises à jour importantes. 
+                    Nouvelles fonctionnalités, conseils d'utilisation, mises à jour importantes. 
                     Vous pouvez vous désabonner à tout moment.
                   </p>
                 </div>
@@ -354,7 +346,7 @@ export default function ConsentPage() {
                     margin: 0,
                     lineHeight: '1.4'
                   }}>
-                    Analyse anonymisée d&apos;utilisation pour améliorer nos services. 
+                    Analyse anonymisée d'utilisation pour améliorer nos services. 
                     Aucune donnée personnelle partagée.
                   </p>
                 </div>
@@ -400,7 +392,7 @@ export default function ConsentPage() {
                   margin: 0,
                   lineHeight: '1.4'
                 }}>
-                  <strong>J&apos;ai lu et j&apos;accepte la </strong>
+                  <strong>J'ai lu et j'accepte la </strong>
                   <Link 
                     href="/privacy" 
                     target="_blank"
@@ -425,18 +417,18 @@ export default function ConsentPage() {
             marginBottom: '16px'
           }}>
             <button
-              onClick={() => router.push(&apos;/&apos;)}
+              onClick={() => router.push('/')}
               style={{
                 flex: 1,
-                padding: &apos;12px 20px&apos;,
-                backgroundColor: &apos;white&apos;,
-                border: &apos;1px solid #d1d5db&apos;,
-                borderRadius: &apos;8px&apos;,
-                color: &apos;#6b7280&apos;,
-                fontSize: &apos;14px&apos;,
-                fontWeight: &apos;600&apos;,
-                cursor: &apos;pointer&apos;,
-                transition: &apos;all 0.2s&apos;
+                padding: '12px 20px',
+                backgroundColor: 'white',
+                border: '1px solid #d1d5db',
+                borderRadius: '8px',
+                color: '#6b7280',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
               }}
             >
               Annuler
@@ -496,5 +488,5 @@ export default function ConsentPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

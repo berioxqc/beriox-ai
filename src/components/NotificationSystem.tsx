@@ -1,8 +1,7 @@
-"use client";
-
-import { useEffect, useState, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+"use client"
+import { useEffect, useState, useCallback } from 'react'
+import { useSession } from 'next-auth/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faBell,
   faCheck,
@@ -14,44 +13,40 @@ import {
   faRocket,
   faCreditCard,
   faCog
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/free-solid-svg-icons'
 import {
   NotificationData,
   NotificationType,
   NotificationPriority,
   notificationManager
-} from '@/lib/notifications';
-
+} from '@/lib/notifications'
 interface NotificationSystemProps {
-  className?: string;
+  className?: string
 }
 
 export default function NotificationSystem({ className = '' }: NotificationSystemProps) {
-  const { data: session } = useSession();
-  const [notifications, setNotifications] = useState<NotificationData[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
+  const { data: session } = useSession()
+  const [notifications, setNotifications] = useState<NotificationData[]>([])
+  const [unreadCount, setUnreadCount] = useState(0)
+  const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   // Charger les notifications
   const loadNotifications = useCallback(async () => {
-    if (!session?.user?.id) return;
-
-    setIsLoading(true);
+    if (!session?.user?.id) return
+    setIsLoading(true)
     try {
-      const response = await fetch('/api/notifications?limit=20');
+      const response = await fetch('/api/notifications?limit=20')
       if (response.ok) {
-        const data = await response.json();
-        setNotifications(data.notifications);
-        setUnreadCount(data.unreadCount);
+        const data = await response.json()
+        setNotifications(data.notifications)
+        setUnreadCount(data.unreadCount)
       }
     } catch (error) {
-      console.error('Failed to load notifications:', error);
+      console.error('Failed to load notifications:', error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [session?.user?.id]);
-
+  }, [session?.user?.id])
   // Marquer comme lu
   const markAsRead = async (notificationId: string) => {
     try {
@@ -59,8 +54,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notificationId })
-      });
-
+      })
       if (response.ok) {
         setNotifications(prev => 
           prev.map(n => 
@@ -68,14 +62,13 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
               ? { ...n, readAt: new Date() }
               : n
           )
-        );
-        setUnreadCount(prev => Math.max(0, prev - 1));
+        )
+        setUnreadCount(prev => Math.max(0, prev - 1))
       }
     } catch (error) {
-      console.error('Failed to mark notification as read:', error);
+      console.error('Failed to mark notification as read:', error)
     }
-  };
-
+  }
   // Supprimer une notification
   const deleteNotification = async (notificationId: string) => {
     try {
@@ -83,156 +76,142 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notificationId })
-      });
-
+      })
       if (response.ok) {
-        setNotifications(prev => prev.filter(n => n.id !== notificationId));
-        const notification = notifications.find(n => n.id === notificationId);
+        setNotifications(prev => prev.filter(n => n.id !== notificationId))
+        const notification = notifications.find(n => n.id === notificationId)
         if (notification && !notification.readAt) {
-          setUnreadCount(prev => Math.max(0, prev - 1));
+          setUnreadCount(prev => Math.max(0, prev - 1))
         }
       }
     } catch (error) {
-      console.error('Failed to delete notification:', error);
+      console.error('Failed to delete notification:', error)
     }
-  };
-
+  }
   // Marquer toutes comme lues
   const markAllAsRead = async () => {
-    const unreadNotifications = notifications.filter(n => !n.readAt);
-    
+    const unreadNotifications = notifications.filter(n => !n.readAt)
     try {
       await Promise.all(
         unreadNotifications.map(n => markAsRead(n.id))
-      );
-      setUnreadCount(0);
+      )
+      setUnreadCount(0)
     } catch (error) {
-      console.error('Failed to mark all as read:', error);
+      console.error('Failed to mark all as read:', error)
     }
-  };
-
+  }
   // Gérer les actions de notification
   const handleNotificationAction = (action: any, notification: NotificationData) => {
     switch (action.action) {
       case 'navigate':
         if (action.url) {
-          window.location.href = action.url;
+          window.location.href = action.url
         }
-        break;
+        break
       case 'download':
         if (action.url) {
-          window.open(action.url, '_blank');
+          window.open(action.url, '_blank')
         }
-        break;
+        break
       case 'retry':
         // Logique de retry spécifique
-        console.log('Retry action for notification:', notification.id);
-        break;
+        console.log('Retry action for notification:', notification.id)
+        break
       default:
-        console.log('Unknown action:', action.action);
+        console.log('Unknown action:', action.action)
     }
 
     // Marquer comme lu après action
-    markAsRead(notification.id);
-  };
-
+    markAsRead(notification.id)
+  }
   // Obtenir l'icône pour le type de notification
   const getNotificationIcon = (type: NotificationType) => {
     switch (type) {
       case NotificationType.INFO:
-        return faInfoCircle;
+        return faInfoCircle
       case NotificationType.SUCCESS:
-        return faCheckCircle;
+        return faCheckCircle
       case NotificationType.WARNING:
-        return faExclamationTriangle;
+        return faExclamationTriangle
       case NotificationType.ERROR:
-        return faExclamationCircle;
+        return faExclamationCircle
       case NotificationType.MISSION_COMPLETE:
-        return faRocket;
+        return faRocket
       case NotificationType.PAYMENT_SUCCESS:
       case NotificationType.PAYMENT_FAILED:
-        return faCreditCard;
+        return faCreditCard
       case NotificationType.SYSTEM_ALERT:
-        return faCog;
+        return faCog
       default:
-        return faInfoCircle;
+        return faInfoCircle
     }
-  };
-
+  }
   // Obtenir la couleur pour le type de notification
   const getNotificationColor = (type: NotificationType) => {
     switch (type) {
       case NotificationType.INFO:
-        return 'text-blue-600 bg-blue-50 border-blue-200';
+        return 'text-blue-600 bg-blue-50 border-blue-200'
       case NotificationType.SUCCESS:
-        return 'text-green-600 bg-green-50 border-green-200';
+        return 'text-green-600 bg-green-50 border-green-200'
       case NotificationType.WARNING:
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
+        return 'text-yellow-600 bg-yellow-50 border-yellow-200'
       case NotificationType.ERROR:
-        return 'text-red-600 bg-red-50 border-red-200';
+        return 'text-red-600 bg-red-50 border-red-200'
       case NotificationType.MISSION_COMPLETE:
-        return 'text-purple-600 bg-purple-50 border-purple-200';
+        return 'text-purple-600 bg-purple-50 border-purple-200'
       case NotificationType.PAYMENT_SUCCESS:
-        return 'text-green-600 bg-green-50 border-green-200';
+        return 'text-green-600 bg-green-50 border-green-200'
       case NotificationType.PAYMENT_FAILED:
-        return 'text-red-600 bg-red-50 border-red-200';
+        return 'text-red-600 bg-red-50 border-red-200'
       case NotificationType.SYSTEM_ALERT:
-        return 'text-orange-600 bg-orange-50 border-orange-200';
+        return 'text-orange-600 bg-orange-50 border-orange-200'
       default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
+        return 'text-gray-600 bg-gray-50 border-gray-200'
     }
-  };
-
+  }
   // Obtenir la couleur pour la priorité
   const getPriorityColor = (priority: NotificationPriority) => {
     switch (priority) {
       case NotificationPriority.LOW:
-        return 'bg-gray-100';
+        return 'bg-gray-100'
       case NotificationPriority.MEDIUM:
-        return 'bg-blue-100';
+        return 'bg-blue-100'
       case NotificationPriority.HIGH:
-        return 'bg-yellow-100';
+        return 'bg-yellow-100'
       case NotificationPriority.URGENT:
-        return 'bg-red-100';
+        return 'bg-red-100'
       default:
-        return 'bg-gray-100';
+        return 'bg-gray-100'
     }
-  };
-
+  }
   // Formater la date
   const formatDate = (date: Date) => {
-    const now = new Date();
-    const diff = now.getTime() - new Date(date).getTime();
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    if (minutes < 1) return 'À l\'instant';
-    if (minutes < 60) return `Il y a ${minutes} min`;
-    if (hours < 24) return `Il y a ${hours}h`;
-    if (days < 7) return `Il y a ${days}j`;
-    return new Date(date).toLocaleDateString('fr-FR');
-  };
-
+    const now = new Date()
+    const diff = now.getTime() - new Date(date).getTime()
+    const minutes = Math.floor(diff / (1000 * 60))
+    const hours = Math.floor(diff / (1000 * 60 * 60))
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    if (minutes < 1) return 'À l\'instant'
+    if (minutes < 60) return `Il y a ${minutes} min`
+    if (hours < 24) return `Il y a ${hours}h`
+    if (days < 7) return `Il y a ${days}j`
+    return new Date(date).toLocaleDateString('fr-FR')
+  }
   // Charger les notifications au montage et quand la session change
   useEffect(() => {
-    loadNotifications();
-  }, [loadNotifications]);
-
+    loadNotifications()
+  }, [loadNotifications])
   // S'abonner aux nouvelles notifications
   useEffect(() => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     const unsubscribe = notificationManager.subscribe(session.user.id, (notification) => {
-      setNotifications(prev => [notification, ...prev]);
-      setUnreadCount(prev => prev + 1);
-    });
-
-    return unsubscribe;
-  }, [session?.user?.id]);
-
+      setNotifications(prev => [notification, ...prev])
+      setUnreadCount(prev => prev + 1)
+    })
+    return unsubscribe
+  }, [session?.user?.id])
   if (!session?.user?.id) {
-    return null;
+    return null
   }
 
   return (
@@ -246,7 +225,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
         <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-            {unreadCount > 99 ? &apos;99+&apos; : unreadCount}
+            {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
       </button>
@@ -354,7 +333,7 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
           {notifications.length > 0 && (
             <div className="p-3 border-t border-gray-200 text-center">
               <button
-                onClick={() => window.location.href = &apos;/notifications&apos;}
+                onClick={() => window.location.href = '/notifications'}
                 className="text-sm text-blue-600 hover:text-blue-800"
               >
                 Voir toutes les notifications
@@ -372,5 +351,5 @@ export default function NotificationSystem({ className = '' }: NotificationSyste
         />
       )}
     </div>
-  );
+  )
 }

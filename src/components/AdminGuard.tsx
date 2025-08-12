@@ -1,63 +1,56 @@
-"use client";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import { useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import Icon from "@/components/ui/Icon"
 interface AdminGuardProps {
-  children: React.ReactNode;
-  requiredRole?: 'ADMIN' | 'SUPER_ADMIN';
+  children: React.ReactNode
+  requiredRole?: 'ADMIN' | 'SUPER_ADMIN'
 }
 
 interface UserProfile {
-  role: string;
+  role: string
 }
 
 export default function AdminGuard({ children, requiredRole = 'SUPER_ADMIN' }: AdminGuardProps) {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [userRole, setUserRole] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   useEffect(() => {
-    if (status === "loading") return;
-
+    if (status === "loading") return
     if (!session) {
-      router.push("/auth/signin");
-      return;
+      router.push("/auth/signin")
+      return
     }
 
     // Récupérer le rôle de l'utilisateur
-    fetchUserRole();
-  }, [session, status, router]);
-
+    fetchUserRole()
+  }, [session, status, router])
   const fetchUserRole = async () => {
     try {
-      const response = await fetch('/api/user/profile');
-      
+      const response = await fetch('/api/user/profile')
       if (!response.ok) {
-        throw new Error('Erreur lors de la vérification des permissions');
+        throw new Error('Erreur lors de la vérification des permissions')
       }
       
-      const data = await response.json();
-      setUserRole(data.user?.role);
-      
+      const data = await response.json()
+      setUserRole(data.user?.role)
       // Vérifier si l'utilisateur a les permissions requises
       if (requiredRole === 'SUPER_ADMIN' && data.user?.role !== 'SUPER_ADMIN') {
-        setError('Accès refusé - Permissions super administrateur requises');
+        setError('Accès refusé - Permissions super administrateur requises')
       } else if (requiredRole === 'ADMIN' && !['ADMIN', 'SUPER_ADMIN'].includes(data.user?.role || '')) {
-        setError('Accès refusé - Permissions administrateur requises');
+        setError('Accès refusé - Permissions administrateur requises')
       }
       
     } catch (error) {
-      console.error('Erreur vérification rôle:', error);
-      setError('Erreur lors de la vérification des permissions');
+      console.error('Erreur vérification rôle:', error)
+      setError('Erreur lors de la vérification des permissions')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   // Loading state
   if (status === "loading" || loading) {
     return (
@@ -96,7 +89,7 @@ export default function AdminGuard({ children, requiredRole = 'SUPER_ADMIN' }: A
           </p>
         </div>
       </div>
-    );
+    )
   }
 
   // Error state (no permissions)
@@ -176,7 +169,7 @@ export default function AdminGuard({ children, requiredRole = 'SUPER_ADMIN' }: A
             }}
           >
             <Icon name="home" />
-            Retour à l&apos;accueil
+            Retour à l'accueil
           </button>
           
           <button
@@ -230,7 +223,7 @@ export default function AdminGuard({ children, requiredRole = 'SUPER_ADMIN' }: A
                 color: '#92400e',
                 margin: '0 0 4px 0'
               }}>
-                Besoin d&apos;un accès administrateur ?
+                Besoin d'un accès administrateur ?
               </h4>
               <p style={{
                 fontSize: '13px',
@@ -239,15 +232,15 @@ export default function AdminGuard({ children, requiredRole = 'SUPER_ADMIN' }: A
                 lineHeight: '1.4'
               }}>
                 Contactez un super administrateur pour obtenir les permissions nécessaires.
-                Votre rôle actuel : <strong>{userRole || &apos;Utilisateur&apos;}</strong>
+                Votre rôle actuel : <strong>{userRole || 'Utilisateur'}</strong>
               </p>
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   // Success - user has required permissions
-  return <>{children}</>;
+  return <>{children}</>
 }

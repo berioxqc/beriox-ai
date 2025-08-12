@@ -1,8 +1,7 @@
-"use client";
-
-import { useEffect, useState, ReactNode } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+"use client"
+import { useEffect, useState, ReactNode } from 'react'
+import { useSession } from 'next-auth/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faChevronLeft,
   faChevronRight,
@@ -18,117 +17,106 @@ import {
   faLink,
   faCreditCard,
   faTrophy
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/free-solid-svg-icons'
 import {
   OnboardingProgress,
   OnboardingStep,
   OnboardingStepType
-} from '@/lib/onboarding';
-
+} from '@/lib/onboarding'
 interface OnboardingFlowProps {
-  onComplete?: () => void;
-  onSkip?: () => void;
-  className?: string;
+  onComplete?: () => void
+  onSkip?: () => void
+  className?: string
 }
 
 interface OnboardingState {
-  progress: OnboardingProgress | null;
-  currentStep: OnboardingStep | null;
-  loading: boolean;
-  error: string | null;
-  stepData: Record<string, any>;
+  progress: OnboardingProgress | null
+  currentStep: OnboardingStep | null
+  loading: boolean
+  error: string | null
+  stepData: Record<string, any>
 }
 
 export default function OnboardingFlow({ onComplete, onSkip, className = '' }: OnboardingFlowProps) {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   const [state, setState] = useState<OnboardingState>({
     progress: null,
     currentStep: null,
     loading: true,
     error: null,
     stepData: {}
-  });
-
+  })
   // Charger le progrès d'onboarding
   const loadProgress = async () => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     try {
-      setState(prev => ({ ...prev, loading: true, error: null }));
-
-      const response = await fetch('/api/onboarding?action=progress');
+      setState(prev => ({ ...prev, loading: true, error: null }))
+      const response = await fetch('/api/onboarding?action=progress')
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         setState(prev => ({
           ...prev,
           progress: data.progress,
           currentStep: data.currentStep,
           loading: false
-        }));
+        }))
       } else {
         // Si pas de progrès, démarrer l'onboarding
-        await startOnboarding();
+        await startOnboarding()
       }
     } catch (error) {
       setState(prev => ({
         ...prev,
         loading: false,
         error: 'Erreur lors du chargement de l\'onboarding'
-      }));
+      }))
     }
-  };
-
+  }
   // Démarrer l'onboarding
   const startOnboarding = async () => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     try {
       const response = await fetch('/api/onboarding?action=start', {
         method: 'POST'
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
         setState(prev => ({
           ...prev,
           progress: data.progress,
           currentStep: data.currentStep,
           loading: false
-        }));
+        }))
       }
     } catch (error) {
       setState(prev => ({
         ...prev,
         loading: false,
         error: 'Erreur lors du démarrage de l\'onboarding'
-      }));
+      }))
     }
-  };
-
+  }
   // Passer à l'étape suivante
   const nextStep = async (stepData?: Record<string, any>) => {
-    if (!session?.user?.id || !state.currentStep) return;
-
+    if (!session?.user?.id || !state.currentStep) return
     try {
       const response = await fetch('/api/onboarding?action=next', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stepData })
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
-        
+        const data = await response.json()
         if (data.nextStep) {
           setState(prev => ({
             ...prev,
             progress: data.progress,
             currentStep: data.nextStep
-          }));
+          }))
         } else {
           // Onboarding terminé
           if (onComplete) {
-            onComplete();
+            onComplete()
           }
         }
       }
@@ -136,32 +124,28 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
       setState(prev => ({
         ...prev,
         error: 'Erreur lors du passage à l\'étape suivante'
-      }));
+      }))
     }
-  };
-
+  }
   // Passer une étape
   const skipStep = async () => {
-    if (!session?.user?.id || !state.currentStep) return;
-
+    if (!session?.user?.id || !state.currentStep) return
     try {
       const response = await fetch('/api/onboarding?action=skip', {
         method: 'PUT'
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
-        
+        const data = await response.json()
         if (data.nextStep) {
           setState(prev => ({
             ...prev,
             progress: data.progress,
             currentStep: data.nextStep
-          }));
+          }))
         } else {
           // Onboarding terminé
           if (onComplete) {
-            onComplete();
+            onComplete()
           }
         }
       }
@@ -169,47 +153,41 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
       setState(prev => ({
         ...prev,
         error: 'Erreur lors du passage de l\'étape'
-      }));
+      }))
     }
-  };
-
+  }
   // Valider une étape
   const validateStep = async (stepData: any): Promise<boolean> => {
-    if (!session?.user?.id || !state.currentStep) return false;
-
+    if (!session?.user?.id || !state.currentStep) return false
     try {
       const response = await fetch('/api/onboarding?action=validate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stepData })
-      });
-
+      })
       if (response.ok) {
-        const data = await response.json();
-        return data.isValid;
+        const data = await response.json()
+        return data.isValid
       }
     } catch (error) {
-      console.error('Validation error:', error);
+      console.error('Validation error:', error)
     }
 
-    return false;
-  };
-
+    return false
+  }
   // Mettre à jour les données d'étape
   const updateStepData = (key: string, value: any) => {
     setState(prev => ({
       ...prev,
       stepData: { ...prev.stepData, [key]: value }
-    }));
-  };
-
+    }))
+  }
   // Charger le progrès au montage
   useEffect(() => {
-    loadProgress();
-  }, [session?.user?.id]);
-
+    loadProgress()
+  }, [session?.user?.id])
   if (!session?.user?.id) {
-    return null;
+    return null
   }
 
   if (state.loading) {
@@ -218,11 +196,11 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Chargement de l&apos;onboarding...</p>
+            <p className="text-gray-600">Chargement de l'onboarding...</p>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   if (state.error) {
@@ -242,11 +220,11 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   if (!state.currentStep) {
-    return null;
+    return null
   }
 
   return (
@@ -259,7 +237,7 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
               <button
                 onClick={onSkip}
                 className="text-gray-400 hover:text-gray-600"
-                title="Passer l&apos;onboarding"
+                title="Passer l'onboarding"
               >
                 <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
               </button>
@@ -340,17 +318,17 @@ export default function OnboardingFlow({ onComplete, onSkip, className = '' }: O
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Composant pour les étapes spécifiques
 interface OnboardingStepComponentProps {
-  step: OnboardingStep;
-  stepData: Record<string, any>;
-  onUpdateData: (key: string, value: any) => void;
-  onNext: (stepData?: Record<string, any>) => void;
-  onSkip: () => void;
-  onValidate: (stepData: any) => Promise<boolean>;
+  step: OnboardingStep
+  stepData: Record<string, any>
+  onUpdateData: (key: string, value: any) => void
+  onNext: (stepData?: Record<string, any>) => void
+  onSkip: () => void
+  onValidate: (stepData: any) => Promise<boolean>
 }
 
 function OnboardingStepComponent({
@@ -361,38 +339,33 @@ function OnboardingStepComponent({
   onSkip,
   onValidate
 }: OnboardingStepComponentProps) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const handleNext = async () => {
-    setLoading(true);
-    setError(null);
-
+    setLoading(true)
+    setError(null)
     try {
-      const isValid = await onValidate(stepData);
+      const isValid = await onValidate(stepData)
       if (isValid) {
-        onNext(stepData);
+        onNext(stepData)
       } else {
-        setError(step.config.errorMessage || 'Veuillez corriger les erreurs avant de continuer');
+        setError(step.config.errorMessage || 'Veuillez corriger les erreurs avant de continuer')
       }
     } catch (error) {
-      setError('Erreur lors de la validation');
+      setError('Erreur lors de la validation')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const handleSkip = () => {
     if (step.isSkippable) {
-      onSkip();
+      onSkip()
     }
-  };
-
+  }
   // Rendu selon le type d'étape
   switch (step.type) {
     case OnboardingStepType.WELCOME:
-      return <WelcomeStep step={step} onNext={handleNext} loading={loading} />;
-
+      return <WelcomeStep step={step} onNext={handleNext} loading={loading} />
     case OnboardingStepType.PROFILE_SETUP:
       return (
         <ProfileSetupStep
@@ -404,8 +377,7 @@ function OnboardingStepComponent({
           loading={loading}
           error={error}
         />
-      );
-
+      )
     case OnboardingStepType.PREFERENCES:
       return (
         <PreferencesStep
@@ -416,8 +388,7 @@ function OnboardingStepComponent({
           onSkip={handleSkip}
           loading={loading}
         />
-      );
-
+      )
     case OnboardingStepType.FIRST_MISSION:
       return (
         <FirstMissionStep
@@ -425,8 +396,7 @@ function OnboardingStepComponent({
           onNext={handleNext}
           loading={loading}
         />
-      );
-
+      )
     case OnboardingStepType.FEATURES_TOUR:
       return (
         <FeaturesTourStep
@@ -435,8 +405,7 @@ function OnboardingStepComponent({
           onSkip={handleSkip}
           loading={loading}
         />
-      );
-
+      )
     case OnboardingStepType.INTEGRATIONS:
       return (
         <IntegrationsStep
@@ -447,8 +416,7 @@ function OnboardingStepComponent({
           onSkip={handleSkip}
           loading={loading}
         />
-      );
-
+      )
     case OnboardingStepType.BILLING:
       return (
         <BillingStep
@@ -457,8 +425,7 @@ function OnboardingStepComponent({
           onSkip={handleSkip}
           loading={loading}
         />
-      );
-
+      )
     case OnboardingStepType.COMPLETION:
       return (
         <CompletionStep
@@ -466,10 +433,9 @@ function OnboardingStepComponent({
           onNext={handleNext}
           loading={loading}
         />
-      );
-
+      )
     default:
-      return <div>Étape non reconnue</div>;
+      return <div>Étape non reconnue</div>
   }
 }
 
@@ -486,10 +452,10 @@ function WelcomeStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? &apos;Chargement...&apos; : &apos;Commencer&apos;}
+        {loading ? 'Chargement...' : 'Commencer'}
       </button>
     </div>
-  );
+  )
 }
 
 function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loading, error }: any) {
@@ -503,7 +469,7 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           <input
             type="text"
             value={stepData.name || ''}
-            onChange={(e) => onUpdateData(&apos;name&apos;, e.target.value)}
+            onChange={(e) => onUpdateData('name', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Votre nom complet"
           />
@@ -515,7 +481,7 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           <input
             type="text"
             value={stepData.company || ''}
-            onChange={(e) => onUpdateData(&apos;company&apos;, e.target.value)}
+            onChange={(e) => onUpdateData('company', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Nom de votre entreprise"
           />
@@ -527,7 +493,7 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           <input
             type="text"
             value={stepData.role || ''}
-            onChange={(e) => onUpdateData(&apos;role&apos;, e.target.value)}
+            onChange={(e) => onUpdateData('role', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             placeholder="Votre poste"
           />
@@ -567,21 +533,20 @@ function ProfileSetupStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? &apos;Sauvegarde...&apos; : &apos;Sauvegarder et continuer&apos;}
+          {loading ? 'Sauvegarde...' : 'Sauvegarder et continuer'}
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 function PreferencesStep({ step, stepData, onUpdateData, onNext, onSkip, loading }: any) {
-  const categories = ['seo', 'content', 'analytics', 'competitors', 'social'];
-
+  const categories = ['seo', 'content', 'analytics', 'competitors', 'social']
   return (
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium text-gray-900 mb-4">
-          Sélectionnez vos domaines d&apos;intérêt
+          Sélectionnez vos domaines d'intérêt
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {categories.map((category) => (
@@ -590,11 +555,11 @@ function PreferencesStep({ step, stepData, onUpdateData, onNext, onSkip, loading
                 type="checkbox"
                 checked={stepData.categories?.includes(category) || false}
                 onChange={(e) => {
-                  const current = stepData.categories || [];
+                  const current = stepData.categories || []
                   const updated = e.target.checked
                     ? [...current, category]
-                    : current.filter((c: string) => c !== category);
-                  onUpdateData('categories', updated);
+                    : current.filter((c: string) => c !== category)
+                  onUpdateData('categories', updated)
                 }}
                 className="mr-3"
               />
@@ -616,11 +581,11 @@ function PreferencesStep({ step, stepData, onUpdateData, onNext, onSkip, loading
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? &apos;Sauvegarde...&apos; : &apos;Sauvegarder les préférences&apos;}
+          {loading ? 'Sauvegarde...' : 'Sauvegarder les préférences'}
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 function FirstMissionStep({ step, onNext, loading }: any) {
@@ -638,10 +603,10 @@ function FirstMissionStep({ step, onNext, loading }: any) {
         {['seo_audit', 'content_analysis', 'competitor_research'].map((template) => (
           <div key={template} className="p-4 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer">
             <div className="text-2xl mb-2">
-              {template === &apos;seo_audit&apos; ? &apos;🔍&apos; : template === &apos;content_analysis&apos; ? &apos;📝&apos; : &apos;📊&apos;}
+              {template === 'seo_audit' ? '🔍' : template === 'content_analysis' ? '📝' : '📊'}
             </div>
             <h4 className="font-medium text-gray-900 capitalize">
-              {template.replace(&apos;_&apos;, &apos; &apos;)}
+              {template.replace('_', ' ')}
             </h4>
           </div>
         ))}
@@ -652,10 +617,10 @@ function FirstMissionStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? &apos;Création...&apos; : &apos;Créer ma première mission&apos;}
+        {loading ? 'Création...' : 'Créer ma première mission'}
       </button>
     </div>
-  );
+  )
 }
 
 function FeaturesTourStep({ step, onNext, onSkip, loading }: any) {
@@ -676,14 +641,14 @@ function FeaturesTourStep({ step, onNext, onSkip, loading }: any) {
           <div key={feature} className="p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center">
               <div className="text-2xl mr-3">
-                {feature === &apos;dashboard&apos; ? &apos;📊&apos; : feature === &apos;missions&apos; ? &apos;🎯&apos; : feature === &apos;analytics&apos; ? &apos;📈&apos; : &apos;🔗&apos;}
+                {feature === 'dashboard' ? '📊' : feature === 'missions' ? '🎯' : feature === 'analytics' ? '📈' : '🔗'}
               </div>
               <div>
                 <h4 className="font-medium text-gray-900 capitalize">{feature}</h4>
                 <p className="text-sm text-gray-600">
-                  {feature === &apos;dashboard&apos; ? &apos;Vue d\&apos;ensemble de vos données&apos; :
-                   feature === &apos;missions&apos; ? &apos;Gérez vos missions IA&apos; :
-                   feature === &apos;analytics&apos; ? &apos;Analysez vos performances&apos; : &apos;Connectez vos outils&apos;}
+                  {feature === 'dashboard' ? 'Vue d\'ensemble de vos données' :
+                   feature === 'missions' ? 'Gérez vos missions IA' :
+                   feature === 'analytics' ? 'Analysez vos performances' : 'Connectez vos outils'}
                 </p>
               </div>
             </div>
@@ -703,11 +668,11 @@ function FeaturesTourStep({ step, onNext, onSkip, loading }: any) {
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? &apos;Terminaison...&apos; : &apos;Terminer le tour&apos;}
+          {loading ? 'Terminaison...' : 'Terminer le tour'}
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 function IntegrationsStep({ step, stepData, onUpdateData, onNext, onSkip, loading }: any) {
@@ -716,8 +681,7 @@ function IntegrationsStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
     { id: 'google_search_console', name: 'Google Search Console', icon: '🔍' },
     { id: 'semrush', name: 'SEMrush', icon: '📈' },
     { id: 'slack', name: 'Slack', icon: '💬' }
-  ];
-
+  ]
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -736,11 +700,11 @@ function IntegrationsStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
               type="checkbox"
               checked={stepData.integrations?.includes(integration.id) || false}
               onChange={(e) => {
-                const current = stepData.integrations || [];
+                const current = stepData.integrations || []
                 const updated = e.target.checked
                   ? [...current, integration.id]
-                  : current.filter((i: string) => i !== integration.id);
-                onUpdateData('integrations', updated);
+                  : current.filter((i: string) => i !== integration.id)
+                onUpdateData('integrations', updated)
               }}
               className="mr-3"
             />
@@ -764,11 +728,11 @@ function IntegrationsStep({ step, stepData, onUpdateData, onNext, onSkip, loadin
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? &apos;Connexion...&apos; : &apos;Connecter mes outils&apos;}
+          {loading ? 'Connexion...' : 'Connecter mes outils'}
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 function BillingStep({ step, onNext, onSkip, loading }: any) {
@@ -789,11 +753,11 @@ function BillingStep({ step, onNext, onSkip, loading }: any) {
           <div key={plan} className="p-4 border border-gray-200 rounded-lg text-center">
             <h4 className="font-semibold text-gray-900 mb-2">{plan}</h4>
             <div className="text-2xl font-bold text-blue-600 mb-2">
-              {plan === &apos;Starter&apos; ? &apos;Gratuit&apos; : plan === &apos;Professional&apos; ? &apos;$29/mois&apos; : &apos;Sur mesure&apos;}
+              {plan === 'Starter' ? 'Gratuit' : plan === 'Professional' ? '$29/mois' : 'Sur mesure'}
             </div>
             <p className="text-sm text-gray-600 mb-4">
-              {plan === &apos;Starter&apos; ? &apos;Pour commencer&apos; : 
-               plan === &apos;Professional&apos; ? &apos;Pour les équipes&apos; : &apos;Pour les entreprises&apos;}
+              {plan === 'Starter' ? 'Pour commencer' : 
+               plan === 'Professional' ? 'Pour les équipes' : 'Pour les entreprises'}
             </p>
           </div>
         ))}
@@ -804,18 +768,18 @@ function BillingStep({ step, onNext, onSkip, loading }: any) {
           onClick={onSkip}
           className="px-4 py-2 text-gray-600 hover:text-gray-800"
         >
-          Continuer l&apos;essai gratuit
+          Continuer l'essai gratuit
         </button>
         <button
           onClick={onNext}
           disabled={loading}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? &apos;Configuration...&apos; : &apos;Choisir un plan&apos;}
+          {loading ? 'Configuration...' : 'Choisir un plan'}
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 function CompletionStep({ step, onNext, loading }: any) {
@@ -841,8 +805,8 @@ function CompletionStep({ step, onNext, loading }: any) {
         disabled={loading}
         className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
       >
-        {loading ? &apos;Redirection...&apos; : &apos;Aller au dashboard&apos;}
+        {loading ? 'Redirection...' : 'Aller au dashboard'}
       </button>
     </div>
-  );
+  )
 }

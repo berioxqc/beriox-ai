@@ -1,21 +1,18 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import SessionProvider from "@/components/SessionProvider";
-import Script from "next/script";
-import CookieConsent from "@/components/CookieConsent";
-
-const inter = Inter({ subsets: ["latin"] });
-
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import SessionProvider from "@/components/SessionProvider"
+import Script from "next/script"
+import CookieConsent from "@/components/CookieConsent"
+const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Beriox AI - Plateforme d'Automatisation IA",
   description: "Votre équipe d'agents IA pour automatiser et optimiser vos processus business",
-};
-
+}
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="fr">
@@ -27,10 +24,10 @@ export default function RootLayout({
         />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
-            window.dataLayer = window.dataLayer || [];
+            window.dataLayer = window.dataLayer || []
             function gtag(){dataLayer.push(arguments);}
-            gtag(&apos;js&apos;, new Date());
-            gtag(&apos;config&apos;, &apos;G-4BNMH2FQMZ&apos;);
+            gtag('js', new Date())
+            gtag('config', 'G-4BNMH2FQMZ')
           `}
         </Script>
       </head>
@@ -39,5 +36,5 @@ export default function RootLayout({
         <CookieConsent />
       </body>
     </html>
-  );
+  )
 }

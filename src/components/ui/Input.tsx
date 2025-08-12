@@ -1,16 +1,15 @@
-import React from 'react';
-
+import React from 'react'
 interface InputProps {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  label?: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'textarea';
-  disabled?: boolean;
-  error?: string;
-  className?: string;
-  onKeyDown?: (e: React.KeyboardEvent) => void;
-  rows?: number;
+  value: string
+  onChange: (value: string) => void
+  placeholder?: string
+  label?: string
+  type?: 'text' | 'email' | 'password' | 'number' | 'textarea'
+  disabled?: boolean
+  error?: string
+  className?: string
+  onKeyDown?: (e: React.KeyboardEvent) => void
+  rows?: number
 }
 
 const Input: React.FC<InputProps> = ({
@@ -25,12 +24,10 @@ const Input: React.FC<InputProps> = ({
   onKeyDown,
   rows = 3
 }) => {
-  const baseStyles = "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200";
-  const errorStyles = error ? "border-red-500 focus:ring-red-500" : "";
-  const disabledStyles = disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white";
-  
-  const styles = `${baseStyles} ${errorStyles} ${disabledStyles} ${className}`;
-  
+  const baseStyles = "w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+  const errorStyles = error ? "border-red-500 focus:ring-red-500" : ""
+  const disabledStyles = disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"
+  const styles = `${baseStyles} ${errorStyles} ${disabledStyles} ${className}`
   return (
     <div className="space-y-2">
       {label && (
@@ -67,7 +64,6 @@ const Input: React.FC<InputProps> = ({
         </p>
       )}
     </div>
-  );
-};
-
-export default Input;
+  )
+}
+export default Input

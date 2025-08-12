@@ -1,18 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { callJson } from "@/lib/openai";
-import { enqueueSplitBriefs } from "@/queues/splitBriefs.queue";
-import { evaluatePriority } from "@/utils/priorityEvaluator";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { withAuth } from "@/lib/auth-middleware";
-
-export const runtime = "nodejs";
-
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { callJson } from "@/lib/openai"
+import { enqueueSplitBriefs } from "@/queues/splitBriefs.queue"
+import { evaluatePriority } from "@/utils/priorityEvaluator"
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { withAuth } from "@/lib/auth-middleware"
+export const runtime = "nodejs"
 // Fonctions pour générer des réponses personnalisées par agent
 function generateKarineResponse(objective: string, context?: string) {
-  const lower = objective.toLowerCase();
-  
+  const lower = objective.toLowerCase()
   if (lower.includes('article') || lower.includes('blog') || lower.includes('contenu')) {
     return `# 📝 Plan Editorial - KarineAI
 
@@ -38,7 +35,7 @@ ${lower.includes('tendance') ? '- **Actualité** : Intégrer les dernières nouv
 - **Images/captures** si nécessaire
 - **Longueur optimale** : 800-1200 mots
 
-*Comme toujours, je structure tout pour que ce soit clair et efficace ! 💝*`;
+*Comme toujours, je structure tout pour que ce soit clair et efficace ! 💝*`
   }
 
   if (lower.includes('wordpress') || lower.includes('site')) {
@@ -69,7 +66,7 @@ Hey ! 😊 J'ai regardé ton problème WordPress et voici ma méthode structuré
 ## 🎯 Prochaines étapes
 Je te recommande de commencer par la sauvegarde, puis on procède étape par étape. Pas de panique, on va régler ça méthodiquement !
 
-*Mon approche : toujours sauvegarder d'abord, puis analyser calmement 💪*`;
+*Mon approche : toujours sauvegarder d'abord, puis analyser calmement 💪*`
   }
 
   if (lower.includes('seo') || lower.includes('référencement')) {
@@ -101,7 +98,7 @@ Coucou ! 😊 Voici mon analyse SEO structurée pour ton projet :
 - **Moyen terme** (3 mois) : Améliorer le positionnement sur 5 mots-clés
 - **Long terme** (6 mois) : Augmenter le trafic organique de 30%
 
-*Mon secret : y aller étape par étape, sans se décourager ! Le SEO c'est un marathon, pas un sprint 🏃‍♀️*`;
+*Mon secret : y aller étape par étape, sans se décourager ! Le SEO c'est un marathon, pas un sprint 🏃‍♀️*`
   }
 
   // Réponse générique mais personnalisée
@@ -128,12 +125,11 @@ Cette mission me semble ${lower.includes('urgent') ? 'urgente' : 'importante'} e
 ## 🎪 Prochaines étapes
 Je pense qu'on peut s'attaquer à ça étape par étape. Tu veux qu'on détaille une partie en particulier ?
 
-*Comme d'habitude, j'ai tout organisé pour que ce soit clair et faisable ! 💝*`;
+*Comme d'habitude, j'ai tout organisé pour que ce soit clair et faisable ! 💝*`
 }
 
 function generateHugoResponse(objective: string, context?: string) {
-  const lower = objective.toLowerCase();
-  
+  const lower = objective.toLowerCase()
   if (lower.includes('wordpress') || lower.includes('plugin') || lower.includes('site')) {
     return `# 💻 Solution Technique - HugoAI
 
@@ -165,12 +161,12 @@ Temps estimé : ${lower.includes('simple') ? '30 min' : '2-3h'}
 ## 🎯 Code snippet utile
 \`\`\`php
 // Debug mode dans wp-config.php
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
-define('WP_DEBUG_DISPLAY', false);
+define('WP_DEBUG', true)
+define('WP_DEBUG_LOG', true)
+define('WP_DEBUG_DISPLAY', false)
 \`\`\`
 
-*Astuce de dev : toujours backup avant de toucher quoi que ce soit ! 🔥*`;
+*Astuce de dev : toujours backup avant de toucher quoi que ce soit ! 🔥*`
   }
 
   if (lower.includes('design') || lower.includes('css') || lower.includes('style')) {
@@ -198,23 +194,23 @@ Salut mec ! 🎮 Alors, on va styliser tout ça :
 \`\`\`css
 /* Variables CSS pour la cohérence */
 :root {
-  --color-primary: #3b82f6;
-  --color-secondary: #64748b;
-  --font-main: 'Inter', sans-serif;
+  --color-primary: #3b82f6
+  --color-secondary: #64748b
+  --font-main: 'Inter', sans-serif
 }
 
 /* Grid moderne */
 .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))
+  gap: 2rem
 }
 \`\`\`
 
 ## 🎯 Prochaine étape
 Tu veux qu'on commence par quoi ? Les couleurs ? La typo ? Ou direct un mockup ?
 
-*Mon truc : itérer vite, tester souvent ! 🔥*`;
+*Mon truc : itérer vite, tester souvent ! 🔥*`
   }
 
   // Réponse générique technique
@@ -246,12 +242,11 @@ Niveau technique requis : ${lower.includes('simple') ? 'Facile' : lower.includes
 
 Tu veux qu'on dive plus profond sur un aspect en particulier ?
 
-*Dev tip : commence simple, complexifie seulement si nécessaire ! 🔥*`;
+*Dev tip : commence simple, complexifie seulement si nécessaire ! 🔥*`
 }
 
 function generateJPBotResponse(objective: string, context?: string) {
-  const lower = objective.toLowerCase();
-  
+  const lower = objective.toLowerCase()
   return `# 📊 Analyse Factuelle - JPBot
 
 Analyse terminée. Données collectées. Rapport généré.
@@ -285,12 +280,11 @@ ${lower.includes('article') || lower.includes('contenu') ? '- Temps de lecture m
 
 Recommandation : Procéder par phases mesurables. Éviter optimisation prématurée.
 
-*Données > Opinions. Mesurer > Supposer.*`;
+*Données > Opinions. Mesurer > Supposer.*`
 }
 
 function generateElodieResponse(objective: string, context?: string) {
-  const lower = objective.toLowerCase();
-  
+  const lower = objective.toLowerCase()
   if (lower.includes('article') || lower.includes('blog') || lower.includes('contenu')) {
     return `# ✨ Création de Contenu - ÉlodieAI
 
@@ -325,7 +319,7 @@ L'article que tu veux, je le vois déjà : **${lower.includes('guide') ? 'un gui
 
 ${lower.includes('seo') ? '## 🔍 Optimisation SEO douce\n- Title accrocheur (60 caractères max)\n- Meta description qui donne envie (150 caractères)\n- Structure H1/H2/H3 logique\n- Mots-clés naturellement intégrés' : ''}
 
-*Mon petit plus : j'ajoute toujours une pointe d'émotion qui fait la différence ✨*`;
+*Mon petit plus : j'ajoute toujours une pointe d'émotion qui fait la différence ✨*`
   }
 
   if (lower.includes('réseaux') || lower.includes('social') || lower.includes('instagram')) {
@@ -362,7 +356,7 @@ Hello ! 🎵 Alors, on va faire vibrer tes réseaux sociaux ?
 - **Vendredi** : Interaction/Question communauté
 - **Dimanche** : Personnel/Behind-the-scenes
 
-*Mon secret : l'authenticité touche plus que la perfection ! 🌟*`;
+*Mon secret : l'authenticité touche plus que la perfection ! 🌟*`
   }
 
   // Réponse générique créative
@@ -400,12 +394,11 @@ Je sens que ce projet a un potentiel énorme pour **vraiment connecter** avec to
 
 Tu veux qu'on explore ensemble quelle direction créative te ressemble le plus ?
 
-*Mon truc : créer du contenu qui fait du bien autant qu'il informe ✨*`;
+*Mon truc : créer du contenu qui fait du bien autant qu'il informe ✨*`
 }
 
 function generateClaraResponse(objective: string, context?: string) {
-  const lower = objective.toLowerCase();
-  
+  const lower = objective.toLowerCase()
   if (lower.includes('vente') || lower.includes('conversion') || lower.includes('commercial')) {
     return `# 💰 Stratégie de Conversion - ClaraLaCloseuse
 
@@ -440,7 +433,7 @@ Hey ! ☕ Café serré et let's go, on va faire du chiffre !
 - "Je récupère ma méthode gratuite"
 - "J'accède à ma formation maintenant"
 
-*Mon secret : vendre l'émotion, justifier avec la logique ! 💪*`;
+*Mon secret : vendre l'émotion, justifier avec la logique ! 💪*`
   }
 
   if (lower.includes('réseaux') || lower.includes('social') || lower.includes('posts')) {
@@ -481,7 +474,7 @@ Salut ! ☕ On va faire des posts qui font réagir et convertir !
 - **Mercredi** : Contenu éducatif (valeur ajoutée)
 - **Vendredi** : Interaction/Question (engagement weekend)
 
-*Astuce de pro : 80% de valeur, 20% de vente. Toujours ! 🎯*`;
+*Astuce de pro : 80% de valeur, 20% de vente. Toujours ! 🎯*`
   }
 
   // Réponse générique commerciale
@@ -520,12 +513,11 @@ Je vois du potentiel énorme pour **augmenter significativement** tes conversion
 
 Tu veux qu'on se concentre sur quel élément en premier ?
 
-*Ma règle d'or : tester, mesurer, optimiser, répéter ! 💪*`;
+*Ma règle d'or : tester, mesurer, optimiser, répéter ! 💪*`
 }
 
 function generateFauconResponse(objective: string, context?: string) {
-  const lower = objective.toLowerCase();
-  
+  const lower = objective.toLowerCase()
   return `# 🎯 Focus Essentiel - FauconLeMaitreFocus
 
 Focus. Analyse. Action.
@@ -566,30 +558,27 @@ Focus. Analyse. Action.
 
 **Action immédiate** : Commencer par le plus simple qui fonctionne.
 
-*Principe : Simple. Efficace. Maintenant.*`;
+*Principe : Simple. Efficace. Maintenant.*`
 }
 
 // Wrapper les handlers avec l'authentification
 export const GET = withAuth(async (request: NextRequest) => {
   try {
-    const session = await getServerSession(authOptions);
-    
+    const session = await getServerSession(authOptions)
     // Récupérer l'utilisateur pour vérifier son rôle
     const user = await prisma.user.findUnique({
       where: { email: session!.user!.email! },
       select: { id: true, role: true }
-    });
-
+    })
     if (!user) {
-      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
+      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 })
     }
 
     // Construire la requête selon le rôle
-    let whereClause: any = {};
-    
+    let whereClause: any = {}
     // Si ce n'est pas un super admin, filtrer par utilisateur
     if (user.role !== 'SUPER_ADMIN') {
-      whereClause.userId = user.id;
+      whereClause.userId = user.id
     }
     // Les super admins voient toutes les missions
 
@@ -617,34 +606,28 @@ export const GET = withAuth(async (request: NextRequest) => {
           }
         }
       }
-    });
-    
-    return NextResponse.json({ missions });
+    })
+    return NextResponse.json({ missions })
   } catch (error) {
-    console.error("GET Error:", error);
-    return NextResponse.json({ missions: [] });
+    console.error("GET Error:", error)
+    return NextResponse.json({ missions: [] })
   }
-});
-
+})
 export const POST = withAuth(async (request: NextRequest) => {
   try {
-    const session = await getServerSession(authOptions);
-    
+    const session = await getServerSession(authOptions)
     // Récupérer l'utilisateur
     const user = await prisma.user.findUnique({
       where: { email: session!.user!.email! },
       select: { id: true }
-    });
-
+    })
     if (!user) {
-      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 });
+      return NextResponse.json({ error: "Utilisateur non trouvé" }, { status: 404 })
     }
 
-    const body = await request.json();
-    const { prompt, objective, deadline, priority, context, details, selectedAgents } = body || {};
-
-    let fields = { objective, deadline, priority, context, details, selectedAgents } as any;
-
+    const body = await request.json()
+    const { prompt, objective, deadline, priority, context, details, selectedAgents } = body || {}
+    let fields = { objective, deadline, priority, context, details, selectedAgents } as any
     // Extraction intelligente avec OpenAI si c'est un prompt
     if (prompt && !objective) {
       try {
@@ -658,34 +641,32 @@ export const POST = withAuth(async (request: NextRequest) => {
           },
           required: ["objective"],
           additionalProperties: false
-        } as const;
-        
+        } as const
         const extracted = await callJson(
           "Tu es un extracteur de champs pour créer une mission.",
           `Extrait les champs à partir de: ${prompt}. Retourne uniquement JSON avec objective, deadline (ISO ou texte), priority (low|medium|high), context.`,
           schema as any
-        );
-        fields = { ...fields, ...extracted };
+        )
+        fields = { ...fields, ...extracted }
       } catch (e) {
         // Fallback: utiliser le prompt comme objectif
-        fields.objective = prompt;
+        fields.objective = prompt
       }
     }
 
     if (!fields.objective) {
-      return NextResponse.json({ error: "objective is required" }, { status: 400 });
+      return NextResponse.json({ error: "objective is required" }, { status: 400 })
     }
 
     // 🤖 ÉVALUATION AUTOMATIQUE DE PRIORITÉ PAR PRIORITYBOT
-    let finalPriority = fields.priority;
-    let priorityReasoning = "";
-    
+    let finalPriority = fields.priority
+    let priorityReasoning = ""
     if (!finalPriority || finalPriority === "auto") {
-      console.log("🤖 PriorityBot évalue la priorité de la mission...");
-      const evaluation = evaluatePriority(fields.objective, fields.context || "");
-      finalPriority = evaluation.priority;
-      priorityReasoning = evaluation.reasoning;
-      console.log(`⚡ PriorityBot recommande: ${finalPriority} (score: ${evaluation.score})`);
+      console.log("🤖 PriorityBot évalue la priorité de la mission...")
+      const evaluation = evaluatePriority(fields.objective, fields.context || "")
+      finalPriority = evaluation.priority
+      priorityReasoning = evaluation.reasoning
+      console.log(`⚡ PriorityBot recommande: ${finalPriority} (score: ${evaluation.score})`)
     }
 
     const mission = await prisma.mission.create({
@@ -699,12 +680,11 @@ export const POST = withAuth(async (request: NextRequest) => {
         status: "received",
         userId: user.id
       }
-    });
-
+    })
     // Enregistrer l'évaluation de PriorityBot dans un champ spécial de la mission
     // PriorityBot ne crée pas de briefs ni de livrables
     if (priorityReasoning) {
-      console.log("📝 Enregistrement de l'analyse PriorityBot...");
+      console.log("📝 Enregistrement de l'analyse PriorityBot...")
       try {
         await prisma.mission.update({
           where: { id: mission.id },
@@ -719,68 +699,59 @@ export const POST = withAuth(async (request: NextRequest) => {
               originalContext: fields.context
             })
           }
-        });
+        })
       } catch (error) {
-        console.error("Erreur enregistrement PriorityBot:", error);
+        console.error("Erreur enregistrement PriorityBot:", error)
       }
     }
 
     // 🚀 ORCHESTRATION AUTOMATIQUE SIMPLIFIÉE (sans workers externes)
-    console.log("Mission créée:", mission.id, "- Lancement de l'orchestration directe");
-    
+    console.log("Mission créée:", mission.id, "- Lancement de l'orchestration directe")
     // Récupérer les agents actifs si pas spécifié
-    let activeAgents = fields.selectedAgents;
+    let activeAgents = fields.selectedAgents
     if (!activeAgents || activeAgents.length === 0) {
       try {
         // Configuration par défaut des agents actifs
-        activeAgents = ["KarineAI", "HugoAI", "JPBot", "ElodieAI"];
-        
+        activeAgents = ["KarineAI", "HugoAI", "JPBot", "ElodieAI"]
         // TODO: Dans le futur, récupérer depuis la config utilisateur
-        // const configResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/agents/config`);
+        // const configResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/agents/config`)
         // if (configResponse.ok) {
-        //   const config = await configResponse.json();
-        //   activeAgents = config.activeAgents;
+        //   const config = await configResponse.json()
+        //   activeAgents = config.activeAgents
         // }
       } catch (error) {
-        console.error("Erreur récupération config agents:", error);
-        activeAgents = ["KarineAI", "HugoAI", "JPBot", "ElodieAI"];
+        console.error("Erreur récupération config agents:", error)
+        activeAgents = ["KarineAI", "HugoAI", "JPBot", "ElodieAI"]
       }
     }
 
     // Simulation immédiate du processus complet
     setTimeout(async () => {
       try {
-        await simulateCompleteWorkflow(mission.id, activeAgents);
+        await simulateCompleteWorkflow(mission.id, activeAgents)
       } catch (error) {
-        console.error("Erreur orchestration:", error);
+        console.error("Erreur orchestration:", error)
       }
-    }, 1000);
-
-    return NextResponse.json({ missionId: mission.id });
+    }, 1000)
+    return NextResponse.json({ missionId: mission.id })
   } catch (error) {
-    console.error("POST Error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("POST Error:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
-});
-
+})
 async function simulateCompleteWorkflow(missionId: string, selectedAgents?: string[]) {
-  console.log("🎯 Début orchestration pour mission:", missionId);
-  
+  console.log("🎯 Début orchestration pour mission:", missionId)
   // Étape 1: Capitaine Jack découpe en briefs
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  await prisma.mission.update({ where: { id: missionId }, data: { status: "split" } });
-  console.log("✅ Briefs créés");
-  
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  await prisma.mission.update({ where: { id: missionId }, data: { status: "split" } })
+  console.log("✅ Briefs créés")
   // Simulation des briefs spécialisés
-  const mission = await prisma.mission.findUnique({ where: { id: missionId } });
-  const objective = mission?.objective || "";
-  
+  const mission = await prisma.mission.findUnique({ where: { id: missionId } })
+  const objective = mission?.objective || ""
   // Agents sélectionnés ou par défaut tous les agents (exclure PriorityBot du workflow)
-  const workflowAgents = selectedAgents || ["KarineAI", "HugoAI", "JPBot", "ElodieAI", "ClaraLaCloseuse", "FauconLeMaitreFocus"];
-  
+  const workflowAgents = selectedAgents || ["KarineAI", "HugoAI", "JPBot", "ElodieAI", "ClaraLaCloseuse", "FauconLeMaitreFocus"]
   // Créer des briefs pour tous les agents de travail (pas PriorityBot)
-  console.log("📝 Création des briefs pour les agents:", workflowAgents);
-  
+  console.log("📝 Création des briefs pour les agents:", workflowAgents)
   for (const agent of workflowAgents) {
     try {
       await prisma.brief.create({
@@ -794,10 +765,10 @@ async function simulateCompleteWorkflow(missionId: string, selectedAgents?: stri
           },
           status: "queued"
         }
-      });
-      console.log(`✅ Brief créé pour ${agent}`);
+      })
+      console.log(`✅ Brief créé pour ${agent}`)
     } catch (error) {
-      console.error(`❌ Erreur création brief pour ${agent}:`, error);
+      console.error(`❌ Erreur création brief pour ${agent}:`, error)
     }
   }
   
@@ -900,8 +871,7 @@ Focus. Essentiel. Livrable.
 **Délai:** Le plus court possible sans sacrifier la qualité.
 
 **Méditation du jour:** "Que faut-il vraiment pour réussir cette mission?" 🧘‍♂️`
-  };
-  
+  }
   // Créer seulement les briefs pour les agents sélectionnés
   for (const agent of workflowAgents) {
     if (allAgentBriefs[agent as keyof typeof allAgentBriefs]) {
@@ -912,15 +882,14 @@ Focus. Essentiel. Livrable.
           contentJson: allAgentBriefs[agent as keyof typeof allAgentBriefs],
           status: "done"
         }
-      });
+      })
     }
   }
   
   // Étape 2: Agents travaillent
-  await new Promise(resolve => setTimeout(resolve, 3000));
-  await prisma.mission.update({ where: { id: missionId }, data: { status: "in_progress" } });
-  console.log("✅ Agents en cours...");
-  
+  await new Promise(resolve => setTimeout(resolve, 3000))
+  await prisma.mission.update({ where: { id: missionId }, data: { status: "in_progress" } })
+  console.log("✅ Agents en cours...")
   // Simulation des livrables spécialisés et personnalisés
   const allAgentDeliverables = {
     "KarineAI": {
@@ -1075,8 +1044,7 @@ Focus. Essentiel. Livrable.
 - Mercredi: Ajustements tactiques
 - Vendredi: Préparation semaine suivante`
     }
-  };
-  
+  }
   // Créer seulement les livrables pour les agents sélectionnés
   for (const agent of workflowAgents) {
     if (allAgentDeliverables[agent as keyof typeof allAgentDeliverables]) {
@@ -1086,15 +1054,14 @@ Focus. Essentiel. Livrable.
           agent,
           output: allAgentDeliverables[agent as keyof typeof allAgentDeliverables]
         }
-      });
+      })
     }
   }
   
   // Étape 3: Compilation
-  await new Promise(resolve => setTimeout(resolve, 2000));
-  await prisma.mission.update({ where: { id: missionId }, data: { status: "compiled" } });
-  console.log("✅ Rapport compilé");
-  
+  await new Promise(resolve => setTimeout(resolve, 2000))
+  await prisma.mission.update({ where: { id: missionId }, data: { status: "compiled" } })
+  console.log("✅ Rapport compilé")
   // Créer le rapport final
   const reportContent = `# Rapport de Mission: ${mission?.objective}
 
@@ -1110,8 +1077,7 @@ Mission complétée avec succès.
 ## Recommandations
 - Suivre les KPIs définis
 - Ajuster selon les retours utilisateurs
-- Mesurer l'impact des actions recommandées`;
-
+- Mesurer l'impact des actions recommandées`
   await prisma.report.create({
     data: {
       missionId,
@@ -1120,12 +1086,11 @@ Mission complétée avec succès.
       cautions: "Suivi recommandé pour validation des résultats et ajustements nécessaires",
       nextSteps: "Mise en œuvre des recommandations et mesure des KPIs définis"
     }
-  });
-  
+  })
   // Étape 4: Finalisation
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  await prisma.mission.update({ where: { id: missionId }, data: { status: "notified" } });
-  console.log("🎉 Mission terminée:", missionId);
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  await prisma.mission.update({ where: { id: missionId }, data: { status: "notified" } })
+  console.log("🎉 Mission terminée:", missionId)
 }
 
 

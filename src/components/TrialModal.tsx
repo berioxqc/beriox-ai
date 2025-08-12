@@ -1,14 +1,12 @@
-"use client";
-import { signIn } from "next-auth/react";
-
+"use client"
+import { signIn } from "next-auth/react"
 interface TrialModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
-  if (!isOpen) return null;
-
+  if (!isOpen) return null
   return (
     <div style={{
       position: "fixed",
@@ -103,14 +101,14 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
                   <div style={{
                     fontSize: "16px"
                   }}>
-                    {benefit.split(&apos; &apos;)[0]}
+                    {benefit.split(' ')[0]}
                   </div>
                   <div style={{
                     fontSize: "14px",
                     color: "#425466",
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
                   }}>
-                    {benefit.substring(benefit.indexOf(&apos; &apos;) + 1)}
+                    {benefit.substring(benefit.indexOf(' ') + 1)}
                   </div>
                 </div>
               ))}
@@ -142,14 +140,14 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.background = "#5a51e5";
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 8px 24px rgba(99, 91, 255, 0.3)";
+                e.currentTarget.style.background = "#5a51e5"
+                e.currentTarget.style.transform = "translateY(-2px)"
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(99, 91, 255, 0.3)"
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.background = "#635bff";
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "none";
+                e.currentTarget.style.background = "#635bff"
+                e.currentTarget.style.transform = "translateY(0)"
+                e.currentTarget.style.boxShadow = "none"
               }}
             >
               <img 
@@ -183,5 +181,5 @@ export default function TrialModal({ isOpen, onClose }: TrialModalProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

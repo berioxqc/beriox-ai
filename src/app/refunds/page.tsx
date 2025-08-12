@@ -1,136 +1,122 @@
-"use client";
-import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "@/hooks/useTheme";
-
+"use client"
+import { useState, useEffect } from "react"
+import Layout from "@/components/Layout"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useTheme } from "@/hooks/useTheme"
 interface RefundRequest {
-  id: string;
-  missionId?: string;
-  amount: number;
-  reason: string;
-  description: string;
-  status: string;
-  createdAt: string;
-  reviewedAt?: string;
-  adminNotes?: string;
+  id: string
+  missionId?: string
+  amount: number
+  reason: string
+  description: string
+  status: string
+  createdAt: string
+  reviewedAt?: string
+  adminNotes?: string
 }
 
 interface UserCredits {
-  id: string;
-  planId: string;
-  creditsUsed: number;
-  creditsLimit: number;
-  resetDate: string;
+  id: string
+  planId: string
+  creditsUsed: number
+  creditsLimit: number
+  resetDate: string
 }
 
 export default function RefundsPage() {
-  const [refundRequests, setRefundRequests] = useState<RefundRequest[]>([]);
-  const [userCredits, setUserCredits] = useState<UserCredits | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  
+  const [refundRequests, setRefundRequests] = useState<RefundRequest[]>([])
+  const [userCredits, setUserCredits] = useState<UserCredits | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+  const [showForm, setShowForm] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
   // Form state
   const [formData, setFormData] = useState({
     missionId: "",
     amount: 1,
     reason: "NOT_SATISFIED" as const,
     description: ""
-  });
-
-  const theme = useTheme();
-
+  })
+  const theme = useTheme()
   useEffect(() => {
-    fetchRefunds();
-  }, []);
-
+    fetchRefunds()
+  }, [])
   const fetchRefunds = async () => {
     try {
-      const response = await fetch("/api/refunds/request");
-      const data = await response.json();
-      
+      const response = await fetch("/api/refunds/request")
+      const data = await response.json()
       if (response.ok) {
-        setRefundRequests(data.refundRequests);
-        setUserCredits(data.userCredits);
+        setRefundRequests(data.refundRequests)
+        setUserCredits(data.userCredits)
       } else {
-        setError(data.error);
+        setError(data.error)
       }
     } catch (error) {
-      setError("Erreur lors du chargement des données");
+      setError("Erreur lors du chargement des données")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-    setSuccess(null);
-
+    e.preventDefault()
+    setSubmitting(true)
+    setError(null)
+    setSuccess(null)
     try {
       const response = await fetch("/api/refunds/request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
+      })
+      const data = await response.json()
       if (response.ok) {
-        setSuccess(data.message);
-        setShowForm(false);
+        setSuccess(data.message)
+        setShowForm(false)
         setFormData({
           missionId: "",
           amount: 1,
           reason: "NOT_SATISFIED",
           description: ""
-        });
+        })
         fetchRefunds(); // Recharger les données
       } else {
-        setError(data.error);
+        setError(data.error)
       }
     } catch (error) {
-      setError("Erreur lors de la soumission");
+      setError("Erreur lors de la soumission")
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
-  };
-
+  }
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "PENDING": return "#f59e0b";
-      case "APPROVED": return "#10b981";
-      case "REJECTED": return "#ef4444";
-      case "CANCELLED": return "#6b7280";
-      default: return "#6b7280";
+      case "PENDING": return "#f59e0b"
+      case "APPROVED": return "#10b981"
+      case "REJECTED": return "#ef4444"
+      case "CANCELLED": return "#6b7280"
+      default: return "#6b7280"
     }
-  };
-
+  }
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case "PENDING": return "En attente";
-      case "APPROVED": return "Approuvé";
-      case "REJECTED": return "Rejeté";
-      case "CANCELLED": return "Annulé";
-      default: return status;
+      case "PENDING": return "En attente"
+      case "APPROVED": return "Approuvé"
+      case "REJECTED": return "Rejeté"
+      case "CANCELLED": return "Annulé"
+      default: return status
     }
-  };
-
+  }
   const getReasonLabel = (reason: string) => {
     switch (reason) {
-      case "QUALITY_ISSUE": return "Problème de qualité";
-      case "TECHNICAL_PROBLEM": return "Problème technique";
-      case "NOT_SATISFIED": return "Non satisfait";
-      case "DUPLICATE_CHARGE": return "Facturation en double";
-      case "OTHER": return "Autre";
-      default: return reason;
+      case "QUALITY_ISSUE": return "Problème de qualité"
+      case "TECHNICAL_PROBLEM": return "Problème technique"
+      case "NOT_SATISFIED": return "Non satisfait"
+      case "DUPLICATE_CHARGE": return "Facturation en double"
+      case "OTHER": return "Autre"
+      default: return reason
     }
-  };
-
+  }
   if (loading) {
     return (
       <Layout title="Remboursements" subtitle="Gérez vos demandes de remboursement">
@@ -139,7 +125,7 @@ export default function RefundsPage() {
           <p style={{ marginTop: "16px", color: theme.colors.neutral[600] }}>Chargement...</p>
         </div>
       </Layout>
-    );
+    )
   }
 
   return (
@@ -202,7 +188,7 @@ export default function RefundsPage() {
                   Prochain reset
                 </div>
                 <div style={{ fontSize: "16px", fontWeight: "600", color: theme.colors.neutral[900] }}>
-                  {new Date(userCredits.resetDate).toLocaleDateString(&apos;fr-FR&apos;)}
+                  {new Date(userCredits.resetDate).toLocaleDateString('fr-FR')}
                 </div>
               </div>
             </div>
@@ -491,7 +477,7 @@ export default function RefundsPage() {
                           {getStatusLabel(request.status)}
                         </span>
                         <span style={{ fontSize: "14px", color: theme.colors.neutral[600] }}>
-                          {request.amount} crédit{request.amount > 1 ? &apos;s&apos; : &apos;&apos;}
+                          {request.amount} crédit{request.amount > 1 ? 's' : ''}
                         </span>
                       </div>
                       
@@ -501,7 +487,7 @@ export default function RefundsPage() {
                     </div>
                     
                     <div style={{ fontSize: "12px", color: theme.colors.neutral[500] }}>
-                      {new Date(request.createdAt).toLocaleDateString(&apos;fr-FR&apos;)}
+                      {new Date(request.createdAt).toLocaleDateString('fr-FR')}
                     </div>
                   </div>
                   
@@ -528,5 +514,5 @@ export default function RefundsPage() {
         </div>
       </div>
     </Layout>
-  );
+  )
 }

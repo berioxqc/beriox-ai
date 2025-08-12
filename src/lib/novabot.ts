@@ -1,38 +1,37 @@
-import { callJson } from "./openai";
-
+import { callJson } from "./openai"
 export interface NovaMission {
-  id: string;
-  title: string;
-  constat: string;
-  sources: string[];
-  objectif: string;
+  id: string
+  title: string
+  constat: string
+  sources: string[]
+  objectif: string
   impactEstime: number; // 0-5
   effortEstime: number; // 0-5
   priorite: number; // impact - effort
-  planAction: string[];
-  risques: string[];
-  planB: string;
-  historique: string;
-  tags: string[];
-  createdAt: Date;
-  status: 'pending' | 'validated' | 'rejected' | 'implemented';
-  jpbFeedback?: string;
+  planAction: string[]
+  risques: string[]
+  planB: string
+  historique: string
+  tags: string[]
+  createdAt: Date
+  status: 'pending' | 'validated' | 'rejected' | 'implemented'
+  jpbFeedback?: string
 }
 
 export interface DataSource {
-  type: 'ga4' | 'gsc' | 'ads' | 'crm';
-  data: any;
-  lastUpdated: Date;
+  type: 'ga4' | 'gsc' | 'ads' | 'crm'
+  data: any
+  lastUpdated: Date
 }
 
 export interface MissionHistory {
-  id: string;
-  title: string;
-  objectif: string;
-  tags: string[];
-  resultat: 'success' | 'failure' | 'partial';
-  notes: string;
-  createdAt: Date;
+  id: string
+  title: string
+  objectif: string
+  tags: string[]
+  resultat: 'success' | 'failure' | 'partial'
+  notes: string
+  createdAt: Date
 }
 
 export class NovaBotService {
@@ -43,63 +42,56 @@ export class NovaBotService {
     dataSources: DataSource[],
     missionHistory: MissionHistory[],
     userContext: {
-      industry: string;
-      goals: string[];
-      currentPlan: string;
+      industry: string
+      goals: string[]
+      currentPlan: string
     }
   ): Promise<NovaMission> {
     
     // Analyser les données pour identifier les opportunités
-    const opportunities = this.analyzeDataSources(dataSources);
-    
+    const opportunities = this.analyzeDataSources(dataSources)
     // Vérifier les doublons avec l'historique
-    const uniqueOpportunities = this.filterDuplicates(opportunities, missionHistory);
-    
+    const uniqueOpportunities = this.filterDuplicates(opportunities, missionHistory)
     if (uniqueOpportunities.length === 0) {
-      throw new Error("Aucune nouvelle opportunité détectée dans les données actuelles");
+      throw new Error("Aucune nouvelle opportunité détectée dans les données actuelles")
     }
     
     // Sélectionner la meilleure opportunité
-    const bestOpportunity = this.selectBestOpportunity(uniqueOpportunities);
-    
+    const bestOpportunity = this.selectBestOpportunity(uniqueOpportunities)
     // Générer la mission avec GPT
-    const mission = await this.generateMissionWithGPT(bestOpportunity, userContext);
-    
-    return mission;
+    const mission = await this.generateMissionWithGPT(bestOpportunity, userContext)
+    return mission
   }
 
   /**
    * Analyse les sources de données pour identifier les opportunités
    */
   private static analyzeDataSources(sources: DataSource[]): any[] {
-    const opportunities: any[] = [];
-    
+    const opportunities: any[] = []
     sources.forEach(source => {
       switch (source.type) {
         case 'ga4':
-          opportunities.push(...this.analyzeGA4Data(source.data));
-          break;
+          opportunities.push(...this.analyzeGA4Data(source.data))
+          break
         case 'gsc':
-          opportunities.push(...this.analyzeGSCData(source.data));
-          break;
+          opportunities.push(...this.analyzeGSCData(source.data))
+          break
         case 'ads':
-          opportunities.push(...this.analyzeAdsData(source.data));
-          break;
+          opportunities.push(...this.analyzeAdsData(source.data))
+          break
         case 'crm':
-          opportunities.push(...this.analyzeCRMData(source.data));
-          break;
+          opportunities.push(...this.analyzeCRMData(source.data))
+          break
       }
-    });
-    
-    return opportunities;
+    })
+    return opportunities
   }
 
   /**
    * Analyse les données Google Analytics 4
    */
   private static analyzeGA4Data(data: any): any[] {
-    const opportunities: any[] = [];
-    
+    const opportunities: any[] = []
     // Analyser les pages avec faible engagement
     if (data.pages) {
       data.pages.forEach((page: any) => {
@@ -112,14 +104,14 @@ export class NovaBotService {
             impact: 4,
             effort: 2,
             description: `Taux de rebond élevé (${page.bounceRate}%) sur ${page.pageViews} vues`
-          });
+          })
         }
-      });
+      })
     }
     
     // Analyser les conversions
     if (data.conversions) {
-      const avgConversionRate = data.conversions.total / data.sessions.total;
+      const avgConversionRate = data.conversions.total / data.sessions.total
       if (avgConversionRate < 0.02) {
         opportunities.push({
           type: 'conversion',
@@ -128,19 +120,18 @@ export class NovaBotService {
           impact: 5,
           effort: 3,
           description: `Taux de conversion faible (${(avgConversionRate * 100).toFixed(2)}%)`
-        });
+        })
       }
     }
     
-    return opportunities;
+    return opportunities
   }
 
   /**
    * Analyse les données Google Search Console
    */
   private static analyzeGSCData(data: any): any[] {
-    const opportunities: any[] = [];
-    
+    const opportunities: any[] = []
     // Analyser les requêtes avec CTR faible
     if (data.queries) {
       data.queries.forEach((query: any) => {
@@ -153,9 +144,9 @@ export class NovaBotService {
             impact: 4,
             effort: 2,
             description: `CTR faible (${(query.ctr * 100).toFixed(2)}%) sur ${query.impressions} impressions pour "${query.query}"`
-          });
+          })
         }
-      });
+      })
     }
     
     // Analyser les pages avec position moyenne
@@ -170,20 +161,19 @@ export class NovaBotService {
             impact: 3,
             effort: 2,
             description: `Position ${page.position} sur ${page.impressions} impressions pour ${page.page}`
-          });
+          })
         }
-      });
+      })
     }
     
-    return opportunities;
+    return opportunities
   }
 
   /**
    * Analyse les données Google Ads
    */
   private static analyzeAdsData(data: any): any[] {
-    const opportunities: any[] = [];
-    
+    const opportunities: any[] = []
     // Analyser les campagnes avec CPA élevé
     if (data.campaigns) {
       data.campaigns.forEach((campaign: any) => {
@@ -196,23 +186,22 @@ export class NovaBotService {
             impact: 4,
             effort: 3,
             description: `CPA élevé (${campaign.cpa}$) vs cible (${campaign.targetCpa}$) pour ${campaign.name}`
-          });
+          })
         }
-      });
+      })
     }
     
-    return opportunities;
+    return opportunities
   }
 
   /**
    * Analyse les données CRM
    */
   private static analyzeCRMData(data: any): any[] {
-    const opportunities: any[] = [];
-    
+    const opportunities: any[] = []
     // Analyser le taux de conversion des leads
     if (data.leads) {
-      const conversionRate = data.leads.converted / data.leads.total;
+      const conversionRate = data.leads.converted / data.leads.total
       if (conversionRate < 0.1) {
         opportunities.push({
           type: 'crm',
@@ -221,11 +210,11 @@ export class NovaBotService {
           impact: 5,
           effort: 3,
           description: `Taux de conversion leads faible (${(conversionRate * 100).toFixed(2)}%)`
-        });
+        })
       }
     }
     
-    return opportunities;
+    return opportunities
   }
 
   /**
@@ -236,24 +225,21 @@ export class NovaBotService {
       // Calculer la similarité avec chaque mission historique
       const maxSimilarity = Math.max(...history.map(mission => 
         this.calculateSimilarity(opp.description, mission.title + ' ' + mission.objectif)
-      ));
-      
+      ))
       // Rejeter si similarité > 70%
-      return maxSimilarity < 0.7;
-    });
+      return maxSimilarity < 0.7
+    })
   }
 
   /**
    * Calcule la similarité entre deux textes
    */
   private static calculateSimilarity(text1: string, text2: string): number {
-    const words1 = text1.toLowerCase().split(/\s+/);
-    const words2 = text2.toLowerCase().split(/\s+/);
-    
-    const commonWords = words1.filter(word => words2.includes(word));
-    const totalWords = new Set([...words1, ...words2]).size;
-    
-    return commonWords.length / totalWords;
+    const words1 = text1.toLowerCase().split(/\s+/)
+    const words2 = text2.toLowerCase().split(/\s+/)
+    const commonWords = words1.filter(word => words2.includes(word))
+    const totalWords = new Set([...words1, ...words2]).size
+    return commonWords.length / totalWords
   }
 
   /**
@@ -261,10 +247,10 @@ export class NovaBotService {
    */
   private static selectBestOpportunity(opportunities: any[]): any {
     return opportunities.reduce((best, current) => {
-      const bestScore = best.impact / best.effort;
-      const currentScore = current.impact / current.effort;
-      return currentScore > bestScore ? current : best;
-    });
+      const bestScore = best.impact / best.effort
+      const currentScore = current.impact / current.effort
+      return currentScore > bestScore ? current : best
+    })
   }
 
   /**
@@ -313,30 +299,28 @@ La mission doit être:
 - Basée uniquement sur des données chiffrées
 - Originale (pas de doublon)
 - Orientée action rapide
-- Avec un plan B clair`;
-
+- Avec un plan B clair`
     const response = await callJson(
       "Tu es NovaBot, expert en génération de missions basées sur des données. Tu génères uniquement des missions pertinentes, chiffrées et réalisables. Réponds UNIQUEMENT en JSON valide.",
       prompt,
       undefined,
       "gpt-4o-mini"
-    );
-
+    )
     return {
       id: `nova_${Date.now()}`,
       ...response,
       createdAt: new Date(),
       status: 'pending'
-    };
+    }
   }
 
   /**
    * Valide une mission avec JPBot
    */
   static async validateWithJPBot(mission: NovaMission): Promise<{
-    validated: boolean;
-    feedback: string;
-    suggestions: string[];
+    validated: boolean
+    feedback: string
+    suggestions: string[]
   }> {
     const prompt = `Tu es JPBot, l'analyste critique. Évalue cette mission générée par NovaBot :
 
@@ -360,16 +344,14 @@ Réponds en JSON strict:
   "validated": true/false,
   "feedback": "Analyse détaillée",
   "suggestions": ["suggestion1", "suggestion2"]
-}`;
-
+}`
     const response = await callJson(
       "Tu es JPBot, analyste critique et méthodique. Tu évalues les missions avec rigueur et ne laisses passer aucune zone floue. Réponds UNIQUEMENT en JSON valide.",
       prompt,
       undefined,
       "gpt-4o-mini"
-    );
-
-    return response;
+    )
+    return response
   }
 
   /**
@@ -381,6 +363,6 @@ Réponds en JSON strict:
     feedback?: string
   ): Promise<void> {
     // Ici on mettrait à jour la base de données
-    console.log(`Mission ${missionId} mise à jour: ${status}`, feedback);
+    console.log(`Mission ${missionId} mise à jour: ${status}`, feedback)
   }
 }

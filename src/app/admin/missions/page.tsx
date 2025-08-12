@@ -1,130 +1,115 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+"use client"
+import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import Link from "next/link"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 interface Mission {
-  id: string;
-  objective: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  deadline: string | null;
-  priority: string;
-  context: string | null;
-  source: string;
-  userId: string;
+  id: string
+  objective: string
+  status: string
+  createdAt: string
+  updatedAt: string
+  deadline: string | null
+  priority: string
+  context: string | null
+  source: string
+  userId: string
   user: {
-    name: string;
-    email: string;
-    createdAt: string;
-  };
+    name: string
+    email: string
+    createdAt: string
+  }
 }
 
 interface MissionsResponse {
-  missions: Mission[];
+  missions: Mission[]
 }
 
 export default function AdminMissionsPage() {
-  const { data: session } = useSession();
-  const [missions, setMissions] = useState<Mission[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'today' | 'week' | 'month'>('all');
-
+  const { data: session } = useSession()
+  const [missions, setMissions] = useState<Mission[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [filter, setFilter] = useState<'all' | 'today' | 'week' | 'month'>('all')
   useEffect(() => {
-    fetchMissions();
-  }, []);
-
+    fetchMissions()
+  }, [])
   const fetchMissions = async () => {
     try {
-      setLoading(true);
-      const response = await fetch('/api/missions');
-      
+      setLoading(true)
+      const response = await fetch('/api/missions')
       if (!response.ok) {
-        throw new Error('Erreur lors du chargement des missions');
+        throw new Error('Erreur lors du chargement des missions')
       }
       
-      const data: MissionsResponse = await response.json();
-      setMissions(data.missions || []);
+      const data: MissionsResponse = await response.json()
+      setMissions(data.missions || [])
     } catch (error) {
-      console.error('Erreur:', error);
-      setError('Impossible de charger les missions');
+      console.error('Erreur:', error)
+      setError('Impossible de charger les missions')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
       case 'notified':
-        return { icon: 'check-circle', color: '#10b981' };
+        return { icon: 'check-circle', color: '#10b981' }
       case 'processing':
       case 'in_progress':
-        return { icon: 'clock', color: '#f59e0b' };
+        return { icon: 'clock', color: '#f59e0b' }
       case 'error':
-        return { icon: 'exclamation-triangle', color: '#ef4444' };
+        return { icon: 'exclamation-triangle', color: '#ef4444' }
       default:
-        return { icon: 'circle', color: '#6b7280' };
+        return { icon: 'circle', color: '#6b7280' }
     }
-  };
-
+  }
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return '#ef4444';
+        return '#ef4444'
       case 'medium':
-        return '#f59e0b';
+        return '#f59e0b'
       case 'low':
-        return '#10b981';
+        return '#10b981'
       default:
-        return '#6b7280';
+        return '#6b7280'
     }
-  };
-
+  }
   const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-    
-    if (diffInMinutes < 1) return 'À l\'instant';
-    if (diffInMinutes < 60) return `il y a ${diffInMinutes} min`;
-    
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `il y a ${diffInHours}h`;
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return `il y a ${diffInDays} jour${diffInDays > 1 ? 's' : ''}`;
-    
-    return date.toLocaleDateString('fr-FR');
-  };
-
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
+    if (diffInMinutes < 1) return 'À l\'instant'
+    if (diffInMinutes < 60) return `il y a ${diffInMinutes} min`
+    const diffInHours = Math.floor(diffInMinutes / 60)
+    if (diffInHours < 24) return `il y a ${diffInHours}h`
+    const diffInDays = Math.floor(diffInHours / 24)
+    if (diffInDays < 7) return `il y a ${diffInDays} jour${diffInDays > 1 ? 's' : ''}`
+    return date.toLocaleDateString('fr-FR')
+  }
   const filterMissions = (missions: Mission[]) => {
-    const now = new Date();
-    
+    const now = new Date()
     switch (filter) {
       case 'today':
         return missions.filter(mission => {
-          const missionDate = new Date(mission.createdAt);
-          return missionDate.toDateString() === now.toDateString();
-        });
+          const missionDate = new Date(mission.createdAt)
+          return missionDate.toDateString() === now.toDateString()
+        })
       case 'week':
-        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-        return missions.filter(mission => new Date(mission.createdAt) >= weekAgo);
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+        return missions.filter(mission => new Date(mission.createdAt) >= weekAgo)
       case 'month':
-        const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-        return missions.filter(mission => new Date(mission.createdAt) >= monthAgo);
+        const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+        return missions.filter(mission => new Date(mission.createdAt) >= monthAgo)
       default:
-        return missions;
+        return missions
     }
-  };
-
-  const filteredMissions = filterMissions(missions);
-
+  }
+  const filteredMissions = filterMissions(missions)
   if (loading) {
     return (
       <AuthGuard>
@@ -149,7 +134,7 @@ export default function AdminMissionsPage() {
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   if (error) {
@@ -176,13 +161,13 @@ export default function AdminMissionsPage() {
               <button
                 onClick={() => window.location.reload()}
                 style={{
-                  padding: &apos;12px 24px&apos;,
-                  backgroundColor: &apos;#635bff&apos;,
-                  color: &apos;white&apos;,
-                  border: &apos;none&apos;,
-                  borderRadius: &apos;8px&apos;,
-                  fontWeight: &apos;600&apos;,
-                  cursor: &apos;pointer&apos;
+                  padding: '12px 24px',
+                  backgroundColor: '#635bff',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: '600',
+                  cursor: 'pointer'
                 }}
               >
                 Réessayer
@@ -191,7 +176,7 @@ export default function AdminMissionsPage() {
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   return (
@@ -224,7 +209,7 @@ export default function AdminMissionsPage() {
                 fontSize: '16px',
                 margin: 0
               }}>
-                Vue d&apos;ensemble de toutes les missions créées par les utilisateurs
+                Vue d'ensemble de toutes les missions créées par les utilisateurs
               </p>
             </div>
 
@@ -364,7 +349,7 @@ export default function AdminMissionsPage() {
                 color: '#0a2540',
                 marginBottom: '4px'
               }}>
-                {filteredMissions.filter(m => m.status === &apos;completed&apos; || m.status === &apos;notified&apos;).length}
+                {filteredMissions.filter(m => m.status === 'completed' || m.status === 'notified').length}
               </div>
               <div style={{ color: '#6b7280', fontSize: '14px' }}>
                 Terminées
@@ -438,8 +423,7 @@ export default function AdminMissionsPage() {
                 gap: '16px'
               }}>
                 {filteredMissions.map((mission) => {
-                  const statusInfo = getStatusIcon(mission.status);
-                  
+                  const statusInfo = getStatusIcon(mission.status)
                   return (
                     <div key={mission.id} style={{
                       display: 'flex',
@@ -536,11 +520,11 @@ export default function AdminMissionsPage() {
                             gap: '4px'
                           }}>
                             <FontAwesomeIcon icon="calendar" />
-                            {new Date(mission.createdAt).toLocaleDateString(&apos;fr-FR&apos;, {
-                              day: &apos;numeric&apos;,
-                              month: &apos;short&apos;,
-                              hour: &apos;2-digit&apos;,
-                              minute: &apos;2-digit&apos;
+                            {new Date(mission.createdAt).toLocaleDateString('fr-FR', {
+                              day: 'numeric',
+                              month: 'short',
+                              hour: '2-digit',
+                              minute: '2-digit'
                             })}
                           </span>
 
@@ -583,7 +567,7 @@ export default function AdminMissionsPage() {
                         </Link>
                       </div>
                     </div>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -591,5 +575,5 @@ export default function AdminMissionsPage() {
         </div>
       </Layout>
     </AuthGuard>
-  );
+  )
 }

@@ -1,13 +1,11 @@
-"use client";
-import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import AccessGuard from "@/components/AccessGuard";
-import Icon from "@/components/ui/Icon";
-
+"use client"
+import { useSession } from "next-auth/react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import AccessGuard from "@/components/AccessGuard"
+import Icon from "@/components/ui/Icon"
 export default function CompetitorsPage() {
-  const { data: session } = useSession();
-
+  const { data: session } = useSession()
   return (
     <AuthGuard>
       <AccessGuard requiredPlan={['competitor-intelligence', 'enterprise']}>
@@ -142,7 +140,7 @@ export default function CompetitorsPage() {
                     <div style={{ marginRight: '8px' }}>
                       <Icon name="chart-line" />
                     </div>
-                    Configurer l&apos;alerte
+                    Configurer l'alerte
                   </button>
                 </div>
 
@@ -222,7 +220,7 @@ export default function CompetitorsPage() {
                     <div style={{ marginRight: '8px' }}>
                       <Icon name="envelope" />
                     </div>
-                    S&apos;abonner
+                    S'abonner
                   </button>
                 </div>
               </div>
@@ -231,5 +229,5 @@ export default function CompetitorsPage() {
         </Layout>
       </AccessGuard>
     </AuthGuard>
-  );
+  )
 }

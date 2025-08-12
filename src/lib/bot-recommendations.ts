@@ -1,93 +1,84 @@
-import { prisma } from './prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-
+import { prisma } from './prisma'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 export interface BotRecommendation {
-  id: string;
-  type: 'performance' | 'security' | 'ux' | 'business' | 'technical';
-  priority: 'low' | 'medium' | 'high' | 'critical';
-  title: string;
-  description: string;
-  impact: string;
-  effort: 'low' | 'medium' | 'high';
-  estimatedTime: string;
-  category: string;
-  tags: string[];
-  createdAt: Date;
-  botId?: string;
-  missionId?: string;
-  userId: string;
-  status: 'pending' | 'approved' | 'rejected' | 'implemented';
-  implementationNotes?: string;
+  id: string
+  type: 'performance' | 'security' | 'ux' | 'business' | 'technical'
+  priority: 'low' | 'medium' | 'high' | 'critical'
+  title: string
+  description: string
+  impact: string
+  effort: 'low' | 'medium' | 'high'
+  estimatedTime: string
+  category: string
+  tags: string[]
+  createdAt: Date
+  botId?: string
+  missionId?: string
+  userId: string
+  status: 'pending' | 'approved' | 'rejected' | 'implemented'
+  implementationNotes?: string
 }
 
 export interface BotAnalysis {
   performance: {
-    score: number;
-    issues: string[];
-    recommendations: string[];
-  };
+    score: number
+    issues: string[]
+    recommendations: string[]
+  }
   security: {
-    score: number;
-    vulnerabilities: string[];
-    fixes: string[];
-  };
+    score: number
+    vulnerabilities: string[]
+    fixes: string[]
+  }
   ux: {
-    score: number;
-    painPoints: string[];
-    improvements: string[];
-  };
+    score: number
+    painPoints: string[]
+    improvements: string[]
+  }
   business: {
-    opportunities: string[];
-    risks: string[];
-    optimizations: string[];
-  };
+    opportunities: string[]
+    risks: string[]
+    optimizations: string[]
+  }
 }
 
 export class BotRecommendationEngine {
-  private userId: string;
-
+  private userId: string
   constructor(userId: string) {
-    this.userId = userId;
+    this.userId = userId
   }
 
   /**
    * Analyse complète du système et génération de recommandations
    */
   async generateRecommendations(): Promise<BotRecommendation[]> {
-    const recommendations: BotRecommendation[] = [];
-
+    const recommendations: BotRecommendation[] = []
     // Analyse de performance
-    const performanceRecs = await this.analyzePerformance();
-    recommendations.push(...performanceRecs);
-
+    const performanceRecs = await this.analyzePerformance()
+    recommendations.push(...performanceRecs)
     // Analyse de sécurité
-    const securityRecs = await this.analyzeSecurity();
-    recommendations.push(...securityRecs);
-
+    const securityRecs = await this.analyzeSecurity()
+    recommendations.push(...securityRecs)
     // Analyse UX
-    const uxRecs = await this.analyzeUX();
-    recommendations.push(...uxRecs);
-
+    const uxRecs = await this.analyzeUX()
+    recommendations.push(...uxRecs)
     // Analyse business
-    const businessRecs = await this.analyzeBusiness();
-    recommendations.push(...businessRecs);
-
+    const businessRecs = await this.analyzeBusiness()
+    recommendations.push(...businessRecs)
     // Analyse technique
-    const technicalRecs = await this.analyzeTechnical();
-    recommendations.push(...technicalRecs);
-
-    return recommendations;
+    const technicalRecs = await this.analyzeTechnical()
+    recommendations.push(...technicalRecs)
+    return recommendations
   }
 
   /**
    * Analyse des performances et génération de recommandations
    */
   private async analyzePerformance(): Promise<BotRecommendation[]> {
-    const recommendations: BotRecommendation[] = [];
-
+    const recommendations: BotRecommendation[] = []
     // Analyser les temps de réponse des API
-    const apiPerformance = await this.getAPIPerformance();
+    const apiPerformance = await this.getAPIPerformance()
     if (apiPerformance.averageResponseTime > 500) {
       recommendations.push({
         id: `perf-${Date.now()}-1`,
@@ -103,11 +94,11 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
     // Analyser la taille du bundle
-    const bundleSize = await this.getBundleSize();
+    const bundleSize = await this.getBundleSize()
     if (bundleSize.totalSize > 500000) {
       recommendations.push({
         id: `perf-${Date.now()}-2`,
@@ -123,20 +114,19 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
-    return recommendations;
+    return recommendations
   }
 
   /**
    * Analyse de sécurité et génération de recommandations
    */
   private async analyzeSecurity(): Promise<BotRecommendation[]> {
-    const recommendations: BotRecommendation[] = [];
-
+    const recommendations: BotRecommendation[] = []
     // Vérifier les dépendances vulnérables
-    const vulnerabilities = await this.checkDependencies();
+    const vulnerabilities = await this.checkDependencies()
     if (vulnerabilities.length > 0) {
       recommendations.push({
         id: `sec-${Date.now()}-1`,
@@ -152,11 +142,11 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
     // Vérifier la configuration CSP
-    const cspIssues = await this.checkCSPConfiguration();
+    const cspIssues = await this.checkCSPConfiguration()
     if (cspIssues.length > 0) {
       recommendations.push({
         id: `sec-${Date.now()}-2`,
@@ -172,20 +162,19 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
-    return recommendations;
+    return recommendations
   }
 
   /**
    * Analyse UX et génération de recommandations
    */
   private async analyzeUX(): Promise<BotRecommendation[]> {
-    const recommendations: BotRecommendation[] = [];
-
+    const recommendations: BotRecommendation[] = []
     // Analyser les métriques d'engagement
-    const engagementMetrics = await this.getEngagementMetrics();
+    const engagementMetrics = await this.getEngagementMetrics()
     if (engagementMetrics.bounceRate > 60) {
       recommendations.push({
         id: `ux-${Date.now()}-1`,
@@ -201,11 +190,11 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
     // Analyser l'accessibilité
-    const accessibilityIssues = await this.checkAccessibility();
+    const accessibilityIssues = await this.checkAccessibility()
     if (accessibilityIssues.length > 0) {
       recommendations.push({
         id: `ux-${Date.now()}-2`,
@@ -221,20 +210,19 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
-    return recommendations;
+    return recommendations
   }
 
   /**
    * Analyse business et génération de recommandations
    */
   private async analyzeBusiness(): Promise<BotRecommendation[]> {
-    const recommendations: BotRecommendation[] = [];
-
+    const recommendations: BotRecommendation[] = []
     // Analyser les conversions
-    const conversionMetrics = await this.getConversionMetrics();
+    const conversionMetrics = await this.getConversionMetrics()
     if (conversionMetrics.rate < 5) {
       recommendations.push({
         id: `bus-${Date.now()}-1`,
@@ -250,11 +238,11 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
     // Analyser la rétention
-    const retentionMetrics = await this.getRetentionMetrics();
+    const retentionMetrics = await this.getRetentionMetrics()
     if (retentionMetrics.rate < 70) {
       recommendations.push({
         id: `bus-${Date.now()}-2`,
@@ -270,20 +258,19 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
-    return recommendations;
+    return recommendations
   }
 
   /**
    * Analyse technique et génération de recommandations
    */
   private async analyzeTechnical(): Promise<BotRecommendation[]> {
-    const recommendations: BotRecommendation[] = [];
-
+    const recommendations: BotRecommendation[] = []
     // Analyser la qualité du code
-    const codeQuality = await this.getCodeQuality();
+    const codeQuality = await this.getCodeQuality()
     if (codeQuality.coverage < 80) {
       recommendations.push({
         id: `tech-${Date.now()}-1`,
@@ -299,11 +286,11 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
     // Analyser la dette technique
-    const technicalDebt = await this.getTechnicalDebt();
+    const technicalDebt = await this.getTechnicalDebt()
     if (technicalDebt.score > 0.3) {
       recommendations.push({
         id: `tech-${Date.now()}-2`,
@@ -319,10 +306,10 @@ export class BotRecommendationEngine {
         createdAt: new Date(),
         userId: this.userId,
         status: 'pending'
-      });
+      })
     }
 
-    return recommendations;
+    return recommendations
   }
 
   /**
@@ -346,7 +333,7 @@ export class BotRecommendationEngine {
           status: recommendation.status,
           implementationNotes: recommendation.implementationNotes
         }
-      });
+      })
     }
   }
 
@@ -355,51 +342,51 @@ export class BotRecommendationEngine {
    */
   private async getAPIPerformance() {
     // Implémenter l'analyse des performances API
-    return { averageResponseTime: 450 };
+    return { averageResponseTime: 450 }
   }
 
   private async getBundleSize() {
     // Implémenter l'analyse de la taille du bundle
-    return { totalSize: 450000 };
+    return { totalSize: 450000 }
   }
 
   private async checkDependencies() {
     // Implémenter la vérification des vulnérabilités
-    return [];
+    return []
   }
 
   private async checkCSPConfiguration() {
     // Implémenter la vérification CSP
-    return [];
+    return []
   }
 
   private async getEngagementMetrics() {
     // Implémenter l'analyse d'engagement
-    return { bounceRate: 55 };
+    return { bounceRate: 55 }
   }
 
   private async checkAccessibility() {
     // Implémenter la vérification d'accessibilité
-    return [];
+    return []
   }
 
   private async getConversionMetrics() {
     // Implémenter l'analyse de conversion
-    return { rate: 4.2 };
+    return { rate: 4.2 }
   }
 
   private async getRetentionMetrics() {
     // Implémenter l'analyse de rétention
-    return { rate: 65 };
+    return { rate: 65 }
   }
 
   private async getCodeQuality() {
     // Implémenter l'analyse de qualité de code
-    return { coverage: 75 };
+    return { coverage: 75 }
   }
 
   private async getTechnicalDebt() {
     // Implémenter l'analyse de dette technique
-    return { score: 0.25 };
+    return { score: 0.25 }
   }
 }

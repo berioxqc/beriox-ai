@@ -1,7 +1,6 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Layout from '@/components/Layout';
-
+import { Metadata } from 'next'
+import Link from 'next/link'
+import Layout from '@/components/Layout'
 export const metadata: Metadata = {
   title: 'Blog Beriox AI - Intelligence Artificielle et Automatisation',
   description: 'Découvrez les dernières tendances en IA, automatisation et productivité. Articles techniques, tutoriels et insights sur l\'intelligence artificielle.',
@@ -12,8 +11,7 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://beriox-ai.vercel.app/blog',
   },
-};
-
+}
 const blogPosts = [
   {
     id: 'ia-automatisation-2024',
@@ -55,8 +53,7 @@ const blogPosts = [
     image: '/blog/seo-ia-2024.jpg',
     featured: false,
   },
-];
-
+]
 const categories = [
   { name: 'Tendances IA', count: 1 },
   { name: 'Agents IA', count: 1 },
@@ -64,12 +61,10 @@ const categories = [
   { name: 'SEO', count: 1 },
   { name: 'Productivité', count: 2 },
   { name: 'Tutoriels', count: 0 },
-];
-
+]
 export default function BlogPage() {
-  const featuredPost = blogPosts.find(post => post.featured);
-  const regularPosts = blogPosts.filter(post => !post.featured);
-
+  const featuredPost = blogPosts.find(post => post.featured)
+  const regularPosts = blogPosts.filter(post => !post.featured)
   return (
     <Layout
       title="Blog Beriox AI"
@@ -185,7 +180,7 @@ export default function BlogPage() {
             Restez informé des dernières tendances IA
           </h3>
           <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-            Recevez nos articles exclusifs, tutoriels et insights sur l&apos;intelligence 
+            Recevez nos articles exclusifs, tutoriels et insights sur l'intelligence 
             artificielle directement dans votre boîte mail.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
@@ -195,11 +190,11 @@ export default function BlogPage() {
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white"
             />
             <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-              S&apos;abonner
+              S'abonner
             </button>
           </div>
         </div>
       </div>
     </Layout>
-  );
+  )
 }

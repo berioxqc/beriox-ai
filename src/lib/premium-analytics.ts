@@ -1,67 +1,66 @@
 // Système d'Analytics Premium Beriox
 export interface BerioxKPIs {
-  bpi: number;
-  trustScore: number;
-  opportunityRadar: OpportunityItem[];
-  predictiveMetrics: PredictiveMetrics;
-  riskAlerts: RiskAlert[];
+  bpi: number
+  trustScore: number
+  opportunityRadar: OpportunityItem[]
+  predictiveMetrics: PredictiveMetrics
+  riskAlerts: RiskAlert[]
 }
 
 export interface OpportunityItem {
-  id: string;
-  title: string;
-  description: string;
-  impact: 'high' | 'medium' | 'low';
-  effort: 'high' | 'medium' | 'low';
-  priority: number;
-  estimatedGain: string;
-  actionType: 'seo' | 'performance' | 'conversion' | 'security' | 'ux';
+  id: string
+  title: string
+  description: string
+  impact: 'high' | 'medium' | 'low'
+  effort: 'high' | 'medium' | 'low'
+  priority: number
+  estimatedGain: string
+  actionType: 'seo' | 'performance' | 'conversion' | 'security' | 'ux'
 }
 
 export interface PredictiveMetrics {
   trafficForecast30d: {
-    current: number;
-    predicted: number;
-    confidence: number;
-    trend: 'up' | 'down' | 'stable';
-  };
+    current: number
+    predicted: number
+    confidence: number
+    trend: 'up' | 'down' | 'stable'
+  }
   conversionForecast: {
-    currentRate: number;
-    predictedRate: number;
-    potentialGain: number;
-  };
+    currentRate: number
+    predictedRate: number
+    potentialGain: number
+  }
   seoRiskScore: {
-    score: number;
-    factors: string[];
-    recommendation: string;
-  };
+    score: number
+    factors: string[]
+    recommendation: string
+  }
 }
 
 export interface RiskAlert {
-  id: string;
-  type: 'critical' | 'warning' | 'info';
-  category: 'seo' | 'performance' | 'security' | 'reputation';
-  title: string;
-  description: string;
-  action: string;
-  detectedAt: Date;
-  severity: number;
+  id: string
+  type: 'critical' | 'warning' | 'info'
+  category: 'seo' | 'performance' | 'security' | 'reputation'
+  title: string
+  description: string
+  action: string
+  detectedAt: Date
+  severity: number
 }
 
 export class PremiumAnalyticsEngine {
   static calculateBPI(data: any): number {
     // Calcul du Beriox Performance Index
-    const seoScore = 75;
-    const performanceScore = 80;
-    const conversionScore = 65;
-    const securityScore = 85;
-    
+    const seoScore = 75
+    const performanceScore = 80
+    const conversionScore = 65
+    const securityScore = 85
     return Math.round(
       seoScore * 0.3 + 
       performanceScore * 0.25 + 
       conversionScore * 0.25 + 
       securityScore * 0.2
-    );
+    )
   }
 
   static calculateTrustScore(data: any): number {
@@ -90,7 +89,7 @@ export class PremiumAnalyticsEngine {
         estimatedGain: '+15% de conversions',
         actionType: 'performance'
       }
-    ];
+    ]
   }
 
   static generatePredictiveMetrics(): PredictiveMetrics {
@@ -111,7 +110,7 @@ export class PremiumAnalyticsEngine {
         factors: ['Erreurs d\'indexation', 'Perte de backlinks'],
         recommendation: 'Corriger les erreurs Search Console'
       }
-    };
+    }
   }
 
   static detectRiskAlerts(): RiskAlert[] {
@@ -126,25 +125,23 @@ export class PremiumAnalyticsEngine {
         detectedAt: new Date(),
         severity: 70
       }
-    ];
+    ]
   }
 }
 
 export async function generatePremiumReport(missionId: string, userPlan: string): Promise<BerioxKPIs | null> {
-  const bpi = PremiumAnalyticsEngine.calculateBPI({});
-  const trustScore = PremiumAnalyticsEngine.calculateTrustScore({});
-  
-  let opportunityRadar: OpportunityItem[] = [];
-  let predictiveMetrics: PredictiveMetrics | null = null;
-  let riskAlerts: RiskAlert[] = [];
-
+  const bpi = PremiumAnalyticsEngine.calculateBPI({})
+  const trustScore = PremiumAnalyticsEngine.calculateTrustScore({})
+  let opportunityRadar: OpportunityItem[] = []
+  let predictiveMetrics: PredictiveMetrics | null = null
+  let riskAlerts: RiskAlert[] = []
   if (userPlan === 'pro' || userPlan === 'enterprise') {
-    opportunityRadar = PremiumAnalyticsEngine.generateOpportunityRadar();
-    predictiveMetrics = PremiumAnalyticsEngine.generatePredictiveMetrics();
+    opportunityRadar = PremiumAnalyticsEngine.generateOpportunityRadar()
+    predictiveMetrics = PremiumAnalyticsEngine.generatePredictiveMetrics()
   }
 
   if (userPlan === 'enterprise') {
-    riskAlerts = PremiumAnalyticsEngine.detectRiskAlerts();
+    riskAlerts = PremiumAnalyticsEngine.detectRiskAlerts()
   }
 
   return {
@@ -157,5 +154,5 @@ export async function generatePremiumReport(missionId: string, userPlan: string)
       seoRiskScore: { score: 0, factors: [], recommendation: '' }
     },
     riskAlerts
-  };
+  }
 }

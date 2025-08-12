@@ -1,87 +1,77 @@
-"use client";
-import { useState, useEffect } from "react";
-import Layout from "@/components/Layout";
-import AdminGuard from "@/components/AdminGuard";
-import { Icon } from "@/components/ui/Icon";
-import { useTheme, useStyles } from "@/hooks/useTheme";
-
+"use client"
+import { useState, useEffect } from "react"
+import Layout from "@/components/Layout"
+import AdminGuard from "@/components/AdminGuard"
+import { Icon } from "@/components/ui/Icon"
+import { useTheme, useStyles } from "@/hooks/useTheme"
 type PremiumAccess = {
-  id: string;
-  userId: string;
-  planId: string;
-  startDate: string;
-  endDate: string;
-  isActive: boolean;
-  source: string;
-  sourceId?: string;
-  createdAt: string;
-  notes?: string;
+  id: string
+  userId: string
+  planId: string
+  startDate: string
+  endDate: string
+  isActive: boolean
+  source: string
+  sourceId?: string
+  createdAt: string
+  notes?: string
   user: {
-    id: string;
-    email: string;
-    name?: string;
-    image?: string;
-  };
-};
-
+    id: string
+    email: string
+    name?: string
+    image?: string
+  }
+}
 type Stats = {
-  total: number;
-  active: number;
-  expired: number;
+  total: number
+  active: number
+  expired: number
   byPlan: {
-    starter: number;
-    pro: number;
-    enterprise: number;
-  };
+    starter: number
+    pro: number
+    enterprise: number
+  }
   bySource: {
-    coupon: number;
-    admin_grant: number;
-    stripe: number;
-  };
-};
-
+    coupon: number
+    admin_grant: number
+    stripe: number
+  }
+}
 export default function AdminPremiumAccessPage() {
-  const [premiumAccesses, setPremiumAccesses] = useState<PremiumAccess[]>([]);
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [showGrantModal, setShowGrantModal] = useState(false);
-  const [granting, setGranting] = useState(false);
-  
+  const [premiumAccesses, setPremiumAccesses] = useState<PremiumAccess[]>([])
+  const [stats, setStats] = useState<Stats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [showGrantModal, setShowGrantModal] = useState(false)
+  const [granting, setGranting] = useState(false)
   // Formulaire d'attribution
   const [formData, setFormData] = useState({
     userEmail: '',
     planId: 'starter',
     duration: 90,
     notes: ''
-  });
-
-  const theme = useTheme();
-  const styles = useStyles();
-
+  })
+  const theme = useTheme()
+  const styles = useStyles()
   useEffect(() => {
-    fetchPremiumAccesses();
-  }, []);
-
+    fetchPremiumAccesses()
+  }, [])
   const fetchPremiumAccesses = async () => {
     try {
-      const response = await fetch('/api/admin/premium-access');
+      const response = await fetch('/api/admin/premium-access')
       if (response.ok) {
-        const data = await response.json();
-        setPremiumAccesses(data.premiumAccesses);
-        setStats(data.stats);
+        const data = await response.json()
+        setPremiumAccesses(data.premiumAccesses)
+        setStats(data.stats)
       }
     } catch (error) {
-      console.error('Erreur récupération accès premium:', error);
+      console.error('Erreur récupération accès premium:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const handleGrantAccess = async () => {
-    if (!formData.userEmail.trim()) return;
-    
-    setGranting(true);
-    
+    if (!formData.userEmail.trim()) return
+    setGranting(true)
     try {
       const response = await fetch('/api/admin/premium-access', {
         method: 'POST',
@@ -89,74 +79,65 @@ export default function AdminPremiumAccessPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      });
-
+      })
       if (response.ok) {
-        setShowGrantModal(false);
+        setShowGrantModal(false)
         setFormData({
           userEmail: '',
           planId: 'starter',
           duration: 90,
           notes: ''
-        });
+        })
         fetchPremiumAccesses(); // Recharger la liste
       } else {
-        const data = await response.json();
-        alert(data.error || 'Erreur lors de l\'attribution');
+        const data = await response.json()
+        alert(data.error || 'Erreur lors de l\'attribution')
       }
     } catch (error) {
-      alert('Erreur de connexion');
+      alert('Erreur de connexion')
     } finally {
-      setGranting(false);
+      setGranting(false)
     }
-  };
-
+  }
   const revokeAccess = async (userId: string) => {
-    if (!confirm('Êtes-vous sûr de vouloir révoquer cet accès premium ?')) return;
-    
+    if (!confirm('Êtes-vous sûr de vouloir révoquer cet accès premium ?')) return
     try {
       const response = await fetch(`/api/admin/premium-access?userId=${userId}`, {
         method: 'DELETE',
-      });
-
+      })
       if (response.ok) {
         fetchPremiumAccesses(); // Recharger la liste
       }
     } catch (error) {
-      console.error('Erreur révocation accès:', error);
+      console.error('Erreur révocation accès:', error)
     }
-  };
-
+  }
   const getPlanName = (planId: string) => {
     const plans: Record<string, string> = {
       'starter': 'Starter',
       'pro': 'Professionnel',
       'enterprise': 'Enterprise'
-    };
-    return plans[planId] || planId;
-  };
-
+    }
+    return plans[planId] || planId
+  }
   const getSourceLabel = (source: string) => {
     const sources: Record<string, string> = {
       'coupon': 'Coupon',
       'admin_grant': 'Attribution admin',
       'stripe': 'Abonnement Stripe'
-    };
-    return sources[source] || source;
-  };
-
+    }
+    return sources[source] || source
+  }
   const isExpired = (endDate: string) => {
-    return new Date(endDate) <= new Date();
-  };
-
+    return new Date(endDate) <= new Date()
+  }
   const getDaysRemaining = (endDate: string) => {
-    const now = new Date();
-    const end = new Date(endDate);
-    const diffTime = end.getTime() - now.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 0 ? diffDays : 0;
-  };
-
+    const now = new Date()
+    const end = new Date(endDate)
+    const diffTime = end.getTime() - now.getTime()
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays > 0 ? diffDays : 0
+  }
   if (loading) {
     return (
       <AdminGuard>
@@ -171,7 +152,7 @@ export default function AdminPremiumAccessPage() {
           </div>
         </Layout>
       </AdminGuard>
-    );
+    )
   }
 
   return (
@@ -328,9 +309,8 @@ export default function AdminPremiumAccessPage() {
               ) : (
                 <div style={{ display: 'grid', gap: '16px' }}>
                   {premiumAccesses.map((access) => {
-                    const expired = isExpired(access.endDate);
-                    const daysLeft = getDaysRemaining(access.endDate);
-                    
+                    const expired = isExpired(access.endDate)
+                    const daysLeft = getDaysRemaining(access.endDate)
                     return (
                       <div key={access.id} style={{
                         border: '1px solid #e5e7eb',
@@ -387,7 +367,7 @@ export default function AdminPremiumAccessPage() {
                               fontSize: '12px',
                               fontWeight: '600'
                             }}>
-                              {expired ? &apos;Expiré&apos; : access.isActive ? &apos;Actif&apos; : &apos;Inactif&apos;}
+                              {expired ? 'Expiré' : access.isActive ? 'Actif' : 'Inactif'}
                             </div>
                             
                             <div style={{
@@ -421,7 +401,7 @@ export default function AdminPremiumAccessPage() {
                             <strong>Fin:</strong> {new Date(access.endDate).toLocaleDateString()}
                           </div>
                           <div>
-                            <strong>Reste:</strong> {expired ? &apos;0 jours&apos; : `${daysLeft} jours`}
+                            <strong>Reste:</strong> {expired ? '0 jours' : `${daysLeft} jours`}
                           </div>
                         </div>
                         
@@ -465,7 +445,7 @@ export default function AdminPremiumAccessPage() {
                           )}
                         </div>
                       </div>
-                    );
+                    )
                   })}
                 </div>
               )}
@@ -529,11 +509,11 @@ export default function AdminPremiumAccessPage() {
                       onChange={(e) => setFormData({ ...formData, userEmail: e.target.value })}
                       placeholder="utilisateur@exemple.com"
                       style={{
-                        width: &apos;100%&apos;,
-                        padding: &apos;12px&apos;,
-                        border: &apos;1px solid #d1d5db&apos;,
-                        borderRadius: &apos;6px&apos;,
-                        fontSize: &apos;14px&apos;
+                        width: '100%',
+                        padding: '12px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px'
                       }}
                     />
                   </div>
@@ -607,15 +587,15 @@ export default function AdminPremiumAccessPage() {
                     <textarea
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      placeholder="Raison de l&apos;attribution, contexte..."
+                      placeholder="Raison de l'attribution, contexte..."
                       style={{
-                        width: &apos;100%&apos;,
-                        padding: &apos;12px&apos;,
-                        border: &apos;1px solid #d1d5db&apos;,
-                        borderRadius: &apos;6px&apos;,
-                        fontSize: &apos;14px&apos;,
-                        minHeight: &apos;80px&apos;,
-                        resize: &apos;vertical&apos;
+                        width: '100%',
+                        padding: '12px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        minHeight: '80px',
+                        resize: 'vertical'
                       }}
                     />
                   </div>
@@ -633,14 +613,14 @@ export default function AdminPremiumAccessPage() {
                   onClick={() => setShowGrantModal(false)}
                   disabled={granting}
                   style={{
-                    background: &apos;#f3f4f6&apos;,
-                    color: &apos;#374151&apos;,
-                    border: &apos;none&apos;,
-                    borderRadius: &apos;6px&apos;,
-                    padding: &apos;12px 20px&apos;,
-                    fontSize: &apos;14px&apos;,
-                    fontWeight: &apos;600&apos;,
-                    cursor: granting ? &apos;not-allowed&apos; : &apos;pointer&apos;
+                    background: '#f3f4f6',
+                    color: '#374151',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '12px 20px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: granting ? 'not-allowed' : 'pointer'
                   }}
                 >
                   Annuler
@@ -670,7 +650,7 @@ export default function AdminPremiumAccessPage() {
                   ) : (
                     <>
                       <Icon name="crown" />
-                      Accorder l&apos;accès
+                      Accorder l'accès
                     </>
                   )}
                 </button>
@@ -680,5 +660,5 @@ export default function AdminPremiumAccessPage() {
         )}
       </Layout>
     </AdminGuard>
-  );
+  )
 }

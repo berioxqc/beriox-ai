@@ -1,64 +1,55 @@
-"use client";
-
-import { useState } from 'react';
-import { signIn, getSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Icon from '@/components/ui/Icon';
-
+"use client"
+import { useState } from 'react'
+import { signIn, getSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import Icon from '@/components/ui/Icon'
 export default function SignInPage() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const router = useRouter();
-
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const router = useRouter()
   const handleGoogleSignIn = async () => {
-    setIsLoading(true);
-    setError('');
-    
+    setIsLoading(true)
+    setError('')
     try {
       const result = await signIn('google', { 
         callbackUrl: '/missions',
         redirect: false 
-      });
-      
+      })
       if (result?.error) {
-        setError('Erreur lors de la connexion avec Google');
+        setError('Erreur lors de la connexion avec Google')
       } else if (result?.ok) {
-        router.push('/missions');
+        router.push('/missions')
       }
     } catch (error) {
-      setError('Erreur lors de la connexion');
+      setError('Erreur lors de la connexion')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
+  }
   const handleEmailSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
     try {
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
-      });
-
+      })
       if (result?.error) {
-        setError(result.error);
+        setError(result.error)
       } else if (result?.ok) {
-        router.push('/missions');
+        router.push('/missions')
       }
     } catch (error) {
-      setError('Erreur lors de la connexion');
+      setError('Erreur lors de la connexion')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
@@ -130,7 +121,7 @@ export default function SignInPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? &apos;Connexion...&apos; : &apos;Se connecter&apos;}
+              {isLoading ? 'Connexion...' : 'Se connecter'}
             </button>
           </form>
 
@@ -155,5 +146,5 @@ export default function SignInPage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

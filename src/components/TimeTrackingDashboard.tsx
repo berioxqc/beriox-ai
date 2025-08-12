@@ -1,8 +1,7 @@
-"use client";
-
-import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+"use client"
+import { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faPlay,
   faPause,
@@ -22,7 +21,7 @@ import {
   faTimesCircle,
   faEdit,
   faTrash
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/free-solid-svg-icons'
 import {
   TimeEntry,
   Project,
@@ -30,27 +29,26 @@ import {
   Task,
   TimeTrackingStats,
   TimeTrackingSettings
-} from '@/lib/time-tracking';
-
+} from '@/lib/time-tracking'
 interface TimeTrackingDashboardProps {
-  className?: string;
+  className?: string
 }
 
 interface DashboardState {
-  activeTimer: TimeEntry | null;
-  timeEntries: TimeEntry[];
-  projects: Project[];
-  clients: Client[];
-  tasks: Task[];
-  stats: TimeTrackingStats | null;
-  settings: TimeTrackingSettings | null;
-  loading: boolean;
-  error: string | null;
-  currentView: 'timer' | 'entries' | 'projects' | 'clients' | 'tasks' | 'timesheet' | 'expenses' | 'invoices' | 'stats' | 'settings';
+  activeTimer: TimeEntry | null
+  timeEntries: TimeEntry[]
+  projects: Project[]
+  clients: Client[]
+  tasks: Task[]
+  stats: TimeTrackingStats | null
+  settings: TimeTrackingSettings | null
+  loading: boolean
+  error: string | null
+  currentView: 'timer' | 'entries' | 'projects' | 'clients' | 'tasks' | 'timesheet' | 'expenses' | 'invoices' | 'stats' | 'settings'
 }
 
 export default function TimeTrackingDashboard({ className = '' }: TimeTrackingDashboardProps) {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
   const [state, setState] = useState<DashboardState>({
     activeTimer: null,
     timeEntries: [],
@@ -62,15 +60,12 @@ export default function TimeTrackingDashboard({ className = '' }: TimeTrackingDa
     loading: true,
     error: null,
     currentView: 'timer'
-  });
-
+  })
   // Charger les données initiales
   const loadInitialData = async () => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     try {
-      setState(prev => ({ ...prev, loading: true, error: null }));
-
+      setState(prev => ({ ...prev, loading: true, error: null }))
       // Charger en parallèle
       const [
         activeTimerRes,
@@ -88,16 +83,14 @@ export default function TimeTrackingDashboard({ className = '' }: TimeTrackingDa
         fetch('/api/time-tracking?action=tasks'),
         fetch('/api/time-tracking?action=stats&period=week'),
         fetch('/api/time-tracking?action=settings')
-      ]);
-
-      const activeTimer = activeTimerRes.ok ? (await activeTimerRes.json()).activeTimer : null;
-      const entries = entriesRes.ok ? (await entriesRes.json()).entries : [];
-      const projects = projectsRes.ok ? (await projectsRes.json()).projects : [];
-      const clients = clientsRes.ok ? (await clientsRes.json()).clients : [];
-      const tasks = tasksRes.ok ? (await tasksRes.json()).tasks : [];
-      const stats = statsRes.ok ? (await statsRes.json()).stats : null;
-      const settings = settingsRes.ok ? (await settingsRes.json()).settings : null;
-
+      ])
+      const activeTimer = activeTimerRes.ok ? (await activeTimerRes.json()).activeTimer : null
+      const entries = entriesRes.ok ? (await entriesRes.json()).entries : []
+      const projects = projectsRes.ok ? (await projectsRes.json()).projects : []
+      const clients = clientsRes.ok ? (await clientsRes.json()).clients : []
+      const tasks = tasksRes.ok ? (await tasksRes.json()).tasks : []
+      const stats = statsRes.ok ? (await statsRes.json()).stats : null
+      const settings = settingsRes.ok ? (await settingsRes.json()).settings : null
       setState(prev => ({
         ...prev,
         activeTimer,
@@ -108,133 +101,112 @@ export default function TimeTrackingDashboard({ className = '' }: TimeTrackingDa
         stats,
         settings,
         loading: false
-      }));
-
+      }))
     } catch (error) {
       setState(prev => ({
         ...prev,
         loading: false,
         error: 'Erreur lors du chargement des données'
-      }));
+      }))
     }
-  };
-
+  }
   // Démarrer un timer
   const startTimer = async (projectId: string, description: string, taskId?: string) => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     try {
       const response = await fetch('/api/time-tracking?action=start-timer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ projectId, description, taskId })
-      });
-
+      })
       if (response.ok) {
-        const { entry } = await response.json();
-        setState(prev => ({ ...prev, activeTimer: entry }));
+        const { entry } = await response.json()
+        setState(prev => ({ ...prev, activeTimer: entry }))
       }
     } catch (error) {
-      console.error('Erreur lors du démarrage du timer:', error);
+      console.error('Erreur lors du démarrage du timer:', error)
     }
-  };
-
+  }
   // Arrêter le timer actif
   const stopTimer = async () => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     try {
       const response = await fetch('/api/time-tracking?action=stop-timer', {
         method: 'PUT'
-      });
-
+      })
       if (response.ok) {
-        const { entry } = await response.json();
+        const { entry } = await response.json()
         setState(prev => ({ 
           ...prev, 
           activeTimer: null,
           timeEntries: [entry, ...prev.timeEntries]
-        }));
+        }))
       }
     } catch (error) {
-      console.error('Erreur lors de l\'arrêt du timer:', error);
+      console.error('Erreur lors de l\'arrêt du timer:', error)
     }
-  };
-
+  }
   // Mettre en pause le timer
   const pauseTimer = async () => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     try {
       const response = await fetch('/api/time-tracking?action=pause-timer', {
         method: 'PUT'
-      });
-
+      })
       if (response.ok) {
-        const { entry } = await response.json();
-        setState(prev => ({ ...prev, activeTimer: entry }));
+        const { entry } = await response.json()
+        setState(prev => ({ ...prev, activeTimer: entry }))
       }
     } catch (error) {
-      console.error('Erreur lors de la pause du timer:', error);
+      console.error('Erreur lors de la pause du timer:', error)
     }
-  };
-
+  }
   // Reprendre le timer
   const resumeTimer = async () => {
-    if (!session?.user?.id) return;
-
+    if (!session?.user?.id) return
     try {
       const response = await fetch('/api/time-tracking?action=resume-timer', {
         method: 'PUT'
-      });
-
+      })
       if (response.ok) {
-        const { entry } = await response.json();
-        setState(prev => ({ ...prev, activeTimer: entry }));
+        const { entry } = await response.json()
+        setState(prev => ({ ...prev, activeTimer: entry }))
       }
     } catch (error) {
-      console.error('Erreur lors de la reprise du timer:', error);
+      console.error('Erreur lors de la reprise du timer:', error)
     }
-  };
-
+  }
   // Formater la durée
   const formatDuration = (seconds: number): string => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
     if (hours > 0) {
-      return `${hours}h ${minutes.toString().padStart(2, '0')}m`;
+      return `${hours}h ${minutes.toString().padStart(2, '0')}m`
     }
-    return `${minutes}m`;
-  };
-
+    return `${minutes}m`
+  }
   // Calculer la durée actuelle du timer
   const getCurrentDuration = (): number => {
-    if (!state.activeTimer) return 0;
-    const now = new Date().getTime();
-    const start = new Date(state.activeTimer.startTime).getTime();
-    return Math.floor((now - start) / 1000);
-  };
-
+    if (!state.activeTimer) return 0
+    const now = new Date().getTime()
+    const start = new Date(state.activeTimer.startTime).getTime()
+    return Math.floor((now - start) / 1000)
+  }
   // Charger les données au montage
   useEffect(() => {
-    loadInitialData();
-  }, [session?.user?.id]);
-
+    loadInitialData()
+  }, [session?.user?.id])
   // Mettre à jour le timer actif toutes les secondes
   useEffect(() => {
-    if (!state.activeTimer) return;
-
+    if (!state.activeTimer) return
     const interval = setInterval(() => {
       // Forcer la mise à jour du rendu pour le timer
-      setState(prev => ({ ...prev }));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [state.activeTimer]);
-
+      setState(prev => ({ ...prev }))
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [state.activeTimer])
   if (!session?.user?.id) {
-    return null;
+    return null
   }
 
   if (state.loading) {
@@ -247,7 +219,7 @@ export default function TimeTrackingDashboard({ className = '' }: TimeTrackingDa
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   if (state.error) {
@@ -267,7 +239,7 @@ export default function TimeTrackingDashboard({ className = '' }: TimeTrackingDa
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -383,20 +355,20 @@ export default function TimeTrackingDashboard({ className = '' }: TimeTrackingDa
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Timer
 interface TimerViewProps {
-  activeTimer: TimeEntry | null;
-  projects: Project[];
-  tasks: Task[];
-  onStartTimer: (projectId: string, description: string, taskId?: string) => void;
-  onStopTimer: () => void;
-  onPauseTimer: () => void;
-  onResumeTimer: () => void;
-  formatDuration: (seconds: number) => string;
-  getCurrentDuration: () => number;
+  activeTimer: TimeEntry | null
+  projects: Project[]
+  tasks: Task[]
+  onStartTimer: (projectId: string, description: string, taskId?: string) => void
+  onStopTimer: () => void
+  onPauseTimer: () => void
+  onResumeTimer: () => void
+  formatDuration: (seconds: number) => string
+  getCurrentDuration: () => number
 }
 
 function TimerView({
@@ -410,18 +382,15 @@ function TimerView({
   formatDuration,
   getCurrentDuration
 }: TimerViewProps) {
-  const [selectedProject, setSelectedProject] = useState('');
-  const [selectedTask, setSelectedTask] = useState('');
-  const [description, setDescription] = useState('');
-
+  const [selectedProject, setSelectedProject] = useState('')
+  const [selectedTask, setSelectedTask] = useState('')
+  const [description, setDescription] = useState('')
   const handleStartTimer = () => {
-    if (!selectedProject || !description.trim()) return;
-    onStartTimer(selectedProject, description.trim(), selectedTask || undefined);
-    setDescription('');
-  };
-
-  const projectTasks = tasks.filter(task => task.projectId === selectedProject);
-
+    if (!selectedProject || !description.trim()) return
+    onStartTimer(selectedProject, description.trim(), selectedTask || undefined)
+    setDescription('')
+  }
+  const projectTasks = tasks.filter(task => task.projectId === selectedProject)
   return (
     <div className="space-y-6">
       {/* Timer actif */}
@@ -547,14 +516,14 @@ function TimerView({
         </div>
       )}
     </div>
-  );
+  )
 }
 
 // Composant Entrées de temps
 interface EntriesViewProps {
-  entries: TimeEntry[];
-  projects: Project[];
-  formatDuration: (seconds: number) => string;
+  entries: TimeEntry[]
+  projects: Project[]
+  formatDuration: (seconds: number) => string
 }
 
 function EntriesView({ entries, projects, formatDuration }: EntriesViewProps) {
@@ -602,7 +571,7 @@ function EntriesView({ entries, projects, formatDuration }: EntriesViewProps) {
                     {new Date(entry.startTime).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {projects.find(p => p.id === entry.projectId)?.name || &apos;Projet inconnu&apos;}
+                    {projects.find(p => p.id === entry.projectId)?.name || 'Projet inconnu'}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {entry.description}
@@ -632,13 +601,13 @@ function EntriesView({ entries, projects, formatDuration }: EntriesViewProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Projets
 interface ProjectsViewProps {
-  projects: Project[];
-  clients: Client[];
+  projects: Project[]
+  clients: Client[]
 }
 
 function ProjectsView({ projects, clients }: ProjectsViewProps) {
@@ -663,7 +632,7 @@ function ProjectsView({ projects, clients }: ProjectsViewProps) {
                   {project.name}
                 </h3>
                 <p className="text-sm text-gray-500">
-                  {clients.find(c => c.id === project.clientId)?.name || &apos;Client inconnu&apos;}
+                  {clients.find(c => c.id === project.clientId)?.name || 'Client inconnu'}
                 </p>
               </div>
               <div
@@ -688,12 +657,12 @@ function ProjectsView({ projects, clients }: ProjectsViewProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Clients
 interface ClientsViewProps {
-  clients: Client[];
+  clients: Client[]
 }
 
 function ClientsView({ clients }: ClientsViewProps) {
@@ -728,13 +697,13 @@ function ClientsView({ clients }: ClientsViewProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Tâches
 interface TasksViewProps {
-  tasks: Task[];
-  projects: Project[];
+  tasks: Task[]
+  projects: Project[]
 }
 
 function TasksView({ tasks, projects }: TasksViewProps) {
@@ -767,7 +736,7 @@ function TasksView({ tasks, projects }: TasksViewProps) {
             </div>
             
             <p className="text-sm text-gray-500 mb-4">
-              {projects.find(p => p.id === task.projectId)?.name || &apos;Projet inconnu&apos;}
+              {projects.find(p => p.id === task.projectId)?.name || 'Projet inconnu'}
             </p>
 
             {task.description && (
@@ -786,7 +755,7 @@ function TasksView({ tasks, projects }: TasksViewProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Feuilles de temps (placeholder)
@@ -800,7 +769,7 @@ function TimesheetView() {
         <p className="text-gray-500">Fonctionnalité en cours de développement...</p>
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Dépenses (placeholder)
@@ -814,7 +783,7 @@ function ExpensesView() {
         <p className="text-gray-500">Fonctionnalité en cours de développement...</p>
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Factures (placeholder)
@@ -828,13 +797,13 @@ function InvoicesView() {
         <p className="text-gray-500">Fonctionnalité en cours de développement...</p>
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Statistiques
 interface StatsViewProps {
-  stats: TimeTrackingStats | null;
-  formatDuration: (seconds: number) => string;
+  stats: TimeTrackingStats | null
+  formatDuration: (seconds: number) => string
 }
 
 function StatsView({ stats, formatDuration }: StatsViewProps) {
@@ -848,7 +817,7 @@ function StatsView({ stats, formatDuration }: StatsViewProps) {
           <p className="text-gray-500">Aucune donnée disponible</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -914,7 +883,7 @@ function StatsView({ stats, formatDuration }: StatsViewProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 // Composant Paramètres (placeholder)
@@ -928,5 +897,5 @@ function SettingsView({ settings }: { settings: TimeTrackingSettings | null }) {
         <p className="text-gray-500">Fonctionnalité en cours de développement...</p>
       </div>
     </div>
-  );
+  )
 }

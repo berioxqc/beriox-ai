@@ -1,6 +1,5 @@
-"use client";
-import { signIn } from "next-auth/react";
-
+"use client"
+import { signIn } from "next-auth/react"
 export default function WelcomePage() {
   return (
     <div style={{
@@ -46,7 +45,7 @@ export default function WelcomePage() {
           lineHeight: "1.6",
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
         }}>
-          Votre équipe d&apos;agents IA pour automatiser et optimiser vos processus business. 
+          Votre équipe d'agents IA pour automatiser et optimiser vos processus business. 
           Créez un compte gratuit pour commencer dès maintenant.
         </p>
 
@@ -71,14 +70,14 @@ export default function WelcomePage() {
               textAlign: "left"
             }}>
               <div style={{ fontSize: "20px" }}>
-                {feature.split(&apos; &apos;)[0]}
+                {feature.split(' ')[0]}
               </div>
               <div style={{
                 fontSize: "16px",
                 color: "#425466",
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
-                {feature.substring(feature.indexOf(&apos; &apos;) + 1)}
+                {feature.substring(feature.indexOf(' ') + 1)}
               </div>
             </div>
           ))}
@@ -104,14 +103,14 @@ export default function WelcomePage() {
             fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.background = "#5a51e5";
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "0 8px 24px rgba(99, 91, 255, 0.3)";
+            e.currentTarget.style.background = "#5a51e5"
+            e.currentTarget.style.transform = "translateY(-2px)"
+            e.currentTarget.style.boxShadow = "0 8px 24px rgba(99, 91, 255, 0.3)"
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.background = "#635bff";
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "none";
+            e.currentTarget.style.background = "#635bff"
+            e.currentTarget.style.transform = "translateY(0)"
+            e.currentTarget.style.boxShadow = "none"
           }}
         >
           <img 
@@ -133,5 +132,5 @@ export default function WelcomePage() {
         </p>
       </div>
     </div>
-  );
+  )
 }

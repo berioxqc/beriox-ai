@@ -1,23 +1,19 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { MetricsCalculator, SystemMetrics, AgentMetrics } from '@/lib/ai-orchestrator/metrics-calculator';
-
+'use client'
+import { useState, useEffect } from 'react'
+import { MetricsCalculator, SystemMetrics, AgentMetrics } from '@/lib/ai-orchestrator/metrics-calculator'
 export default function MetricsDashboard() {
-  const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(null);
-  const [agentMetrics, setAgentMetrics] = useState<AgentMetrics[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+  const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(null)
+  const [agentMetrics, setAgentMetrics] = useState<AgentMetrics[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   useEffect(() => {
-    loadMetrics();
+    loadMetrics()
     const interval = setInterval(loadMetrics, 30000); // Rafraîchir toutes les 30 secondes
-    return () => clearInterval(interval);
-  }, []);
-
+    return () => clearInterval(interval)
+  }, [])
   const loadMetrics = async () => {
     try {
-      setLoading(true);
+      setLoading(true)
       const [system, agents] = await Promise.all([
         MetricsCalculator.calculateSystemMetrics(),
         Promise.all([
@@ -28,25 +24,23 @@ export default function MetricsDashboard() {
           'clara-la-closeuse',
           'faucon-le-maitre-focus'
         ].map(id => MetricsCalculator.calculateAgentMetrics(id)))
-      ]);
-      
-      setSystemMetrics(system);
-      setAgentMetrics(agents);
-      setError(null);
+      ])
+      setSystemMetrics(system)
+      setAgentMetrics(agents)
+      setError(null)
     } catch (err) {
-      setError('Erreur lors du chargement des métriques');
-      console.error('Erreur métriques:', err);
+      setError('Erreur lors du chargement des métriques')
+      console.error('Erreur métriques:', err)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
       </div>
-    );
+    )
   }
 
   if (error) {
@@ -60,11 +54,11 @@ export default function MetricsDashboard() {
           Réessayer
         </button>
       </div>
-    );
+    )
   }
 
   if (!systemMetrics) {
-    return <div>Aucune donnée disponible</div>;
+    return <div>Aucune donnée disponible</div>
   }
 
   return (
@@ -78,7 +72,7 @@ export default function MetricsDashboard() {
       {/* Graphiques de Performance */}
       <PerformanceChartsSection systemMetrics={systemMetrics} agentMetrics={agentMetrics} />
     </div>
-  );
+  )
 }
 
 function SystemMetricsSection({ metrics }: { metrics: SystemMetrics }) {
@@ -145,7 +139,7 @@ function SystemMetricsSection({ metrics }: { metrics: SystemMetrics }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function AgentMetricsSection({ agents }: { agents: AgentMetrics[] }) {
@@ -159,22 +153,20 @@ function AgentMetricsSection({ agents }: { agents: AgentMetrics[] }) {
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 function AgentCard({ agent }: { agent: AgentMetrics }) {
   const getPerformanceColor = (quality: number) => {
-    if (quality >= 0.8) return 'text-green-600';
-    if (quality >= 0.6) return 'text-yellow-600';
-    return 'text-red-600';
-  };
-
+    if (quality >= 0.8) return 'text-green-600'
+    if (quality >= 0.6) return 'text-yellow-600'
+    return 'text-red-600'
+  }
   const getTrendIcon = (trend: number) => {
-    if (trend > 0.1) return '📈';
-    if (trend < -0.1) return '📉';
-    return '➡️';
-  };
-
+    if (trend > 0.1) return '📈'
+    if (trend < -0.1) return '📉'
+    return '➡️'
+  }
   return (
     <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between mb-4">
@@ -225,15 +217,15 @@ function AgentCard({ agent }: { agent: AgentMetrics }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function PerformanceChartsSection({ 
   systemMetrics, 
   agentMetrics 
 }: { 
-  systemMetrics: SystemMetrics;
-  agentMetrics: AgentMetrics[];
+  systemMetrics: SystemMetrics
+  agentMetrics: AgentMetrics[]
 }) {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
@@ -293,7 +285,7 @@ function PerformanceChartsSection({
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 function MetricCard({ 
@@ -302,18 +294,17 @@ function MetricCard({
   icon, 
   color 
 }: { 
-  title: string; 
-  value: string | number; 
-  icon: string; 
-  color: string;
+  title: string
+  value: string | number
+  icon: string
+  color: string
 }) {
   const colorClasses = {
     blue: 'bg-blue-50 text-blue-600',
     green: 'bg-green-50 text-green-600',
     purple: 'bg-purple-50 text-purple-600',
     orange: 'bg-orange-50 text-orange-600',
-  };
-
+  }
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4">
       <div className="flex items-center justify-between">
@@ -326,5 +317,5 @@ function MetricCard({
         </div>
       </div>
     </div>
-  );
+  )
 }

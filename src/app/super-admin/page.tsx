@@ -1,11 +1,11 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import AccessGuard from "@/components/AccessGuard";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+"use client"
+import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import AccessGuard from "@/components/AccessGuard"
+import Link from "next/link"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { 
   faUsers, 
   faRocket, 
@@ -28,62 +28,57 @@ import {
   faFileAlt,
   faKey,
   faCrown
-} from "@fortawesome/free-solid-svg-icons";
-
+} from "@fortawesome/free-solid-svg-icons"
 interface SystemStats {
   users: {
-    total: number;
-    active: number;
-    premium: number;
-    newThisMonth: number;
-  };
+    total: number
+    active: number
+    premium: number
+    newThisMonth: number
+  }
   missions: {
-    total: number;
-    completed: number;
-    inProgress: number;
-    failed: number;
-  };
+    total: number
+    completed: number
+    inProgress: number
+    failed: number
+  }
   performance: {
-    avgResponseTime: number;
-    uptime: number;
-    cacheHitRate: number;
-    errorRate: number;
-  };
+    avgResponseTime: number
+    uptime: number
+    cacheHitRate: number
+    errorRate: number
+  }
   revenue: {
-    monthly: number;
-    total: number;
-    growth: number;
-  };
+    monthly: number
+    total: number
+    growth: number
+  }
   system: {
-    cpu: number;
-    memory: number;
-    disk: number;
-    activeConnections: number;
-  };
+    cpu: number
+    memory: number
+    disk: number
+    activeConnections: number
+  }
 }
 
 interface QuickAction {
-  id: string;
-  title: string;
-  description: string;
-  icon: any;
-  href: string;
-  color: string;
-  category: string;
+  id: string
+  title: string
+  description: string
+  icon: any
+  href: string
+  color: string
+  category: string
 }
 
 export default function SuperAdminPage() {
-  const { data: session } = useSession();
-  const [stats, setStats] = useState<SystemStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('overview');
-
-
-
+  const { data: session } = useSession()
+  const [stats, setStats] = useState<SystemStats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('overview')
   useEffect(() => {
-    fetchSystemStats();
-  }, []);
-
+    fetchSystemStats()
+  }, [])
   const fetchSystemStats = async () => {
     try {
       // Simuler des données de système pour la démo
@@ -117,16 +112,14 @@ export default function SuperAdminPage() {
           disk: 45,
           activeConnections: 234
         }
-      };
-      
-      setStats(mockStats);
+      }
+      setStats(mockStats)
     } catch (error) {
-      console.error('Erreur lors du chargement des statistiques:', error);
+      console.error('Erreur lors du chargement des statistiques:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   const quickActions: QuickAction[] = [
     // Gestion des Utilisateurs
     {
@@ -294,8 +287,7 @@ export default function SuperAdminPage() {
       color: '#0ea5e9',
       category: 'config'
     }
-  ];
-
+  ]
   const categories = {
     users: { name: 'Utilisateurs', color: '#3b82f6' },
     missions: { name: 'Missions & IA', color: '#10b981' },
@@ -304,12 +296,10 @@ export default function SuperAdminPage() {
     security: { name: 'Sécurité', color: '#059669' },
     analytics: { name: 'Analytics', color: '#0891b2' },
     config: { name: 'Configuration', color: '#374151' }
-  };
-
+  }
   const getActionsByCategory = (category: string) => {
-    return quickActions.filter(action => action.category === category);
-  };
-
+    return quickActions.filter(action => action.category === category)
+  }
   if (loading) {
     return (
       <AuthGuard>
@@ -319,7 +309,7 @@ export default function SuperAdminPage() {
           </div>
         </Layout>
       </AuthGuard>
-    );
+    )
   }
 
   return (
@@ -353,21 +343,21 @@ export default function SuperAdminPage() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 style={{
-                  padding: &apos;12px 24px&apos;,
-                  border: &apos;none&apos;,
-                  borderRadius: &apos;8px&apos;,
-                  cursor: &apos;pointer&apos;,
-                  fontWeight: &apos;600&apos;,
-                  backgroundColor: activeTab === tab ? &apos;#635bff&apos; : &apos;transparent&apos;,
-                  color: activeTab === tab ? &apos;white&apos; : &apos;#6b7280&apos;,
-                  transition: &apos;all 0.2s&apos;
+                  padding: '12px 24px',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  backgroundColor: activeTab === tab ? '#635bff' : 'transparent',
+                  color: activeTab === tab ? 'white' : '#6b7280',
+                  transition: 'all 0.2s'
                 }}
               >
-                {tab === &apos;overview&apos; && &apos;Vue d\&apos;ensemble&apos;}
-                {tab === &apos;actions&apos; && &apos;Actions Rapides&apos;}
-                {tab === &apos;system&apos; && &apos;Système&apos;}
-                {tab === &apos;analytics&apos; && &apos;Analytics&apos;}
-                {tab === &apos;users&apos; && &apos;Gestion Utilisateurs&apos;}
+                {tab === 'overview' && 'Vue d\'ensemble'}
+                {tab === 'actions' && 'Actions Rapides'}
+                {tab === 'system' && 'Système'}
+                {tab === 'analytics' && 'Analytics'}
+                {tab === 'users' && 'Gestion Utilisateurs'}
               </button>
             ))}
           </div>
@@ -491,12 +481,12 @@ export default function SuperAdminPage() {
                         boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                        e.currentTarget.style.transform = 'translateY(-2px)'
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                        e.currentTarget.style.transform = 'translateY(0)'
+                        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)'
                       }}
                     >
                       <div style={{ 
@@ -567,12 +557,12 @@ export default function SuperAdminPage() {
                           boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'translateY(-2px)';
-                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                          e.currentTarget.style.transform = 'translateY(-2px)'
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                          e.currentTarget.style.transform = 'translateY(0)'
+                          e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)'
                         }}
                       >
                         <div style={{ 
@@ -643,8 +633,8 @@ export default function SuperAdminPage() {
                         <div style={{ 
                           width: `${stats?.system.cpu}%`, 
                           height: '100%', 
-                          backgroundColor: stats?.system.cpu && stats.system.cpu > 80 ? &apos;#ef4444&apos; : &apos;#10b981&apos;,
-                          transition: &apos;width 0.3s&apos;
+                          backgroundColor: stats?.system.cpu && stats.system.cpu > 80 ? '#ef4444' : '#10b981',
+                          transition: 'width 0.3s'
                         }} />
                       </div>
                     </div>
@@ -664,8 +654,8 @@ export default function SuperAdminPage() {
                         <div style={{ 
                           width: `${stats?.system.memory}%`, 
                           height: '100%', 
-                          backgroundColor: stats?.system.memory && stats.system.memory > 80 ? &apos;#ef4444&apos; : &apos;#10b981&apos;,
-                          transition: &apos;width 0.3s&apos;
+                          backgroundColor: stats?.system.memory && stats.system.memory > 80 ? '#ef4444' : '#10b981',
+                          transition: 'width 0.3s'
                         }} />
                       </div>
                     </div>
@@ -685,8 +675,8 @@ export default function SuperAdminPage() {
                         <div style={{ 
                           width: `${stats?.system.disk}%`, 
                           height: '100%', 
-                          backgroundColor: stats?.system.disk && stats.system.disk > 80 ? &apos;#ef4444&apos; : &apos;#10b981&apos;,
-                          transition: &apos;width 0.3s&apos;
+                          backgroundColor: stats?.system.disk && stats.system.disk > 80 ? '#ef4444' : '#10b981',
+                          transition: 'width 0.3s'
                         }} />
                       </div>
                     </div>
@@ -727,7 +717,7 @@ export default function SuperAdminPage() {
                     </div>
                     
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '14px' }}>Taux d&apos;erreur</span>
+                      <span style={{ fontSize: '14px' }}>Taux d'erreur</span>
                       <span style={{ fontSize: '16px', fontWeight: '600', color: '#ef4444' }}>
                         {stats?.performance.errorRate}%
                       </span>
@@ -960,7 +950,7 @@ export default function SuperAdminPage() {
                   <h3 style={{ margin: '0', fontSize: '18px', fontWeight: '600' }}>Gestion des Utilisateurs</h3>
                 </div>
                 <p style={{ color: '#6b7280', margin: '0 0 24px 0' }}>
-                  Gérez les utilisateurs, assignez les rôles et surveillez l&apos;activité.
+                  Gérez les utilisateurs, assignez les rôles et surveillez l'activité.
                 </p>
                 <Link href="/super-admin/users" style={{
                   display: 'inline-flex',
@@ -984,5 +974,5 @@ export default function SuperAdminPage() {
       </Layout>
       </AccessGuard>
     </AuthGuard>
-  );
+  )
 }

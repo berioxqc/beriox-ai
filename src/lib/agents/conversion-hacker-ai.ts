@@ -4,124 +4,120 @@
  */
 
 export interface ConversionMetric {
-  name: string;
-  currentValue: number;
-  targetValue: number;
-  change: number;
-  impact: 'high' | 'medium' | 'low';
-  priority: 'critical' | 'high' | 'medium' | 'low';
+  name: string
+  currentValue: number
+  targetValue: number
+  change: number
+  impact: 'high' | 'medium' | 'low'
+  priority: 'critical' | 'high' | 'medium' | 'low'
 }
 
 export interface ABTest {
-  id: string;
-  name: string;
-  description: string;
-  hypothesis: string;
+  id: string
+  name: string
+  description: string
+  hypothesis: string
   variants: {
-    name: string;
-    description: string;
+    name: string
+    description: string
     traffic: number; // percentage
-  }[];
-  metrics: string[];
-  status: 'draft' | 'running' | 'paused' | 'completed';
-  startDate: string;
-  endDate?: string;
+  }[]
+  metrics: string[]
+  status: 'draft' | 'running' | 'paused' | 'completed'
+  startDate: string
+  endDate?: string
   results?: {
-    winner: string;
-    confidence: number;
-    improvement: number;
-    sampleSize: number;
-  };
+    winner: string
+    confidence: number
+    improvement: number
+    sampleSize: number
+  }
 }
 
 export interface HeatmapData {
-  page: string;
-  clicks: { x: number; y: number; count: number }[];
-  scrolls: { depth: number; users: number }[];
-  hovers: { x: number; y: number; duration: number }[];
-  insights: string[];
+  page: string
+  clicks: { x: number; y: number; count: number }[]
+  scrolls: { depth: number; users: number }[]
+  hovers: { x: number; y: number; duration: number }[]
+  insights: string[]
 }
 
 export interface OptimizationOpportunity {
-  id: string;
-  title: string;
-  description: string;
-  page: string;
-  element: string;
-  currentState: string;
-  proposedChange: string;
+  id: string
+  title: string
+  description: string
+  page: string
+  element: string
+  currentState: string
+  proposedChange: string
   expectedImpact: {
-    metric: string;
-    improvement: number;
-    confidence: number;
-  };
-  effort: 'low' | 'medium' | 'high';
-  priority: 'critical' | 'high' | 'medium' | 'low';
+    metric: string
+    improvement: number
+    confidence: number
+  }
+  effort: 'low' | 'medium' | 'high'
+  priority: 'critical' | 'high' | 'medium' | 'low'
   implementation: {
-    steps: string[];
-    timeline: string;
-    resources: string[];
-  };
+    steps: string[]
+    timeline: string
+    resources: string[]
+  }
 }
 
 export interface ConversionHackerReport {
   summary: {
-    totalTests: number;
-    activeTests: number;
-    completedTests: number;
-    averageImprovement: number;
-    totalRevenueImpact: number;
-  };
-  metrics: ConversionMetric[];
-  activeTests: ABTest[];
-  opportunities: OptimizationOpportunity[];
-  heatmaps: HeatmapData[];
+    totalTests: number
+    activeTests: number
+    completedTests: number
+    averageImprovement: number
+    totalRevenueImpact: number
+  }
+  metrics: ConversionMetric[]
+  activeTests: ABTest[]
+  opportunities: OptimizationOpportunity[]
+  heatmaps: HeatmapData[]
   recommendations: {
-    immediate: string[];
-    shortTerm: string[];
-    longTerm: string[];
-  };
+    immediate: string[]
+    shortTerm: string[]
+    longTerm: string[]
+  }
 }
 
 export interface ConversionHackerConfig {
   tools: {
-    hotjar: boolean;
-    googleAnalytics: boolean;
-    optimizely: boolean;
-    customTracking: boolean;
-  };
+    hotjar: boolean
+    googleAnalytics: boolean
+    optimizely: boolean
+    customTracking: boolean
+  }
   thresholds: {
-    statisticalSignificance: number;
-    minimumSampleSize: number;
-    confidenceLevel: number;
-  };
-  focusAreas: string[];
-  targetImprovement: number;
+    statisticalSignificance: number
+    minimumSampleSize: number
+    confidenceLevel: number
+  }
+  focusAreas: string[]
+  targetImprovement: number
 }
 
 export class ConversionHackerAI {
-  private config: ConversionHackerConfig;
-  private lastReport: ConversionHackerReport | null = null;
-
+  private config: ConversionHackerConfig
+  private lastReport: ConversionHackerReport | null = null
   constructor(config: ConversionHackerConfig) {
-    this.config = config;
+    this.config = config
   }
 
   /**
    * Analyse complète des conversions et génère des optimisations
    */
   async analyzeConversions(): Promise<ConversionHackerReport> {
-    console.log("🎯 ConversionHackerAI: Analyse des conversions en cours...");
-
+    console.log("🎯 ConversionHackerAI: Analyse des conversions en cours...")
     try {
-      const metrics = await this.analyzeMetrics();
-      const activeTests = await this.getActiveTests();
-      const opportunities = this.identifyOpportunities(metrics);
-      const heatmaps = await this.analyzeHeatmaps();
-      const recommendations = this.generateRecommendations(metrics, opportunities);
-
-      const summary = this.calculateSummary(activeTests, opportunities);
-
+      const metrics = await this.analyzeMetrics()
+      const activeTests = await this.getActiveTests()
+      const opportunities = this.identifyOpportunities(metrics)
+      const heatmaps = await this.analyzeHeatmaps()
+      const recommendations = this.generateRecommendations(metrics, opportunities)
+      const summary = this.calculateSummary(activeTests, opportunities)
       const report: ConversionHackerReport = {
         summary,
         metrics,
@@ -129,16 +125,13 @@ export class ConversionHackerAI {
         opportunities,
         heatmaps,
         recommendations
-      };
-
-      this.lastReport = report;
-      
-      console.log("🎯 ConversionHackerAI: Analyse terminée. Opportunités identifiées:", opportunities.length);
-      
-      return report;
+      }
+      this.lastReport = report
+      console.log("🎯 ConversionHackerAI: Analyse terminée. Opportunités identifiées:", opportunities.length)
+      return report
     } catch (error) {
-      console.error("🎯 ConversionHackerAI: Erreur lors de l'analyse:", error);
-      throw new Error("Impossible de compléter l'analyse des conversions");
+      console.error("🎯 ConversionHackerAI: Erreur lors de l'analyse:", error)
+      throw new Error("Impossible de compléter l'analyse des conversions")
     }
   }
 
@@ -195,9 +188,8 @@ export class ConversionHackerAI {
         impact: 'medium',
         priority: 'medium'
       }
-    ];
-
-    return metrics;
+    ]
+    return metrics
   }
 
   /**
@@ -238,19 +230,17 @@ export class ConversionHackerAI {
         status: 'running',
         startDate: "2024-01-20"
       }
-    ];
-
-    return tests;
+    ]
+    return tests
   }
 
   /**
    * Identifie les opportunités d'optimisation
    */
   private identifyOpportunities(metrics: ConversionMetric[]): OptimizationOpportunity[] {
-    const opportunities: OptimizationOpportunity[] = [];
-
+    const opportunities: OptimizationOpportunity[] = []
     // Opportunité basée sur le taux d'abandon panier
-    const cartAbandonment = metrics.find(m => m.name === "Taux d'abandon panier");
+    const cartAbandonment = metrics.find(m => m.name === "Taux d'abandon panier")
     if (cartAbandonment && cartAbandonment.change > 10) {
       opportunities.push({
         id: "opp-001",
@@ -277,11 +267,11 @@ export class ConversionHackerAI {
           timeline: "4-6 semaines",
           resources: ["UX Designer", "Développeur Frontend", "Analytics"]
         }
-      });
+      })
     }
 
     // Opportunité basée sur le taux de conversion
-    const conversionRate = metrics.find(m => m.name === "Taux de conversion global");
+    const conversionRate = metrics.find(m => m.name === "Taux de conversion global")
     if (conversionRate && conversionRate.change < -1) {
       opportunities.push({
         id: "opp-002",
@@ -308,11 +298,11 @@ export class ConversionHackerAI {
           timeline: "6-8 semaines",
           resources: ["Designer", "Copywriter", "Développeur", "Analytics"]
         }
-      });
+      })
     }
 
     // Opportunité basée sur le temps sur page
-    const timeOnPage = metrics.find(m => m.name === "Temps sur page");
+    const timeOnPage = metrics.find(m => m.name === "Temps sur page")
     if (timeOnPage && timeOnPage.change < -20) {
       opportunities.push({
         id: "opp-003",
@@ -339,10 +329,10 @@ export class ConversionHackerAI {
           timeline: "3-4 semaines",
           resources: ["Content Creator", "Développeur", "Videographer"]
         }
-      });
+      })
     }
 
-    return opportunities;
+    return opportunities
   }
 
   /**
@@ -398,59 +388,52 @@ export class ConversionHackerAI {
           "Boutons d'action bien positionnés"
         ]
       }
-    ];
-
-    return heatmaps;
+    ]
+    return heatmaps
   }
 
   /**
    * Génère des recommandations
    */
   private generateRecommendations(metrics: ConversionMetric[], opportunities: OptimizationOpportunity[]) {
-    const immediate: string[] = [];
-    const shortTerm: string[] = [];
-    const longTerm: string[] = [];
-
+    const immediate: string[] = []
+    const shortTerm: string[] = []
+    const longTerm: string[] = []
     // Recommandations immédiates basées sur les métriques critiques
-    const criticalMetrics = metrics.filter(m => m.priority === 'critical');
+    const criticalMetrics = metrics.filter(m => m.priority === 'critical')
     criticalMetrics.forEach(metric => {
-      immediate.push(`Optimiser ${metric.name} - actuellement à ${metric.currentValue}% (objectif: ${metric.targetValue}%)`);
-    });
-
+      immediate.push(`Optimiser ${metric.name} - actuellement à ${metric.currentValue}% (objectif: ${metric.targetValue}%)`)
+    })
     // Recommandations court terme basées sur les opportunités
-    const highPriorityOpps = opportunities.filter(o => o.priority === 'high' || o.priority === 'critical');
+    const highPriorityOpps = opportunities.filter(o => o.priority === 'high' || o.priority === 'critical')
     highPriorityOpps.forEach(opp => {
-      shortTerm.push(`Implémenter: ${opp.title} - Impact attendu: ${opp.expectedImpact.improvement}%`);
-    });
-
+      shortTerm.push(`Implémenter: ${opp.title} - Impact attendu: ${opp.expectedImpact.improvement}%`)
+    })
     // Recommandations long terme
-    longTerm.push("Mettre en place un programme d'optimisation continue");
-    longTerm.push("Développer une culture de test A/B dans l'équipe");
-    longTerm.push("Investir dans des outils d'analyse avancés");
-
-    return { immediate, shortTerm, longTerm };
+    longTerm.push("Mettre en place un programme d'optimisation continue")
+    longTerm.push("Développer une culture de test A/B dans l'équipe")
+    longTerm.push("Investir dans des outils d'analyse avancés")
+    return { immediate, shortTerm, longTerm }
   }
 
   /**
    * Calcule le résumé
    */
   private calculateSummary(activeTests: ABTest[], opportunities: OptimizationOpportunity[]) {
-    const completedTests = activeTests.filter(t => t.status === 'completed');
+    const completedTests = activeTests.filter(t => t.status === 'completed')
     const averageImprovement = completedTests.length > 0 
       ? completedTests.reduce((sum, test) => sum + (test.results?.improvement || 0), 0) / completedTests.length
-      : 0;
-
+      : 0
     const totalRevenueImpact = opportunities.reduce((sum, opp) => {
-      return sum + (opp.expectedImpact.improvement * opp.expectedImpact.confidence / 100);
-    }, 0);
-
+      return sum + (opp.expectedImpact.improvement * opp.expectedImpact.confidence / 100)
+    }, 0)
     return {
       totalTests: activeTests.length,
       activeTests: activeTests.filter(t => t.status === 'running').length,
       completedTests: completedTests.length,
       averageImprovement: Math.round(averageImprovement * 100) / 100,
       totalRevenueImpact: Math.round(totalRevenueImpact * 100) / 100
-    };
+    }
   }
 
   /**
@@ -466,18 +449,17 @@ export class ConversionHackerAI {
       metrics: ["Taux de conversion", "Temps sur page", "Taux de rebond"],
       status: 'draft',
       startDate: new Date().toISOString().split('T')[0]
-    };
-
-    console.log("🎯 ConversionHackerAI: Nouveau test A/B créé:", test.id);
-    return test;
+    }
+    console.log("🎯 ConversionHackerAI: Nouveau test A/B créé:", test.id)
+    return test
   }
 
   /**
    * Lance un test A/B
    */
   startABTest(testId: string): boolean {
-    console.log("🎯 ConversionHackerAI: Lancement du test A/B:", testId);
-    return true;
+    console.log("🎯 ConversionHackerAI: Lancement du test A/B:", testId)
+    return true
   }
 
   /**
@@ -497,7 +479,7 @@ export class ConversionHackerAI {
         "Planifier un test de suivi",
         "Documenter les apprentissages"
       ]
-    };
+    }
   }
 
   /**
@@ -505,88 +487,83 @@ export class ConversionHackerAI {
    */
   generateReport(): string {
     if (!this.lastReport) {
-      return "Aucun rapport disponible. Lancez d'abord une analyse des conversions.";
+      return "Aucun rapport disponible. Lancez d'abord une analyse des conversions."
     }
 
-    const { summary, metrics, activeTests, opportunities, recommendations } = this.lastReport;
-
-    let report = "🎯 **RAPPORT CONVERSIONHACKER - OPTIMISATION DES CONVERSIONS**\n\n";
-    
+    const { summary, metrics, activeTests, opportunities, recommendations } = this.lastReport
+    let report = "🎯 **RAPPORT CONVERSIONHACKER - OPTIMISATION DES CONVERSIONS**\n\n"
     // Résumé exécutif
-    report += "## 📊 RÉSUMÉ EXÉCUTIF\n";
-    report += `• ${summary.totalTests} tests A/B au total\n`;
-    report += `• ${summary.activeTests} tests actifs\n`;
-    report += `• ${summary.completedTests} tests terminés\n`;
-    report += `• Amélioration moyenne: +${summary.averageImprovement}%\n`;
-    report += `• Impact revenus total: +${summary.totalRevenueImpact}%\n\n`;
-
+    report += "## 📊 RÉSUMÉ EXÉCUTIF\n"
+    report += `• ${summary.totalTests} tests A/B au total\n`
+    report += `• ${summary.activeTests} tests actifs\n`
+    report += `• ${summary.completedTests} tests terminés\n`
+    report += `• Amélioration moyenne: +${summary.averageImprovement}%\n`
+    report += `• Impact revenus total: +${summary.totalRevenueImpact}%\n\n`
     // Métriques critiques
-    report += "## 🚨 MÉTRIQUES CRITIQUES\n";
-    const criticalMetrics = metrics.filter(m => m.priority === 'critical');
+    report += "## 🚨 MÉTRIQUES CRITIQUES\n"
+    const criticalMetrics = metrics.filter(m => m.priority === 'critical')
     criticalMetrics.forEach(metric => {
-      const emoji = metric.change > 0 ? '📈' : '📉';
-      report += `### ${metric.name}\n`;
-      report += `${emoji} **Valeur actuelle:** ${metric.currentValue}%\n`;
-      report += `**Objectif:** ${metric.targetValue}%\n`;
-      report += `**Écart:** ${metric.change > 0 ? '+' : ''}${metric.change}%\n\n`;
-    });
-
+      const emoji = metric.change > 0 ? '📈' : '📉'
+      report += `### ${metric.name}\n`
+      report += `${emoji} **Valeur actuelle:** ${metric.currentValue}%\n`
+      report += `**Objectif:** ${metric.targetValue}%\n`
+      report += `**Écart:** ${metric.change > 0 ? '+' : ''}${metric.change}%\n\n`
+    })
     // Tests A/B actifs
     if (activeTests.length > 0) {
-      report += "## 🔬 TESTS A/B ACTIFS\n";
+      report += "## 🔬 TESTS A/B ACTIFS\n"
       activeTests.forEach(test => {
-        const statusEmoji = test.status === 'running' ? '🟢' : '🟡';
-        report += `### ${test.name}\n`;
-        report += `${statusEmoji} **Statut:** ${test.status}\n`;
-        report += `**Hypothèse:** ${test.hypothesis}\n`;
+        const statusEmoji = test.status === 'running' ? '🟢' : '🟡'
+        report += `### ${test.name}\n`
+        report += `${statusEmoji} **Statut:** ${test.status}\n`
+        report += `**Hypothèse:** ${test.hypothesis}\n`
         if (test.results) {
-          report += `**Gagnant:** ${test.results.winner} (+${test.results.improvement}%)\n`;
+          report += `**Gagnant:** ${test.results.winner} (+${test.results.improvement}%)\n`
         }
-        report += "\n";
-      });
+        report += "\n"
+      })
     }
 
     // Opportunités d'optimisation
     if (opportunities.length > 0) {
-      report += "## 💡 OPPORTUNITÉS D'OPTIMISATION\n";
+      report += "## 💡 OPPORTUNITÉS D'OPTIMISATION\n"
       opportunities.slice(0, 3).forEach((opp, index) => {
-        const priorityEmoji = opp.priority === 'critical' ? '🚨' : opp.priority === 'high' ? '⚡' : '📋';
-        report += `### ${index + 1}. ${opp.title}\n`;
-        report += `${priorityEmoji} **Priorité:** ${opp.priority}\n`;
-        report += `**Impact attendu:** +${opp.expectedImpact.improvement}% (${opp.expectedImpact.confidence}% confiance)\n`;
-        report += `**Effort:** ${opp.effort}\n`;
-        report += `**Timeline:** ${opp.implementation.timeline}\n\n`;
-      });
+        const priorityEmoji = opp.priority === 'critical' ? '🚨' : opp.priority === 'high' ? '⚡' : '📋'
+        report += `### ${index + 1}. ${opp.title}\n`
+        report += `${priorityEmoji} **Priorité:** ${opp.priority}\n`
+        report += `**Impact attendu:** +${opp.expectedImpact.improvement}% (${opp.expectedImpact.confidence}% confiance)\n`
+        report += `**Effort:** ${opp.effort}\n`
+        report += `**Timeline:** ${opp.implementation.timeline}\n\n`
+      })
     }
 
     // Recommandations
     if (recommendations.immediate.length > 0) {
-      report += "## ⚡ ACTIONS IMMÉDIATES\n";
+      report += "## ⚡ ACTIONS IMMÉDIATES\n"
       recommendations.immediate.forEach(rec => {
-        report += `• ${rec}\n`;
-      });
-      report += "\n";
+        report += `• ${rec}\n`
+      })
+      report += "\n"
     }
 
     if (recommendations.shortTerm.length > 0) {
-      report += "## 📅 ACTIONS COURT TERME\n";
+      report += "## 📅 ACTIONS COURT TERME\n"
       recommendations.shortTerm.forEach(rec => {
-        report += `• ${rec}\n`;
-      });
+        report += `• ${rec}\n`
+      })
     }
 
-    report += "\n---\n";
-    report += "*Rapport généré par ConversionHackerAI - On va tester ça, et je te parie un café que ça augmente de 12%.*";
-
-    return report;
+    report += "\n---\n"
+    report += "*Rapport généré par ConversionHackerAI - On va tester ça, et je te parie un café que ça augmente de 12%.*"
+    return report
   }
 
   /**
    * Met à jour la configuration
    */
   updateConfig(newConfig: Partial<ConversionHackerConfig>) {
-    this.config = { ...this.config, ...newConfig };
-    console.log("🎯 ConversionHackerAI: Configuration mise à jour");
+    this.config = { ...this.config, ...newConfig }
+    console.log("🎯 ConversionHackerAI: Configuration mise à jour")
   }
 }
 
@@ -605,4 +582,4 @@ export const conversionHackerAI = new ConversionHackerAI({
   },
   focusAreas: ["checkout", "landing pages", "product pages", "forms"],
   targetImprovement: 15
-});
+})

@@ -1,27 +1,24 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import Layout from "@/components/Layout";
-import AuthGuard from "@/components/AuthGuard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+"use client"
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
+import Layout from "@/components/Layout"
+import AuthGuard from "@/components/AuthGuard"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 export default function HomeSimple() {
-  const { data: session } = useSession();
-  const [missions, setMissions] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const { data: session } = useSession()
+  const [missions, setMissions] = useState([])
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     // Simuler le chargement des missions
     setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
-
+      setLoading(false)
+    }, 1000)
+  }, [])
   return (
     <AuthGuard>
       <Layout 
         title="Accueil" 
-        subtitle="Vue d&apos;ensemble de vos missions et de votre équipe IA"
+        subtitle="Vue d'ensemble de vos missions et de votre équipe IA"
       >
         <div style={{
           background: "white",
@@ -49,7 +46,7 @@ export default function HomeSimple() {
             lineHeight: "1.6",
             marginBottom: "24px"
           }}>
-            Votre plateforme d&apos;intelligence artificielle pour la gestion de missions et d&apos;équipes.
+            Votre plateforme d'intelligence artificielle pour la gestion de missions et d'équipes.
           </p>
 
           <div style={{
@@ -162,5 +159,5 @@ export default function HomeSimple() {
         </div>
       </Layout>
     </AuthGuard>
-  );
+  )
 }

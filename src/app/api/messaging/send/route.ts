@@ -1,10 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { MessagingService } from '@/lib/messaging-service';
-import { validateRequest, SendEmailSchema } from '@/lib/validation-schemas';
-import { errorHandlerMiddleware, AuthenticationError } from '@/lib/error-handler';
-
+import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { MessagingService } from '@/lib/messaging-service'
+import { validateRequest, SendEmailSchema } from '@/lib/validation-schemas'
+import { errorHandlerMiddleware, AuthenticationError } from '@/lib/error-handler'
 // Configuration email (à déplacer dans les variables d'environnement)
 const getEmailConfig = () => ({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -14,19 +13,16 @@ const getEmailConfig = () => ({
     user: process.env.SMTP_USER || 'support@beriox.ai',
     pass: process.env.SMTP_PASS || ''
   }
-});
-
-const getMessagingService = () => new MessagingService(getEmailConfig());
-
+})
+const getMessagingService = () => new MessagingService(getEmailConfig())
 export const POST = errorHandlerMiddleware(async (request: NextRequest) => {
-  const session = await getServerSession(authOptions);
-  
+  const session = await getServerSession(authOptions)
   if (!session?.user?.id) {
-    throw new AuthenticationError('Non autorisé');
+    throw new AuthenticationError('Non autorisé')
   }
 
   // Validation des données avec Zod
-  const validatedData = await validateRequest(request, SendEmailSchema);
+  const validatedData = await validateRequest(request, SendEmailSchema)
   const {
     subject,
     body: messageBody,
@@ -40,10 +36,9 @@ export const POST = errorHandlerMiddleware(async (request: NextRequest) => {
     priority,
     botId,
     ticketId
-  } = validatedData;
-
+  } = validatedData
     // Envoyer l'email
-    const messagingService = getMessagingService();
+    const messagingService = getMessagingService()
     const result = await messagingService.sendEmail({
       subject,
       body: messageBody,
@@ -60,7 +55,6 @@ export const POST = errorHandlerMiddleware(async (request: NextRequest) => {
       userId: session.user.id,
       botId,
       ticketId
-    });
-
-    return NextResponse.json(result);
-});
+    })
+    return NextResponse.json(result)
+})

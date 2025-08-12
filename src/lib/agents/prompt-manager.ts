@@ -4,36 +4,35 @@
  */
 
 export interface AgentPrompt {
-  id: string;
-  agentName: string;
-  promptType: 'analysis' | 'generation' | 'optimization' | 'audit' | 'creative';
-  title: string;
-  description: string;
-  currentPrompt: string;
-  defaultPrompt: string;
-  variables: string[];
-  lastModified: string;
-  modifiedBy: string;
-  isActive: boolean;
+  id: string
+  agentName: string
+  promptType: 'analysis' | 'generation' | 'optimization' | 'audit' | 'creative'
+  title: string
+  description: string
+  currentPrompt: string
+  defaultPrompt: string
+  variables: string[]
+  lastModified: string
+  modifiedBy: string
+  isActive: boolean
 }
 
 export interface PromptTemplate {
-  id: string;
-  name: string;
-  description: string;
-  template: string;
-  variables: string[];
-  category: string;
-  tags: string[];
+  id: string
+  name: string
+  description: string
+  template: string
+  variables: string[]
+  category: string
+  tags: string[]
 }
 
 export class PromptManager {
-  private prompts: Map<string, AgentPrompt> = new Map();
-  private templates: PromptTemplate[] = [];
-
+  private prompts: Map<string, AgentPrompt> = new Map()
+  private templates: PromptTemplate[] = []
   constructor() {
-    this.initializeDefaultPrompts();
-    this.initializeTemplates();
+    this.initializeDefaultPrompts()
+    this.initializeTemplates()
   }
 
   /**
@@ -63,8 +62,7 @@ Format de réponse: rapport structuré avec métriques et actions prioritaires.`
       lastModified: new Date().toISOString(),
       modifiedBy: 'system',
       isActive: true
-    });
-
+    })
     // InsightPulseBot Prompts
     this.addPrompt({
       id: 'insight-pulse-analysis',
@@ -88,8 +86,7 @@ Format: 3 constats + 3 actions + évaluation qualité.`,
       lastModified: new Date().toISOString(),
       modifiedBy: 'system',
       isActive: true
-    });
-
+    })
     // EchoBrandAI Prompts
     this.addPrompt({
       id: 'echo-brand-audit',
@@ -113,8 +110,7 @@ Format: audit détaillé avec scores et recommandations.`,
       lastModified: new Date().toISOString(),
       modifiedBy: 'system',
       isActive: true
-    });
-
+    })
     // TrendSculptorBot Prompts
     this.addPrompt({
       id: 'trend-sculptor-creative',
@@ -138,8 +134,7 @@ Format: concepts détaillés avec moodboards et évaluations.`,
       lastModified: new Date().toISOString(),
       modifiedBy: 'system',
       isActive: true
-    });
-
+    })
     // ConversionHackerAI Prompts
     this.addPrompt({
       id: 'conversion-hacker-optimization',
@@ -163,7 +158,7 @@ Format: analyse détaillée avec tests et recommandations.`,
       lastModified: new Date().toISOString(),
       modifiedBy: 'system',
       isActive: true
-    });
+    })
   }
 
   /**
@@ -207,85 +202,81 @@ Format: plan d'optimisation avec tests.`,
         category: 'optimization',
         tags: ['optimisation', 'tests', 'métriques']
       }
-    ];
+    ]
   }
 
   /**
    * Ajoute un nouveau prompt
    */
   addPrompt(prompt: AgentPrompt): void {
-    this.prompts.set(prompt.id, prompt);
+    this.prompts.set(prompt.id, prompt)
   }
 
   /**
    * Met à jour un prompt existant
    */
   updatePrompt(promptId: string, updates: Partial<AgentPrompt>, modifiedBy: string): boolean {
-    const prompt = this.prompts.get(promptId);
-    if (!prompt) return false;
-
+    const prompt = this.prompts.get(promptId)
+    if (!prompt) return false
     const updatedPrompt: AgentPrompt = {
       ...prompt,
       ...updates,
       lastModified: new Date().toISOString(),
       modifiedBy
-    };
-
-    this.prompts.set(promptId, updatedPrompt);
-    return true;
+    }
+    this.prompts.set(promptId, updatedPrompt)
+    return true
   }
 
   /**
    * Récupère un prompt par ID
    */
   getPrompt(promptId: string): AgentPrompt | null {
-    return this.prompts.get(promptId) || null;
+    return this.prompts.get(promptId) || null
   }
 
   /**
    * Récupère tous les prompts d'un agent
    */
   getAgentPrompts(agentName: string): AgentPrompt[] {
-    return Array.from(this.prompts.values()).filter(p => p.agentName === agentName);
+    return Array.from(this.prompts.values()).filter(p => p.agentName === agentName)
   }
 
   /**
    * Récupère tous les prompts
    */
   getAllPrompts(): AgentPrompt[] {
-    return Array.from(this.prompts.values());
+    return Array.from(this.prompts.values())
   }
 
   /**
    * Supprime un prompt
    */
   deletePrompt(promptId: string): boolean {
-    return this.prompts.delete(promptId);
+    return this.prompts.delete(promptId)
   }
 
   /**
    * Réinitialise un prompt à sa valeur par défaut
    */
   resetPrompt(promptId: string, modifiedBy: string): boolean {
-    const prompt = this.prompts.get(promptId);
-    if (!prompt) return false;
-
+    const prompt = this.prompts.get(promptId)
+    if (!prompt) return false
     return this.updatePrompt(promptId, {
       currentPrompt: prompt.defaultPrompt,
       isActive: true
-    }, modifiedBy);
+    }, modifiedBy)
   }
 
   /**
    * Active/désactive un prompt
    */
   togglePrompt(promptId: string, modifiedBy: string): boolean {
-    const prompt = this.prompts.get(promptId);
-    if (!prompt) return false;
-
+    const prompt = this.prompts.get(promptId)
+    if (!prompt) return false
     return this.updatePrompt(promptId, {
       isActive: !prompt.isActive
-    }, modifiedBy);
+    }, modifiedBy)
   }
 
   /**
@@ -293,58 +284,54 @@ Format: plan d'optimisation avec tests.`,
    */
   getTemplates(category?: string): PromptTemplate[] {
     if (category) {
-      return this.templates.filter(t => t.category === category);
+      return this.templates.filter(t => t.category === category)
     }
-    return this.templates;
+    return this.templates
   }
 
   /**
    * Applique un template à un prompt
    */
   applyTemplate(promptId: string, templateId: string, variables: Record<string, string>, modifiedBy: string): boolean {
-    const prompt = this.prompts.get(promptId);
-    const template = this.templates.find(t => t.id === templateId);
-    
-    if (!prompt || !template) return false;
-
-    let newPrompt = template.template;
+    const prompt = this.prompts.get(promptId)
+    const template = this.templates.find(t => t.id === templateId)
+    if (!prompt || !template) return false
+    let newPrompt = template.template
     Object.entries(variables).forEach(([key, value]) => {
-      newPrompt = newPrompt.replace(new RegExp(key, 'g'), value);
-    });
-
+      newPrompt = newPrompt.replace(new RegExp(key, 'g'), value)
+    })
     return this.updatePrompt(promptId, {
       currentPrompt: newPrompt
-    }, modifiedBy);
+    }, modifiedBy)
   }
 
   /**
    * Valide un prompt
    */
   validatePrompt(prompt: string): { isValid: boolean; errors: string[] } {
-    const errors: string[] = [];
-
+    const errors: string[] = []
     if (!prompt || prompt.trim().length === 0) {
-      errors.push('Le prompt ne peut pas être vide');
+      errors.push('Le prompt ne peut pas être vide')
     }
 
     if (prompt.length < 50) {
-      errors.push('Le prompt doit contenir au moins 50 caractères');
+      errors.push('Le prompt doit contenir au moins 50 caractères')
     }
 
     if (prompt.length > 2000) {
-      errors.push('Le prompt ne peut pas dépasser 2000 caractères');
+      errors.push('Le prompt ne peut pas dépasser 2000 caractères')
     }
 
     // Vérifier les variables non fermées
-    const openVariables = prompt.match(/\{[^}]*$/g);
+    const openVariables = prompt.match(/\{[^}]*$/g)
     if (openVariables) {
-      errors.push('Variables non fermées détectées');
+      errors.push('Variables non fermées détectées')
     }
 
     return {
       isValid: errors.length === 0,
       errors
-    };
+    }
   }
 
   /**
@@ -355,43 +342,41 @@ Format: plan d'optimisation avec tests.`,
       prompts: Array.from(this.prompts.values()),
       templates: this.templates,
       exportDate: new Date().toISOString()
-    };
-    return JSON.stringify(data, null, 2);
+    }
+    return JSON.stringify(data, null, 2)
   }
 
   /**
    * Importe des prompts
    */
   importPrompts(jsonData: string): { success: boolean; errors: string[] } {
-    const errors: string[] = [];
-    
+    const errors: string[] = []
     try {
-      const data = JSON.parse(jsonData);
-      
+      const data = JSON.parse(jsonData)
       if (data.prompts) {
         data.prompts.forEach((prompt: AgentPrompt) => {
-          const validation = this.validatePrompt(prompt.currentPrompt);
+          const validation = this.validatePrompt(prompt.currentPrompt)
           if (validation.isValid) {
-            this.addPrompt(prompt);
+            this.addPrompt(prompt)
           } else {
-            errors.push(`Prompt ${prompt.id}: ${validation.errors.join(', ')}`);
+            errors.push(`Prompt ${prompt.id}: ${validation.errors.join(', ')}`)
           }
-        });
+        })
       }
 
       if (data.templates) {
-        this.templates = data.templates;
+        this.templates = data.templates
       }
 
       return {
         success: errors.length === 0,
         errors
-      };
+      }
     } catch (error) {
       return {
         success: false,
         errors: ['Format JSON invalide']
-      };
+      }
     }
   }
 
@@ -399,35 +384,30 @@ Format: plan d'optimisation avec tests.`,
    * Génère un rapport des prompts
    */
   generatePromptReport(): string {
-    const agents = ['RadarFoxAI', 'InsightPulseBot', 'EchoBrandAI', 'TrendSculptorBot', 'ConversionHackerAI'];
-    
-    let report = "📝 **RAPPORT DES PROMPTS - GESTIONNAIRE BERIOX AI**\n\n";
-    
-    report += "## 📊 RÉSUMÉ\n";
-    report += `• Total des prompts: ${this.prompts.size}\n`;
-    report += `• Templates disponibles: ${this.templates.length}\n`;
-    report += `• Prompts actifs: ${Array.from(this.prompts.values()).filter(p => p.isActive).length}\n\n`;
-
+    const agents = ['RadarFoxAI', 'InsightPulseBot', 'EchoBrandAI', 'TrendSculptorBot', 'ConversionHackerAI']
+    let report = "📝 **RAPPORT DES PROMPTS - GESTIONNAIRE BERIOX AI**\n\n"
+    report += "## 📊 RÉSUMÉ\n"
+    report += `• Total des prompts: ${this.prompts.size}\n`
+    report += `• Templates disponibles: ${this.templates.length}\n`
+    report += `• Prompts actifs: ${Array.from(this.prompts.values()).filter(p => p.isActive).length}\n\n`
     agents.forEach(agentName => {
-      const agentPrompts = this.getAgentPrompts(agentName);
+      const agentPrompts = this.getAgentPrompts(agentName)
       if (agentPrompts.length > 0) {
-        report += `## ${agentName}\n`;
-        report += `• Prompts: ${agentPrompts.length}\n`;
-        report += `• Actifs: ${agentPrompts.filter(p => p.isActive).length}\n`;
-        report += `• Modifiés: ${agentPrompts.filter(p => p.modifiedBy !== 'system').length}\n\n`;
+        report += `## ${agentName}\n`
+        report += `• Prompts: ${agentPrompts.length}\n`
+        report += `• Actifs: ${agentPrompts.filter(p => p.isActive).length}\n`
+        report += `• Modifiés: ${agentPrompts.filter(p => p.modifiedBy !== 'system').length}\n\n`
       }
-    });
-
-    report += "## 🔧 TEMPLATES DISPONIBLES\n";
+    })
+    report += "## 🔧 TEMPLATES DISPONIBLES\n"
     this.templates.forEach(template => {
-      report += `• **${template.name}** (${template.category})\n`;
-      report += `  ${template.description}\n`;
-      report += `  Variables: ${template.variables.join(', ')}\n\n`;
-    });
-
-    return report;
+      report += `• **${template.name}** (${template.category})\n`
+      report += `  ${template.description}\n`
+      report += `  Variables: ${template.variables.join(', ')}\n\n`
+    })
+    return report
   }
 }
 
 // Instance par défaut
-export const promptManager = new PromptManager();
+export const promptManager = new PromptManager()

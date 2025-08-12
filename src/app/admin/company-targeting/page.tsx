@@ -1,66 +1,62 @@
-"use client";
-
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { Icon } from '@/components/ui/Icon';
-import { useTheme, useStyles } from '@/hooks/useTheme';
-
+"use client"
+import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { Icon } from '@/components/ui/Icon'
+import { useTheme, useStyles } from '@/hooks/useTheme'
 interface Company {
-  id: string;
-  name: string;
-  address: string;
-  phone?: string;
-  website?: string;
-  email?: string;
-  rating?: number;
-  reviewCount?: number;
-  types: string[];
+  id: string
+  name: string
+  address: string
+  phone?: string
+  website?: string
+  email?: string
+  rating?: number
+  reviewCount?: number
+  types: string[]
   location: {
-    lat: number;
-    lng: number;
-  };
-  placeId: string;
-  hasWebsite: boolean;
-  hasEmail: boolean;
-  hasPhone: boolean;
-  lastUpdated: Date;
+    lat: number
+    lng: number
+  }
+  placeId: string
+  hasWebsite: boolean
+  hasEmail: boolean
+  hasPhone: boolean
+  lastUpdated: Date
 }
 
 interface SearchFilters {
-  query: string;
-  location: string;
-  radius: number;
-  type: string;
-  hasWebsite?: boolean;
-  limit: number;
+  query: string
+  location: string
+  radius: number
+  type: string
+  hasWebsite?: boolean
+  limit: number
 }
 
 interface FilterOptions {
-  industries: string[];
-  employeeCount?: string;
-  revenue?: string;
-  location: string;
-  hasWebsite?: boolean;
-  hasEmail?: boolean;
-  hasPhone?: boolean;
+  industries: string[]
+  employeeCount?: string
+  revenue?: string
+  location: string
+  hasWebsite?: boolean
+  hasEmail?: boolean
+  hasPhone?: boolean
 }
 
 export default function CompanyTargetingPage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const { theme } = useTheme();
-  const styles = useStyles();
-
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const { theme } = useTheme()
+  const styles = useStyles()
   // États
-  const [companies, setCompanies] = useState<Company[]>([]);
-  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searching, setSearching] = useState(false);
-  const [selectedCompanies, setSelectedCompanies] = useState<Set<string>>(new Set());
-  const [campaignName, setCampaignName] = useState('');
-  const [notes, setNotes] = useState('');
-
+  const [companies, setCompanies] = useState<Company[]>([])
+  const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([])
+  const [loading, setLoading] = useState(false)
+  const [searching, setSearching] = useState(false)
+  const [selectedCompanies, setSelectedCompanies] = useState<Set<string>>(new Set())
+  const [campaignName, setCampaignName] = useState('')
+  const [notes, setNotes] = useState('')
   // Filtres de recherche
   const [searchFilters, setSearchFilters] = useState<SearchFilters>({
     query: '',
@@ -69,8 +65,7 @@ export default function CompanyTargetingPage() {
     type: '',
     hasWebsite: undefined,
     limit: 20
-  });
-
+  })
   // Filtres avancés
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     industries: [],
@@ -78,8 +73,7 @@ export default function CompanyTargetingPage() {
     hasWebsite: undefined,
     hasEmail: undefined,
     hasPhone: undefined
-  });
-
+  })
   // Statistiques
   const [stats, setStats] = useState({
     total: 0,
@@ -87,15 +81,13 @@ export default function CompanyTargetingPage() {
     withoutWebsite: 0,
     withEmail: 0,
     withPhone: 0
-  });
-
+  })
   // Vérification des permissions
   useEffect(() => {
-    if (status === 'loading') return;
-    
+    if (status === 'loading') return
     if (!session?.user?.email) {
-      router.push('/auth/signin');
-      return;
+      router.push('/auth/signin')
+      return
     }
 
     // Vérifier si l'utilisateur est admin
@@ -105,57 +97,49 @@ export default function CompanyTargetingPage() {
       body: JSON.stringify({ requiredRoles: ['admin', 'super_admin'] })
     }).then(res => {
       if (!res.ok) {
-        router.push('/dashboard');
+        router.push('/dashboard')
       }
-    });
-  }, [session, status, router]);
-
+    })
+  }, [session, status, router])
   // Calculer les statistiques
   useEffect(() => {
-    const total = companies.length;
-    const withWebsite = companies.filter(c => c.hasWebsite).length;
-    const withoutWebsite = total - withWebsite;
-    const withEmail = companies.filter(c => c.hasEmail).length;
-    const withPhone = companies.filter(c => c.hasPhone).length;
-
-    setStats({ total, withWebsite, withoutWebsite, withEmail, withPhone });
-  }, [companies]);
-
+    const total = companies.length
+    const withWebsite = companies.filter(c => c.hasWebsite).length
+    const withoutWebsite = total - withWebsite
+    const withEmail = companies.filter(c => c.hasEmail).length
+    const withPhone = companies.filter(c => c.hasPhone).length
+    setStats({ total, withWebsite, withoutWebsite, withEmail, withPhone })
+  }, [companies])
   // Rechercher des entreprises
   const searchCompanies = async () => {
-    if (!searchFilters.query.trim()) return;
-
-    setSearching(true);
+    if (!searchFilters.query.trim()) return
+    setSearching(true)
     try {
       const params = new URLSearchParams({
         action: 'search',
         ...Object.fromEntries(
           Object.entries(searchFilters).filter(([_, value]) => value !== undefined && value !== '')
         )
-      });
-
-      const response = await fetch(`/api/admin/company-targeting?${params}`);
-      const data = await response.json();
-
+      })
+      const response = await fetch(`/api/admin/company-targeting?${params}`)
+      const data = await response.json()
       if (data.success) {
-        setCompanies(data.companies);
-        setFilteredCompanies(data.companies);
-        setSelectedCompanies(new Set());
+        setCompanies(data.companies)
+        setFilteredCompanies(data.companies)
+        setSelectedCompanies(new Set())
       } else {
-        console.error('Erreur de recherche:', data.error);
+        console.error('Erreur de recherche:', data.error)
       }
     } catch (error) {
-      console.error('Erreur lors de la recherche:', error);
+      console.error('Erreur lors de la recherche:', error)
     } finally {
-      setSearching(false);
+      setSearching(false)
     }
-  };
-
+  }
   // Filtrer les entreprises
   const filterCompanies = async () => {
-    if (companies.length === 0) return;
-
-    setLoading(true);
+    if (companies.length === 0) return
+    setLoading(true)
     try {
       const params = new URLSearchParams({
         action: 'filter',
@@ -166,30 +150,25 @@ export default function CompanyTargetingPage() {
             (Array.isArray(value) ? value.length > 0 : true)
           )
         )
-      });
-
-      const response = await fetch(`/api/admin/company-targeting?${params}`);
-      const data = await response.json();
-
+      })
+      const response = await fetch(`/api/admin/company-targeting?${params}`)
+      const data = await response.json()
       if (data.success) {
-        setFilteredCompanies(data.companies);
-        setSelectedCompanies(new Set());
+        setFilteredCompanies(data.companies)
+        setSelectedCompanies(new Set())
       }
     } catch (error) {
-      console.error('Erreur lors du filtrage:', error);
+      console.error('Erreur lors du filtrage:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   // Sauvegarder les entreprises sélectionnées
   const saveSelectedCompanies = async () => {
-    if (selectedCompanies.size === 0) return;
-
-    setLoading(true);
+    if (selectedCompanies.size === 0) return
+    setLoading(true)
     try {
-      const selectedCompaniesList = companies.filter(c => selectedCompanies.has(c.id));
-      
+      const selectedCompaniesList = companies.filter(c => selectedCompanies.has(c.id))
       const response = await fetch('/api/admin/company-targeting', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -198,49 +177,44 @@ export default function CompanyTargetingPage() {
           campaignName: campaignName || 'Campagne par défaut',
           notes
         })
-      });
-
-      const data = await response.json();
-      
+      })
+      const data = await response.json()
       if (data.success) {
-        alert(`${data.count} entreprises sauvegardées avec succès !`);
-        setSelectedCompanies(new Set());
-        setCampaignName('');
-        setNotes('');
+        alert(`${data.count} entreprises sauvegardées avec succès !`)
+        setSelectedCompanies(new Set())
+        setCampaignName('')
+        setNotes('')
       }
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde:', error);
+      console.error('Erreur lors de la sauvegarde:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
   // Sélectionner/désélectionner une entreprise
   const toggleCompanySelection = (companyId: string) => {
-    const newSelected = new Set(selectedCompanies);
+    const newSelected = new Set(selectedCompanies)
     if (newSelected.has(companyId)) {
-      newSelected.delete(companyId);
+      newSelected.delete(companyId)
     } else {
-      newSelected.add(companyId);
+      newSelected.add(companyId)
     }
-    setSelectedCompanies(newSelected);
-  };
-
+    setSelectedCompanies(newSelected)
+  }
   // Sélectionner/désélectionner toutes les entreprises
   const toggleAllCompanies = () => {
     if (selectedCompanies.size === filteredCompanies.length) {
-      setSelectedCompanies(new Set());
+      setSelectedCompanies(new Set())
     } else {
-      setSelectedCompanies(new Set(filteredCompanies.map(c => c.id)));
+      setSelectedCompanies(new Set(filteredCompanies.map(c => c.id)))
     }
-  };
-
+  }
   if (status === 'loading') {
     return (
       <div className={styles.container}>
         <div className={styles.loading}>Chargement...</div>
       </div>
-    );
+    )
   }
 
   return (
@@ -248,7 +222,7 @@ export default function CompanyTargetingPage() {
       <div className={styles.header}>
         <h1 className={styles.title}>
           <Icon name="target" className={styles.titleIcon} />
-          Ciblage d&apos;Entreprises
+          Ciblage d'Entreprises
         </h1>
         <p className={styles.subtitle}>
           Recherchez et ciblez des entreprises avec Google Places API
@@ -257,7 +231,7 @@ export default function CompanyTargetingPage() {
 
       {/* Section de recherche */}
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Recherche d&apos;Entreprises</h2>
+        <h2 className={styles.sectionTitle}>Recherche d'Entreprises</h2>
         
         <div className={styles.searchForm}>
           <div className={styles.formGrid}>
@@ -299,7 +273,7 @@ export default function CompanyTargetingPage() {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.label}>Type d&apos;entreprise</label>
+              <label className={styles.label}>Type d'entreprise</label>
               <input
                 type="text"
                 value={searchFilters.type}
@@ -402,7 +376,7 @@ export default function CompanyTargetingPage() {
                 value={filterOptions.industries.join(', ')}
                 onChange={(e) => setFilterOptions(prev => ({ 
                   ...prev, 
-                  industries: e.target.value.split(&apos;,&apos;).map(s => s.trim()).filter(s => s)
+                  industries: e.target.value.split(',').map(s => s.trim()).filter(s => s)
                 }))}
                 placeholder="Ex: restaurant, retail, technology"
                 className={styles.input}
@@ -502,7 +476,7 @@ export default function CompanyTargetingPage() {
                 onClick={toggleAllCompanies}
                 className={styles.secondaryButton}
               >
-                {selectedCompanies.size === filteredCompanies.length ? &apos;Désélectionner tout&apos; : &apos;Sélectionner tout&apos;}
+                {selectedCompanies.size === filteredCompanies.length ? 'Désélectionner tout' : 'Sélectionner tout'}
               </button>
             </div>
           </div>
@@ -633,5 +607,5 @@ export default function CompanyTargetingPage() {
         </div>
       )}
     </div>
-  );
+  )
 }
