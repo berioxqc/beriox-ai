@@ -1,10 +1,9 @@
 "use client";
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
-export default function VerifyPage() {
+function VerifyForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -29,10 +28,6 @@ export default function VerifyPage() {
           setError(data.error || 'Erreur lors de la vérification');
         } else {
           setSuccess(data.message);
-          // Rediriger vers la page de connexion après 5 secondes
-          setTimeout(() => {
-            router.push('/auth/signin');
-          }, 5000);
         }
       } catch (error) {
         setError('Erreur lors de la vérification');
@@ -46,15 +41,40 @@ export default function VerifyPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
-          <p className="mt-4 text-white">Vérification de votre email...</p>
-        </div>
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+        <p className="mt-4 text-white">Vérification en cours...</p>
       </div>
     );
   }
 
+  return (
+    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
+      {error && (
+        <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm">
+          {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-lg text-green-200 text-sm">
+          {success}
+        </div>
+      )}
+
+      <div className="text-center">
+        <Link 
+          href="/auth/signin"
+          className="inline-block bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all"
+        >
+          Aller à la connexion
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export default function VerifyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full space-y-8">
@@ -63,29 +83,14 @@ export default function VerifyPage() {
           <p className="text-gray-300">Vérification de compte</p>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl">
-          {error && (
-            <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-lg text-green-200 text-sm">
-              {success}
-              <p className="mt-2 text-sm">Redirection vers la page de connexion...</p>
-            </div>
-          )}
-
+        <Suspense fallback={
           <div className="text-center">
-            <Link 
-              href="/auth/signin"
-              className="text-sm text-purple-300 hover:text-purple-200 transition-colors"
-            >
-              ← Retour à la connexion
-            </Link>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+            <p className="mt-4 text-white">Chargement...</p>
           </div>
-        </div>
+        }>
+          <VerifyForm />
+        </Suspense>
       </div>
     </div>
   );
