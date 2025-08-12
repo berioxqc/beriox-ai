@@ -45,11 +45,11 @@ export interface HTMLFixReport {
 
 export class HTMLFixerBotService {
   private patterns: Record<string, string> = {
-    "'": "'",
-    """: '"',
-    "&": "&",
-    "<": "<",
-    ">": ">",
+    "&apos;": "'",
+    "&quot;": '"',
+    "&amp;": "&",
+    "&lt;": "<",
+    "&gt;": ">",
     "&nbsp;": " ",
     "&hellip;": "...",
     "&mdash;": "—",

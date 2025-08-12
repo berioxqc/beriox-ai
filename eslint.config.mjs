@@ -1,4 +1,6 @@
 import { FlatCompat } from '@eslint/eslintrc'
+import typescript from '@typescript-eslint/eslint-plugin'
+import typescriptParser from '@typescript-eslint/parser'
 
 const compat = new FlatCompat({
   // import.meta.dirname is available after Node.js v20.11.0
@@ -8,6 +10,22 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.config({
     extends: ['next'],
+  }),
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    plugins: {
+      '@typescript-eslint': typescript,
+    },
     rules: {
       // Désactiver les règles problématiques
       'react/no-unescaped-entities': 'off',
@@ -44,7 +62,7 @@ const eslintConfig = [
       'react/style-prop-object': 'warn',
       'react/void-dom-elements-no-children': 'error'
     },
-  }),
+  },
   {
     // Ignorer certains fichiers
     ignores: [
