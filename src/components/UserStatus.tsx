@@ -1,10 +1,12 @@
 "use client"
 import { useState, useEffect } from "react"
-import { useSession } from "next-auth/react"
+import { useSession, signIn, signOut } from "next-auth/react"
 import Icon from "@/components/ui/Icon"
+
 export default function UserStatus() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [profile, setProfile] = useState<any>(null)
+
   useEffect(() => {
     const fetchProfile = async () => {
       if (session?.user?.email) {
@@ -21,6 +23,34 @@ export default function UserStatus() {
     }
     fetchProfile()
   }, [session])
+
+  // Si pas connecté, afficher le bouton de connexion
+  if (status === 'unauthenticated' || !session) {
+    return (
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => signIn('google')}
+          className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"
+        >
+          <Icon name="log-in" size={14} />
+          Se connecter
+        </button>
+      </div>
+    )
+  }
+
+  // Si en cours de chargement
+  if (status === 'loading') {
+    return (
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
+        <div className="hidden md:block">
+          <div className="text-sm font-medium text-gray-900">Chargement...</div>
+        </div>
+      </div>
+    )
+  }
+
   // Déterminer l'accès premium basé sur le rôle et les crédits
   let hasAccess = false
   let plan = undefined
@@ -44,6 +74,7 @@ export default function UserStatus() {
         return 'text-gray-600 bg-gray-50'
     }
   }
+
   const getPlanColor = () => {
     switch (plan) {
       case 'enterprise':
@@ -54,6 +85,7 @@ export default function UserStatus() {
         return 'text-gray-600 bg-gray-50'
     }
   }
+
   return (
     <div className="flex items-center gap-3">
       {/* Statut Premium */}
@@ -95,9 +127,18 @@ export default function UserStatus() {
             {session?.user?.name || "Utilisateur"}
           </div>
           <div className="text-xs text-gray-500">
-            {session?.user?.email || "Non connecté"}
+            {session?.user?.email}
           </div>
         </div>
+        
+        {/* Bouton de déconnexion */}
+        <button
+          onClick={() => signOut()}
+          className="flex items-center gap-1 px-2 py-1 text-gray-500 hover:text-red-600 transition-colors"
+          title="Se déconnecter"
+        >
+          <Icon name="log-out" size={14} />
+        </button>
       </div>
     </div>
   )
